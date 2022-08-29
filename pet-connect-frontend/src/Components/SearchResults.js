@@ -1,10 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from "react-router-dom";
 import './SearchResults.css';
+import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 
 // bar: [Number of matches] search word  distance (arrow)  near <location>
 
@@ -14,13 +10,12 @@ import './SearchResults.css';
 function SearchResults(){
     return(
     <div>
-        <p> link to return to Home page: </p>
-        <Router>
-            <Link to="/">Home</Link>
-        </Router>
+
         <div>
             <div className="topBar">
-                <p> Top bar [# matches] search-word  distance (arrow)  near LOCATION </p>
+                <p> Top bar [# matches] search-word  distance (arrow)  near LOCATION
+                <span><Router><Link to="/"> | Home</Link></Router>
+                </span> </p>
             </div>
             <div className="main">
                 <div className="advancedSearchCol">

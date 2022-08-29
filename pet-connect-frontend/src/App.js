@@ -7,6 +7,7 @@ function App() {
     <div className="App">
       <div>petConnect</div>
       <div> <p> components below: </p> </div>
+
       <Search/>
       <SearchResults/>
 
