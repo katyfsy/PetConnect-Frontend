@@ -1,17 +1,15 @@
 import './App.css';
 import Search from './Components/Search';
-import Home from './Pages/Home';
-import { Routes, Route } from "react-router-dom";
+import SearchResults from './Components/SearchResults';
 
 function App() {
   return (
     <div className="App">
       <div>petConnect</div>
+      <div> <p> components below: </p> </div>
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/search" element={<Search />} />
-      </Routes>
+      <Search/>
+      <SearchResults/>
 
     </div>
   );
