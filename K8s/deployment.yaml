@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: pet-connect-frontend
-        image: justinchen87/petconnect
+        image: leqvin/petconnect
         ports:
         - containerPort: 80
