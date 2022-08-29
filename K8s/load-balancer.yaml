@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: petConnect-load-balancer
+  name: petconnect-lb
   labels:
     app: pet-connect-frontend
 spec:
