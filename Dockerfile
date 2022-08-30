@@ -1,3 +1,6 @@
-FROM nginx:stable-alpine
+FROM nginx
 
-COPY react-docker/build/ /usr/share/nginx/html 
+RUN rm -rf /etc/nginx/conf.d
+COPY conf /etc/nginx
+
+COPY app/build/ /usr/share/nginx/html

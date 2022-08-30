@@ -1,0 +1,22 @@
+.topBar{
+    background-color: yellow;
+}
+
+.main {
+  display: grid;
+  gap: 10px;
+  grid-template-areas:
+    'left right';
+  grid-template-columns: 4fr 10fr;
+  margin-top: 20px;
+}
+
+.advancedSearchCol {
+    grid-area: left;
+    border: solid red;
+}
+
+.searchResultsCol {
+    grid-area: right;
+    border: solid blue;
+}

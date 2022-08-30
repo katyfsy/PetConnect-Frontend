@@ -1,19 +1,19 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: react-docker
+  name: pet-connect-frontend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: react-docker
+      app: pet-connect-frontend
   template:
     metadata:
       labels:
-        app: react-docker
+        app: pet-connect-frontend
     spec:
       containers:
-      - name: react-docker
-        image: registry.gitlab.com/galv-vmw-july-2022/capstone/petconnect-frontend
+      - name: pet-connect-frontend
+        image: leqvin/petconnect
         ports:
         - containerPort: 80
