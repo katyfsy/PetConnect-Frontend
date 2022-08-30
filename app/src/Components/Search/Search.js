@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
-import DefaultSearchDropdown from './DefaultSearchDropdown';
 import './Search.css';
+import SearchResults from './SearchResults';
 
 
 function Search(){
@@ -38,10 +38,10 @@ function Search(){
   const handleDefaultSearchClick = value => {
     setSearchQuery(value);
     setDropdownDisplay(false);
-    if (value == "All Cats") {
+    if (value === "All Cats") {
       var param = "?type=cat";
-    } else if (value == "All Dogs"){
-      var param = "type=dog?";
+    } else if (value === "All Dogs"){
+      var param = "?type=dog";
     } else {
       var param = "";
     }
@@ -55,7 +55,7 @@ function Search(){
 
   const handleSubmitClick = (e) => {
     e.preventDefault();
-    if (searchQuery.length == 0) {
+    if (searchQuery.length === 0) {
       setDropdownDisplay(!dropdownDisplay);
     } else {
       console.log('searchQuery', searchQuery)
@@ -96,6 +96,7 @@ function Search(){
       )}
        <input type="text" id="zipcodeInput" placeholder="Enter zip" value={zipcode} onChange={e=>setZipcode(e.target.value)}/>
       <button id="searchButton" onClick={handleSubmitClick}>Search</button>
+      {/* <SearchResults/> */}
     </div>
   );
 
