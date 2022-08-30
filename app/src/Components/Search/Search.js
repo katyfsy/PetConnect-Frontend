@@ -58,8 +58,8 @@ function Search(){
     if (searchQuery.length === 0) {
       setDropdownDisplay(!dropdownDisplay);
     } else {
-      console.log('searchQuery', searchQuery)
-      axios.get("http://localhost:8080/api/petSearch")
+      const params = {type: searchQuery, zip: zipcode}
+      axios.get("http://localhost:8080/api/petSearch", {params})
       .then((result)=>{
           console.log(result);
           setResult(result.data.results);
