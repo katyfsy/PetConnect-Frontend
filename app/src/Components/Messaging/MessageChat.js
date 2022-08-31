@@ -4,19 +4,8 @@ import stompClient from './MessagingApp';
 
 let chatMessage = {
   senderName: "Ivy",
-  senderId: 1,
   receiverName: "Ginwoo",
-  receiverId: 2,
   message: "Test Message",
-  status: 'MESSAGE'
-};
-
-let testMessage = {
-  senderName: "Ivy",
-  senderId: 1,
-  receiverName: "Ginwoo",
-  receiverId: 2,
-  message: "Test Message number 2",
   status: 'MESSAGE'
 };
 
@@ -25,6 +14,13 @@ data.set("Ginwoo", [chatMessage]);
 
 // This will hold the convo between you and contact, input bar
 const MessageChat = () => {
+
+  // Need user name, receiver name, message to send message
+  const [userData, setUserData] = useState({
+    username: "Test",
+    receiverName:"Ginwoo",
+    message: ""
+  })
 
   const [privateChats, setPrivateChats] = useState(new Map(data));
 
@@ -40,15 +36,17 @@ const MessageChat = () => {
       setPrivateChats(new Map(privateChats));
     }
   }
-  const sendPrivateMessage = () => {
+
+  const sendPrivateMessage = (message) => {
+    console.log(message)
+    setUserData({...userData, "message": message});
+    console.log(userData.message)
     if (stompClient) {
       // mock data
       let chatMessage = {
-        senderName: "Ivy", // current user's name
-        senderId: 1, // current user's id
-        receiverName: "Ginwoo", // receiver's name
-        receiverId: 2, // receiver's id
-        message: "Test message number 2!",
+        senderName: userData.username, // current user's name
+        receiverName: userData.receiverName, // receiver's name
+        message: userData.message,
         status: 'MESSAGE'
       };
       privateChats.get(chatMessage.receiverName).push(chatMessage);
@@ -69,7 +67,7 @@ const MessageChat = () => {
         </li>
       )
     })}
-    <InputBar />
+    <InputBar sendPrivateMessage={sendPrivateMessage} />
     </>
   )
 }

@@ -10,16 +10,14 @@ import ContactsList from './ContactsList';
 // subscribe to your own channel to accept
 // at close, change your status to inactive
 
-// message contains sender name, id, receiver name, id, message, status
+// message contains sender name, receiver name, id, message, status
 
-export var stompClient = null;
 const MessagingApp = () => {
+  var stompClient = null;
 
   const [userData, setUserData] = useState({
     username: "Test",
-    receivername:"",
     connected: false,
-    message: ""
   })
 
   const onLanding = () => {
