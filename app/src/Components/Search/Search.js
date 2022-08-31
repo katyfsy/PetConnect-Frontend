@@ -57,10 +57,14 @@ function Search({setResult}){
     if (searchQuery.length === 0) {
       setDropdownDisplay(!dropdownDisplay);
     } else {
-      const params = {type: searchQuery, zip: zipcode}
+      if (zipcode.length === 0) {
+        var params = {type: searchQuery};
+      } else {
+        params = {type: searchQuery, zip: zipcode};
+      }
       axios.get("/api/petSearch", {params})
       .then((result)=>{
-          console.log('results', result.data);
+          console.log('results', result);
           setResult(result.data.pets);
         })
       .catch(err=>console.log(err));

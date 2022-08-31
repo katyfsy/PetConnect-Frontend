@@ -22,6 +22,7 @@ function Results({matches}){
                 <div className="searchResultsCol">
                     <p> column right: cards (mini profiles) - for now just a list of names </p>
                     <div>{
+                        matches === undefined ? (<div>No matches</div>) :
                         matches.map(match => {
                             return(
                                 <div key={match.zipcode}>{match.name}, {match.type}</div>
