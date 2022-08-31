@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {over} from 'stompjs';
 import SockJS from 'sockjs-client';
-import MessageChat, {onPrivateMessageReceived} from './MessageChat';
+import MessageChat from './MessageChat';
 import ContactsList from './ContactsList';
 
 // triggers everything on click on message button
@@ -32,7 +32,7 @@ const MessagingApp = () => {
 
   const onConnected = () => {
     setUserData({...userData, "connected": true});
-    stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessageReceived);
+    stompClient.subscribe('/user/' + userData.username + '/private', MessageChat.onPrivateMessageReceived);
   }
 
   const onError = (err) => {
