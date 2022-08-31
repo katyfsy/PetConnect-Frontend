@@ -64,7 +64,6 @@ function Search({setResult}){
       }
       axios.get("/api/petSearch", {params})
       .then((result)=>{
-          console.log('results', result);
           setResult(result.data.pets);
         })
       .catch(err=>console.log(err));
