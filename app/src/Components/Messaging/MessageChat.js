@@ -61,7 +61,7 @@ const MessageChat = () => {
   return (
     <>
     <div>Message Chat Box</div>
-    <button onClick={sendPrivateMessage}>Add Message</button>
+    <button onClick={sendPrivateMessage}>Send Message</button>
     {privateChats.get("Ginwoo").map((message, index) => {
       return (
         <li key={index} >

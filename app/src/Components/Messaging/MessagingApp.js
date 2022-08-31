@@ -12,7 +12,7 @@ import ContactsList from './ContactsList';
 
 // message contains sender name, id, receiver name, id, message, status
 
-var stompClient = null;
+export var stompClient = null;
 const MessagingApp = () => {
 
   const [userData, setUserData] = useState({
