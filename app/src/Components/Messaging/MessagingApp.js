@@ -3,6 +3,7 @@ import {over} from 'stompjs';
 import SockJS from 'sockjs-client';
 import MessageChat from './MessageChat';
 import ContactsList from './ContactsList';
+import InputBar from './InputBar';
 
 // triggers everything on click on message button
 // send initial get request to server to retreive contacts
@@ -11,14 +12,33 @@ import ContactsList from './ContactsList';
 // at close, change your status to inactive
 
 // message contains sender name, receiver name, id, message, status
+// let chatMessage = {
+//   senderName: "Ivy",
+//   receiverName: "Ginwoo",
+//   message: "Test Message",
+//   status: 'MESSAGE'
+// };
 
+// let data = new Map();
+// data.set("Ginwoo", [chatMessage]);
+
+var stompClient = null;
 const MessagingApp = () => {
-  var stompClient = null;
 
   const [userData, setUserData] = useState({
-    username: "Test",
+    username: "",
+    receiverName: "",
     connected: false,
+    message: ""
   })
+
+  const [privateChats, setPrivateChats] = useState(new Map());
+
+
+  const handleUsername = (event) => {
+    const value = event.target.value;
+    setUserData({...userData, "username": value});
+  }
 
   const onLanding = () => {
     let Sock = new SockJS('http://localhost:8080/ws');
@@ -30,7 +50,43 @@ const MessagingApp = () => {
 
   const onConnected = () => {
     setUserData({...userData, "connected": true});
-    stompClient.subscribe('/user/' + userData.username + '/private', MessageChat.onPrivateMessageReceived);
+    stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessageReceived);
+  }
+
+    const handleSend = (message) => {
+    setUserData({...userData, "message": message});
+    sendPrivateMessage();
+  }
+
+  const onPrivateMessageReceived = (payload) => {
+    let payloadData = JSON.parse(payload.body);
+    if (privateChats.get(payloadData.senderName)) {
+      privateChats.get(payloadData.senderName).push(payloadData);
+      setPrivateChats(new Map(privateChats));
+    } else {
+      let list = [];
+      list.push(payloadData);
+      privateChats.set(payloadData.senderName, list);
+      setPrivateChats(new Map(privateChats));
+    }
+  }
+
+  const sendPrivateMessage = () => {
+    if (stompClient) {
+      // mock data
+      let chatMessage = {
+        senderName: userData.username, // current user's name
+        receiverName: "Ginwoo", // receiver's name
+        message: userData.message,
+        status: 'MESSAGE'
+      };
+      privateChats.get(chatMessage.receiverName).push(chatMessage);
+      setPrivateChats(new Map(privateChats));
+      console.log(stompClient)
+      stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
+      console.log("attempted to send a message")
+      // set message input back to empty
+    }
   }
 
   const onError = (err) => {
@@ -40,9 +96,17 @@ const MessagingApp = () => {
   return(
     <>
       <div>Hello World</div>
-      <button onClick={onLanding}></button>
+      <input
+          id = 'user-name'
+          name='username'
+          placeholder = 'Enter the user name'
+          value = {userData.username}
+          onChange = {handleUsername}
+          />
+      <button onClick={onLanding}>Connect</button>
       <ContactsList />
-      <MessageChat />
+      <MessageChat privateChats={privateChats}/>
+      <InputBar handleSend={handleSend}/>
     </>
   )
 }
