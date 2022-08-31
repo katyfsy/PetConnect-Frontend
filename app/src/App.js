@@ -3,7 +3,7 @@ import Search from './Components/Search/Search';
 import Home from './Pages/Home';
 import Pets from './Pages/Pets';
 import Profile from './Pages/Profile';
-import Messages from './Messaging/Messages';
+import Messages from './Pages/Messages';
 import { Routes, Route } from "react-router-dom";
 
 
