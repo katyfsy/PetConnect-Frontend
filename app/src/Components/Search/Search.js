@@ -1,10 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 import './Search.css';
-import Results from './Results';
 
 
-function Search(){
+function Search({setResult}){
   // ======
   // Working Default Dropdown (click outside will close dropdown)
   // 1. Need to work on CSS to make sure the dropdown lies under search input bar
@@ -18,7 +17,7 @@ function Search(){
   const [options, setOptions] = useState(["All Cats", "All Dogs"]);
   const [searchQuery, setSearchQuery] = useState("");
   const [zipcode, setZipcode] = useState("");
-  const [result, setResult] = useState([]);
+  // const [result, setResult] = useState([]);
   const wrapperRef = useRef(null);
 
   const handleClickOutside = e => {
@@ -45,7 +44,7 @@ function Search(){
     } else {
       var param = "";
     }
-    axios.get("http://localhost:8080/api/petSearch" + param)
+    axios.get("/api/petSearch" + param)
     .then((result)=>{
         setResult(result.data.pets);
       })
@@ -59,14 +58,15 @@ function Search(){
       setDropdownDisplay(!dropdownDisplay);
     } else {
       const params = {type: searchQuery, zip: zipcode}
-      axios.get("http://localhost:8080/api/petSearch", {params})
+      axios.get("/api/petSearch", {params})
       .then((result)=>{
-          console.log(result);
-          setResult(result.data.results);
+          console.log('results', result.data);
+          setResult(result.data.pets);
         })
       .catch(err=>console.log(err));
     }
-  }
+    };
+
 
   return (
     <div ref={wrapperRef} className="searchGroup">
@@ -96,9 +96,8 @@ function Search(){
       )}
        <input type="text" id="zipcodeInput" placeholder="Enter zip" value={zipcode} onChange={e=>setZipcode(e.target.value)}/>
       <button id="searchButton" onClick={handleSubmitClick}>Search</button>
-      {/* <Results/> */}
     </div>
-  );
+  )
 
 }
 

@@ -7,7 +7,7 @@ import './Results.css';
 // column left: advanced search (dropdowns)
 // column right: cards (mini profiles) - for now just a list of names
 
-function Results(){
+function Results({matches}){
     return(
     <div>
 
@@ -21,6 +21,13 @@ function Results(){
                 </div>
                 <div className="searchResultsCol">
                     <p> column right: cards (mini profiles) - for now just a list of names </p>
+                    <div>{
+                        matches.map(match => {
+                            return(
+                                <div key={match.zipcode}>{match.name}, {match.type}</div>
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
+import Search from '../Components/Search/Search';
 import Results from '../Components/Search/Results';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 function SearchResults() {
+  const [result, setResult] = useState([]);
+
   return (
     <>
       <Container>
@@ -14,7 +17,8 @@ function SearchResults() {
       <Navigationbar/>
       <Container>
         <Row className="justify-content-md-center" style={{"padding-top": "50px"}}>
-          <Results />
+          <Search setResult={setResult}/>
+          <Results matches={result}/>
         </Row>
       </Container>
     </>
