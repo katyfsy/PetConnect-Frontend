@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 import './Search.css';
-import SearchResults from './SearchResults';
+import Results from './Results';
 
 
 function Search(){
@@ -96,7 +96,7 @@ function Search(){
       )}
        <input type="text" id="zipcodeInput" placeholder="Enter zip" value={zipcode} onChange={e=>setZipcode(e.target.value)}/>
       <button id="searchButton" onClick={handleSubmitClick}>Search</button>
-      {/* <SearchResults/> */}
+      {/* <Results/> */}
     </div>
   );
 

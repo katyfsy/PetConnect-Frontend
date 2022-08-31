@@ -1,6 +1,6 @@
 import './App.css';
 import Search from './Components/Search/Search';
-import SearchResults from './Components/Search/SearchResults';
+import SearchResults from './Pages/SearchResults';
 import Home from './Pages/Home';
 import Pets from './Pages/Pets';
 import Profile from './Pages/Profile';
