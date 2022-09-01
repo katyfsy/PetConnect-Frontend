@@ -1,23 +1,22 @@
 import React, {useState, useEffect} from 'react';
-import InputBar from './InputBar';
-import stompClient from './MessagingApp';
 
-const MessageChat = ({privateChats}) => {
+const MessageChat = ({privateChats, currentContact}) => {
 
   return (
     <>
     <div>Message Chat Box</div>
-    {privateChats.size === 0 ? <div>Click a contact</div> : [...privateChats.keys()].map((contact, index) => {
-      return (
-        privateChats.get(contact).map((message) => {
+      {currentContact === "" ?
+        <div>CLick on contact to view messages.</div> :
+        <div>
+        {[...privateChats.get(currentContact)].map((message, index) => {
           return (
             <li key={index} >
               {message.message}
             </li>
           )
-        })
-      )
-    })}
+        })}
+        </div>
+      }
     </>
   )
 }

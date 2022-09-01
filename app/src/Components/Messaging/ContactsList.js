@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Contact from './Contact';
 
-const ContactsList = ({privateChats, contacts, setCurrentContact}) => {
+const ContactsList = ({privateChats, setCurrentContact}) => {
   // will have list of contacts list
   // on click, send get request to server for conversation between you and this contact
   // also change a state to change the view of the MessagesBox to show the past messages
@@ -14,7 +14,7 @@ const ContactsList = ({privateChats, contacts, setCurrentContact}) => {
 
   return (
     <div>
-    {contacts.length === 0 ?
+    {privateChats.keys().length === 0 ?
       <div>Message someone to add contacts.</div> :
       <>
         <div>Contact List</div>

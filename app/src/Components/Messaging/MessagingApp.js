@@ -11,20 +11,6 @@ import InputBar from './InputBar';
 // subscribe to your own channel to accept
 // at close, change your status to inactive
 
-// message contains sender name, receiver name, id, message, status
-let chatMessage = {
-  senderName: "Ivy",
-  receiverName: "Ginwoo",
-  message: "Test Message",
-  status: 'MESSAGE'
-};
-
-let data = new Map();
-data.set("Ginwoo", [chatMessage]);
-data.set("Ivy", [chatMessage]);
-data.set("Rick", [chatMessage]);
-data.set("Yu", [chatMessage, chatMessage]);
-
 var stompClient = null;
 const MessagingApp = () => {
 
@@ -35,16 +21,10 @@ const MessagingApp = () => {
     message: ""
   })
 
-  const [privateChats, setPrivateChats] = useState(new Map(data));
+  const [privateChats, setPrivateChats] = useState(new Map());
 
   // current contact state
   const [currentContact, setCurrentContact] = useState("");
-
-  const handleName = (event) => {
-    const {value, name} = event.target;
-    setUserData({...userData, [name]: value});
-  }
-
 
   const onLanding = () => {
     let Sock = new SockJS('http://localhost:8080/ws');
@@ -59,11 +39,16 @@ const MessagingApp = () => {
     stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessageReceived);
   }
 
+  const handleName = (event) => {
+    const {value, name} = event.target;
+    setUserData({...userData, [name]: value});
+  }
+
   const handleMessage = (event) => {
     const value = event.target.value;
     setUserData({...userData, "message": value});
-
   }
+
   const handleSend = () => {
     sendPrivateMessage();
   }
@@ -126,8 +111,8 @@ const MessagingApp = () => {
           onChange = {handleName}
       />
       <button onClick={onLanding}>Connect</button>
-      <ContactsList contacts={privateChats.keys()} privateChats={privateChats} setCurrentContact={setCurrentContact}/>
-      <MessageChat privateChats={privateChats}/>
+      <ContactsList privateChats={privateChats} setCurrentContact={setCurrentContact}/>
+      <MessageChat privateChats={privateChats} currentContact={currentContact}/>
       <InputBar handleSend={handleSend} handleMessage={handleMessage}/>
     </>
   )
