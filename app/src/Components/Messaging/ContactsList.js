@@ -1,18 +1,27 @@
 import React, {useState} from 'react';
 import Contact from './Contact';
 
-const ContactsList = () => {
+const ContactsList = ({privateChats, contacts, setCurrentContact}) => {
   // will have list of contacts list
   // on click, send get request to server for conversation between you and this contact
   // also change a state to change the view of the MessagesBox to show the past messages
-  const [contacts, setContacts] = useState(["Ginwoo", "Yu", "Rick"])
+
+  let currentList = [...privateChats.keys()].map((contact) => {
+    return (
+      <Contact key={contact} contact={contact} setCurrentContact={setCurrentContact}/>
+    )
+  })
+
   return (
     <div>
-      {contacts.map((contact) => {
-        return (
-          <Contact key={contact} contact={contact} />
-        )
-      })}
+    {contacts.length === 0 ?
+      <div>Message someone to add contacts.</div> :
+      <>
+        <div>Contact List</div>
+        <ul>
+          {currentList}
+        </ul>
+      </>}
     </div>
   )
 }

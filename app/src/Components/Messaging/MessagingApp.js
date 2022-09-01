@@ -12,15 +12,18 @@ import InputBar from './InputBar';
 // at close, change your status to inactive
 
 // message contains sender name, receiver name, id, message, status
-// let chatMessage = {
-//   senderName: "Ivy",
-//   receiverName: "Ginwoo",
-//   message: "Test Message",
-//   status: 'MESSAGE'
-// };
+let chatMessage = {
+  senderName: "Ivy",
+  receiverName: "Ginwoo",
+  message: "Test Message",
+  status: 'MESSAGE'
+};
 
-// let data = new Map();
-// data.set("Ginwoo", [chatMessage]);
+let data = new Map();
+data.set("Ginwoo", [chatMessage]);
+data.set("Ivy", [chatMessage]);
+data.set("Rick", [chatMessage]);
+data.set("Yu", [chatMessage, chatMessage]);
 
 var stompClient = null;
 const MessagingApp = () => {
@@ -32,9 +35,10 @@ const MessagingApp = () => {
     message: ""
   })
 
-  const [privateChats, setPrivateChats] = useState(new Map());
+  const [privateChats, setPrivateChats] = useState(new Map(data));
 
   // current contact state
+  const [currentContact, setCurrentContact] = useState("");
 
   const handleName = (event) => {
     const {value, name} = event.target;
@@ -95,8 +99,8 @@ const MessagingApp = () => {
       stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
       console.log("attempted to send a message");
       setUserData({...userData, "message": ""});
-      // set message input back to empty
     }
+    console.log(Array.from(privateChats));
   }
 
   const onError = (err) => {
@@ -120,9 +124,9 @@ const MessagingApp = () => {
           placeholder = 'Enter the receiver name'
           value = {userData.receiverName}
           onChange = {handleName}
-          />
+      />
       <button onClick={onLanding}>Connect</button>
-      <ContactsList />
+      <ContactsList contacts={privateChats.keys()} privateChats={privateChats} setCurrentContact={setCurrentContact}/>
       <MessageChat privateChats={privateChats}/>
       <InputBar handleSend={handleSend} handleMessage={handleMessage}/>
     </>

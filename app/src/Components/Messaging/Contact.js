@@ -1,8 +1,15 @@
 import React from 'react';
 
-const Contact = () => {
+const Contact = ({contact, setCurrentContact}) => {
+  // return (
+  //     {contact}
+  // )
+
   return (
-    <div>This is a contact</div>
+    <li onClick={() => {setCurrentContact(contact)}}>
+      {contact}
+    </li>
+
   )
 }
 

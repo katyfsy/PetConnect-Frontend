@@ -3,20 +3,6 @@ import React, {useState} from 'react';
 
 const InputBar = ({handleSend, handleMessage}) => {
 
-  // const [message, setMessage] = useState("");
-
-  // const handleMessage = (event) => {
-  //   event.preventDefault();
-  //   const value = event.target.value;
-  //   setMessage(value);
-  // }
-
-  // const handleSendButton = (event) => {
-  //   event.preventDefault();
-  //   handleSend(message);
-  //   setMessage("");
-  // }
-
   return (
     <div>
     <div>Input Bar</div>
