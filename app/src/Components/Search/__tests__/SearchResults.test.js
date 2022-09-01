@@ -2,6 +2,10 @@ import {render, screen, cleanup} from '@testing-library/react';
 import SearchResults from '../../../Pages/SearchResults';
 
 
+afterEach( () => {
+  cleanup();
+});
+
 // const setup = () => {
 //   const utils = render(<SearchResults />);
 

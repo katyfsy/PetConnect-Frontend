@@ -1,6 +1,9 @@
 import {render, screen, cleanup} from '@testing-library/react';
 import Results from '../Results';
 
+afterEach( () => {
+  cleanup();
+});
 
 test('should render Results component', () => {
   render(<Results />);
