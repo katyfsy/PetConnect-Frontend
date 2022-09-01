@@ -1,11 +1,11 @@
 import React from 'react';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
-import User from '../Components/UserProfile/User';
+import LoginCard from '../Components/UserProfile/LoginCard';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
-function Profile() {
+function Login() {
   return (
     <>
       <Container>
@@ -14,11 +14,11 @@ function Profile() {
       <Navigationbar/>
       <Container>
         <Row className="justify-content-md-center" style={{"paddingTop": "50px"}}>
-          <User />
+          <LoginCard/>
         </Row>
       </Container>
     </>
   )
 }
 
-export default Profile;
+export default Login;
