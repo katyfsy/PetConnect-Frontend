@@ -2,6 +2,12 @@ import {render, screen, cleanup} from '@testing-library/react';
 import SearchResults from '../../../Pages/SearchResults';
 
 
+// const setup = () => {
+//   const utils = render(<SearchResults />);
+
+// }
+
+
 test('should render SearchResults page', () => {
   render(<SearchResults />);
   const search_results = screen.getByTestId('search_results');

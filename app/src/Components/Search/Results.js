@@ -25,7 +25,9 @@ function Results({matches}){
                         matches === undefined ? (<div>No matches</div>) :
                         matches.map(match => {
                             return(
-                                <div data-testid={`match-${match.zipcode}`} key={match.zipcode}>{match.name}, {match.type}</div>
+                                <div
+                                data-testid={`t-${match.zip}${match.name}`}
+                                key={`${match.zip}${match.name}`}>{match.name}, {match.type}</div>
                             )
                         })}
                     </div>

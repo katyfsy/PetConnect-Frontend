@@ -76,6 +76,7 @@ function Search({setResult}){
       <input
         type="text"
         id="searchInput"
+        aria-label="search_input_bar"
         placeholder="Search pets"
         onClick={() => setDropdownDisplay(!dropdownDisplay)}
         value={searchQuery}
@@ -97,7 +98,12 @@ function Search({setResult}){
             })}
         </div>
       )}
-       <input type="text" id="zipcodeInput" placeholder="Enter zip" value={zipcode} onChange={e=>setZipcode(e.target.value)}/>
+       <input
+          type="text"
+          id="zipcodeInput"
+          placeholder="Enter zip"
+          value={zipcode}
+          onChange={e=>setZipcode(e.target.value)}/>
       <button id="searchButton" onClick={handleSubmitClick}>Search</button>
     </div>
   )
