@@ -8,6 +8,10 @@
   /* grid-template-areas: "filter filter filter" */
 }
 
+.filterType{
+  margin: 5px;
+}
+
 .gender{
   border: solid green;
   grid-row-start: 1 / span 1;
@@ -26,3 +30,28 @@
   gap: 10px;
 }
 
+.filter{
+  display: grid;
+  grid-template-rows: 1fr 4fr;
+  grid-template-columns: 1fr;
+  border: solid green;
+}
+
+.filterType{
+  grid-row-start: 1 / span 1;
+}
+
+.dropdown{
+  grid-row-start: 2 / span 1;
+  width: 80%;
+  height: 40%;
+}
+
+.displayBlock{
+  display: block;
+}
+
+/* .optionContainer li:hover,
+.optionContainer .highlight {
+  background: none;
+} */

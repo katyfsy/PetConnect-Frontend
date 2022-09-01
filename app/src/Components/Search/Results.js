@@ -18,7 +18,7 @@ function Results({matches}){
             </div>
             <div className="main">
                 <div className="advancedSearchCol">
-                    <AdvSearch />
+                    <AdvSearch results={matches}/>
                     {/* <p> column left: advanced search (dropdowns)</p> */}
                 </div>
                 <div className="searchResultsCol">

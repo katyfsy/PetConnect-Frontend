@@ -3,6 +3,7 @@ import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import Search from '../Components/Search/Search';
 import Results from '../Components/Search/Results';
+import AdvSearch from '../Components/Search/AdvSearch';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
