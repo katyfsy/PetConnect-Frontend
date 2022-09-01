@@ -4,6 +4,7 @@ import SockJS from 'sockjs-client';
 import MessageChat from './MessageChat';
 import ContactsList from './ContactsList';
 import InputBar from './InputBar';
+import axios from 'axios';
 
 // triggers everything on click on message button
 // send initial get request to server to retreive contacts
@@ -30,13 +31,23 @@ const MessagingApp = () => {
     let Sock = new SockJS('http://localhost:8080/ws');
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
-    // get request for all contacts for this user
-    // pass down to contacts list
+    getAllChats(userData.username);
   }
 
   const onConnected = () => {
     setUserData({...userData, "connected": true});
     stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessageReceived);
+  }
+
+  const getAllChats = (username) => {
+    axios.get(`http://localhost:8080/messages/${username}`)
+      .then((response) => {
+        console.log(response.data)
+        setPrivateChats(new Map(Object.entries(response.data)));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   const handleName = (event) => {
@@ -95,6 +106,7 @@ const MessagingApp = () => {
   return(
     <>
       <div>Hello World</div>
+      <div>Username</div>
       <input
           id = 'user-name'
           name='username'
@@ -103,6 +115,7 @@ const MessagingApp = () => {
           onChange = {handleName}
           />
       <button onClick={onLanding}>Connect</button>
+      <div>Receiver</div>
       <input
           id = 'receiver-name'
           name='receiverName'
@@ -110,10 +123,9 @@ const MessagingApp = () => {
           value = {userData.receiverName}
           onChange = {handleName}
       />
-      <button onClick={onLanding}>Connect</button>
       <ContactsList privateChats={privateChats} setCurrentContact={setCurrentContact}/>
       <MessageChat privateChats={privateChats} currentContact={currentContact}/>
-      <InputBar handleSend={handleSend} handleMessage={handleMessage}/>
+      <InputBar message={userData.message} handleSend={handleSend} handleMessage={handleMessage}/>
     </>
   )
 }

@@ -1,9 +1,6 @@
 import React from 'react';
 
 const Contact = ({contact, setCurrentContact}) => {
-  // return (
-  //     {contact}
-  // )
 
   return (
     <li onClick={() => {setCurrentContact(contact)}}>
