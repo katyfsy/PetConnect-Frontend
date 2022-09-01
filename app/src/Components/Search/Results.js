@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import './Results.css';
+import AdvSearch from './AdvSearch';
 
 
 // bar: [Number of matches] search word  distance (arrow)  near <location>
@@ -17,7 +18,8 @@ function Results({matches}){
             </div>
             <div className="main">
                 <div className="advancedSearchCol">
-                    <p> column left: advanced search (dropdowns)</p>
+                    <AdvSearch />
+                    {/* <p> column left: advanced search (dropdowns)</p> */}
                 </div>
                 <div className="searchResultsCol">
                     <p> column right: cards (mini profiles) - for now just a list of names </p>

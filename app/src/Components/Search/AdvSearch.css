@@ -1,0 +1,28 @@
+.advSearchContainer{
+  display: grid;
+  grid-template-rows: 15% 15% 15%;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 10px;
+  height: 100vh;
+  /* grid-template-areas: "filter filter filter" */
+}
+
+.gender{
+  border: solid green;
+  grid-row-start: 1 / span 1;
+  gap: 10px;
+}
+
+.age{
+  border: solid green;
+  grid-row-start: 2 / span 1;
+  gap: 10px;
+}
+
+.breed{
+  border: solid green;
+  grid-row-start: 3 / span 1;
+  gap: 10px;
+}
+
