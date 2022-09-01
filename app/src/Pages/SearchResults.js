@@ -16,9 +16,12 @@ function SearchResults() {
       </Container>
       <Navigationbar/>
       <Container>
-        <Row className="justify-content-md-center" style={{"padding-top": "50px"}}>
-          <Search setResult={setResult}/>
-          <Results matches={result}/>
+        <Row
+        className="justify-content-md-center">
+          <div data-testid="search_results">
+            <div data-testid="searchBars"> <Search setResult={setResult}/> </div>
+            <div data-testid="resultsCols"> <Results matches={result}/> </div>
+          </div>
         </Row>
       </Container>
     </>

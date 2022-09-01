@@ -9,6 +9,4 @@ test('should render Results component', () => {
   expect(resultsElement).toHaveTextContent('Top bar');
   expect(resultsElement).toHaveTextContent('column left: advanced search');
   expect(resultsElement).toHaveTextContent('column right: cards');
-
-
 })
