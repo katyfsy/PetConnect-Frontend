@@ -72,7 +72,7 @@ function Search({setResult}){
 
 
   return (
-    <div ref={wrapperRef} className="searchGroup">
+    <div data-testid="search"  ref={wrapperRef} className="searchGroup">
       <input
         type="text"
         id="searchInput"

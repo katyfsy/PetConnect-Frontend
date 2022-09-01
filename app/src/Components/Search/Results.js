@@ -9,7 +9,7 @@ import './Results.css';
 
 function Results({matches}){
     return(
-    <div>
+    <div data-testid="results">
 
         <div>
             <div className="topBar">
