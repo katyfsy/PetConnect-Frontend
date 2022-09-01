@@ -26,6 +26,7 @@ function EditProfile() {
     description: '',
     photo: ''
   });
+  const [validated, setValidated] = useState(false);
 
   useEffect(() => {
     const doGetUser = async () => {
@@ -39,8 +40,15 @@ function EditProfile() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
   const submitButton = (e) => {
-    e.preventDefault();
-    console.log(form);
+    const submitForm = e.currentTarget;
+    if (submitForm.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      e.preventDefault();
+      console.log(form);
+    }
+      setValidated(true);
   }
 
   if(form.userType === "individual") {
@@ -51,15 +59,21 @@ function EditProfile() {
         </Container>
         <Navigationbar/>
         <Container className="edit-form">
-            <Form className="container mt-3 mb-3">
+            <Form className="container mt-3 mb-3" noValidate validated={validated} onSubmit={submitButton}>
               <Row className="mb-3">
                 <Form.Group className="col col-sm-6" controlId="firstName">
                   <Form.Label>First Name</Form.Label>
-                  <Form.Control type="text" name="firstName" value={form.firstName} onChange={handleChange}/>
+                  <Form.Control required type="text" name="firstName" value={form.firstName} onChange={handleChange}/>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a first name.
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="col col-sm-6" controlId="lastName">
                   <Form.Label>Last Name</Form.Label>
-                  <Form.Control type="text" name="lastName" value={form.lastName} onChange={handleChange}/>
+                  <Form.Control required type="text" name="lastName" value={form.lastName} onChange={handleChange}/>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a last name.
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Row>
               <Row className="mb-3">
@@ -69,7 +83,10 @@ function EditProfile() {
                 </Form.Group>
                 <Form.Group className="col col-sm-6" controlId="email">
                   <Form.Label>Email</Form.Label>
-                  <Form.Control type="text" name="email" value={form.email} onChange={handleChange}/>
+                  <Form.Control required type="text" name="email" value={form.email} onChange={handleChange}/>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a email.
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Row>
               <Row className="mb-3">
@@ -147,7 +164,10 @@ function EditProfile() {
                 </Form.Group>
                 <Form.Group as={Col} controlId="zipCode">
                   <Form.Label>ZIP Code</Form.Label>
-                  <Form.Control type="text" name="zipCode" value={form.zipCode} onChange={handleChange}/>
+                  <Form.Control required type="text" name="zipCode" value={form.zipCode} onChange={handleChange}/>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a ZIP code.
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Row>
               <Form.Group className="mb-3" controlId="description">
@@ -158,7 +178,7 @@ function EditProfile() {
                 Cancel
               </Button>
               {" "}
-              <Button variant="primary" type="submit" onClick={submitButton}>
+              <Button variant="primary" type="submit">
                 Submit
               </Button>
             </Form>
@@ -173,41 +193,60 @@ function EditProfile() {
         </Container>
         <Navigationbar/>
         <Container className="edit-form">
-            <Form className="container mt-3 mb-3">
+            <Form className="container mt-3 mb-3" noValidate validated={validated} onSubmit={submitButton}>
               <Row className="mb-3">
                 <Form.Group className="col col-sm-6" controlId="businessName">
                   <Form.Label>Business Name</Form.Label>
-                  <Form.Control type="text" name="businessName" value={form.businessName} onChange={handleChange}/>
+                  <Form.Control required type="text" name="businessName" value={form.businessName} onChange={handleChange}/>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a business name.
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="col col-sm-6" controlId="website">
                   <Form.Label>Business Website</Form.Label>
-                  <Form.Control type="text" name="website" value={form.website} onChange={handleChange}/>
+                  <Form.Control required type="text" name="website" value={form.website} onChange={handleChange}/>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a business website.
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Row>
               <Row className="mb-3">
                 <Form.Group className="col col-sm-6" controlId="phone">
                   <Form.Label>Phone</Form.Label>
-                  <Form.Control type="text" name="phone" value={form.phone} onChange={handleChange}/>
+                  <Form.Control required type="text" name="phone" value={form.phone} onChange={handleChange}/>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide business phone number.
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="col col-sm-6" controlId="email">
                   <Form.Label>Email</Form.Label>
-                  <Form.Control type="text" name="email" value={form.email} onChange={handleChange}/>
+                  <Form.Control required type="text" name="email" value={form.email} onChange={handleChange}/>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a business email.
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Row>
               <Row className="mb-3">
                 <Form.Group className="col col-sm-6" controlId="address">
                   <Form.Label>Address</Form.Label>
-                  <Form.Control type="text" name="address" value={form.address} onChange={handleChange}/>
+                  <Form.Control required type="text" name="address" value={form.address} onChange={handleChange}/>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a business address.
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Row>
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="city">
                   <Form.Label>City</Form.Label>
-                  <Form.Control type="text" name="city" value={form.city} onChange={handleChange}/>
+                  <Form.Control required type="text" name="city" value={form.city} onChange={handleChange}/>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a valid city.
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group as={Col} controlId="state">
                   <Form.Label>State</Form.Label>
-                  <Form.Select name="state" value={form.state} onChange={handleChange}>
+                  <Form.Select required name="state" value={form.state} onChange={handleChange}>
+                    <option></option>
                     <option>AL</option>
                     <option>AK</option>
                     <option>AZ</option>
@@ -260,10 +299,16 @@ function EditProfile() {
                     <option>WI</option>
                     <option>WY</option>
                   </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Please select a state.
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group as={Col} controlId="zipCode">
                   <Form.Label>ZIP Code</Form.Label>
-                  <Form.Control type="text" name="zipCode" value={form.zipCode} onChange={handleChange}/>
+                  <Form.Control required type="text" name="zipCode" value={form.zipCode} onChange={handleChange}/>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a valid ZIP code.
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Row>
               <Form.Group className="mb-3" controlId="description">
@@ -274,7 +319,7 @@ function EditProfile() {
                 Cancel
               </Button>
               {" "}
-              <Button variant="primary" type="submit" onClick={submitButton}>
+              <Button variant="primary" type="submit">
                 Submit
               </Button>
             </Form>
