@@ -2,15 +2,15 @@ import React, {useState, useEffect} from 'react';
 import InputBar from './InputBar';
 import stompClient from './MessagingApp';
 
-let chatMessage = {
-  senderName: "Ivy",
-  receiverName: "Ginwoo",
-  message: "Test Message",
-  status: 'MESSAGE'
-};
+// let chatMessage = {
+//   senderName: "Ivy",
+//   receiverName: "Ginwoo",
+//   message: "Test Message",
+//   status: 'MESSAGE'
+// };
 
-let data = new Map();
-data.set("Ginwoo", [chatMessage]);
+// let data = new Map();
+// data.set("Ginwoo", [chatMessage]);
 
 // This will hold the convo between you and contact, input bar
 const MessageChat = ({privateChats}) => {
@@ -82,11 +82,15 @@ const MessageChat = ({privateChats}) => {
   return (
     <>
     <div>Message Chat Box</div>
-    {privateChats.size === 0 ? <div>Click a contact</div> : privateChats.get("Ginwoo").map((message, index) => {
+    {privateChats.size === 0 ? <div>Click a contact</div> : [...privateChats.keys()].map((contact, index) => {
       return (
-        <li key={index} >
-          {message.message}
-        </li>
+        privateChats.get(contact).map((message) => {
+          return (
+            <li key={index} >
+              {message.message}
+            </li>
+          )
+        })
       )
     })}
     {/* <InputBar handleMessage={handleMessage} handleSendButton={handleSendButton} /> */}

@@ -34,11 +34,13 @@ const MessagingApp = () => {
 
   const [privateChats, setPrivateChats] = useState(new Map());
 
+  // current contact state
 
-  const handleUsername = (event) => {
-    const value = event.target.value;
-    setUserData({...userData, "username": value});
+  const handleName = (event) => {
+    const {value, name} = event.target;
+    setUserData({...userData, [name]: value});
   }
+
 
   const onLanding = () => {
     let Sock = new SockJS('http://localhost:8080/ws');
@@ -53,8 +55,12 @@ const MessagingApp = () => {
     stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessageReceived);
   }
 
-    const handleSend = (message) => {
-    setUserData({...userData, "message": message});
+  const handleMessage = (event) => {
+    const value = event.target.value;
+    setUserData({...userData, "message": value});
+
+  }
+  const handleSend = () => {
     sendPrivateMessage();
   }
 
@@ -76,15 +82,19 @@ const MessagingApp = () => {
       // mock data
       let chatMessage = {
         senderName: userData.username, // current user's name
-        receiverName: "Ginwoo", // receiver's name
+        receiverName: userData.receiverName, // receiver's name
         message: userData.message,
         status: 'MESSAGE'
       };
+      if (!privateChats.get(chatMessage.receiverName)) {
+        privateChats.set(chatMessage.receiverName, []);
+      }
       privateChats.get(chatMessage.receiverName).push(chatMessage);
       setPrivateChats(new Map(privateChats));
       console.log(stompClient)
       stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
-      console.log("attempted to send a message")
+      console.log("attempted to send a message");
+      setUserData({...userData, "message": ""});
       // set message input back to empty
     }
   }
@@ -101,12 +111,20 @@ const MessagingApp = () => {
           name='username'
           placeholder = 'Enter the user name'
           value = {userData.username}
-          onChange = {handleUsername}
+          onChange = {handleName}
+          />
+      <button onClick={onLanding}>Connect</button>
+      <input
+          id = 'receiver-name'
+          name='receiverName'
+          placeholder = 'Enter the receiver name'
+          value = {userData.receiverName}
+          onChange = {handleName}
           />
       <button onClick={onLanding}>Connect</button>
       <ContactsList />
       <MessageChat privateChats={privateChats}/>
-      <InputBar handleSend={handleSend}/>
+      <InputBar handleSend={handleSend} handleMessage={handleMessage}/>
     </>
   )
 }
