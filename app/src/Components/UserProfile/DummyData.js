@@ -6,14 +6,17 @@ function getUser() {
     phone: '123-456-7890',
     email: 'kun.chen@gmail.com',
     website: '123animal.com',
-    userType: 'org',
+    userType: 'individual',
     address: '123 main st',
     city: 'Phoenix',
-    state: '',
+    state: 'AZ',
     zipCode: '123456',
-    description: 'I will adopt them all.',
-    photo: 'https://www.vectorstock.com/royalty-free-vector/person-icon-iconic-design-vector-18314793'
+    description: 'I want to adopt them all.',
+    photo: "https://media.geeksforgeeks.org/wp-content/uploads/20210425000233/test-300x297.png"
   }
-}
+};
+
+const photoURL = {photo: "https://www.color-meanings.com/wp-content/uploads/yellow-shades.png"};
 
 export default getUser;
+export {photoURL};
