@@ -20,7 +20,7 @@ function SearchResults() {
         className="justify-content-md-center">
           <div data-testid="search_results">
             <div data-testid="searchBars"> <Search setResult={setResult}/> </div>
-            <div data-testid="resultsCols"> <Results matches={result}/> </div>
+            <div data-testid="results_inPage"> <Results matches={result}/> </div>
           </div>
         </Row>
       </Container>

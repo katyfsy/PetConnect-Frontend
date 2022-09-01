@@ -2,7 +2,7 @@ import {render, screen, cleanup} from '@testing-library/react';
 import SearchResults from '../../../Pages/SearchResults';
 
 
-test('should render Results component', () => {
+test('should render SearchResults page', () => {
   render(<SearchResults />);
   const search_results = screen.getByTestId('search_results');
   expect(search_results).toBeInTheDocument();
@@ -10,10 +10,10 @@ test('should render Results component', () => {
   const searchBars = screen.getByTestId('searchBars');
   expect(searchBars).toBeInTheDocument();
 
-  const results = screen.getByTestId('results');
-  expect(results).toBeInTheDocument();
+  const results_inPage = screen.getByTestId('results_inPage');
+  expect(results_inPage).toBeInTheDocument();
 
-  expect(results).toHaveTextContent('Top bar');
-  expect(results).toHaveTextContent('column left: advanced search');
-  expect(results).toHaveTextContent('column right: cards');
+  expect(results_inPage).toHaveTextContent('Top bar');
+  expect(results_inPage).toHaveTextContent('column left: advanced search');
+  expect(results_inPage).toHaveTextContent('column right: cards');
 })
