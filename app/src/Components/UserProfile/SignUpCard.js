@@ -64,7 +64,7 @@ function SignUpCard() {
             Sign Up
           </Button>
         </div>
-        <div className="text-center mt-2">
+        <div className="text-center mt-3">
           Already registered?{" "}
             <Link to='/login'>Log In</Link>
         </div>
