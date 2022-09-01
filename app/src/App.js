@@ -3,6 +3,7 @@ import SearchResults from './Pages/SearchResults';
 import Home from './Pages/Home';
 import Pets from './Pages/Pets';
 import Profile from './Pages/Profile';
+import EditProfile from './Pages/EditProfile';
 import { Routes, Route } from "react-router-dom";
 
 
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/searchresults" element={<SearchResults/>}/>
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/edit" element={<EditProfile />} />
         <Route path="/pets" element={<Pets />} />
       </Routes>
     </div>
