@@ -28,5 +28,14 @@ test('should render correct matches', () => {
     let result = screen.getByTestId(testId);
     expect(result).toBeInTheDocument();
   })
+})
 
+
+test('should render no matches when no matches are found', () => {
+  const matches = undefined;
+  render(<Results matches={matches}/>);
+
+  const resultsElement = screen.getByTestId('no_matches');
+  expect(resultsElement).toBeInTheDocument();
+  expect(resultsElement).toHaveTextContent('No matches');
 })
