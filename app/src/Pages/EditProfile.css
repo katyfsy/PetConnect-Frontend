@@ -11,3 +11,8 @@ label {
   object-fit: cover;
   margin-bottom: 20px;
 }
+.required-field::after {
+  content: "*";
+  color: red;
+  margin-left:2px
+}
