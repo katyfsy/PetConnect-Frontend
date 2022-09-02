@@ -4,35 +4,44 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import axios from 'axios';
 import "./userProfile.css"
 
-function loginUser(credentials) {
-  fetch('http://identity.galvanizelabs.net/api/auth', {
-    method: 'POST',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then((res) => console.log(res.status))
-    .catch((error) => console.log("error", error));
- }
 
 function LoginCard() {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
-  const [token, setToken] = useState();
+
+  function setToken(userToken) {
+    localStorage.setItem('token', JSON.stringify(userToken));
+    setUserNameSession();
+  }
+  
+  function setUserNameSession(){
+    axios.get('http://identity.galvanizelabs.net/api/account', {
+      headers: {
+        'Authorization': getToken()
+      }})
+      .then((res)=> localStorage.setItem('username', res.data.user.username))
+  }
+  
+  function getToken() {
+    const tokenString = localStorage.getItem('token');
+    const userToken = JSON.parse(tokenString);
+    console.log("Logged in!")
+    return userToken;
+  }
+  
+  function loginUser(credentials) {
+    axios.post('http://identity.galvanizelabs.net/api/auth', JSON.stringify(credentials))
+    .then((res) =>  setToken(res.headers.authorization))
+   } 
+  
   const handleSubmit = async e => {
     e.preventDefault();
     loginUser({username,password});
-    // const token = loginUser({
-    //   username,
-    //   password
-    // });
-    // setToken(token);
-    // console.log("token is: ", token);
   }
+
   return (
     <div className="Auth-form-container">
     <Form className="Auth-form" onSubmit={handleSubmit}>
@@ -59,6 +68,11 @@ function LoginCard() {
         <div className="d-grid gap-2 mt-4">
           <Button variant='outline-dark' type="submit">
             Log In
+          </Button>
+        </div>
+        <div className="d-grid gap-2 mt-4">
+          <Button variant='outline-dark' onClick={getToken}>
+            Get Token
           </Button>
         </div>
         <div className="text-center mt-3">
