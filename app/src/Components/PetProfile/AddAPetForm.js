@@ -49,6 +49,24 @@ class AddAPetForm extends Component {
               onChange={this.handleOnChange}
             />
           </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Type</Form.Label>
+            <Form.Select
+              name="petType"
+              className="pet-type"
+              onChange={this.handleOnChange}
+            >
+              <option>Please Select from the list below</option>
+              <option value="dog">Dog</option>
+              <option value="cat">Cat</option>
+              <option value="bird">Bird</option>
+              <option value="horse">Horse</option>
+              <option value="fish">Fish</option>
+              <option value="farmAnimal">Farm Animal</option>
+              <option value="smallPet">Small Pet</option>
+              <option value="reptile">Reptile</option>
+            </Form.Select>
+          </Form.Group>
         </Form>
 
         <br />
