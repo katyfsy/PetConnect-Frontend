@@ -20,8 +20,11 @@ test('should render SearchResults page', () => {
   const results_inPage = screen.getByTestId('results_inPage');
   expect(results_inPage).toBeInTheDocument();
 
+  const advSearch = screen.getByTestId('adv-search');
+  expect(advSearch).toBeInTheDocument();
+
   expect(results_inPage).toHaveTextContent('Top bar');
-  expect(results_inPage).toHaveTextContent('column left: advanced search');
+  // expect(results_inPage).toHaveTextContent('column left: advanced search');
   expect(results_inPage).toHaveTextContent('column right: cards');
 })
 
