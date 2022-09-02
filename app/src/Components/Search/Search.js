@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Search.css';
 
 
-function Search({setResult}){
+function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
   // ======
   // Working Default Dropdown (click outside will close dropdown)
   // 1. Need to work on CSS to make sure the dropdown lies under search input bar
@@ -15,8 +15,8 @@ function Search({setResult}){
 
   const [dropdownDisplay, setDropdownDisplay] = useState(false);
   const [options, setOptions] = useState(["All Cats", "All Dogs"]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [zipcode, setZipcode] = useState("");
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [zipcode, setZipcode] = useState("");
   // const [result, setResult] = useState([]);
   const wrapperRef = useRef(null);
 

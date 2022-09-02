@@ -6,16 +6,17 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import './AdvSearch.css';
 
-function AdvSearch({results, setResult}) {
+function AdvSearch({results, setResult, searchQuery, zipcode}) {
 
   const [gender, setGender] = useState([])
   const [matches, setMatches] = useState(results)
 
   const handleSelect = (e, filterType) => {
-    console.log(e.target.value, filterType)
-    var params = {[filterType]: e.target.value}
+    // console.log(e.target.value, filterType, searchQuery, zipcode)
+    var params = {type: searchQuery, zip: zipcode, [filterType]: e.target.value}
     axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch", {params})
     .then((result) =>{
+
       setResult(result.data.pets)
     })
     .catch(err=>console.log(err))
@@ -39,8 +40,8 @@ function AdvSearch({results, setResult}) {
             <option value="">Any</option>
             <option value="puppy">Puppy</option>
             <option value="young">Young</option>
-            <option value="Adult">Adult</option>
-            <option value="Senior">Senior</option>
+            <option value="adult">Adult</option>
+            <option value="senior">Senior</option>
           </select>
         </div>
         <div className="gender filter">
