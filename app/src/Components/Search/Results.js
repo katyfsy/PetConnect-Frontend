@@ -8,7 +8,7 @@ import AdvSearch from './AdvSearch';
 // column left: advanced search (dropdowns)
 // column right: cards (mini profiles) - for now just a list of names
 
-function Results({matches}){
+function Results({matches, setResult}){
     return(
     <div data-testid="results">
 
@@ -18,7 +18,7 @@ function Results({matches}){
             </div>
             <div className="main">
                 <div className="advancedSearchCol">
-                    <AdvSearch results={matches}/>
+                    <AdvSearch setResult={setResult} results={matches}/>
                     {/* <p> column left: advanced search (dropdowns)</p> */}
                 </div>
                 <div className="searchResultsCol">
@@ -30,7 +30,7 @@ function Results({matches}){
                             return(
                                 <div
                                 data-testid={`t-${match.zip}${match.name}`}
-                                key={`${match.zip}${match.name}`}>{match.name}, {match.type}</div>
+                                key={`${match.zip}${match.name}`}>{match.name}, {match.type}, {match.gender}, {match.age}</div>
                             )
                         })}
                     </div>

@@ -24,7 +24,6 @@ test('should render SearchResults page', () => {
   expect(advSearch).toBeInTheDocument();
 
   expect(results_inPage).toHaveTextContent('Top bar');
-  // expect(results_inPage).toHaveTextContent('column left: advanced search');
   expect(results_inPage).toHaveTextContent('column right: cards');
 })
 

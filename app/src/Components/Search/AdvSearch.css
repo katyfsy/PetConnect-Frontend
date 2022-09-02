@@ -13,19 +13,16 @@
 }
 
 .gender{
-  border: solid green;
   grid-row-start: 1 / span 1;
   gap: 10px;
 }
 
 .age{
-  border: solid green;
   grid-row-start: 2 / span 1;
   gap: 10px;
 }
 
 .breed{
-  border: solid green;
   grid-row-start: 3 / span 1;
   gap: 10px;
 }
@@ -34,7 +31,6 @@
   display: grid;
   grid-template-rows: 1fr 4fr;
   grid-template-columns: 1fr;
-  border: solid green;
 }
 
 .filterType{
