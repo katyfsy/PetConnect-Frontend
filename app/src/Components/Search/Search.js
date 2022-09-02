@@ -63,9 +63,8 @@ function Search({setResult}){
       } else {
         params = {type: searchQuery, zip: zipcode};
       }
-      //****deployed be**** */
+
       axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch", {params})
-      // **local be */
       // axios.get("/api/petSearch", {params})
       .then((result)=>{
           setResult(result.data.pets);
@@ -76,7 +75,7 @@ function Search({setResult}){
 
 
   return (
-    <div ref={wrapperRef} className="searchGroup">
+    <div data-testid="search"  ref={wrapperRef} className="searchGroup">
       <input
         type="text"
         id="searchInput"
@@ -101,8 +100,15 @@ function Search({setResult}){
             })}
         </div>
       )}
-       <input type="text" id="zipcodeInput" placeholder="Enter zip" value={zipcode} onChange={e=>setZipcode(e.target.value)}/>
-      <button id="searchButton" onClick={handleSubmitClick}>Search</button>
+       <input
+          type="text"
+          id="zipcodeInput"
+          placeholder="Enter zip"
+          value={zipcode}
+          onChange={e=>setZipcode(e.target.value)}/>
+      <button
+        id="searchButton"
+        onClick={handleSubmitClick}>Search</button>
     </div>
   )
 

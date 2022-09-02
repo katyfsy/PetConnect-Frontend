@@ -10,7 +10,7 @@ import AdvSearch from './AdvSearch';
 
 function Results({matches}){
     return(
-    <div>
+    <div data-testid="results">
 
         <div>
             <div className="topBar">
@@ -23,11 +23,14 @@ function Results({matches}){
                 </div>
                 <div className="searchResultsCol">
                     <p> column right: cards (mini profiles) - for now just a list of names </p>
-                    <div>{
-                        matches === undefined ? (<div>No matches</div>) :
+                    <div >{
+                        matches === undefined ? (<div
+                                                    data-testid="no_matches">No matches</div>) :
                         matches.map(match => {
                             return(
-                                <div key={match.zipcode}>{match.name}, {match.type}</div>
+                                <div
+                                data-testid={`t-${match.zip}${match.name}`}
+                                key={`${match.zip}${match.name}`}>{match.name}, {match.type}</div>
                             )
                         })}
                     </div>
