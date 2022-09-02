@@ -6,7 +6,7 @@ const MessageChat = ({privateChats, currentContact}) => {
     <>
     <div>Message Chat Box</div>
       {currentContact === "" ?
-        <div>CLick on contact to view messages.</div> :
+        <div>Click on contact to view messages.</div> :
         <div>
         {[...privateChats.get(currentContact)].map((message, index) => {
           return (

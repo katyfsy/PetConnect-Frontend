@@ -28,7 +28,7 @@ const MessagingApp = () => {
   const [currentContact, setCurrentContact] = useState("");
 
   const onLanding = () => {
-    let Sock = new SockJS('http://localhost:8080/ws');
+    let Sock = new SockJS('http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws');
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
     getAllChats(userData.username);
@@ -40,7 +40,7 @@ const MessagingApp = () => {
   }
 
   const getAllChats = (username) => {
-    axios.get(`http://localhost:8080/messages/${username}`)
+    axios.get(`http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`)
       .then((response) => {
         console.log(response.data)
         setPrivateChats(new Map(Object.entries(response.data)));
@@ -105,7 +105,7 @@ const MessagingApp = () => {
 
   return(
     <>
-      <div>Hello World</div>
+      <div>Messaging Page</div>
       <div>Username</div>
       <input
           id = 'user-name'
