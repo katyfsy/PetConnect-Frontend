@@ -4,7 +4,7 @@ const MessageChat = ({privateChats, currentContact}) => {
 
   return (
     <>
-    <div>Message Chat Box</div>
+    <div style={{"font-weight":"bold"}}>Message Chat Box</div>
       {currentContact === "" ?
         <div>Click on contact to view messages.</div> :
         <div>

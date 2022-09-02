@@ -1,4 +1,3 @@
-// state to keep track of message being typed
 import React, {useState} from 'react';
 
 const InputBar = ({handleSend, handleMessage, message}) => {

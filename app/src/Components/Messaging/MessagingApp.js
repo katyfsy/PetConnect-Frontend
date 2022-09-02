@@ -6,12 +6,6 @@ import ContactsList from './ContactsList';
 import InputBar from './InputBar';
 import axios from 'axios';
 
-// triggers everything on click on message button
-// send initial get request to server to retreive contacts
-// at connection, change your status to active
-// subscribe to your own channel to accept
-// at close, change your status to inactive
-
 var stompClient = null;
 const MessagingApp = () => {
 
@@ -24,7 +18,6 @@ const MessagingApp = () => {
 
   const [privateChats, setPrivateChats] = useState(new Map());
 
-  // current contact state
   const [currentContact, setCurrentContact] = useState("");
 
   const onLanding = () => {
@@ -64,6 +57,7 @@ const MessagingApp = () => {
     sendPrivateMessage();
   }
 
+  // notification if a message is received
   const onPrivateMessageReceived = (payload) => {
     let payloadData = JSON.parse(payload.body);
     if (privateChats.get(payloadData.senderName)) {
@@ -79,10 +73,9 @@ const MessagingApp = () => {
 
   const sendPrivateMessage = () => {
     if (stompClient) {
-      // mock data
       let chatMessage = {
-        senderName: userData.username, // current user's name
-        receiverName: userData.receiverName, // receiver's name
+        senderName: userData.username,
+        receiverName: userData.receiverName,
         message: userData.message,
         status: 'MESSAGE'
       };
@@ -104,9 +97,9 @@ const MessagingApp = () => {
   }
 
   return(
-    <>
-      <div>Messaging Page</div>
-      <div>Username</div>
+    <div>
+      <div style={{"font-weight":"bold"}}>Messaging Page</div>
+      <div style={{"font-weight":"bold"}}>Username</div>
       <input
           id = 'user-name'
           name='username'
@@ -115,7 +108,8 @@ const MessagingApp = () => {
           onChange = {handleName}
           />
       <button onClick={onLanding}>Connect</button>
-      <div>Receiver</div>
+      <hr/>
+      <div style={{"font-weight":"bold"}}>Receiver</div>
       <input
           id = 'receiver-name'
           name='receiverName'
@@ -123,10 +117,12 @@ const MessagingApp = () => {
           value = {userData.receiverName}
           onChange = {handleName}
       />
-      <ContactsList privateChats={privateChats} setCurrentContact={setCurrentContact}/>
+      <hr/>
+      <ContactsList username={userData.username} privateChats={privateChats} setCurrentContact={setCurrentContact}/>
+      <hr/>
       <MessageChat privateChats={privateChats} currentContact={currentContact}/>
       <InputBar message={userData.message} handleSend={handleSend} handleMessage={handleMessage}/>
-    </>
+    </div>
   )
 }
 
