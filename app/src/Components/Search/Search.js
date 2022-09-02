@@ -39,8 +39,11 @@ function Search({setResult}){
     setDropdownDisplay(false);
     if (value === "All Cats") {
       var param = "?type=cat";
+      // set searchQuery to cat
+      setSearchQuery("cat");
     } else if (value === "All Dogs"){
       var param = "?type=dog";
+      setSearchQuery("dog");
     } else {
       var param = "";
     }
@@ -55,6 +58,7 @@ function Search({setResult}){
 
   const handleSubmitClick = (e) => {
     e.preventDefault();
+
     if (searchQuery.length === 0) {
       setDropdownDisplay(!dropdownDisplay);
     } else {
@@ -75,7 +79,7 @@ function Search({setResult}){
 
   return (
     <div>
-      <form onSubmit={handleSubmitClick}>
+      <form id="searchForm">
         <div data-testid="search"  ref={wrapperRef} className="searchGroup">
           <input
             type="text"
@@ -111,7 +115,7 @@ function Search({setResult}){
               onChange={e=>setZipcode(e.target.value)}/>
           <button
             id="searchButton"
-            type="submit"
+
             onClick={handleSubmitClick}>Search</button>
         </div>
       </form>
