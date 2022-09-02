@@ -3,6 +3,18 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 class AddAPetForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      petName: null,
+      petLocation: null,
+      petType: null,
+      petDescription: null,
+    };
+
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleOnSubmit = this.handleOnSubmit.bind(this);
+  }
 
   handleOnChange(event) {
     this.setState({ [event.target.name]: event.target.value });
