@@ -19,6 +19,16 @@ class AddAPetForm extends Component {
     return (
       <>
         <Form onSubmit={this.handleOnSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              name="petName"
+              className="pet-name"
+              type="text"
+              placeholder="Pet's Name"
+              onChange={this.handleOnChange}
+            />
+          </Form.Group>
         </Form>
 
         <br />
