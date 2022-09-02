@@ -39,6 +39,16 @@ class AddAPetForm extends Component {
               onChange={this.handleOnChange}
             />
           </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Type (Delete later)</Form.Label>
+            <Form.Control
+              name="petType"
+              className="pet-type"
+              type="text"
+              value={this.state.value}
+              onChange={this.handleOnChange}
+            />
+          </Form.Group>
         </Form>
 
         <br />
