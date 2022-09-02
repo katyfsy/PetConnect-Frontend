@@ -10,8 +10,8 @@ function Header() {
             <Navbar.Brand href="/">PET CONNECT</Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
-                <Button variant="light">Login</Button>
-                <Button variant="light">Signup</Button>
+                <Button href='/login' variant="light">Login</Button>
+                <Button href='/signup' variant="light">Signup</Button>
             </Navbar.Collapse>
           </Container>
         </Navbar>

@@ -33,25 +33,38 @@ function EditProfile() {
 
   const [validated, setValidated] = useState(false);
 
+  function getToken() {
+    const tokenString = localStorage.getItem('token');
+    if (tokenString === "") {
+      return;
+    }
+    const userToken = JSON.parse(tokenString);
+    return userToken;
+  }
+
   useEffect(() => {
     const doGetUser = () => {
-      // axios.get("http://localhost:8080/api/user/kun2")
-      //   .then((res) => {
-      //     let result = res.data;
-      //     for(var key in result) {
-      //       if(result[key] === null) {
-      //         result[key] = "";
-      //       }
-      //       if(result.userPhoto === "") {
-      //         result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-      //       }
-      //     }
-      //     setForm(result);
-      //     setUserPhoto(result.userPhoto);
-      //   });
-      const result = getUser();
-      setForm(result);
-      setUserPhoto(result.userPhoto);
+      axios.get("http://ac878f177c0bf4165b7f3d999984283b-2070462886.us-west-2.elb.amazonaws.com/api/user/kunrocks",
+      {headers: {
+        'Authorization': getToken()
+      }})
+        .then((res) => {
+          console.log(res);
+          let result = res.data;
+          for(var key in result) {
+            if(result[key] === null) {
+              result[key] = "";
+            }
+            if(result.userPhoto === "") {
+              result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+            }
+          }
+          setForm(result);
+          setUserPhoto(result.userPhoto);
+        });
+      // const result = getUser();
+      // setForm(result);
+      // setUserPhoto(result.userPhoto);
     }
     doGetUser();
   }, []);
