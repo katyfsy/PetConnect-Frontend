@@ -44,7 +44,8 @@ function Search({setResult}){
     } else {
       var param = "";
     }
-    axios.get("http://adcf8a81a31824a1d9356d2126a6fae8-1546135999.us-west-2.elb.amazonaws.com:8080/api/petSearch" + param)
+    // local endpoint, using proxy: "api/petSearch"
+    axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch" + param)
     .then((result)=>{
         setResult(result.data.pets);
       })
@@ -62,7 +63,7 @@ function Search({setResult}){
       } else {
         params = {type: searchQuery, zip: zipcode};
       }
-      axios.get("http://adcf8a81a31824a1d9356d2126a6fae8-1546135999.us-west-2.elb.amazonaws.com:8080/api/petSearch", {params})
+      axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch", {params})
       .then((result)=>{
           setResult(result.data.pets);
         })
