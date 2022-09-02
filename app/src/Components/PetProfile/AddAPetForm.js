@@ -67,6 +67,18 @@ class AddAPetForm extends Component {
               <option value="reptile">Reptile</option>
             </Form.Select>
           </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              className="petDescription"
+              name="petDescription"
+              as="textarea"
+              onChange={this.handleOnChange}
+            />
+          </Form.Group>
+          <Button type="submit" className="add-pet-button">
+            Add Pet
+          </Button>
         </Form>
 
         <br />
