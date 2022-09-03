@@ -1,5 +1,5 @@
 import './EditProfile.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import Container from 'react-bootstrap/Container';
@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Image from "react-bootstrap/Image";
-import getUser, {photoURL} from '../Components/UserProfile/DummyData';
+import getUser from '../Components/UserProfile/DummyData';
 import axios from 'axios';
 
 function EditProfile() {
@@ -33,8 +33,11 @@ function EditProfile() {
 
   const [validated, setValidated] = useState(false);
 
+  const inputRef = useRef(null);
+
   function getToken() {
     const tokenString = localStorage.getItem('token');
+    //This can be deleted once profile page is functional.
     if (tokenString === "") {
       return;
     }
@@ -44,27 +47,29 @@ function EditProfile() {
 
   useEffect(() => {
     const doGetUser = () => {
-      axios.get("http://ac878f177c0bf4165b7f3d999984283b-2070462886.us-west-2.elb.amazonaws.com/api/user/kunrocks",
-      {headers: {
-        'Authorization': getToken()
-      }})
-        .then((res) => {
-          console.log(res);
-          let result = res.data;
-          for(var key in result) {
-            if(result[key] === null) {
-              result[key] = "";
-            }
-            if(result.userPhoto === "") {
-              result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-            }
-          }
-          setForm(result);
-          setUserPhoto(result.userPhoto);
-        });
-      // const result = getUser();
-      // setForm(result);
-      // setUserPhoto(result.userPhoto);
+      // axios.get(`http://ac878f177c0bf4165b7f3d999984283b-2070462886.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`,
+      // axios.get(`http://localhost:8080/api/user/kunrocks`,
+      // {headers: {
+      //   'Authorization': getToken()
+      // }})
+      //   .then((res) => {
+      //     console.log("user-data", res);
+      //     let result = res.data;
+      //     for(var key in result) {
+      //       if(result[key] === null) {
+      //         result[key] = "";
+      //       }
+      //       if(result.userPhoto === "") {
+      //         result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+      //       }
+      //     }
+      //     setForm(result);
+      //     setUserPhoto(result.userPhoto);
+      //   });
+      // using local dummy data
+      const result = getUser();
+      setForm(result);
+      setUserPhoto(result.userPhoto);
     }
     doGetUser();
   }, []);
@@ -86,8 +91,39 @@ function EditProfile() {
       setValidated(true);
   }
 
-  const handleUpload = () => {
-    setUserPhoto(photoURL.userPhoto)
+  const handleUploadButton = () => {
+    inputRef.current?.click();
+  }
+
+  const handleUploadToS3 = (event) => {
+    event.preventDefault();
+    const file = inputRef.current.files[0];
+    // get presigned url from backend server
+    axios.get("http://localhost:8080/api/upload",
+      {headers: {
+        'Authorization': getToken()
+      }})
+        .then((res) => {
+          console.log("S3 presigned URL for saving file", res.data);
+          const imageUrl = res.data.split("?")[0];
+          //post the image to  s3 bucket
+          axios.put(res.data, file,
+            {headers: {
+              "Content-Type": "application/octet-stream"
+            }
+          })
+          .then(() => {
+            //read the image from s3 bucket
+            console.log("S3 presigned URL for reading file", imageUrl);
+            setUserPhoto(imageUrl);
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
   }
 
   if(form.userType === "individual") {
@@ -101,7 +137,8 @@ function EditProfile() {
           <h1>Edit your profile</h1>
           <Image src={userPhoto} roundedCircle className="profile-photo"/>
           <div className="upload-button">
-            <Button variant="primary" size="sm" onClick={handleUpload}>Upload your picture</Button>
+            <input ref={inputRef} onChange={handleUploadToS3} className="d-none" type="file" />
+            <Button variant="primary" size="sm" onClick={handleUploadButton}>Upload your picture</Button>
           </div>
           <Form className="container mt-3 mb-3" noValidate validated={validated} onSubmit={submitButton}>
             <Row className="mb-3">
@@ -241,7 +278,8 @@ function EditProfile() {
         <h1>Edit your profile</h1>
         <Image src={userPhoto} roundedCircle className="profile-photo"/>
         <div className="upload-button">
-          <Button variant="primary" size="sm" onClick={handleUpload}>Upload your picture</Button>
+          <input ref={inputRef} onChange={handleUploadToS3} className="d-none" type="file" />
+          <Button variant="primary" size="sm" onClick={handleUploadButton}>Upload your picture</Button>
         </div>
         <Form className="container mt-3 mb-3" noValidate validated={validated} onSubmit={submitButton}>
           <Row className="mb-3">
