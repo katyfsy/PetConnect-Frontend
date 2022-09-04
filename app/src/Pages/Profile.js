@@ -71,7 +71,9 @@ function Profile() {
 
   const renderEditOrMessageButton = () => {
     if(getUsername() === "" || getUsername() === null) {
-      return;
+      return <Button variant="primary" size="lg" href="/login" onClick={() => alert("Please login first to chat with the user.")}>
+               Message me
+             </Button>;
     } else if(getUsername() === form.username) {
       return <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
     } else {
