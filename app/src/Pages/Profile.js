@@ -74,7 +74,7 @@ function Profile() {
       <Container>
         <Row className="mb-3">
           <Col>
-            <Image src="https://vmw2022.s3.us-west-2.amazonaws.com/1bb14b84-575d-4d42-8a6f-6d5be2aabfe4" roundedCircle className="profile-photo"/>
+            <Image src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" roundedCircle className="profile-photo"/>
             <div className="upload-button">
               <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
             </div>
