@@ -55,6 +55,10 @@ function Profile() {
     const userToken = JSON.parse(tokenString);
     return userToken;
   }
+  function getUsername() {
+    const username = localStorage.getItem('username');
+    return username;
+  }
 
   function displayToken(){
     let token = localStorage.getItem('token')
@@ -62,6 +66,16 @@ function Profile() {
       console.log("no token found")
     } else {
       console.log(JSON.parse(token))
+    }
+  }
+
+  const renderEditOrMessageButton = () => {
+    if(getUsername() === "" || getUsername() === null) {
+      return;
+    } else if(getUsername() === form.username) {
+      return <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
+    } else {
+      return <Button variant="primary" size="lg" href="/profile/edit">Edit -> Message me</Button>
     }
   }
 
@@ -75,8 +89,8 @@ function Profile() {
         <Row className="mb-3">
           <Col>
             <Image src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" roundedCircle className="profile-photo"/>
-            <div className="upload-button">
-              <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
+            <div>
+              {renderEditOrMessageButton()}
             </div>
           </Col>
           <Col>
