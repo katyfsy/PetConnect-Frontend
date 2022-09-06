@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Contact from './Contact';
 
-const ContactsList = ({username, privateChats, setCurrentContact}) => {
+const ContactsList = ({privateChats, setCurrentContact}) => {
   let currentList = [...privateChats.keys()].map((contact) => {
   return (
     <Contact key={contact} contact={contact} setCurrentContact={setCurrentContact}/>

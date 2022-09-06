@@ -67,6 +67,7 @@ const MessagingApp = () => {
       let list = [];
       list.push(payloadData);
       privateChats.set(payloadData.senderName, list);
+      // need to add contact to existing private chats list, not overwrite it
       setPrivateChats(new Map(privateChats));
     }
   }
@@ -79,17 +80,15 @@ const MessagingApp = () => {
         message: userData.message,
         status: 'MESSAGE'
       };
+      // set privateChats state properly
       if (!privateChats.get(chatMessage.receiverName)) {
         privateChats.set(chatMessage.receiverName, []);
       }
       privateChats.get(chatMessage.receiverName).push(chatMessage);
       setPrivateChats(new Map(privateChats));
-      console.log(stompClient)
       stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
-      console.log("attempted to send a message");
       setUserData({...userData, "message": ""});
     }
-    console.log(Array.from(privateChats));
   }
 
   const onError = (err) => {
