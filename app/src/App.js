@@ -6,8 +6,9 @@ import SignUp from './Pages/SignUp';
 import Login from './Pages/Login';
 import Profile from './Pages/Profile';
 import EditProfile from './Pages/EditProfile';
-import { Routes, Route } from "react-router-dom";
-import React, { useState } from 'react';
+import { Routes, Route, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import jwt_decode from "jwt-decode";
 
 
 function App() {
@@ -16,6 +17,24 @@ function App() {
   // if (!token){
   //   return <Login setToken={setToken} />
   // }
+  function clearStorage(){
+    localStorage.setItem('token', "");
+    localStorage.setItem('username', "");
+    console.log("signed out");
+  }
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(localStorage.getItem('token') !== "" && localStorage.getItem('token') !== null) {
+      const decodedToken = jwt_decode(localStorage.getItem('token'));
+      if(Math.ceil(new Date().getTime()/1000) > decodedToken.exp) {
+        clearStorage();
+        navigate('/');
+      }
+    }
+  },[])
+
   return (
     <div className="App">
       <Routes>

@@ -1,6 +1,16 @@
 #user-name {
   text-align:left;
+  margin-top: 10px;
 }
 #user-description {
   text-align:left;
+}
+#user-email {
+  text-align: left;
+}
+#user-address {
+  text-align: left;
+}
+#user-link {
+  text-align: left;
 }

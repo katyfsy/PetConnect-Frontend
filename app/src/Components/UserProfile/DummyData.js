@@ -1,12 +1,13 @@
 function getUser() {
   return {
+    username: 'kunchen123',
     firstName: 'Kun',
     lastName: 'Chen',
     businessName: '123 Animal Shelter',
     phone: '123-456-7890',
     email: 'kun.chen@gmail.com',
     website: '123animal.com',
-    userType: 'individual',
+    userType: 'individua',
     address: '123 main st',
     city: 'Phoenix',
     state: 'AZ',
