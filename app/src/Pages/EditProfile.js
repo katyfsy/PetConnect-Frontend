@@ -149,7 +149,7 @@ function EditProfile() {
           <h1>Edit your profile</h1>
           <Image src={userPhoto} roundedCircle className="profile-photo"/>
           <div className="upload-button">
-            <input ref={inputRef} onChange={handleUploadToS3} className="d-none" type="file" />
+            <input ref={inputRef} onChange={handleUploadToS3} className="d-none" type="file" accept="image/*"/>
             <Button variant="primary" size="sm" onClick={handleUploadButton}>Upload your picture</Button>
           </div>
           <Form className="container mt-3 mb-3" noValidate validated={validated} onSubmit={submitButton}>
