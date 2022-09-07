@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Pet from "./Pet";
+import {Routes, Route, useNavigate} from 'react-router-dom';
+
 
 function AddAPetFormFunctional() {
-  // const [petId, setPetId] = useState(null);
+  const [petId, setPetId] = useState(null);
   const [requiredPetFields, setrequiredPetFields] = useState({
     owner: "",
     name: null,
@@ -13,6 +15,7 @@ function AddAPetFormFunctional() {
     description: null,
   });
   const [isClicked, setIsClicked] = useState(false);
+  const navigate = useNavigate();
   
   function handleOnChange(e) {
     setrequiredPetFields({
@@ -37,10 +40,17 @@ function AddAPetFormFunctional() {
       })
       .then((data) => {
         console.log(data);
-        // setPetId(data.petId);
+        setPetId(data.petId);
         setIsClicked(true);
+        navigateToPetProfile(data.petId);
       });
+      
   }
+
+  const navigateToPetProfile = (id) => {
+    // 👇️ navigate to /
+    navigate(`/pet/${id}`, {replace: true});
+  };
   return (
     <>
       <Form onSubmit={handleOnSubmit}>
@@ -101,7 +111,11 @@ function AddAPetFormFunctional() {
           />
         </Form.Group>
         {isClicked ? null : (
-          <Button type="submit" className="add-pet-button">
+          <Button 
+            type="submit" 
+            className="add-pet-button"
+            // onClick={navigateToPetProfile}
+            >
             Add Pet
           </Button>
         )}
