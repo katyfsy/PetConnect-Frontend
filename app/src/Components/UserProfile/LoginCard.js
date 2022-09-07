@@ -17,16 +17,16 @@ function LoginCard() {
 
   function setToken(userToken) {
     localStorage.setItem('token', JSON.stringify(userToken));
-    setUserNameSession();
+    // setUserNameSession();
   }
 
-  function setUserNameSession(){
-    axios.get('http://identity.galvanizelabs.net/api/account', {
-      headers: {
-        'Authorization': getToken()
-      }})
-      .then((res)=> localStorage.setItem('username', res.data.user.username))
-  }
+  // function setUserNameSession(){
+  //   axios.get('http://identity.galvanizelabs.net/api/account', {
+  //     headers: {
+  //       'Authorization': getToken()
+  //     }})
+  //     .then((res)=> localStorage.setItem('username', res.data.user.username))
+  // }
 
   function getToken() {
     const tokenString = localStorage.getItem('token');
@@ -38,6 +38,7 @@ function LoginCard() {
   function loginUser(credentials) {
     axios.post('http://identity.galvanizelabs.net/api/auth', JSON.stringify(credentials))
     .then((res) =>  setToken(res.headers.authorization))
+    .then(() => localStorage.setItem('username',username))
     .then(() => {navigate("/", { replace: true })})
     .catch((error) => console.log(error.response.data))
    }

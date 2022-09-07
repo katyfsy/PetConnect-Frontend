@@ -14,9 +14,12 @@ function Header() {
     zipCode: ''
   });
 
+  const [username, setUserName] = useState("");
+
   useEffect(() => {
     const result = getUser();
     setUserIcon(result);
+    setUserName(localStorage.getItem('username'));
   },[])
 
   const renderNotification = () => {
@@ -37,7 +40,7 @@ function Header() {
     console.log("signed out");
   }
 
-  if(localStorage.getItem('username') === "" || localStorage.getItem('username') === null) {
+  if(username === "" || username === null) {
     return (
       <Navbar>
         <Container>
