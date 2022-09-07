@@ -3,17 +3,25 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import Image from "react-bootstrap/Image";
+import { useNavigate } from 'react-router-dom';
 import getUser from '../UserProfile/DummyData';
 
 function Header() {
   const [userIcon, setUserIcon] = useState({
     username: '',
-    userPhoto: ''
+    userPhoto: '',
+    zipCode: ''
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const result = getUser();
     setUserIcon(result);
+    // redirect user to edit profile page if user haven't complete profile
+    if (result.zipCode === null || result.zipCode === "") {
+      navigate("/profile/edit");
+    }
   },[])
 
   function clearStorage(){

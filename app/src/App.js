@@ -20,17 +20,17 @@ function App() {
   function clearStorage(){
     localStorage.setItem('token', "");
     localStorage.setItem('username', "");
-    console.log("signed out");
   }
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    // clear local storage if token is expired
     if(localStorage.getItem('token') !== "" && localStorage.getItem('token') !== null) {
       const decodedToken = jwt_decode(localStorage.getItem('token'));
       if(Math.ceil(new Date().getTime()/1000) > decodedToken.exp) {
         clearStorage();
-        navigate('/');
+        navigate('/login');
       }
     }
   },[])
