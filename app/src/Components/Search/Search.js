@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Search.css';
 
 
-function Search({setResult}){
+function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
   // ======
   // Working Default Dropdown (click outside will close dropdown)
   // 1. Need to work on CSS to make sure the dropdown lies under search input bar
@@ -15,8 +15,8 @@ function Search({setResult}){
 
   const [dropdownDisplay, setDropdownDisplay] = useState(false);
   const [options, setOptions] = useState(["All Cats", "All Dogs"]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [zipcode, setZipcode] = useState("");
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [zipcode, setZipcode] = useState("");
   // const [result, setResult] = useState([]);
   const wrapperRef = useRef(null);
 
@@ -39,12 +39,16 @@ function Search({setResult}){
     setDropdownDisplay(false);
     if (value === "All Cats") {
       var param = "?type=cat";
+      // set searchQuery to cat
+      setSearchQuery("cat");
     } else if (value === "All Dogs"){
       var param = "?type=dog";
+      setSearchQuery("dog");
     } else {
       var param = "";
     }
-    axios.get("/api/petSearch" + param)
+    // local endpoint, using proxy: "api/petSearch"
+    axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch" + param)
     .then((result)=>{
         setResult(result.data.pets);
       })
@@ -54,6 +58,7 @@ function Search({setResult}){
 
   const handleSubmitClick = (e) => {
     e.preventDefault();
+
     if (searchQuery.length === 0) {
       setDropdownDisplay(!dropdownDisplay);
     } else {
@@ -62,7 +67,8 @@ function Search({setResult}){
       } else {
         params = {type: searchQuery, zip: zipcode};
       }
-      axios.get("/api/petSearch", {params})
+      // console.log('params ===>:',params);
+      axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch", {params})
       .then((result)=>{
           setResult(result.data.pets);
         })
@@ -72,34 +78,50 @@ function Search({setResult}){
 
 
   return (
-    <div ref={wrapperRef} className="searchGroup">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search pets"
-        onClick={() => setDropdownDisplay(!dropdownDisplay)}
-        value={searchQuery}
-        onChange={e => setSearchQuery(e.target.value)}
-      />
-      {dropdownDisplay && (
-        <div className="searchDropdownContainer">
-          {options
-            .map((value, i) => {
-              return (
-                <div
-                  onClick={()=>handleDefaultSearchClick(value)}
-                  className="searchOption"
-                  key={i}
-                >
-                  <span>{value}</span>
-                </div>
-              );
-            })}
+    <div>
+      <form id="searchForm">
+        <div data-testid="search"  ref={wrapperRef} className="searchGroup">
+          <input
+            type="text"
+            id="searchInput"
+            aria-label="search-pets"
+            placeholder="Search pets"
+            onClick={() => setDropdownDisplay(!dropdownDisplay)}
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+          />
+          {dropdownDisplay && (
+            <div className="searchDropdownContainer">
+              {options
+                .map((value, i) => {
+                  return (
+                    <div
+                      onClick={()=>handleDefaultSearchClick(value)}
+                      className="searchOption"
+                      key={i}
+                    >
+                      <span>{value}</span>
+                    </div>
+                  );
+                })}
+            </div>
+          )}
+          <input
+              type="text"
+              id="zipcodeInput"
+              aria-label="search-zip"
+              placeholder="Enter zip"
+              value={zipcode}
+              onChange={e=>setZipcode(e.target.value)}/>
+          <button
+            id="searchButton"
+
+            onClick={handleSubmitClick}>Search</button>
         </div>
-      )}
-       <input type="text" id="zipcodeInput" placeholder="Enter zip" value={zipcode} onChange={e=>setZipcode(e.target.value)}/>
-      <button id="searchButton" onClick={handleSubmitClick}>Search</button>
+      </form>
     </div>
+
+
   )
 
 }
