@@ -21,6 +21,8 @@ const MessagingApp = () => {
 
   const [currentContact, setCurrentContact] = useState("");
 
+  const [notificationList, setNotificationList] = useState([]);
+
   const onLanding = () => {
     let Sock = new SockJS('http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws');
     stompClient = over(Sock);
@@ -44,6 +46,20 @@ const MessagingApp = () => {
       })
   }
 
+  const getAllNotifications = (username) => {
+    axios.get(`http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`)
+      .then((response) => {
+        // console.log(response.body);
+        //iterate through the response array
+        //update the contact list
+        setNotificationList(response.data);
+
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
   const handleName = (event) => {
     const { value, name } = event.target;
     setUserData({ ...userData, [name]: value });
@@ -61,6 +77,7 @@ const MessagingApp = () => {
   // notification if a message is received
   const onPrivateMessageReceived = (payload) => {
     getAllChats(userData.username);
+
     let payloadData = JSON.parse(payload.body);
     console.log('senderName:', payloadData['senderName'])
     if (privateChats.get(payloadData.senderName)) {
@@ -123,7 +140,13 @@ const MessagingApp = () => {
         onChange={handleName}
       />
       <hr />
-      <ContactsList username={userData.username} privateChats={privateChats} setCurrentContact={setCurrentContact} setUserData={setUserData} />
+      <ContactsList
+        username={userData.username}
+        privateChats={privateChats}
+        setCurrentContact={setCurrentContact}
+        setUserData={setUserData}
+        notificationList
+      />
       <hr />
       <MessageChat privateChats={privateChats} currentContact={currentContact} />
       <InputBar message={userData.message} handleSend={handleSend} handleMessage={handleMessage} />
