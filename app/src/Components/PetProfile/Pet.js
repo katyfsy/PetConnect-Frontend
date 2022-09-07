@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Pet() {
+function Pet({requiredPetFields}) {
   return (
-    <div>pet goes here</div>
+      <div>pet goes here { requiredPetFields.owner }</div>
   )
 }
 
