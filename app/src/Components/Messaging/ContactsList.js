@@ -11,7 +11,7 @@ const ContactsList = ({ privateChats, setCurrentContact, notificationList, usern
   let currentList = [...privateChats.keys()].map((contact) => {
     if (contact) {
       let notification = false;
-      if (notification && notificationList.includes(contact)) {
+      if (notificationList && notificationList.includes(contact)) {
         notification = true;
       }
       return (
