@@ -6,6 +6,7 @@ import Pet from '../Components/PetProfile/Pet';
 import AddAPetForm from '../Components/PetProfile/AddAPetForm';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import AddAPetFormFunctional from '../Components/PetProfile/AddAPetFormFunctional';
 
 function Pets() {
   return (
@@ -20,7 +21,7 @@ function Pets() {
       </Row>
 
       <Row className="justify-content-md-center" style={{"padding-top": "50px"}}>
-        <AddAPetForm/>
+        <AddAPetFormFunctional/>
       </Row>
       <Row >
         < Footer />

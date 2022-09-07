@@ -6,10 +6,10 @@ class AddAPetForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      petName: null,
-      petLocation: null,
-      petType: null,
-      petDescription: null,
+      name: null,
+      location: null,
+      type: null,
+      description: null,
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -18,13 +18,25 @@ class AddAPetForm extends Component {
 
   handleOnChange(event) {
     this.setState({ [event.target.name]: event.target.value });
-    // console.log(event.target.name)
-    // console.log(event.target.value)
   }
 
   handleOnSubmit(event) {
     event.preventDefault();
     console.log(this.state);
+    fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.state),
+    })
+      .then((r) => r.json())
+      .catch((err) => {
+        console.log(err);
+      })
+      .then((data) => {
+        console.log(data);
+      });
   }
 
   render() {
@@ -34,7 +46,7 @@ class AddAPetForm extends Component {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Name</Form.Label>
             <Form.Control
-              name="petName"
+              name="name"
               className="pet-name"
               type="text"
               placeholder="Pet's Name"
@@ -44,7 +56,7 @@ class AddAPetForm extends Component {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Location</Form.Label>
             <Form.Control
-              name="petLocation"
+              name="location"
               className="pet-location"
               type="text"
               value={this.state.value}
@@ -64,7 +76,7 @@ class AddAPetForm extends Component {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Type</Form.Label>
             <Form.Select
-              name="petType"
+              name="type"
               className="pet-type"
               onChange={this.handleOnChange}
             >
@@ -83,7 +95,7 @@ class AddAPetForm extends Component {
             <Form.Label>Description</Form.Label>
             <Form.Control
               className="petDescription"
-              name="petDescription"
+              name="description"
               as="textarea"
               onChange={this.handleOnChange}
             />
