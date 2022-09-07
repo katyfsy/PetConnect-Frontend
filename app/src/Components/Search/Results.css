@@ -14,6 +14,7 @@
 .advancedSearchCol {
     grid-area: left;
     border: solid red;
+    height: 100vh;
 }
 
 .searchResultsCol {
