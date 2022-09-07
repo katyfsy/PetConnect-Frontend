@@ -1,3 +1,4 @@
+import '../../Pages/Profile.css'
 import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
@@ -36,7 +37,7 @@ function Header() {
                       </Tooltip>
                     }
                   >
-                    <Badge pill bg="danger" style={{position:"absolute", top:"0px", left:"40px"}}>1</Badge>
+                    <sup><Badge pill bg="danger">!</Badge></sup>
                   </OverlayTrigger>
                   )}
                 }
@@ -53,7 +54,7 @@ function Header() {
                       </Tooltip>
                     }
                   >
-                    <Badge pill bg="danger">1</Badge>
+                    <Badge pill bg="danger">!</Badge>
                   </OverlayTrigger>
                 )}
             }
@@ -83,11 +84,11 @@ function Header() {
         <Container>
           <Navbar.Brand href="/">PET CONNECT</Navbar.Brand>
           <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end" expand="lg">
-            <NavDropdown className="justify-content-end" title={
+          <Navbar.Collapse align="right" className="justify-content-end" expand="lg">
+            <NavDropdown align="end" className="w-25 p-3" title={
                       <div>
                         <Image src={userIcon.userPhoto} roundedCircle width="50"/>
-                        {renderNotification()}
+                          {renderNotification()}
                       </div>} id="basic-nav-dropdown">
                   <NavDropdown.Item disabled>@{userIcon.username}</NavDropdown.Item>
                   <NavDropdown.Item href="/profile/edit">
