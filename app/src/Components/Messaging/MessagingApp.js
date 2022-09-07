@@ -25,6 +25,7 @@ const MessagingApp = () => {
 
   const onLanding = () => {
     let Sock = new SockJS('http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws');
+    // let Sock = new SockJS('http://localhost:8080/ws');
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
     getAllChats(userData.username);
@@ -37,6 +38,7 @@ const MessagingApp = () => {
 
   const getAllChats = (username) => {
     axios.get(`http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`)
+      // axios.get(`http://localhost:8080/messages/${username}`)
       .then((response) => {
         // console.log(response.data)
         setPrivateChats(new Map(Object.entries(response.data)));
@@ -48,10 +50,12 @@ const MessagingApp = () => {
 
   const getAllNotifications = (username) => {
     axios.get(`http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`)
+      // axios.get(`http://localhost:8080/messages/notifications/${username}`)
       .then((response) => {
         // console.log(response.body);
         //iterate through the response array
         //update the contact list
+        console.log('Response Body:', response.body)
         setNotificationList(response.data);
 
       })
@@ -77,7 +81,7 @@ const MessagingApp = () => {
   // notification if a message is received
   const onPrivateMessageReceived = (payload) => {
     getAllChats(userData.username);
-
+    getAllNotifications(userData.username)
     let payloadData = JSON.parse(payload.body);
     console.log('senderName:', payloadData['senderName'])
     if (privateChats.get(payloadData.senderName)) {
@@ -140,12 +144,13 @@ const MessagingApp = () => {
         onChange={handleName}
       />
       <hr />
+      {console.log(userData)}
       <ContactsList
         username={userData.username}
         privateChats={privateChats}
         setCurrentContact={setCurrentContact}
         setUserData={setUserData}
-        notificationList
+        notificationList={notificationList}
       />
       <hr />
       <MessageChat privateChats={privateChats} currentContact={currentContact} />

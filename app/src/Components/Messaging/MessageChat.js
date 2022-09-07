@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const MessageChat = ({ privateChats, currentContact }) => {
 
@@ -9,8 +9,9 @@ const MessageChat = ({ privateChats, currentContact }) => {
         <div>Click on contact to view messages.</div> :
         <div>
           {/* {console.log('privateChats updated:', [...privateChats])} */}
-          {/* {console.log(privateChats.get(currentContact))} */}
-          {[...privateChats.get(currentContact)].map((message, index) => {
+          {console.log('Private Chat:', privateChats)}
+          {console.log(privateChats[currentContact])}
+          {privateChats && [...privateChats.get(currentContact)].map((message, index) => {
             return (
               <li key={index} >
                 {message.message}

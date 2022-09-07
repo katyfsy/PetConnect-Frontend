@@ -8,8 +8,10 @@ const ContactsList = ({ privateChats, setCurrentContact, notificationList, usern
   //   )
   // })
 
+  console.log('Username in ContactList:', username)
   let currentList = [...privateChats.keys()].map((contact) => {
     if (contact) {
+      console.log('Notification List:', notificationList)
       let notification = false;
       if (notificationList && notificationList.includes(contact)) {
         notification = true;
