@@ -9,7 +9,8 @@ import EditProfile from './Pages/EditProfile';
 import { Routes, Route, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import jwt_decode from "jwt-decode";
-
+import AddAPetForm from './Components/PetProfile/AddAPetForm';
+import Pet from './Components/PetProfile/Pet';
 
 function App() {
 
@@ -42,9 +43,15 @@ function App() {
         <Route path="/searchresults" element={<SearchResults/>}/>
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/edit" element={<EditProfile />} />
-        <Route path="/pets" element={<Pets />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        {/* Pet Profile Routes */}
+        <Route path="/pets" element={<Pets />} />
+        <Route path="/addpet" element={<AddAPetForm />} />
+        {/* <Route path="/pet" element={<Pet />} /> */}
+        <Route path="/pet/:id" element={<Pet />} /> {/*render={(props) => <Pet {...props} /> */}
+
+        
       </Routes>
     </div>
   );
