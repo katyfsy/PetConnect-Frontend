@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {over} from 'stompjs';
+import React, { useState } from 'react';
+import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import MessageChat from './MessageChat';
 import ContactsList from './ContactsList';
@@ -16,6 +16,7 @@ const MessagingApp = () => {
     message: ""
   })
 
+
   const [privateChats, setPrivateChats] = useState(new Map());
 
   const [currentContact, setCurrentContact] = useState("");
@@ -28,14 +29,14 @@ const MessagingApp = () => {
   }
 
   const onConnected = () => {
-    setUserData({...userData, "connected": true});
+    setUserData({ ...userData, "connected": true });
     stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessageReceived);
   }
 
   const getAllChats = (username) => {
     axios.get(`http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`)
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         setPrivateChats(new Map(Object.entries(response.data)));
       })
       .catch((err) => {
@@ -44,13 +45,13 @@ const MessagingApp = () => {
   }
 
   const handleName = (event) => {
-    const {value, name} = event.target;
-    setUserData({...userData, [name]: value});
+    const { value, name } = event.target;
+    setUserData({ ...userData, [name]: value });
   }
 
   const handleMessage = (event) => {
     const value = event.target.value;
-    setUserData({...userData, "message": value});
+    setUserData({ ...userData, "message": value });
   }
 
   const handleSend = () => {
@@ -59,11 +60,15 @@ const MessagingApp = () => {
 
   // notification if a message is received
   const onPrivateMessageReceived = (payload) => {
+    getAllChats(userData.username);
     let payloadData = JSON.parse(payload.body);
+    console.log('senderName:', payloadData['senderName'])
     if (privateChats.get(payloadData.senderName)) {
       privateChats.get(payloadData.senderName).push(payloadData);
       setPrivateChats(new Map(privateChats));
+      console.log('privateChats in receiver:', privateChats)
     } else {
+      console.log('Else: ', payloadData['senderName'])
       let list = [];
       list.push(payloadData);
       privateChats.set(payloadData.senderName, list);
@@ -76,7 +81,7 @@ const MessagingApp = () => {
     if (stompClient) {
       let chatMessage = {
         senderName: userData.username,
-        receiverName: userData.receiverName,
+        receiverName: userData.receiverName ? userData.receiverName : currentContact,
         message: userData.message,
         status: 'MESSAGE'
       };
@@ -87,7 +92,7 @@ const MessagingApp = () => {
       privateChats.get(chatMessage.receiverName).push(chatMessage);
       setPrivateChats(new Map(privateChats));
       stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
-      setUserData({...userData, "message": ""});
+      setUserData({ ...userData, "message": "" });
     }
   }
 
@@ -95,32 +100,33 @@ const MessagingApp = () => {
     console.log(err);
   }
 
-  return(
+  return (
     <div>
-      <div style={{"font-weight":"bold"}}>Messaging Page</div>
-      <div style={{"font-weight":"bold"}}>Username</div>
+      <div style={{ "font-weight": "bold" }}>Messaging Page</div>
+      <div style={{ "font-weight": "bold" }}>Username</div>
       <input
-          id = 'user-name'
-          name='username'
-          placeholder = 'Enter the user name'
-          value = {userData.username}
-          onChange = {handleName}
-          />
-      <button onClick={onLanding}>Connect</button>
-      <hr/>
-      <div style={{"font-weight":"bold"}}>Receiver</div>
-      <input
-          id = 'receiver-name'
-          name='receiverName'
-          placeholder = 'Enter the receiver name'
-          value = {userData.receiverName}
-          onChange = {handleName}
+        id='user-name'
+        name='username'
+        placeholder='Enter the user name'
+        value={userData.username}
+        onChange={handleName}
       />
-      <hr/>
-      <ContactsList username={userData.username} privateChats={privateChats} setCurrentContact={setCurrentContact}/>
-      <hr/>
-      <MessageChat privateChats={privateChats} currentContact={currentContact}/>
-      <InputBar message={userData.message} handleSend={handleSend} handleMessage={handleMessage}/>
+      <button onClick={onLanding}>Connect</button>
+      <hr />
+      <div style={{ "font-weight": "bold" }}>Receiver</div>
+      <input
+        id='receiver-name'
+        name='receiverName'
+        placeholder='Enter the receiver name'
+        // value={userData.receiverName}
+        value={userData.receiverName ? userData.receiverName : currentContact}
+        onChange={handleName}
+      />
+      <hr />
+      <ContactsList username={userData.username} privateChats={privateChats} setCurrentContact={setCurrentContact} setUserData={setUserData} />
+      <hr />
+      <MessageChat privateChats={privateChats} currentContact={currentContact} />
+      <InputBar message={userData.message} handleSend={handleSend} handleMessage={handleMessage} />
     </div>
   )
 }
