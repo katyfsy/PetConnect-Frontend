@@ -60,10 +60,15 @@ const MessagingApp = () => {
   // notification if a message is received
   const onPrivateMessageReceived = (payload) => {
     let payloadData = JSON.parse(payload.body);
+    console.log('payload: ', payloadData)
+    console.log('privateChats from onReceieve: ', privateChats)
+    // getAllChats(payloadData.receiverName);
     if (privateChats.get(payloadData.senderName)) {
+      console.log('from if statement: ', privateChats.get(payloadData.senderName))
       privateChats.get(payloadData.senderName).push(payloadData);
       setPrivateChats(new Map(privateChats));
     } else {
+      console.log('from else statement: ', privateChats.get(payloadData.senderName))
       let list = [];
       list.push(payloadData);
       privateChats.set(payloadData.senderName, list);
@@ -81,11 +86,14 @@ const MessagingApp = () => {
         status: 'MESSAGE'
       };
       // set privateChats state properly
+      console.log('from sendPrivateMessage: ', privateChats.get(chatMessage.receiverName))
       if (!privateChats.get(chatMessage.receiverName)) {
         privateChats.set(chatMessage.receiverName, []);
       }
       privateChats.get(chatMessage.receiverName).push(chatMessage);
+      console.log('before setting: ', privateChats);
       setPrivateChats(new Map(privateChats));
+      console.log('after setting: ', privateChats);
       stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
       setUserData({...userData, "message": ""});
     }
