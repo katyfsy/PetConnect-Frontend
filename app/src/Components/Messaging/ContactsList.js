@@ -1,23 +1,12 @@
 import React, { useState } from 'react';
 import Contact from './Contact';
 
-const ContactsList = ({ privateChats, setCurrentContact, notificationList, username }) => {
-  // let currentList = [...privateChats.keys()].map((contact) => {
-  //   return (
-  //     <Contact key={contact} contact={contact} setCurrentContact={setCurrentContact} />
-  //   )
-  // })
+const ContactsList = ({ privateChats, setCurrentContact, notificationList, username, setNotificationList }) => {
 
-  console.log('Username in ContactList:', username)
   let currentList = [...privateChats.keys()].map((contact) => {
     if (contact) {
-      console.log('Notification List:', notificationList)
-      let notification = false;
-      if (notificationList && notificationList.includes(contact)) {
-        notification = true;
-      }
       return (
-        <Contact key={contact} contact={contact} setCurrentContact={setCurrentContact} notification={notification} username={username} />
+        <Contact key={contact} contact={contact} setCurrentContact={setCurrentContact} notificationList={notificationList} setNotificationList={setNotificationList} username={username} />
       )
     }
   })

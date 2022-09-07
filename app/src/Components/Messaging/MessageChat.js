@@ -9,8 +9,6 @@ const MessageChat = ({ privateChats, currentContact }) => {
         <div>Click on contact to view messages.</div> :
         <div>
           {/* {console.log('privateChats updated:', [...privateChats])} */}
-          {console.log('Private Chat:', privateChats)}
-          {console.log(privateChats[currentContact])}
           {privateChats && [...privateChats.get(currentContact)].map((message, index) => {
             return (
               <li key={index} >

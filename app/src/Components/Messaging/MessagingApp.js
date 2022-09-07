@@ -7,10 +7,12 @@ import InputBar from './InputBar';
 import axios from 'axios';
 
 var stompClient = null;
+
 const MessagingApp = () => {
 
   const [userData, setUserData] = useState({
     username: "",
+    // username: localStorage.getItem("username"),
     receiverName: "",
     connected: false,
     message: ""
@@ -29,6 +31,7 @@ const MessagingApp = () => {
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
     getAllChats(userData.username);
+    getAllNotifications(userData.username)
   }
 
   const onConnected = () => {
@@ -40,7 +43,6 @@ const MessagingApp = () => {
     axios.get(`http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`)
       // axios.get(`http://localhost:8080/messages/${username}`)
       .then((response) => {
-        // console.log(response.data)
         setPrivateChats(new Map(Object.entries(response.data)));
       })
       .catch((err) => {
@@ -52,10 +54,6 @@ const MessagingApp = () => {
     axios.get(`http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`)
       // axios.get(`http://localhost:8080/messages/notifications/${username}`)
       .then((response) => {
-        // console.log(response.body);
-        //iterate through the response array
-        //update the contact list
-        console.log('Response Body:', response.body)
         setNotificationList(response.data);
 
       })
@@ -83,17 +81,14 @@ const MessagingApp = () => {
     getAllChats(userData.username);
     getAllNotifications(userData.username)
     let payloadData = JSON.parse(payload.body);
-    console.log('senderName:', payloadData['senderName'])
+    // console.log('senderName:', payloadData['senderName'])
     if (privateChats.get(payloadData.senderName)) {
       privateChats.get(payloadData.senderName).push(payloadData);
       setPrivateChats(new Map(privateChats));
-      console.log('privateChats in receiver:', privateChats)
     } else {
-      console.log('Else: ', payloadData['senderName'])
       let list = [];
       list.push(payloadData);
       privateChats.set(payloadData.senderName, list);
-      // need to add contact to existing private chats list, not overwrite it
       setPrivateChats(new Map(privateChats));
     }
   }
@@ -106,7 +101,7 @@ const MessagingApp = () => {
         message: userData.message,
         status: 'MESSAGE'
       };
-      // set privateChats state properly
+
       if (!privateChats.get(chatMessage.receiverName)) {
         privateChats.set(chatMessage.receiverName, []);
       }
@@ -139,18 +134,17 @@ const MessagingApp = () => {
         id='receiver-name'
         name='receiverName'
         placeholder='Enter the receiver name'
-        // value={userData.receiverName}
         value={userData.receiverName ? userData.receiverName : currentContact}
         onChange={handleName}
       />
       <hr />
-      {console.log(userData)}
       <ContactsList
         username={userData.username}
         privateChats={privateChats}
         setCurrentContact={setCurrentContact}
         setUserData={setUserData}
         notificationList={notificationList}
+        setNotificationList={setNotificationList}
       />
       <hr />
       <MessageChat privateChats={privateChats} currentContact={currentContact} />
