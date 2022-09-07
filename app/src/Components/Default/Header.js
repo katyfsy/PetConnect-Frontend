@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Image from "react-bootstrap/Image";
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Badge from 'react-bootstrap/Badge';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import getUser from '../UserProfile/DummyData';
 
 function Header() {
@@ -24,15 +26,37 @@ function Header() {
 
   const renderNotification = () => {
     if (userIcon.zipCode === null || userIcon.zipCode === "") {
-        return <Badge pill bg="danger" style={{position:"absolute", top:"0px", left:"40px"}}>1</Badge>
-      }
-  }
+        return (
+                  <OverlayTrigger
+                    key="left"
+                    placement="left"
+                    overlay={
+                      <Tooltip id={"tooltip-left"}>
+                        You have a notification.
+                      </Tooltip>
+                    }
+                  >
+                    <Badge pill bg="danger" style={{position:"absolute", top:"0px", left:"40px"}}>1</Badge>
+                  </OverlayTrigger>
+                  )}
+                }
 
   const renderNotificationOnEdit = () => {
     if (userIcon.zipCode === null || userIcon.zipCode === "") {
-        return <Badge pill bg="danger">1</Badge>
-      }
-  }
+        return (
+                  <OverlayTrigger
+                    key="left"
+                    placement="left"
+                    overlay={
+                      <Tooltip id={"tooltip-left"}>
+                        Please complete your profile.
+                      </Tooltip>
+                    }
+                  >
+                    <Badge pill bg="danger">1</Badge>
+                  </OverlayTrigger>
+                )}
+            }
 
   function clearStorage(){
     localStorage.setItem('token', "");
@@ -66,7 +90,9 @@ function Header() {
                         {renderNotification()}
                       </div>} id="basic-nav-dropdown">
                   <NavDropdown.Item disabled>@{userIcon.username}</NavDropdown.Item>
-                  <NavDropdown.Item href="/profile/edit">Edit profile {renderNotificationOnEdit()}</NavDropdown.Item>
+                  <NavDropdown.Item href="/profile/edit">
+                    Edit profile {renderNotificationOnEdit()}
+                  </NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.2">
                     Another action
                   </NavDropdown.Item>

@@ -78,7 +78,7 @@ function Profile() {
     } else if(getUsername() === form.username) {
       return <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
     } else {
-      return <Button variant="primary" size="lg" href="/profile/edit">Edit -> Message me</Button>
+      return <Button variant="primary" size="lg" href="/">Message me</Button>
     }
   }
 
@@ -120,17 +120,6 @@ function Profile() {
             <Col>
               <Reviews />
             </Col>
-          </Row>
-          <Row>
-          <Button variant='outline-dark' onClick={displayLoggedIn}>
-              Show Logged In User
-          </Button>
-          <Button variant='outline-dark' onClick={displayToken}>
-              Get Token
-          </Button>
-          <Button variant='outline-dark' onClick={clearStorage}>
-              Sign Out
-          </Button>
           </Row>
         </Container>
       </div>
@@ -194,23 +183,7 @@ function Profile() {
             </Col>
           </Row>
           <Row>
-            <Col>
-              <ReviewSummary />
-            </Col>
-            <Col>
               <Reviews />
-            </Col>
-          </Row>
-          <Row>
-          <Button variant='outline-dark' onClick={displayLoggedIn}>
-              Show Logged In User
-          </Button>
-          <Button variant='outline-dark' onClick={displayToken}>
-              Get Token
-          </Button>
-          <Button variant='outline-dark' onClick={clearStorage}>
-              Sign Out
-          </Button>
           </Row>
         </Container>
       </div>
