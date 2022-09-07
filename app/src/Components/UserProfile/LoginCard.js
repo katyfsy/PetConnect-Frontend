@@ -6,17 +6,20 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 import "./userProfile.css"
+import { useNavigate } from 'react-router-dom';
 
 
 function LoginCard() {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
 
+  const navigate = useNavigate();
+
   function setToken(userToken) {
     localStorage.setItem('token', JSON.stringify(userToken));
     setUserNameSession();
   }
-  
+
   function setUserNameSession(){
     axios.get('http://identity.galvanizelabs.net/api/account', {
       headers: {
@@ -24,19 +27,21 @@ function LoginCard() {
       }})
       .then((res)=> localStorage.setItem('username', res.data.user.username))
   }
-  
+
   function getToken() {
     const tokenString = localStorage.getItem('token');
     const userToken = JSON.parse(tokenString);
     console.log("Logged in!")
     return userToken;
   }
-  
+
   function loginUser(credentials) {
     axios.post('http://identity.galvanizelabs.net/api/auth', JSON.stringify(credentials))
     .then((res) =>  setToken(res.headers.authorization))
-   } 
-  
+    .then(() => {navigate("/", { replace: true })})
+    .catch((error) => console.log(error.response.data))
+   }
+
   const handleSubmit = async e => {
     e.preventDefault();
     loginUser({username,password});

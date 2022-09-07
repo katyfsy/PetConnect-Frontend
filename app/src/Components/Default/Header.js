@@ -3,7 +3,8 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import Image from "react-bootstrap/Image";
-import { useNavigate } from 'react-router-dom';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Badge from 'react-bootstrap/Badge';
 import getUser from '../UserProfile/DummyData';
 
 function Header() {
@@ -13,16 +14,22 @@ function Header() {
     zipCode: ''
   });
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     const result = getUser();
     setUserIcon(result);
-    // redirect user to edit profile page if user haven't complete profile
-    if (result.zipCode === null || result.zipCode === "") {
-      navigate("/profile/edit");
-    }
   },[])
+
+  const renderNotification = () => {
+    if (userIcon.zipCode === null || userIcon.zipCode === "") {
+        return <Badge pill bg="danger" style={{position:"absolute", top:"0px", left:"40px"}}>1</Badge>
+      }
+  }
+
+  const renderNotificationOnEdit = () => {
+    if (userIcon.zipCode === null || userIcon.zipCode === "") {
+        return <Badge pill bg="danger">1</Badge>
+      }
+  }
 
   function clearStorage(){
     localStorage.setItem('token', "");
@@ -50,11 +57,22 @@ function Header() {
           <Navbar.Brand href="/">PET CONNECT</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end" expand="lg">
-            <Image src={userIcon.userPhoto} roundedCircle width="50"/>
-            <Navbar.Text>
-              {" "} Signed in as: {userIcon.username}
-            </Navbar.Text>
-            <Button href="/" variant="light" onClick={clearStorage}>Logout</Button>
+            <NavDropdown className="justify-content-end" title={
+                      <div>
+                        <Image src={userIcon.userPhoto} roundedCircle width="50"/>
+                        {renderNotification()}
+                      </div>} id="basic-nav-dropdown">
+                  <NavDropdown.Item disabled>@{userIcon.username}</NavDropdown.Item>
+                  <NavDropdown.Item href="/profile/edit">Edit profile {renderNotificationOnEdit()}</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">
+                    Another action
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="/" onClick={clearStorage}>
+                    Sign out
+                  </NavDropdown.Item>
+                </NavDropdown>
           </Navbar.Collapse>
         </Container>
       </Navbar>
