@@ -10,7 +10,6 @@ test('should render Results component', () => {
   const resultsElement = screen.getByTestId('results');
   expect(resultsElement).toBeInTheDocument();
   expect(resultsElement).toHaveTextContent('Top bar');
-  expect(resultsElement).toHaveTextContent('column left: advanced search');
   expect(resultsElement).toHaveTextContent('column right: cards');
 })
 
