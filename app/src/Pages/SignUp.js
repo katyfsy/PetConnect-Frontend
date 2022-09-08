@@ -4,7 +4,7 @@ import Header from '../Components/Default/Header';
 import SignUpCard from '../Components/UserProfile/SignUpCard';
 import { Container , Row } from 'react-bootstrap';
 
-function SignUp() {
+const SignUp = () => {
   return (
     <>
       <Container>

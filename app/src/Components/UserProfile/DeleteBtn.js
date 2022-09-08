@@ -11,12 +11,12 @@ const DeleteBtn = () => {
   const handleClose = () => setShow(false);
   const navigate = useNavigate();
 
-  function clearStorage() {
+  const clearStorage = () => {
     localStorage.setItem("token", "");
     localStorage.setItem("username", "");
   }
 
-  function getToken() {
+  const getToken = () => {
     const tokenString = localStorage.getItem("token");
     const userToken = JSON.parse(tokenString);
     return userToken;
@@ -35,6 +35,8 @@ const DeleteBtn = () => {
         alert("Error deleting API");
       });
   };
+
+  
   const deleteAccountService = () => {
     const date = new Date().toLocaleDateString("FR-CA");
     const time = new Date().toLocaleTimeString("en-US", {
@@ -56,6 +58,7 @@ const DeleteBtn = () => {
       })
       .then(() => deleteAccountAPI())
       .then(() => clearStorage())
+      .then(() => alert("Account Deleted!"))
       .then(() => navigate("/", { replace: true }))
       .catch((error) => {
         console.log(error);
