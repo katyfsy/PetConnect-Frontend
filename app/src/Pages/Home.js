@@ -2,8 +2,7 @@ import React from 'react';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import Footer from '../Components/Default/Footer'
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
+import { Container , Row } from 'react-bootstrap';
 
 
 function Home() {

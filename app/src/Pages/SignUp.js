@@ -2,8 +2,7 @@ import React from 'react';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import SignUpCard from '../Components/UserProfile/SignUpCard';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
+import { Container , Row } from 'react-bootstrap';
 
 function SignUp() {
   return (
