@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Button, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import "./userProfile.css";
+import DeleteBtn from './DeleteBtn';
+import { useNavigate } from "react-router-dom";
 
 function SignUpCard() {
   const [username, setUserName] = useState();
@@ -13,6 +12,7 @@ function SignUpCard() {
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,12 +34,12 @@ function SignUpCard() {
       .post("http://identity.galvanizelabs.net/api/auth", apiLogin)
       .then((res) => {
         axios
-          .post("http://localhost:8080/api/users", newUserBody, {
+          .post("a9ef0151d711d476e896ad2d86ea03a4-1755613699.us-west-2.elb.amazonaws.com/api/users", newUserBody, {
             headers: { Authorization: res.headers.authorization },
           })
-          .then((response)=> {if(response.status===200) console.log("user created on API!")} );
+          .then((response)=> {if(response.status===200) navigate("/", { replace: true })} );
       })
-      .catch((error) => console.log(error.response.data));
+      .catch((error) => console.log(error.response.data)); //delete service account if it hits this error
   }
 
   function createUserService(credentials) {
@@ -122,6 +122,9 @@ function SignUpCard() {
           </div>
           <div className="text-center mt-3">
             Already registered? <Link to="/login">Log In</Link>
+          </div>
+          <div className="d-grid mt-4">
+            <DeleteBtn />
           </div>
         </div>
       </Form>
