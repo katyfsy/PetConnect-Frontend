@@ -18,8 +18,9 @@ const Contact = ({ contact, setCurrentContact, notificationList, setNotification
   let listItem;
   currentContact === contact ?
   listItem =
-  <ListGroup.Item active
+  <ListGroup.Item
     style={{
+      backgroundColor: '#FBE8A6',
       color: notificationList && notificationList.includes(contact) ? 'red' : 'black',
     }}
     onClick={() => { setCurrentContact(contact); markAsRead(username); }}>

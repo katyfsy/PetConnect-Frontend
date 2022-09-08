@@ -1,3 +1,20 @@
+.member-list {
+  width: 20%;
+}
+
+.chat-content {
+  width:80%;
+  height: 30em;
+  margin-left: 10px;
+  overflow-y: scroll;
+}
+
+/* .chat-messages {
+  position: relative;
+  height: 80%;
+  border: 1px solid #000;
+} */
+
 .message {
   padding:5px;
   width: auto;
@@ -6,18 +23,23 @@
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
   margin: 5px 10px;
 }
+.message-data{
+  padding:5px;
+}
 
 .message.self {
   justify-content: end;
 }
 
 .avatar{
-  background-color: cornflowerblue;
+  background-color: #303C6C;
   padding: 3px 5px;
   border-radius: 5px;
   color:#fff;
+  height: 35px;
 }
 .avatar.self{
   color:#000;
-  background-color: greenyellow;
+  background-color: #F4976C;
+  height: 35px;
 }
