@@ -50,7 +50,9 @@ function Header() {
           setUserName(localStorage.getItem('username'));
         });
       }
-      doGetUser();
+      if(localStorage.getItem('token') !== null & localStorage.getItem('token') !== "") {
+        doGetUser();
+      }
     //local data fetch for development
     // const result = getUser();
     // setUserIcon(result);
