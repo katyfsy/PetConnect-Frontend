@@ -21,8 +21,18 @@ function SingleReview({ review }) {
         <Card.Text align="start">
           {review.reviewDescription}
         </Card.Text>
-        <Button variant="Light">☺</Button>
       </Card.Body>
+      <Row>
+        <Col xs={9}>
+          <p style={{textAlign: "left", paddingLeft: "20px"}}>{review.timeStamp}</p>
+        </Col>
+        <Col xs={1}>
+            <Button variant="Light">☺</Button>
+        </Col>
+        <Col xs={2}>
+          <p style={{textAlign: "left", paddingTop:"7px"}}>helpful({review.upvotes})</p>
+        </Col>
+      </Row>
     </Card>
   );
 }

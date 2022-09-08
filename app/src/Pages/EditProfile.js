@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Image from "react-bootstrap/Image";
 import getUser from '../Components/UserProfile/DummyData';
 import axios from 'axios';
+import DeleteBtn from '../Components/UserProfile/DeleteBtn';
 
 function EditProfile() {
 
@@ -274,6 +275,7 @@ function EditProfile() {
               Submit
             </Button>
          </Form>
+         <div align="end"><DeleteBtn /></div>
       </Container>
     </div>
   )
@@ -421,6 +423,7 @@ function EditProfile() {
             Submit
           </Button>
         </Form>
+        <div align="end"><DeleteBtn /></div>
       </Container>
     </div>
     )

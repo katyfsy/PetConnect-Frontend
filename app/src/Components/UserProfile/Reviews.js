@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
+import { Container, Dropdown, DropdownButton, Row, Col } from 'react-bootstrap';
 import SingleReview from './SingleReview';
 import ReviewSummary from './ReviewSummary';
 import {orgReviews} from './DummyData';
@@ -47,12 +45,27 @@ function Reviews() {
     }
   }
   return (
-    <Container>
+    <Container style={{paddingTop: "70px"}}>
       <Row>
-        <Col xs={4}>
+        <Col xs={4} style={{paddingRight: "100px"}}>
           <ReviewSummary avgRating={avgRating} ratingPercentage={ratingPercentage} ratingCount={ratingCount}/>
         </Col>
         <Col xs={8}>
+        <div className="mb-2" align="left">
+          <DropdownButton
+            key='up'
+            id={'dropdown-button-drop-up'}
+            drop='up'
+            variant="secondary"
+            title={'Sort'}
+          >
+            <Dropdown.Item eventKey="1">Action</Dropdown.Item>
+            <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
+            <Dropdown.Item eventKey="3">Something else here</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
+          </DropdownButton>
+        </div>
           <div className="overflow-auto" style={{height: 500}}>
             {
               reviews.map((review) => {
