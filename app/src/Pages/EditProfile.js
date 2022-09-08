@@ -50,28 +50,27 @@ function EditProfile() {
 
   useEffect(() => {
     const doGetUser = () => {
-      // axios.get(`http://localhost:8080/api/user/${localStorage.getItem('username')}`,
-      // {headers: {
-      //   'Authorization': getToken()
-      // }})
-      //   .then((res) => {
-      //     console.log("user-data", res);
-      //     let result = res.data;
-      //     for(var key in result) {
-      //       if(result[key] === null) {
-      //         result[key] = "";
-      //       }
-      //       if(result.userPhoto === "") {
-      //         result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-      //       }
-      //     }
-      //     setForm(result);
-      //     setUserPhoto(result.userPhoto);
-      //   });
+      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`,
+      {headers: {
+        'Authorization': getToken()
+      }})
+        .then((res) => {
+          let result = res.data;
+          for(var key in result) {
+            if(result[key] === null) {
+              result[key] = "";
+            }
+            if(result.userPhoto === "") {
+              result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+            }
+          }
+          setForm(result);
+          setUserPhoto(result.userPhoto);
+        });
       // using local dummy data
-      const result = getUser();
-      setForm(result);
-      setUserPhoto(result.userPhoto);
+      // const result = getUser();
+      // setForm(result);
+      // setUserPhoto(result.userPhoto);
     }
     doGetUser();
   }, []);
@@ -89,7 +88,7 @@ function EditProfile() {
       e.preventDefault();
       form.userPhoto = userPhoto;
       console.log(form);
-      axios.patch(`http://localhost:8080/api/user/${localStorage.getItem('username')}`, form, {
+      axios.patch(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`, form, {
         headers: {
           'Authorization': getToken()
         }
@@ -110,7 +109,7 @@ function EditProfile() {
     event.preventDefault();
     const file = inputRef.current.files[0];
     // get presigned url from backend server
-    axios.get("http://localhost:8080/api/upload",
+    axios.get("http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/upload",
       {headers: {
         'Authorization': getToken()
       }})
