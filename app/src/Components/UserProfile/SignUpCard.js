@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import "./userProfile.css";
-import DeleteBtn from './DeleteBtn';
+import DeleteBtn from "./DeleteBtn";
 import { useNavigate } from "react-router-dom";
 
-function SignUpCard() {
+const SignUpCard = () => {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
+  const [userType, setUserType] = useState();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,12 +20,43 @@ function SignUpCard() {
     createUserService({ firstName, lastName, username, password, email });
   };
 
-  function createUserApi() {
+  const handleClick = async (e) => {
+    e.preventDefault();
+    console.log(userType);
+  };
+
+  const deleteAccountService = (token) => {
+    const date = new Date().toLocaleDateString("FR-CA");
+    const time = new Date().toLocaleTimeString("en-US", {
+      hour12: false,
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    });
+    let terms = date + "T" + time;
+    let rqstBody = {
+      username: username,
+      termsAcceptedDate: terms,
+      password: password,
+    };
+    axios
+      .delete("http://identity.galvanizelabs.net/api/account/delete", {
+        data: rqstBody,
+        headers: { Authorization: token },
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Error Delete Service");
+      });
+  };
+
+  const createUserApi = () => {
     let newUserBody = {
       username: username,
       firstName: firstName,
       lastName: lastName,
       email: email,
+      userType: userType
     };
     let apiLogin = {
       username: username,
@@ -34,15 +66,30 @@ function SignUpCard() {
       .post("http://identity.galvanizelabs.net/api/auth", apiLogin)
       .then((res) => {
         axios
-          .post("http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/users", newUserBody, {
-            headers: { Authorization: res.headers.authorization },
+          .post(
+            "http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/users",
+            newUserBody,
+            {
+              headers: { Authorization: res.headers.authorization },
+            }
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              alert("Sign Up Successful");
+              navigate("/login", { replace: true });
+            }
           })
-          .then((response)=> {if(response.status===200) navigate("/login", { replace: true })} );
+          .catch((error) => {
+            console.log(error);
+            deleteAccountService(res.headers.authorization);
+            alert("Error Signup API");
+          });
       })
-      .catch((error) => alert("Error Signup API")); //delete service account if it hits this error
-  }
+      .catch((error) => alert("Error Login Service"));
+  };
 
-  function createUserService(credentials) {
+
+  const createUserService = (credentials) => {
     axios
       .post(
         "http://identity.galvanizelabs.net/api/account/register",
@@ -52,7 +99,7 @@ function SignUpCard() {
         if (res.status === 202) createUserApi();
       })
       .catch((error) => alert("Error Signup Service"));
-  }
+  };
 
   return (
     <div className="Auth-form-container">
@@ -115,6 +162,32 @@ function SignUpCard() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          <div>
+            <Form className="mt-4" >
+              {["radio"].map((type) => (
+                <div key={`inline-${type}`} className="mb-3">
+                  <Form.Check
+                    inline
+                    label="USER"
+                    value="USER"
+                    name="group1"
+                    type={type}
+                    id={`inline-${type}-1`}
+                    onChange={(e)=>setUserType(e.target.value)}
+                  />
+                  <Form.Check
+                    inline
+                    label="ORGANIZATION"
+                    value="ORGANIZATION"
+                    name="group1"
+                    type={type}
+                    id={`inline-${type}-2`}
+                    onChange={(e)=>setUserType(e.target.value)}
+                  />
+                </div>
+              ))}
+            </Form>
+          </div>
           <div className="d-grid mt-4">
             <Button variant="outline-dark" type="submit">
               Sign Up
@@ -123,12 +196,9 @@ function SignUpCard() {
           <div className="text-center mt-3">
             Already registered? <Link to="/login">Log In</Link>
           </div>
-          <div className="d-grid mt-4">
-            <DeleteBtn />
-          </div>
         </div>
       </Form>
     </div>
   );
-}
+};
 export default SignUpCard;
