@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&display=swap');
+
 .member-list {
   width: 20%;
 }
@@ -7,13 +9,9 @@
   height: 30em;
   margin-left: 10px;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
 }
-
-/* .chat-messages {
-  position: relative;
-  height: 80%;
-  border: 1px solid #000;
-} */
 
 .message {
   padding:5px;
@@ -25,6 +23,7 @@
 }
 .message-data{
   padding:5px;
+  font-family: 'Nunito', sans-serif;
 }
 
 .message.self {
@@ -37,9 +36,11 @@
   border-radius: 5px;
   color:#fff;
   height: 35px;
+  font-weight: bolder;
 }
 .avatar.self{
   color:#000;
   background-color: #F4976C;
   height: 35px;
+  font-weight: bolder;
 }

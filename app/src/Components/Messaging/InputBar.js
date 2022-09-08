@@ -19,15 +19,13 @@ const InputBar = ({ handleSend, handleMessage, setUserData, userData }) => {
 
   return (
     <div>
-      <div>Input Bar</div>
-      <input value={message} type='text' className='input-message' placeholder={`Enter message`}
-        onChange={(event) => handleMessage(event)} />
-      <div>
-        <BsEmojiSmileFill style={{ color: '#f5b942' }} onClick={handleEmojiPickerhideShow} />
-        {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} />}
-        <button type='button' className='send-button' onClick={(event) => { handleSend() }}>Send</button>
-      </div>
-
+      <form onSubmit={(event) => { handleSend(event) }}>
+        <input value={message} type='text' className='input-message' placeholder={`Enter message`}
+          onChange={(event) => handleMessage(event)} />
+          <BsEmojiSmileFill style={{ color: '#f5b942' }} onClick={handleEmojiPickerhideShow} />
+          {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} />}
+          <button type='submit' className='send-button'>Send</button>
+      </form>
     </div >
   )
 }

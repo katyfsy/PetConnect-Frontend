@@ -30,7 +30,8 @@ const MessagingApp = () => {
   const [notificationList, setNotificationList] = useState([]);
 
 
-  const onLanding = () => {
+  const onLanding = (event) => {
+    event.preventDefault();
     let Sock = new SockJS('http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws');
     // let Sock = new SockJS('http://localhost:8080/ws');
     stompClient = over(Sock);
@@ -79,7 +80,8 @@ const MessagingApp = () => {
     setUserData({ ...userData, "message": value });
   }
 
-  const handleSend = () => {
+  const handleSend = (event) => {
+    event.preventDefault();
     sendPrivateMessage();
   }
 
@@ -124,9 +126,10 @@ const MessagingApp = () => {
   }
 
   return (
-    <div>
+    <div style={{fontFamily: '"Nunito", "sans-serif"'}}>
       <div style={{ "font-weight": "bold" }}>Messaging Page</div>
       <div style={{ "font-weight": "bold" }}>Username</div>
+      <form onSubmit={onLanding}>
       <input
         id='user-name'
         name='username'
@@ -134,7 +137,8 @@ const MessagingApp = () => {
         value={userData.username}
         onChange={handleName}
       />
-      <button onClick={onLanding}>Connect</button>
+      <button type='submit'>Connect</button>
+      </form>
       <div style={{ "font-weight": "bold" }}>Receiver</div>
       <input
         id='receiver-name'
