@@ -11,8 +11,32 @@ const DeleteBtn = () => {
   const handleClose = () => setShow(false);
   const navigate = useNavigate();
 
-  const deleteAccount = () => {
-    const date = new Date().toLocaleDateString("FR-CA")
+  function clearStorage() {
+    localStorage.setItem("token", "");
+    localStorage.setItem("username", "");
+  }
+
+  function getToken() {
+    const tokenString = localStorage.getItem("token");
+    const userToken = JSON.parse(tokenString);
+    return userToken;
+  }
+
+  const deleteAccountAPI = () => {
+    axios
+      .delete(
+        `http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${username}`,
+        {
+          headers: { Authorization: getToken() },
+        }
+      )
+      .catch((error) => {
+        console.log(error);
+        alert("Error deleting API");
+      });
+  };
+  const deleteAccountService = () => {
+    const date = new Date().toLocaleDateString("FR-CA");
     const time = new Date().toLocaleTimeString("en-US", {
       hour12: false,
       hour: "numeric",
@@ -25,19 +49,17 @@ const DeleteBtn = () => {
       termsAcceptedDate: terms,
       password: password,
     };
-
-    console.log(JSON.stringify(rqstBody));
     axios
-      .delete("http://identity.galvanizelabs.net/api/account/delete", {data: rqstBody,
-        headers: {Authorization: localStorage.getItem("token") }},
-      )
-      .then((res) => console.log(res))
-      .then(() => {
-        navigate("/", { replace: true });
+      .delete("http://identity.galvanizelabs.net/api/account/delete", {
+        data: rqstBody,
+        headers: { Authorization: getToken() },
       })
+      .then(() => deleteAccountAPI())
+      .then(() => clearStorage())
+      .then(() => navigate("/", { replace: true }))
       .catch((error) => {
         console.log(error);
-        alert("wrong");
+        alert("Error Delete Service");
       });
   };
 
@@ -51,9 +73,7 @@ const DeleteBtn = () => {
           <Modal.Title>Delete Account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div>
-            Enter Username and Password to delete account. This action cannot
-          </div>
+          <div>Enter Username and Password to delete account.</div>
           <Form>
             <Row className="form-group mt-4">
               <Col>
@@ -72,7 +92,7 @@ const DeleteBtn = () => {
                 <div className="form-group mt-1">
                   <label>Password</label>
                   <input
-                    type="text"
+                    type="password"
                     required
                     className="form-control mt-1"
                     placeholder="cannot be undone!"
@@ -84,7 +104,7 @@ const DeleteBtn = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer className="mt-4">
-          <Button variant="danger" onClick={deleteAccount}>
+          <Button variant="danger" onClick={deleteAccountService}>
             Delete Account
           </Button>
           <Button variant="outline-dark" onClick={handleClose}>

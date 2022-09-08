@@ -34,12 +34,12 @@ function SignUpCard() {
       .post("http://identity.galvanizelabs.net/api/auth", apiLogin)
       .then((res) => {
         axios
-          .post("a9ef0151d711d476e896ad2d86ea03a4-1755613699.us-west-2.elb.amazonaws.com/api/users", newUserBody, {
+          .post("http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/users", newUserBody, {
             headers: { Authorization: res.headers.authorization },
           })
-          .then((response)=> {if(response.status===200) navigate("/", { replace: true })} );
+          .then((response)=> {if(response.status===200) navigate("/login", { replace: true })} );
       })
-      .catch((error) => console.log(error.response.data)); //delete service account if it hits this error
+      .catch((error) => alert("Error Signup API")); //delete service account if it hits this error
   }
 
   function createUserService(credentials) {
@@ -51,7 +51,7 @@ function SignUpCard() {
       .then((res) => {
         if (res.status === 202) createUserApi();
       })
-      .catch((error) => console.log(error.response.data));
+      .catch((error) => alert("Error Signup Service"));
   }
 
   return (
