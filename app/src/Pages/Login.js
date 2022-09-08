@@ -2,8 +2,8 @@ import React from 'react';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import LoginCard from '../Components/UserProfile/LoginCard';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
+import { Container , Row } from 'react-bootstrap';
+
 
 function Login() {
   return (
