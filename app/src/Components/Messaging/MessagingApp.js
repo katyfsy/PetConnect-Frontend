@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+
 var stompClient = null;
 
 const MessagingApp = () => {
@@ -28,6 +29,7 @@ const MessagingApp = () => {
 
   const [notificationList, setNotificationList] = useState([]);
 
+
   const onLanding = () => {
     let Sock = new SockJS('http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws');
     // let Sock = new SockJS('http://localhost:8080/ws');
@@ -36,6 +38,8 @@ const MessagingApp = () => {
     getAllChats(userData.username);
     getAllNotifications(userData.username)
   }
+
+
 
   const onConnected = () => {
     setUserData({ ...userData, "connected": true });
@@ -141,6 +145,7 @@ const MessagingApp = () => {
         onChange={handleName}
       />
       <hr />
+<<<<<<< HEAD
       <Container>
         <Row>
           <Col sm={4}>
@@ -160,6 +165,19 @@ const MessagingApp = () => {
           </Col>
         </Row>
       </Container>
+=======
+      <ContactsList
+        username={userData.username}
+        privateChats={privateChats}
+        setCurrentContact={setCurrentContact}
+        setUserData={setUserData}
+        notificationList={notificationList}
+        setNotificationList={setNotificationList}
+      />
+      <hr />
+      <MessageChat privateChats={privateChats} currentContact={currentContact} />
+      <InputBar setUserData={setUserData} userData={userData} handleSend={handleSend} handleMessage={handleMessage} />
+>>>>>>> feat/messaging
     </div>
   )
 }
