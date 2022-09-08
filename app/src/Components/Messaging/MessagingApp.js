@@ -6,6 +6,7 @@ import ContactsList from './ContactsList';
 import InputBar from './InputBar';
 import axios from 'axios';
 
+
 var stompClient = null;
 
 const MessagingApp = () => {
@@ -25,6 +26,7 @@ const MessagingApp = () => {
 
   const [notificationList, setNotificationList] = useState([]);
 
+
   const onLanding = () => {
     let Sock = new SockJS('http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws');
     // let Sock = new SockJS('http://localhost:8080/ws');
@@ -33,6 +35,8 @@ const MessagingApp = () => {
     getAllChats(userData.username);
     getAllNotifications(userData.username)
   }
+
+
 
   const onConnected = () => {
     setUserData({ ...userData, "connected": true });
@@ -148,7 +152,7 @@ const MessagingApp = () => {
       />
       <hr />
       <MessageChat privateChats={privateChats} currentContact={currentContact} />
-      <InputBar message={userData.message} handleSend={handleSend} handleMessage={handleMessage} />
+      <InputBar setUserData={setUserData} userData={userData} handleSend={handleSend} handleMessage={handleMessage} />
     </div>
   )
 }
