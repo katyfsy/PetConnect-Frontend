@@ -1,5 +1,6 @@
 import './Profile.css';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import Container from 'react-bootstrap/Container';
@@ -29,46 +30,43 @@ function Profile() {
     userPhoto: ''
   });
 
-  useEffect(() => {
-    const doGetUser = async () => {
-      const result = await getUser();
-      setForm(result);
-    }
-    doGetUser();
-  }, []);
-
-  function displayLoggedIn(){
-    let username = localStorage.getItem('username')
-    if (username === null || username === ""){
-      console.log("no username found")
-    } else {
-      console.log(username)
-    }
-  }
-
-  function clearStorage(){
-    localStorage.setItem('token', "");
-    localStorage.setItem('username', "");
-    console.log("signed out");
-  }
   function getToken() {
     const tokenString = localStorage.getItem('token');
     const userToken = JSON.parse(tokenString);
     return userToken;
   }
+
   function getUsername() {
     const username = localStorage.getItem('username');
     return username;
   }
 
-  function displayToken(){
-    let token = localStorage.getItem('token')
-    if (token === null || token === ""){
-      console.log("no token found")
-    } else {
-      console.log(JSON.parse(token))
-    }
-  }
+  useEffect(() => {
+    // local data fetch for development
+    // const doGetUser = async () => {
+    //   const result = await getUser();
+    //   setForm(result);
+    // }
+    const doGetUser = () => {
+      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`,
+      {headers: {
+        'Authorization': getToken()
+      }})
+        .then((res) => {
+          let result = res.data;
+          for(var key in result) {
+            if(result[key] === null) {
+              result[key] = "";
+            }
+            if(result.userPhoto === "") {
+              result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+            }
+          }
+          setForm(result);
+        });
+      }
+    doGetUser();
+  }, []);
 
   const renderEditOrMessageButton = () => {
     if(getUsername() === "" || getUsername() === null) {
@@ -114,12 +112,7 @@ function Profile() {
             </Col>
           </Row>
           <Row>
-            <Col>
-              <ReviewSummary />
-            </Col>
-            <Col>
-              <Reviews />
-            </Col>
+            <Reviews />
           </Row>
         </Container>
       </div>

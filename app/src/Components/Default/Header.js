@@ -8,6 +8,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Badge from 'react-bootstrap/Badge';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import axios from 'axios';
 import getUser from '../UserProfile/DummyData';
 
 function Header() {
@@ -19,10 +20,41 @@ function Header() {
 
   const [username, setUserName] = useState("");
 
+  function getToken() {
+    const tokenString = localStorage.getItem('token');
+    //This can be deleted once profile page is functional.
+    if (tokenString === "") {
+      return;
+    }
+    const userToken = JSON.parse(tokenString);
+    return userToken;
+  }
+
   useEffect(() => {
-    const result = getUser();
-    setUserIcon(result);
-    setUserName(localStorage.getItem('username'));
+    const doGetUser = () => {
+      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`,
+      {headers: {
+        'Authorization': getToken()
+      }})
+        .then((res) => {
+          let result = res.data;
+          for(var key in result) {
+            if(result[key] === null) {
+              result[key] = "";
+            }
+            if(result.userPhoto === "") {
+              result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+            }
+          }
+          setUserIcon(result);
+          setUserName(localStorage.getItem('username'));
+        });
+      }
+      doGetUser();
+    //local data fetch for development
+    // const result = getUser();
+    // setUserIcon(result);
+    // setUserName(localStorage.getItem('username'));
   },[])
 
   const renderNotification = () => {
