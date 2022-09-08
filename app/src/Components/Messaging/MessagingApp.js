@@ -135,7 +135,6 @@ const MessagingApp = () => {
         onChange={handleName}
       />
       <button onClick={onLanding}>Connect</button>
-      <hr />
       <div style={{ "font-weight": "bold" }}>Receiver</div>
       <input
         id='receiver-name'
@@ -145,7 +144,6 @@ const MessagingApp = () => {
         onChange={handleName}
       />
       <hr />
-<<<<<<< HEAD
       <Container>
         <Row>
           <Col sm={4}>
@@ -161,23 +159,10 @@ const MessagingApp = () => {
           </Col>
           <Col sm={8}>
             <MessageChat privateChats={privateChats} currentContact={currentContact} username={userData.username} />
-            <InputBar message={userData.message} handleSend={handleSend} handleMessage={handleMessage} />
+            <InputBar setUserData={setUserData} userData={userData} handleSend={handleSend} handleMessage={handleMessage} />
           </Col>
         </Row>
       </Container>
-=======
-      <ContactsList
-        username={userData.username}
-        privateChats={privateChats}
-        setCurrentContact={setCurrentContact}
-        setUserData={setUserData}
-        notificationList={notificationList}
-        setNotificationList={setNotificationList}
-      />
-      <hr />
-      <MessageChat privateChats={privateChats} currentContact={currentContact} />
-      <InputBar setUserData={setUserData} userData={userData} handleSend={handleSend} handleMessage={handleMessage} />
->>>>>>> feat/messaging
     </div>
   )
 }
