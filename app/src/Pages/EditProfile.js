@@ -89,7 +89,7 @@ function EditProfile() {
       e.preventDefault();
       form.userPhoto = userPhoto;
       console.log(form);
-      axios.patch(`http://localhost:8080/api/user/${localStorage.getItem('username')}`, form, {
+      axios.patch(`http://localhost:3000/api/user/${localStorage.getItem('username')}`, form, {
         headers: {
           'Authorization': getToken()
         }
@@ -110,7 +110,7 @@ function EditProfile() {
     event.preventDefault();
     const file = inputRef.current.files[0];
     // get presigned url from backend server
-    axios.get("http://localhost:8080/api/upload",
+    axios.get("http://localhost3000/api/upload",
       {headers: {
         'Authorization': getToken()
       }})
