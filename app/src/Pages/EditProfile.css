@@ -1,0 +1,18 @@
+label {
+  float: left;
+  font-weight: bold;
+}
+.upload-button {
+  margin-top: 5px;
+}
+.profile-photo {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+.required-field::after {
+  content: "*";
+  color: red;
+  margin-left:2px
+}

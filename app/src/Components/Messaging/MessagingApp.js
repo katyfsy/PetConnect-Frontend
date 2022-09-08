@@ -1,92 +1,128 @@
-import React, {useState} from 'react';
-import {over} from 'stompjs';
+import React, { useState } from 'react';
+import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import MessageChat from './MessageChat';
 import ContactsList from './ContactsList';
 import InputBar from './InputBar';
 import axios from 'axios';
 
-var stompClient = null;
-const MessagingApp = () => {
 
+var stompClient = null;
+
+const MessagingApp = () => {
   const [userData, setUserData] = useState({
-    username: "",
-    receiverName: "",
+    username: '',
+    // username: localStorage.getItem("username"),
+    receiverName: '',
     connected: false,
-    message: ""
-  })
+    message: '',
+  });
 
   const [privateChats, setPrivateChats] = useState(new Map());
 
-  const [currentContact, setCurrentContact] = useState("");
+  const [currentContact, setCurrentContact] = useState('');
+
+  const [notificationList, setNotificationList] = useState([]);
 
   const onLanding = () => {
-    let Sock = new SockJS('http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws');
+    let Sock = new SockJS(
+      'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
+    );
+    // let Sock = new SockJS('http://localhost:8080/ws');
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
     getAllChats(userData.username);
-  }
+    getAllNotifications(userData.username);
+  };
 
   const onConnected = () => {
-    setUserData({...userData, "connected": true});
-    stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessageReceived);
-  }
+    setUserData({ ...userData, connected: true });
+    stompClient.subscribe(
+      '/user/' + userData.username + '/private',
+      onPrivateMessageReceived
+    );
+  };
 
   const getAllChats = (username) => {
-    axios.get(`http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`)
+    axios
+      .get(
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`
+      )
+      // axios.get(`http://localhost:8080/messages/${username}`)
       .then((response) => {
-        console.log(response.data)
         setPrivateChats(new Map(Object.entries(response.data)));
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+
+  const getAllNotifications = (username) => {
+    axios
+      .get(
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`
+      )
+      // axios.get(`http://localhost:8080/messages/notifications/${username}`)
+      .then((response) => {
+        setNotificationList(response.data);
       })
-  }
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleName = (event) => {
-    const {value, name} = event.target;
-    setUserData({...userData, [name]: value});
-  }
+    event.preventDefault();
+    const { value, name } = event.target;
+    setUserData({ ...userData, [name]: value });
+  };
 
   const handleMessage = (event) => {
+    event.preventDefault();
     const value = event.target.value;
-    setUserData({...userData, "message": value});
-  }
+    setUserData({ ...userData, message: value });
+  };
 
-  const handleSend = () => {
+  const handleSend = (event) => {
+    event.preventDefault();
     sendPrivateMessage();
-  }
+  };
 
   // notification if a message is received
   const onPrivateMessageReceived = (payload) => {
+    getAllChats(userData.username);
+    getAllNotifications(userData.username);
     let payloadData = JSON.parse(payload.body);
-    console.log('payload: ', payloadData)
-    console.log('privateChats from onReceieve: ', privateChats)
-    // getAllChats(payloadData.receiverName);
+    // console.log('senderName:', payloadData['senderName'])
     if (privateChats.get(payloadData.senderName)) {
-      console.log('from if statement: ', privateChats.get(payloadData.senderName))
+      console.log(
+        'from if statement: ',
+        privateChats.get(payloadData.senderName)
+      );
       privateChats.get(payloadData.senderName).push(payloadData);
       setPrivateChats(new Map(privateChats));
     } else {
-      console.log('from else statement: ', privateChats.get(payloadData.senderName))
+      console.log(
+        'from else statement: ',
+        privateChats.get(payloadData.senderName)
+      );
       let list = [];
       list.push(payloadData);
       privateChats.set(payloadData.senderName, list);
-      // need to add contact to existing private chats list, not overwrite it
       setPrivateChats(new Map(privateChats));
     }
-  }
+  };
 
   const sendPrivateMessage = () => {
     if (stompClient) {
       let chatMessage = {
         senderName: userData.username,
-        receiverName: userData.receiverName,
+        receiverName: userData.receiverName
+          ? userData.receiverName
+          : currentContact,
         message: userData.message,
-        status: 'MESSAGE'
+        status: 'MESSAGE',
       };
-      // set privateChats state properly
-      console.log('from sendPrivateMessage: ', privateChats.get(chatMessage.receiverName))
       if (!privateChats.get(chatMessage.receiverName)) {
         privateChats.set(chatMessage.receiverName, []);
       }
@@ -95,42 +131,56 @@ const MessagingApp = () => {
       setPrivateChats(new Map(privateChats));
       console.log('after setting: ', privateChats);
       stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
-      setUserData({...userData, "message": ""});
+      setUserData({ ...userData, message: '' });
     }
-  }
+  };
 
   const onError = (err) => {
     console.log(err);
-  }
+  };
 
-  return(
+  return (
     <div>
-      <div style={{"font-weight":"bold"}}>Messaging Page</div>
-      <div style={{"font-weight":"bold"}}>Username</div>
+      <div style={{ 'font-weight': 'bold' }}>Messaging Page</div>
+      <div style={{ 'font-weight': 'bold' }}>Username</div>
       <input
-          id = 'user-name'
-          name='username'
-          placeholder = 'Enter the user name'
-          value = {userData.username}
-          onChange = {handleName}
-          />
-      <button onClick={onLanding}>Connect</button>
-      <hr/>
-      <div style={{"font-weight":"bold"}}>Receiver</div>
-      <input
-          id = 'receiver-name'
-          name='receiverName'
-          placeholder = 'Enter the receiver name'
-          value = {userData.receiverName}
-          onChange = {handleName}
+        id='user-name'
+        name='username'
+        placeholder='Enter the user name'
+        value={userData.username}
+        onChange={handleName}
       />
-      <hr/>
-      <ContactsList username={userData.username} privateChats={privateChats} setCurrentContact={setCurrentContact}/>
-      <hr/>
-      <MessageChat privateChats={privateChats} currentContact={currentContact}/>
-      <InputBar message={userData.message} handleSend={handleSend} handleMessage={handleMessage}/>
+      <button onClick={onLanding}>Connect</button>
+      <hr />
+      <div style={{ 'font-weight': 'bold' }}>Receiver</div>
+      <input
+        id='receiver-name'
+        name='receiverName'
+        placeholder='Enter the receiver name'
+        value={userData.receiverName ? userData.receiverName : currentContact}
+        onChange={handleName}
+      />
+      <hr />
+      <ContactsList
+        username={userData.username}
+        privateChats={privateChats}
+        setCurrentContact={setCurrentContact}
+        setUserData={setUserData}
+        notificationList={notificationList}
+        setNotificationList={setNotificationList}
+      />
+      <hr />
+      <MessageChat
+        privateChats={privateChats}
+        currentContact={currentContact}
+      />
+      <InputBar
+        message={userData.message}
+        handleSend={handleSend}
+        handleMessage={handleMessage}
+      />
     </div>
-  )
-}
+  );
+};
 
 export default MessagingApp;
