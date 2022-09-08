@@ -5,6 +5,9 @@ import MessageChat from './MessageChat';
 import ContactsList from './ContactsList';
 import InputBar from './InputBar';
 import axios from 'axios';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 var stompClient = null;
 
@@ -138,17 +141,25 @@ const MessagingApp = () => {
         onChange={handleName}
       />
       <hr />
-      <ContactsList
-        username={userData.username}
-        privateChats={privateChats}
-        setCurrentContact={setCurrentContact}
-        setUserData={setUserData}
-        notificationList={notificationList}
-        setNotificationList={setNotificationList}
-      />
-      <hr />
-      <MessageChat privateChats={privateChats} currentContact={currentContact} />
-      <InputBar message={userData.message} handleSend={handleSend} handleMessage={handleMessage} />
+      <Container>
+        <Row>
+          <Col sm={4}>
+            <ContactsList
+              username={userData.username}
+              privateChats={privateChats}
+              setCurrentContact={setCurrentContact}
+              setUserData={setUserData}
+              notificationList={notificationList}
+              setNotificationList={setNotificationList}
+              currentContact={currentContact}
+            />
+          </Col>
+          <Col sm={8}>
+            <MessageChat privateChats={privateChats} currentContact={currentContact} username={userData.username} />
+            <InputBar message={userData.message} handleSend={handleSend} handleMessage={handleMessage} />
+          </Col>
+        </Row>
+      </Container>
     </div>
   )
 }
