@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Picker from "emoji-picker-react";
 import { BsEmojiSmileFill } from "react-icons/bs";
+import './InputBar.css';
 
-const InputBar = ({ handleSend, handleMessage, setUserData, userData }) => {
+const InputBar = ({ handleSend, handleMessage, setUserData, userData, currentContact }) => {
   let { message } = userData
 
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -19,14 +20,18 @@ const InputBar = ({ handleSend, handleMessage, setUserData, userData }) => {
 
   return (
     <div>
-      <form onSubmit={(event) => { handleSend(event) }}>
-        <input value={message} type='text' className='input-message' placeholder={`Enter message`}
-          onChange={(event) => handleMessage(event)} />
-          <BsEmojiSmileFill style={{ color: '#f5b942' }} onClick={handleEmojiPickerhideShow} />
-          {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} />}
-          <button type='submit' className='send-button'>Send</button>
-      </form>
-    </div >
+    {currentContact &&
+      <div>
+        <form onSubmit={(event) => { handleSend(event) }}>
+          <input value={message} type='text' className='input-message' placeholder={`Enter message`}
+            onChange={(event) => handleMessage(event)} />
+            <BsEmojiSmileFill style={{ color: '#f5b942' }} onClick={handleEmojiPickerhideShow} />
+            {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} />}
+            <button type='submit' className='send-button'>Send</button>
+        </form>
+      </div >
+    }
+    </div>
   )
 }
 

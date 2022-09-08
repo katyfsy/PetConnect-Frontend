@@ -8,6 +8,7 @@ import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import './MessageChat.css';
 
 
 var stompClient = null;
@@ -151,7 +152,7 @@ const MessagingApp = () => {
       <Container>
         <Row>
           <Col sm={4}>
-            <ContactsList
+            <ContactsList className='members-list'
               username={userData.username}
               privateChats={privateChats}
               setCurrentContact={setCurrentContact}
@@ -162,8 +163,10 @@ const MessagingApp = () => {
             />
           </Col>
           <Col sm={8}>
-            <MessageChat privateChats={privateChats} currentContact={currentContact} username={userData.username} />
-            <InputBar setUserData={setUserData} userData={userData} handleSend={handleSend} handleMessage={handleMessage} />
+            <Container>
+              <MessageChat privateChats={privateChats} currentContact={currentContact} username={userData.username} />
+              <InputBar setUserData={setUserData} userData={userData} handleSend={handleSend} handleMessage={handleMessage} currentContact={currentContact}/>
+            </Container>
           </Col>
         </Row>
       </Container>

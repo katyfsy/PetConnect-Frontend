@@ -15,7 +15,6 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
 
   return (
     <Container>
-      <div style={{ "font-weight": "bold" }}>Messages</div>
       {currentContact === "" ?
         <div>Click on contact to view messages.</div> :
         <div className='chat-content'>
