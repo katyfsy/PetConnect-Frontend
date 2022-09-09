@@ -1,3 +1,14 @@
-.input-message{
-  width:80%;
+.input-bar {
+  position: relative;
+  left: 2%;
+  padding-bottom: 5%;
+}
+.input-message {
+  width: 83%;
+}
+
+.input-button {
+  border-radius: 5px;
+  background-color: #FBE8A6;
+
 }
