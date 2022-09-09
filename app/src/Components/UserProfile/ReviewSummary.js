@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Button, Container, Col, Modal, Form } from 'react-bootstrap';
-import ProgressBar from 'react-bootstrap/ProgressBar';
+import { Row, Button, Container, Col, Modal, Form, ProgressBar } from 'react-bootstrap';
 import Rating from 'react-rating';
 import axios from 'axios';
 

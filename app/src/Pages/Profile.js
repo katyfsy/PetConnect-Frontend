@@ -3,12 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Image from "react-bootstrap/Image";
-import ReviewSummary from '../Components/UserProfile/ReviewSummary';
+import { Container,Button, Row, Col, Image } from 'react-bootstrap';
 import Reviews from '../Components/UserProfile/Reviews';
 import getUser from '../Components/UserProfile/DummyData';
 

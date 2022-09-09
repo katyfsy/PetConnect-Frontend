@@ -1,13 +1,6 @@
 import '../../Pages/Profile.css'
 import React, { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-import Button from 'react-bootstrap/Button';
-import Image from "react-bootstrap/Image";
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Badge from 'react-bootstrap/Badge';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
+import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
 import getUser from '../UserProfile/DummyData';
 
@@ -103,7 +96,7 @@ function Header() {
     return (
       <Navbar>
         <Container>
-          <Navbar.Brand href="/">PET CONNECT</Navbar.Brand>
+          <Navbar.Brand href="/" style={{height: "96px", paddingTop: "33px"}}>PET CONNECT</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
               <Button href='/login' variant="light">Login</Button>
@@ -121,7 +114,7 @@ function Header() {
           <Navbar.Collapse align="right" className="justify-content-end" expand="lg">
             <NavDropdown align="end" className="w-25 p-3" title={
                       <div>
-                        <Image src={userIcon.userPhoto} roundedCircle width="50"/>
+                        <Image src={userIcon.userPhoto} roundedCircle width="40" height="40"/>
                           {renderNotification()}
                       </div>} id="basic-nav-dropdown">
                   <NavDropdown.Item disabled>@{userIcon.username}</NavDropdown.Item>
