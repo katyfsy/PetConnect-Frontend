@@ -94,8 +94,8 @@ function Header() {
             }
 
   function clearStorage(){
-    localStorage.setItem('token', "");
-    localStorage.setItem('username', "");
+    localStorage.clear();
+    sessionStorage.clear();
     console.log("signed out");
   }
 

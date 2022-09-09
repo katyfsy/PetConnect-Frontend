@@ -5,7 +5,7 @@ import LoginCard from '../Components/UserProfile/LoginCard';
 import { Container , Row } from 'react-bootstrap';
 
 
-function Login() {
+const Login = () => {
   return (
     <>
       <Container>
