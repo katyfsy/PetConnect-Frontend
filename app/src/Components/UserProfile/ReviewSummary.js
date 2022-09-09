@@ -3,7 +3,8 @@ import { Row, Button, Container, Col, Modal, Form, ProgressBar } from 'react-boo
 import Rating from 'react-rating';
 import axios from 'axios';
 
-function ReviewSummary({ avgRating, ratingPercentage, ratingCount}) {
+function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveStars,
+                         filterFourStars, filterThreeStars, filterTwoStars, filterOneStars}) {
 
   const [show, setShow] = useState(false);
   const [star, setStar] = useState(0);
@@ -72,7 +73,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount}) {
       </Row>
       <Row className="mb-3">
         <Col sm={4}>
-          <p>5 Star ({ratingCount[4]})</p>
+          <p onClick={() => filterFiveStars()}>5 Star ({ratingCount[4]})</p>
         </Col>
         <Col sm={8}>
           <ProgressBar now={ratingPercentage[4]} label={`${ratingPercentage[4]}%`} />
@@ -80,7 +81,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount}) {
       </Row>
       <Row className="mb-3">
         <Col sm={4}>
-          <p>4 Star ({ratingCount[3]})</p>
+          <p onClick={() => filterFourStars()}>4 Star ({ratingCount[3]})</p>
         </Col>
         <Col sm={8}>
           <ProgressBar now={ratingPercentage[3]} label={`${ratingPercentage[3]}%`} />
@@ -88,7 +89,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount}) {
       </Row>
       <Row className="mb-3">
         <Col sm={4}>
-          <p>3 Star  ({ratingCount[2]})</p>
+          <p onClick={() => filterThreeStars()}>3 Star  ({ratingCount[2]})</p>
         </Col>
         <Col sm={8}>
           <ProgressBar now={ratingPercentage[2]} label={`${ratingPercentage[2]}%`} />
@@ -96,7 +97,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount}) {
       </Row>
       <Row className="mb-3">
         <Col sm={4}>
-          <p>2 Star ({ratingCount[1]})</p>
+          <p onClick={() => filterTwoStars()}>2 Star ({ratingCount[1]})</p>
         </Col>
         <Col sm={8}>
           <ProgressBar now={ratingPercentage[1]} label={`${ratingPercentage[1]}%`} />
@@ -104,7 +105,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount}) {
       </Row>
       <Row className="mb-3">
         <Col sm={4}>
-          <p>1 Star  ({ratingCount[0]})</p>
+          <p onClick={() => filterOneStars()}>1 Star  ({ratingCount[0]})</p>
         </Col>
         <Col sm={8}>
           <ProgressBar now={ratingPercentage[0]} label={`${ratingPercentage[0]}%`} />

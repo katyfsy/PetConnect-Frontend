@@ -6,12 +6,14 @@ import {orgReviews} from './DummyData';
 
 function Reviews() {
   const [reviews, setReviews] = useState([]);
+  const [currentReviews, setCurrentReviews] = useState([]);
   const [avgRating, setAvgRating] = useState(0);
   const [ratingPercentage, setRatingPercentage] = useState([0,0,0,0,0]);
   const [ratingCount, setRatingCount] = useState([0,0,0,0,0]);
 
   useEffect(() => {
     setReviews(orgReviews);
+    setCurrentReviews(orgReviews);
     calculateAvgRating();
     calculateRatingPercent();
   },[reviews, avgRating])
@@ -44,11 +46,80 @@ function Reviews() {
       setRatingCount(ratingCountArray);
     }
   }
+
+  const filterFiveStars = () => {
+    let reviewList = [];
+    reviews.forEach((review) => {
+      if(review.reviewScore === 5) {
+        reviewList.push(review);
+      }
+    });
+    setCurrentReviews(reviewList);
+  }
+
+  const filterFourStars = () => {
+    let reviewList = [];
+    reviews.forEach((review) => {
+      if(review.reviewScore === 4) {
+        reviewList.push(review);
+      }
+    });
+    setCurrentReviews(reviewList);
+  }
+
+  const filterThreeStars = () => {
+    let reviewList = [];
+    reviews.forEach((review) => {
+      if(review.reviewScore === 3) {
+        reviewList.push(review);
+      }
+    });
+    setCurrentReviews(reviewList);
+  }
+
+  const filterTwoStars = () => {
+    let reviewList = [];
+    reviews.forEach((review) => {
+      if(review.reviewScore === 2) {
+        reviewList.push(review);
+      }
+    });
+    setCurrentReviews(reviewList);
+  }
+
+  const filterOneStars = () => {
+    let reviewList = [];
+    reviews.forEach((review) => {
+      if(review.reviewScore === 1) {
+        reviewList.push(review);
+      }
+    });
+    setCurrentReviews(reviewList);
+  }
+
+  const sortMostHelpful = () => {
+    let reviewList = reviews;
+    reviewList.sort((a, b) => {
+      return b.upvotes - a.upvotes;
+    })
+    setCurrentReviews(reviewList);
+  }
+
+
   return (
     <Container style={{paddingTop: "70px"}}>
       <Row>
         <Col xs={4} style={{paddingRight: "100px"}}>
-          <ReviewSummary avgRating={avgRating} ratingPercentage={ratingPercentage} ratingCount={ratingCount}/>
+          <ReviewSummary
+            avgRating={avgRating}
+            ratingPercentage={ratingPercentage}
+            ratingCount={ratingCount}
+            filterFiveStars={filterFiveStars}
+            filterFourStars={filterFourStars}
+            filterThreeStars={filterThreeStars}
+            filterTwoStars={filterTwoStars}
+            filterOneStars={filterOneStars}
+          />
         </Col>
         <Col xs={8}>
         <div className="mb-2" align="left">
@@ -60,14 +131,12 @@ function Reviews() {
             title={'Sort'}
           >
             <Dropdown.Item eventKey="1">Most Recent</Dropdown.Item>
-            <Dropdown.Item eventKey="2">Most Helpful</Dropdown.Item>
-            <Dropdown.Item eventKey="3">Best Reviews</Dropdown.Item>
-            <Dropdown.Item eventKey="4">Worst Reviews</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortMostHelpful()}>Most Helpful</Dropdown.Item>
           </DropdownButton>
         </div>
           <div className="overflow-auto" style={{height: 500}}>
             {
-              reviews.map((review) => {
+              currentReviews.map((review) => {
                 return <SingleReview review={review} key={review.firstName}/>
               })
             }
