@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Contact from './Contact';
 import ListGroup from 'react-bootstrap/ListGroup';
+import './ContactsList.css';
 
 
 const ContactsList = ({ privateChats, setCurrentContact, notificationList, username, setNotificationList, currentContact }) => {
@@ -14,15 +15,15 @@ const ContactsList = ({ privateChats, setCurrentContact, notificationList, usern
   })
 
   return (
-    <div>
+    <div style={{display: 'flex', justifyContent: 'center'}}>
       {privateChats.keys().length === 0 ?
         <div>Message someone to add contacts.</div> :
-        <>
-          <div style={{ "font-weight": "bold" }}>Contact List</div>
-          <ListGroup>
+        <div className='contact-list'>
+          <div className='list-title'>Contact List</div>
+          <ul className='list'>
             {currentList}
-          </ListGroup>
-        </>}
+          </ul>
+        </div>}
     </div>
   )
 }

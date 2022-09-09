@@ -1,13 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&display=swap');
 
-.member-list {
-  width: 20%;
-  overflow-y: auto;
-}
-
 .chat-content {
   width:100%;
-  height: 30em;
+  height: 25em;
   /* margin-left: 10px; */
   overflow-y: auto;
   display: flex;
@@ -21,6 +16,7 @@
   flex-direction: row;
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
   margin: 5px 10px;
+  border-radius: 5px;
 }
 .message-data{
   padding:5px;

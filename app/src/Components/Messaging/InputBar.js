@@ -21,7 +21,7 @@ const InputBar = ({ handleSend, handleMessage, setUserData, userData, currentCon
 
   return (
     <div>
-    {currentContact &&
+    {/* {currentContact && */}
       <div className='input-bar'>
         <form onSubmit={(event) => { handleSend(event) }}>
           <input value={message} type='text' className='input-message' placeholder={`Enter message`}
@@ -34,10 +34,10 @@ const InputBar = ({ handleSend, handleMessage, setUserData, userData, currentCon
                 </Modal.Body>
               </Modal>
             }
-            <button type='submit' className='input-button'>Send</button>
+            <button className='input-button' type='submit'>Send</button>
         </form>
       </div >
-    }
+    {/* } */}
     </div>
   )
 }

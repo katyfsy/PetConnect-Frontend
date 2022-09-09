@@ -128,27 +128,59 @@ const MessagingApp = () => {
 
   return (
     <div style={{fontFamily: '"Nunito", "sans-serif"'}}>
-      <div style={{ "font-weight": "bold" }}>Messaging Page</div>
-      <div style={{ "font-weight": "bold" }}>Username</div>
-      <form onSubmit={onLanding}>
-      <input
-        id='user-name'
-        name='username'
-        placeholder='Enter the user name'
-        value={userData.username}
-        onChange={handleName}
-      />
-      <button type='submit'>Connect</button>
-      </form>
-      <div style={{ "font-weight": "bold" }}>Receiver</div>
-      <input
-        id='receiver-name'
-        name='receiverName'
-        placeholder='Enter the receiver name'
-        value={userData.receiverName ? userData.receiverName : currentContact}
-        onChange={handleName}
-      />
-      <hr />
+          <div>
+            <span style={{ 'font-weight': 'bold' }} className='spanSpacing'>
+              Username:
+              <input
+                id='user-name'
+                name='username'
+                placeholder='Enter the user name'
+                value={userData.username}
+                onChange={handleName}
+              />
+              <button onClick={onLanding}>Connect</button>
+            </span>
+            <span style={{ 'font-weight': 'bold' }}>
+              Receiver:
+              <input
+            id='receiver-name'
+            name='receiverName'
+            placeholder='Enter the receiver name'
+            value={
+              userData.receiverName ? userData.receiverName : currentContact
+            }
+            onChange={handleName}
+          />
+            </span>
+          </div>
+          <hr />
+      {/* <div>
+        <div style={{ "font-weight": "bold" }}>Messaging Page</div>
+        <span>
+        <div style={{ "font-weight": "bold" }}>Username</div>
+        <form onSubmit={onLanding}>
+        <input
+          id='user-name'
+          name='username'
+          placeholder='Enter the user name'
+          value={userData.username}
+          onChange={handleName}
+        />
+        <button type='submit'>Connect</button>
+        </form>
+        </span>
+        <span>
+        <div style={{ "font-weight": "bold" }}>Receiver</div>
+        <input
+          id='receiver-name'
+          name='receiverName'
+          placeholder='Enter the receiver name'
+          value={userData.receiverName ? userData.receiverName : currentContact}
+          onChange={handleName}
+        />
+        </span>
+        <hr />
+      </div> */}
       <Container>
         <Row>
           <Col sm={4}>

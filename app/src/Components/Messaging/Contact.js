@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import ListGroup from 'react-bootstrap/ListGroup';
+import './Contact.css';
 
 const Contact = ({ contact, setCurrentContact, notificationList, setNotificationList, username, currentContact }) => {
   const markAsRead = (username) => {
@@ -17,22 +18,24 @@ const Contact = ({ contact, setCurrentContact, notificationList, setNotification
   let listItem;
   currentContact === contact ?
   listItem =
-  <ListGroup.Item
+  <li
+    className='member'
     style={{
       backgroundColor: '#FBE8A6',
       color: notificationList && notificationList.includes(contact) ? 'red' : 'black',
     }}
     onClick={() => { setCurrentContact(contact); markAsRead(username); }}>
     {contact}
-  </ListGroup.Item> :
+  </li> :
   listItem =
-  <ListGroup.Item
+  <li
+    className='member'
     style={{
       color: notificationList && notificationList.includes(contact) ? 'red' : 'black',
     }}
     onClick={() => { setCurrentContact(contact); markAsRead(username); }}>
     {contact}
-  </ListGroup.Item>
+  </li>
 
   return (
     listItem
