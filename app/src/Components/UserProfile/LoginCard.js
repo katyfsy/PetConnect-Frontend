@@ -5,16 +5,36 @@ import axios from "axios";
 import "./userProfile.css";
 import { useNavigate } from "react-router-dom";
 
+import {    getBearerToken,
+  getUser,
+  setTokenLocal,
+  setTokenSession,
+  setUserNameLocal,
+  setUserNameSession} from "./userInfo.js"
+
 const LoginCard = () => {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
+  const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
 
-  const setToken = (userToken) => {
-    localStorage.setItem("token", JSON.stringify(userToken));
+
+  const setToken = (token) => {
+    if(rememberMe){
+      setTokenLocal(token);
+    } else {
+      setTokenSession(token);
+    }
   }
 
+  const setUser = (user) => {
+    if(rememberMe){
+      setUserNameLocal(user);
+    } else {
+      setUserNameSession(user);
+    }
+  }
 
   const loginUser = (credentials) => {
     axios
@@ -23,8 +43,10 @@ const LoginCard = () => {
         JSON.stringify(credentials)
       )
       .then((res) => setToken(res.headers.authorization))
-      .then(() => localStorage.setItem("username", username))
+      .then(() => setUser(username))
       .then(() => {
+        console.log("token: ", getBearerToken())
+        console.log("user: ", getUser())
         navigate("/", { replace: true });
       })
       .catch((error) => {
@@ -37,6 +59,14 @@ const LoginCard = () => {
     e.preventDefault();
     loginUser({ username, password });
   };
+
+  const handleRememberMe = (e) => {
+    if(e.target.checked){
+      setRememberMe(true)
+    } else {
+      setRememberMe(false)
+    }
+  }
 
   return (
     <div className="Auth-form-container">
@@ -60,6 +90,12 @@ const LoginCard = () => {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
+          </div>
+          <div className="d-grid gap-2 mt-4 justify-content-center">
+          <Form.Check aria-label="option 1" type="checkbox" name="group1">
+          <Form.Check.Input type='checkbox' onChange={e => handleRememberMe(e)}/>
+            <Form.Check.Label>Remember Me</Form.Check.Label>
+          </Form.Check>
           </div>
           <div className="d-grid gap-2 mt-4">
             <Button variant="outline-dark" type="submit">
