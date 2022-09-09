@@ -20,7 +20,9 @@ const MessagingApp = () => {
     // username: localStorage.getItem("username"),
     receiverName: "",
     connected: false,
-    message: ""
+    message: "",
+    senderPhoto: localStorage.getItem('userphoto') ? localStorage.getItem('userphoto') : 'https://marshallspetzone.com/blog/wp-content/uploads/2017/09/7-1.jpg',
+    receiverPhoto: 'https://marshallspetzone.com/blog/wp-content/uploads/2017/09/7-1.jpg'
   })
 
 
@@ -103,13 +105,15 @@ const MessagingApp = () => {
     }
   }
 
-  const sendPrivateMessage = () => {
+    const sendPrivateMessage = () => {
     if (stompClient) {
       let chatMessage = {
         senderName: userData.username,
         receiverName: userData.receiverName ? userData.receiverName : currentContact,
         message: userData.message,
-        status: 'MESSAGE'
+        status: 'MESSAGE',
+        senderPhoto: userData.senderPhoto,
+        receiverPhoto: userData.receiverPhoto
       };
 
       if (!privateChats.get(chatMessage.receiverName)) {

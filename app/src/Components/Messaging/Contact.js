@@ -3,7 +3,7 @@ import axios from 'axios';
 import ListGroup from 'react-bootstrap/ListGroup';
 import './Contact.css';
 
-const Contact = ({ contact, setCurrentContact, notificationList, setNotificationList, username, currentContact }) => {
+const Contact = ({ contact, setCurrentContact, notificationList, setNotificationList, username, currentContact, photo }) => {
   const markAsRead = (username) => {
     axios.patch(`http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${contact}/${username}`)
       // axios.patch(`http://localhost:8080/messages/notifications/${contact}/${username}`)
@@ -34,6 +34,7 @@ const Contact = ({ contact, setCurrentContact, notificationList, setNotification
       color: notificationList && notificationList.includes(contact) ? 'red' : 'black',
     }}
     onClick={() => { setCurrentContact(contact); markAsRead(username); }}>
+      <img className="rounded-circle" src={photo} alt='contact_image' width="50" height="50" />
     {contact}
   </li>
 
