@@ -32,7 +32,7 @@
 }
 
 .avatar{
-  background-color: #303C6C;
+  /* background-color: #303C6C; */
   padding: 3px 5px;
   border-radius: 5px;
   color:#fff;
@@ -40,8 +40,13 @@
   font-weight: bolder;
 }
 .avatar.self{
-  color:#000;
-  background-color: #F4976C;
+  /* color:#000; */
+  /* background-color: #F4976C; */
   height: 35px;
   font-weight: bolder;
+}
+
+.avatar img{
+  height:35px;
+  width:35px
 }

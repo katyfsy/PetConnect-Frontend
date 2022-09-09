@@ -20,7 +20,7 @@ const InputBar = ({ handleSend, handleMessage, setUserData, userData, currentCon
 
   return (
     <div>
-    {currentContact &&
+    {/* {currentContact && */}
       <div>
         <form onSubmit={(event) => { handleSend(event) }}>
           <input value={message} type='text' className='input-message' placeholder={`Enter message`}
@@ -30,7 +30,7 @@ const InputBar = ({ handleSend, handleMessage, setUserData, userData, currentCon
             <button type='submit' className='send-button'>Send</button>
         </form>
       </div >
-    }
+    {/* } */}
     </div>
   )
 }

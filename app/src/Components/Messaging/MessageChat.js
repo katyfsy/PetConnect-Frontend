@@ -22,9 +22,15 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
             {privateChats && [...privateChats.get(currentContact)].map((message, index) => {
               return (
                 <li className={`message ${message.senderName === username && "self"}`} key={index}>
-                {message.senderName !== username && <div className="avatar">{message.senderName}</div>}
+                {message.senderName !== username && <div className="avatar">
+                  <img className="rounded-circle" src={message.senderPhoto} alt='photo'/>
+                  {/* // {message.senderPhoto} */}
+                  </div>}
                 <div className="message-data">{message.message}</div>
-                {message.senderName === username && <div className="avatar self">{message.senderName}</div>}
+                {message.senderName === username && <div className="avatar self">
+                  <img className="rounded-circle" src={message.senderPhoto} alt='photo'/>
+                  {/* {message.senderPhoto} */}
+                  </div>}
                 </li>
               )
             })}
