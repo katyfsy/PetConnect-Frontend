@@ -16,6 +16,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount}) {
   const handleShow = () => setShow(true);
 
   const [reviewForm, setReviewForm] = useState({
+    writtenByUsername: "",
     firstName: "",
     lastName: "",
     userPhoto: "",
@@ -45,6 +46,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount}) {
         reviewForm.lastName = res.data.lastName;
         reviewForm.userPhoto = res.data.userPhoto;
         reviewForm.reviewScore = star;
+        reviewForm.writtenByUsername = res.data.username;
       })
       .then(() => {
         console.log(reviewForm);

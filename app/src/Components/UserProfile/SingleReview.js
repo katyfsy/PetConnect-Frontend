@@ -1,12 +1,23 @@
 import React from 'react';
 import { Button, Card, Image, Col, Row } from 'react-bootstrap';
+import Rating from 'react-rating';
 
 function SingleReview({ review }) {
   return (
     <Card className="mb-5">
       <Card.Header as="h5">
         <Row>
-          <Col xs={9}>
+          <Col xs={3}>
+            <div style={{paddingTop:10}}>
+              <Rating
+                initialRating={review.reviewScore}
+                emptySymbol={<img src="http://dreyescat.github.io/react-rating/assets/images/star-empty.png" className="icon" alt="empty-star"/>}
+                fullSymbol={<img src="http://dreyescat.github.io/react-rating/assets/images/star-full.png" className="icon" alt="full-star"/>}
+                readonly
+              />
+            </div>
+          </Col>
+          <Col xs={6}>
             <Card.Title align="start" style={{"paddingTop": "15px"}}>{review.reviewTitle}</Card.Title>
           </Col>
           <Col>

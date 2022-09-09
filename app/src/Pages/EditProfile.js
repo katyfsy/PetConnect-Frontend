@@ -137,7 +137,7 @@ function EditProfile() {
         })
   }
 
-  if(form.userType === "individual") {
+  if(form.userType === "USER") {
     return (
       <div>
         <Container>

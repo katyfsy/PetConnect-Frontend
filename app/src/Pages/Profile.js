@@ -80,7 +80,7 @@ function Profile() {
     }
   }
 
-  if(form.userType === "individual") {
+  if(form.userType === "USER") {
     return (
       <div>
         <Container>
@@ -111,6 +111,7 @@ function Profile() {
               </Row>
             </Col>
           </Row>
+          <hr className="mt-5 mb-3"/>
           <Row>
             <Reviews />
           </Row>
