@@ -5,7 +5,8 @@ import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import { Container,Button, Row, Col, Image } from 'react-bootstrap';
 import Reviews from '../Components/UserProfile/Reviews';
-import getUser from '../Components/UserProfile/DummyData';
+// import getUser from '../Components/UserProfile/DummyData';
+import { getBearerToken, getUser } from "../Components/UserProfile/userInfo.js";
 
 function Profile() {
   const [form, setForm] = useState({
@@ -25,16 +26,16 @@ function Profile() {
     userPhoto: ''
   });
 
-  function getToken() {
-    const tokenString = localStorage.getItem('token');
-    const userToken = JSON.parse(tokenString);
-    return userToken;
-  }
+  // function getToken() {
+  //   const tokenString = localStorage.getItem('token');
+  //   const userToken = JSON.parse(tokenString);
+  //   return userToken;
+  // }
 
-  function getUsername() {
-    const username = localStorage.getItem('username');
-    return username;
-  }
+  // function getUsername() {
+  //   const username = localStorage.getItem('username');
+  //   return username;
+  // }
 
   useEffect(() => {
     // local data fetch for development
@@ -45,7 +46,7 @@ function Profile() {
     const doGetUser = () => {
       axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`,
       {headers: {
-        'Authorization': getToken()
+        'Authorization': getBearerToken()
       }})
         .then((res) => {
           let result = res.data;
@@ -64,11 +65,11 @@ function Profile() {
   }, []);
 
   const renderEditOrMessageButton = () => {
-    if(getUsername() === "" || getUsername() === null) {
+    if(getUser() === "" || getUser() === null) {
       return <Button variant="primary" size="lg" href="/login" onClick={() => alert("Please login first to chat with the user.")}>
                Message me
              </Button>;
-    } else if(getUsername() === form.username) {
+    } else if(getUser() === form.username) {
       return <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
     } else {
       return <Button variant="primary" size="lg" href="/">Message me</Button>

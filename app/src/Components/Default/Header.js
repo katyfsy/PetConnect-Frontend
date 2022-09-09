@@ -2,7 +2,9 @@ import '../../Pages/Profile.css'
 import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
-import getUser from '../UserProfile/DummyData';
+// import getUser from '../UserProfile/DummyData';
+import { getBearerToken, getUser } from "../UserProfile/userInfo.js"
+
 
 function Header() {
   const [userIcon, setUserIcon] = useState({
@@ -13,21 +15,21 @@ function Header() {
 
   const [username, setUserName] = useState("");
 
-  function getToken() {
-    const tokenString = localStorage.getItem('token');
-    //This can be deleted once profile page is functional.
-    if (tokenString === "") {
-      return;
-    }
-    const userToken = JSON.parse(tokenString);
-    return userToken;
-  }
+  // function getToken() {
+  //   const tokenString = getBearerToken();
+  //   //This can be deleted once profile page is functional.
+  //   if (tokenString === "") {
+  //     return;
+  //   }
+  //   const userToken = JSON.parse(tokenString);
+  //   return userToken;
+  // }
 
   useEffect(() => {
     const doGetUser = () => {
-      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`,
+      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
       {headers: {
-        'Authorization': getToken()
+        'Authorization': getBearerToken()
       }})
         .then((res) => {
           let result = res.data;
@@ -40,10 +42,10 @@ function Header() {
             }
           }
           setUserIcon(result);
-          setUserName(localStorage.getItem('username'));
+          setUserName(getUser());
         });
       }
-      if(localStorage.getItem('token') !== null & localStorage.getItem('token') !== "") {
+      if(getBearerToken() !== null & getBearerToken() !== "") {
         doGetUser();
       }
     //local data fetch for development

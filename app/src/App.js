@@ -12,6 +12,7 @@ import React, { useState, useEffect } from 'react';
 import jwt_decode from "jwt-decode";
 import AddAPetForm from './Components/PetProfile/AddAPetForm';
 import Pet from './Components/PetProfile/Pet';
+import { getBearerToken, getUser } from "./Components/UserProfile/userInfo.js"
 
 function App() {
 
@@ -28,8 +29,8 @@ function App() {
 
   useEffect(() => {
     // clear local storage if token is expired
-    if(localStorage.getItem('token') !== "" && localStorage.getItem('token') !== null) {
-      const decodedToken = jwt_decode(localStorage.getItem('token'));
+    if(getBearerToken() !== "" && getBearerToken() !== null) {
+      const decodedToken = jwt_decode(getBearerToken());
       if(Math.ceil(new Date().getTime()/1000) > decodedToken.exp) {
         clearStorage();
         navigate('/login');

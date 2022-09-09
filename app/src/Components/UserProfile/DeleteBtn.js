@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { getBearerToken, getUser } from "./userInfo.js";
 
 const DeleteBtn = () => {
   const [show, setShow] = useState(false);
@@ -14,20 +15,20 @@ const DeleteBtn = () => {
   const clearStorage = () => {
     localStorage.setItem("token", "");
     localStorage.setItem("username", "");
-  }
+  };
 
-  const getToken = () => {
-    const tokenString = localStorage.getItem("token");
-    const userToken = JSON.parse(tokenString);
-    return userToken;
-  }
+  // const getToken = () => {
+  //   const tokenString = localStorage.getItem("token");
+  //   const userToken = JSON.parse(tokenString);
+  //   return userToken;
+  // };
 
   const deleteAccountAPI = () => {
     axios
       .delete(
         `http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${username}`,
         {
-          headers: { Authorization: getToken() },
+          headers: { Authorization: getBearerToken() },
         }
       )
       .catch((error) => {
@@ -36,7 +37,6 @@ const DeleteBtn = () => {
       });
   };
 
-  
   const deleteAccountService = () => {
     const date = new Date().toLocaleDateString("FR-CA");
     const time = new Date().toLocaleTimeString("en-US", {
@@ -54,7 +54,7 @@ const DeleteBtn = () => {
     axios
       .delete("http://identity.galvanizelabs.net/api/account/delete", {
         data: rqstBody,
-        headers: { Authorization: getToken() },
+        headers: { Authorization: getBearerToken() },
       })
       .then(() => deleteAccountAPI())
       .then(() => clearStorage())
