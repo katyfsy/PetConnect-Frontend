@@ -4,6 +4,7 @@ import Rating from 'react-rating';
 import axios from 'axios';
 import { useParams } from "react-router-dom";
 import { getBearerToken, getUser } from "./userInfo";
+import UploadMultiPics from './UploadMultiPics';
 
 function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveStars,
                          filterFourStars, filterThreeStars, filterTwoStars, filterOneStars}) {
@@ -128,7 +129,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
       <Row style={{paddingTop: "30px"}}>
         {renderWriteReview()}
       </Row>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Create Review</Modal.Title>
         </Modal.Header>
@@ -150,6 +151,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
               <Form.Control as="textarea" rows={3} placeholder="What did you like or dislike?" name="reviewDescription" onChange={handleChange}/>
             </Form.Group>
           </Form>
+          <UploadMultiPics />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

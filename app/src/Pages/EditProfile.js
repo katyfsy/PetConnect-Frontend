@@ -82,7 +82,7 @@ function EditProfile() {
         }
       })
         .then(() => {
-          navigate('/profile');
+          navigate('/myprofile');
         })
         .catch((err) => console.log("patch error", err))
     }

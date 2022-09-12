@@ -20,7 +20,8 @@ function getUser() {
 const photoURL = {userPhoto: "https://ih1.redbubble.net/image.3309494331.9897/aps,504x498,medium,transparent-pad,600x600,f8f8f8.jpg"};
 
 const orgReviews = [
-  {firstName: "Kun",
+  {reviewId: 1,
+  firstName: "Kun",
   lastName: "Chen",
   userPhoto: photoURL.userPhoto,
   reviewTitle: "Good",
@@ -29,7 +30,8 @@ const orgReviews = [
   upvotes: 2,
   timeStamp: "time"
   },
-  {firstName: "aaaa",
+  {reviewId: 2,
+  firstName: "aaaa",
   lastName: "bbbb",
   userPhoto: photoURL.userPhoto,
   reviewTitle: "bAd",
@@ -38,7 +40,9 @@ const orgReviews = [
   upvotes: 3,
   timeStamp: "time"
   },
-  {firstName: "ccc",
+  {
+  reviewId: 3,
+  firstName: "ccc",
   lastName: "ddd",
   userPhoto: photoURL.userPhoto,
   reviewTitle: "Good!!!",
@@ -47,7 +51,9 @@ const orgReviews = [
   upvotes: 0,
   timeStamp: "time"
   },
-  {firstName: "eee",
+  {
+  reviewId: 4,
+  firstName: "eee",
   lastName: "fff",
   userPhoto: photoURL.userPhoto,
   reviewTitle: "GOOD",
@@ -56,7 +62,9 @@ const orgReviews = [
   upvotes: 6,
   timeStamp: "time"
   },
-  {firstName: "ggg",
+  {
+  reviewId: 5,
+  firstName: "ggg",
   lastName: "hhh",
   userPhoto: photoURL.userPhoto,
   reviewTitle: "GOOD!",
@@ -65,7 +73,9 @@ const orgReviews = [
   upvotes: 11,
   timeStamp: "time"
   },
-  {firstName: "ii",
+  {
+  reviewId: 6,
+  firstName: "ii",
   lastName: "jj",
   userPhoto: photoURL.userPhoto,
   reviewTitle: "GOOD!",
