@@ -1,5 +1,6 @@
 import './Profile.css';
 import React, { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import axios from 'axios';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
@@ -17,7 +18,7 @@ function Profile() {
     phone: '',
     email: '',
     website: '',
-    userType: 'individual',
+    userType: 'ORGANIZATION',
     address: '',
     city: '',
     state: '',
@@ -26,6 +27,8 @@ function Profile() {
     userPhoto: ''
   });
 
+  const params = useParams();
+
   useEffect(() => {
     // local data fetch for development
     // const doGetUser = async () => {
@@ -33,7 +36,7 @@ function Profile() {
     //   setForm(result);
     // }
     const doGetUser = () => {
-      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`,
+      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/public/user/${params.username}`,
       {headers: {
         'Authorization': getBearerToken()
       }})
@@ -58,10 +61,8 @@ function Profile() {
       return <Button variant="primary" size="lg" href="/login" onClick={() => alert("Please login first to chat with the user.")}>
                Message me
              </Button>;
-    } else if(getUser() === form.username) {
-      return <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
     } else {
-      return <Button variant="primary" size="lg" href="/">Message me</Button>
+      return <Button variant="primary" size="lg" href="/messages">Message me</Button>
     }
   }
 

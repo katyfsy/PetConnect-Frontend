@@ -18,7 +18,7 @@ function EditProfile() {
     phone: '',
     email: '',
     website: '',
-    userType: 'individual',
+    userType: 'ORGANIZATION',
     address: '',
     city: '',
     state: '',
@@ -34,16 +34,6 @@ function EditProfile() {
   const inputRef = useRef(null);
 
   const navigate = useNavigate();
-
-  // function getToken() {
-  //   const tokenString = localStorage.getItem('token');
-  //   //This can be deleted once profile page is functional.
-  //   if (tokenString === "") {
-  //     return;
-  //   }
-  //   const userToken = JSON.parse(tokenString);
-  //   return userToken;
-  // }
 
   useEffect(() => {
     const doGetUser = () => {
@@ -264,7 +254,7 @@ function EditProfile() {
               <Form.Label>Description</Form.Label>
               <Form.Control as="textarea" rows={3} name="description" value={form.description} onChange={handleChange}/>
             </Form.Group>
-            <Button variant="primary" type="submit" href="/profile">
+            <Button variant="primary" type="submit" href="/myprofile">
               Cancel
             </Button>
             {" "}
@@ -412,7 +402,7 @@ function EditProfile() {
             <Form.Label>Description</Form.Label>
             <Form.Control as="textarea" rows={3} name="description" value={form.description} onChange={handleChange}/>
           </Form.Group>
-          <Button variant="primary" type="submit" href="/profile">
+          <Button variant="primary" type="submit" href="/myprofile">
             Cancel
           </Button>
           {" "}

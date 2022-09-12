@@ -33,7 +33,7 @@ function MyProfile() {
     //   setForm(result);
     // }
     const doGetUser = () => {
-      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`,
+      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
       {headers: {
         'Authorization': getBearerToken()
       }})
@@ -53,18 +53,6 @@ function MyProfile() {
     doGetUser();
   }, []);
 
-  const renderEditOrMessageButton = () => {
-    if(getUser() === "" || getUser() === null) {
-      return <Button variant="primary" size="lg" href="/login" onClick={() => alert("Please login first to chat with the user.")}>
-               Message me
-             </Button>;
-    } else if(getUser() === form.username) {
-      return <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
-    } else {
-      return <Button variant="primary" size="lg" href="/">Message me</Button>
-    }
-  }
-
   if(form.userType === "USER") {
     return (
       <div>
@@ -77,7 +65,7 @@ function MyProfile() {
             <Col>
               <Image src={form.userPhoto} roundedCircle className="profile-photo"/>
               <div>
-                {renderEditOrMessageButton()}
+                <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
               </div>
             </Col>
             <Col>
@@ -115,7 +103,7 @@ function MyProfile() {
             <Col>
               <Image src={form.userPhoto} roundedCircle className="profile-photo"/>
               <div>
-                {renderEditOrMessageButton()}
+                <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
               </div>
             </Col>
             <Col>
