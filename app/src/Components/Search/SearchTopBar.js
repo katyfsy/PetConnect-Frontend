@@ -28,7 +28,7 @@ function SearchTopBar({searchQuery, radius, setRadius, zipcode}) {
               <option value="20">20 miles</option>
             </Form.Select>
           </Form>
-          <Nav.Link>near {zipcode}</Nav.Link>
+          {zipcode.length === 0 ? (<Navbar.Text style={{paddingLeft:10}}>Anywhere</Navbar.Text>) : (<Navbar.Text style={{paddingLeft:10}}>near {zipcode}</Navbar.Text>)}
         </Nav>
       </Container>
     </Navbar>
