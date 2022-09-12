@@ -120,8 +120,8 @@ const MessagingApp = () => {
       );
       let list = [];
       list.push(payloadData);
-      privateChats.set(payloadData.senderName, list);
-      setPrivateChats(new Map(privateChats));
+      privateChatsRef.current.set(payloadData.senderName, list);
+      setPrivateChats(new Map(privateChatsRef.current));
     }
   };
 
