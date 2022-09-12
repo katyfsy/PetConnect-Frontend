@@ -14,7 +14,7 @@ import './ContactsList.css';
 //     }
 //   })
 
-const ContactsList = ({ privateChats, setCurrentContact, notificationList, username, setNotificationList }) => {
+const ContactsList = ({ privateChats, currentContact, setCurrentContact, notificationList, username, setNotificationList }) => {
 
   let currentList = [...privateChats.keys()].sort().map((contact) => {
     if (contact) {
@@ -22,7 +22,7 @@ const ContactsList = ({ privateChats, setCurrentContact, notificationList, usern
       // let photo = username === privateChats.get(contact)[privateChats.get(contact).length-1]['senderName'] ? privateChats.get(contact)[0]['receiverPhoto'] : privateChats.get(contact)[0]['senderPhoto']
       let photo = username === privateChats.get(contact)[0]['senderName'] ? privateChats.get(contact)[0]['receiverPhoto'] : privateChats.get(contact)[0]['senderPhoto']
       return (
-        <Contact key={contact} photo={photo} contact={contact} setCurrentContact={setCurrentContact} notificationList={notificationList} setNotificationList={setNotificationList} username={username} />
+        <Contact key={contact} photo={photo} contact={contact} currentContact={currentContact} setCurrentContact={setCurrentContact} notificationList={notificationList} setNotificationList={setNotificationList} username={username} />
       )
     }
   })
