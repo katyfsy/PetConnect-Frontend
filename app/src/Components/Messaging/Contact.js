@@ -2,6 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import ListGroup from 'react-bootstrap/ListGroup';
 import './Contact.css';
+// import { BsFillExclamationCircleFill } from "react-icons/bs";
+import { MdOutlineMarkEmailUnread } from "react-icons/md";
+
+
 
 const Contact = ({ contact, setCurrentContact, notificationList, setNotificationList, username, currentContact, photo }) => {
   const markAsRead = (username, contact) => {
@@ -33,10 +37,11 @@ const Contact = ({ contact, setCurrentContact, notificationList, setNotification
   listItem =
   <li
     className='member'
-    style={{
-      color: notificationList && notificationList.includes(contact) ? 'red' : 'black',
-    }}
+    // style={{
+    //   color: notificationList && notificationList.includes(contact) ? 'red' : 'black',
+    // }}
     onClick={() => { console.log('After onClick', notificationList); setCurrentContact(contact); markAsRead(username, contact); }}>
+      {notificationList && notificationList.includes(contact) && <MdOutlineMarkEmailUnread style={{ color: 'orange' }} />}
       <img className="rounded-circle" src={photo} alt='contact_image' width="50" height="50" />
     {contact}
   </li>
