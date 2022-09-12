@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Row, Button, Container, Col, Modal, Form, ProgressBar } from 'react-bootstrap';
 import Rating from 'react-rating';
 import axios from 'axios';
+import { useParams } from "react-router-dom";
+import { getBearerToken, getUser } from "./userInfo";
 
 function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveStars,
                          filterFourStars, filterThreeStars, filterTwoStars, filterOneStars}) {
@@ -26,20 +28,16 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
     upvotes: 0,
   });
 
+  const params = useParams();
+
   const handleChange = (e) => {
     setReviewForm({ ...reviewForm, [e.target.name]: e.target.value });
   }
 
-  function getToken() {
-    const tokenString = localStorage.getItem('token');
-    const userToken = JSON.parse(tokenString);
-    return userToken;
-  }
-
   const handleReviewSubmit = () => {
-    axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`,
+    axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
       {headers: {
-        'Authorization': getToken()
+        'Authorization': getBearerToken()
       }})
       .then((res) => {
         reviewForm.firstName = res.data.firstName;
@@ -57,6 +55,22 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
 
   const handleStar = (e) => {
     setStar(e);
+  }
+
+  const renderWriteReview = () => {
+    if(getUser() === null || getUser() === "") {
+      return (
+      <div>
+        <h5>Share your thoughts with other adopters</h5>
+        <Button onClick={() => alert("Please login first to write a review.")} >Write your review</Button>
+      </div>
+      )} else if (params.username !== getUser() && params.username !== undefined) {
+        return (
+          <div>
+            <h5>Share your thoughts with other adopters</h5>
+            <Button onClick={handleShow} >Write your review</Button>
+          </div>
+      )}
   }
 
   return (
@@ -112,8 +126,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
         </Col>
       </Row>
       <Row style={{paddingTop: "30px"}}>
-        <h5>Share your thoughts with other adopters</h5>
-        <Button onClick={handleShow} >Write your review</Button>
+        {renderWriteReview()}
       </Row>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
