@@ -19,8 +19,8 @@ const MessagingApp = () => {
     receiverName: '',
     connected: false,
     message: "",
-    senderPhoto: localStorage.getItem('userphoto') ? localStorage.getItem('userphoto') : 'https://marshallspetzone.com/blog/wp-content/uploads/2017/09/7-1.jpg',
-    receiverPhoto: 'https://marshallspetzone.com/blog/wp-content/uploads/2017/09/7-1.jpg'
+    senderPhoto: "",
+    receiverPhoto: ""
   })
 
   const privateChatsRef = useRef(new Map());
@@ -29,6 +29,40 @@ const MessagingApp = () => {
   const [currentContact, setCurrentContact] = useState('');
 
   const [notificationList, setNotificationList] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/public/user/${userData.username}`
+      )
+      .then((response) => {
+        if (response.data.userPhoto === null) {
+          setUserData({ ...userData, senderPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png' });
+        } else {
+          setUserData({ ...userData, senderPhoto: response.data.userPhoto });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [userData.username])
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/public/user/${userData.receiverName}`
+      )
+      .then((response) => {
+        if (response.data.userPhoto === null) {
+          setUserData({ ...userData, receiverPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png' });
+        } else {
+          setUserData({ ...userData, receiverPhoto: response.data.userPhoto });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [userData.receiverName])
 
   const onLanding = (event) => {
     event.preventDefault();
@@ -49,6 +83,30 @@ const MessagingApp = () => {
       onPrivateMessageReceived
     );
   };
+
+  const getPhotos = (name) => {
+    axios
+      .get(
+        `http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/public/user/${name}`
+      )
+      .then((response) => {
+        let usernameList = privateChatsRef.current.keys();
+
+        for (let i = 0; i < usernameList.length; i++) {
+          // check the usernames in our contact list against the response.data
+          // if so
+            // set the privateChats
+        }
+
+
+        setPrivateChats(new Map(Object.entries(response.data)));
+        privateChatsRef.current = new Map(Object.entries(response.data));
+        console.log('privateChatsRef:, ', privateChatsRef.current)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   const getAllChats = (username) => {
     axios

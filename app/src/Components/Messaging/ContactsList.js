@@ -16,7 +16,13 @@ import './ContactsList.css';
 
 const ContactsList = ({ privateChats, currentContact, setCurrentContact, notificationList, username, setNotificationList }) => {
 
+//   var mapAsc = new Map([...privateChats.entries()].sort((a,b)=>{
+//     return new Date(b) - new Date(a);
+// }));
+// console.log('mapAsc: ', mapAsc);
+
   let currentList = [...privateChats.keys()].sort().map((contact) => {
+    // console.log('key', );
     if (contact) {
       // verify sender vs receiver
       // let photo = username === privateChats.get(contact)[privateChats.get(contact).length-1]['senderName'] ? privateChats.get(contact)[0]['receiverPhoto'] : privateChats.get(contact)[0]['senderPhoto']
