@@ -5,6 +5,11 @@ import MessageChat from './MessageChat';
 import ContactsList from './ContactsList';
 import InputBar from './InputBar';
 import axios from 'axios';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import './MessageChat.css';
+
 
 
 var stompClient = null;
@@ -15,8 +20,16 @@ const MessagingApp = () => {
     // username: localStorage.getItem("username"),
     receiverName: '',
     connected: false,
+<<<<<<< HEAD
     message: '',
   });
+=======
+    message: "",
+    senderPhoto: localStorage.getItem('userphoto') ? localStorage.getItem('userphoto') : 'https://marshallspetzone.com/blog/wp-content/uploads/2017/09/7-1.jpg',
+    receiverPhoto: 'https://marshallspetzone.com/blog/wp-content/uploads/2017/09/7-1.jpg'
+  })
+
+>>>>>>> 88192c062662ee453591c46dee33d2530bd7b4fd
 
   const [privateChats, setPrivateChats] = useState(new Map());
 
@@ -24,16 +37,25 @@ const MessagingApp = () => {
 
   const [notificationList, setNotificationList] = useState([]);
 
+<<<<<<< HEAD
   const onLanding = () => {
     let Sock = new SockJS(
       'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
     );
+=======
+
+  const onLanding = (event) => {
+    event.preventDefault();
+    let Sock = new SockJS('http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws');
+>>>>>>> 88192c062662ee453591c46dee33d2530bd7b4fd
     // let Sock = new SockJS('http://localhost:8080/ws');
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
     getAllChats(userData.username);
     getAllNotifications(userData.username);
   };
+
+
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
@@ -113,7 +135,7 @@ const MessagingApp = () => {
     }
   };
 
-  const sendPrivateMessage = () => {
+    const sendPrivateMessage = () => {
     if (stompClient) {
       let chatMessage = {
         senderName: userData.username,
@@ -122,6 +144,8 @@ const MessagingApp = () => {
           : currentContact,
         message: userData.message,
         status: 'MESSAGE',
+        senderPhoto: userData.senderPhoto,
+        receiverPhoto: userData.receiverPhoto
       };
       if (!privateChats.get(chatMessage.receiverName)) {
         privateChats.set(chatMessage.receiverName, []);
@@ -140,6 +164,7 @@ const MessagingApp = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div>
       <div style={{ 'font-weight': 'bold' }}>Messaging Page</div>
       <div style={{ 'font-weight': 'bold' }}>Username</div>
@@ -179,6 +204,83 @@ const MessagingApp = () => {
         handleSend={handleSend}
         handleMessage={handleMessage}
       />
+=======
+    <div style={{fontFamily: '"Nunito", "sans-serif"'}}>
+          <div>
+            <span style={{ 'font-weight': 'bold' }} className='spanSpacing'>
+              Username:
+              <input
+                id='user-name'
+                name='username'
+                placeholder='Enter the user name'
+                value={userData.username}
+                onChange={handleName}
+              />
+              <button onClick={onLanding}>Connect</button>
+            </span>
+            <span style={{ 'font-weight': 'bold' }}>
+              Receiver:
+              <input
+            id='receiver-name'
+            name='receiverName'
+            placeholder='Enter the receiver name'
+            value={
+              userData.receiverName ? userData.receiverName : currentContact
+            }
+            onChange={handleName}
+          />
+            </span>
+          </div>
+          <hr />
+      {/* <div>
+        <div style={{ "font-weight": "bold" }}>Messaging Page</div>
+        <span>
+        <div style={{ "font-weight": "bold" }}>Username</div>
+        <form onSubmit={onLanding}>
+        <input
+          id='user-name'
+          name='username'
+          placeholder='Enter the user name'
+          value={userData.username}
+          onChange={handleName}
+        />
+        <button type='submit'>Connect</button>
+        </form>
+        </span>
+        <span>
+        <div style={{ "font-weight": "bold" }}>Receiver</div>
+        <input
+          id='receiver-name'
+          name='receiverName'
+          placeholder='Enter the receiver name'
+          value={userData.receiverName ? userData.receiverName : currentContact}
+          onChange={handleName}
+        />
+        </span>
+        <hr />
+      </div> */}
+      <Container>
+        <Row>
+          <Col sm={4}>
+            <ContactsList className='members-list'
+              username={userData.username}
+              privateChats={privateChats}
+              setCurrentContact={setCurrentContact}
+              setUserData={setUserData}
+              notificationList={notificationList}
+              setNotificationList={setNotificationList}
+              currentContact={currentContact}
+            />
+          </Col>
+          <Col sm={8}>
+            <Container>
+              <MessageChat privateChats={privateChats} currentContact={currentContact} username={userData.username} />
+              <InputBar setUserData={setUserData} userData={userData} handleSend={handleSend} handleMessage={handleMessage} currentContact={currentContact}/>
+            </Container>
+          </Col>
+        </Row>
+      </Container>
+>>>>>>> 88192c062662ee453591c46dee33d2530bd7b4fd
     </div>
   );
 };

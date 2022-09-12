@@ -1,0 +1,10 @@
+.member {
+  border-radius: 0px;
+  color: #303C6C;
+}
+
+.member:hover{
+  background: grey;
+  color:#fff;
+  cursor: pointer;
+}

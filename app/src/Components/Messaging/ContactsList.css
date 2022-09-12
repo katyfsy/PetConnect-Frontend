@@ -1,0 +1,19 @@
+.list-title {
+  font-weight: bold;
+  color: white;
+  background-color: #303C6C;
+  height: 30px;
+}
+.contact-list {
+  width: 60%;
+  max-height: 25em;
+  overflow-y: auto;
+  border: 1px solid;
+  border-radius: 5px;
+}
+
+.list {
+  padding-left: 0px;
+  list-style: none;
+  margin-bottom: 0px;
+}
