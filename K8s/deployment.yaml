@@ -1,19 +1,20 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: pet-connect-frontend
+  name: psb-fe
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pet-connect-frontend
+      app: psb-fe
   template:
     metadata:
       labels:
-        app: pet-connect-frontend
+        app: psb-fe
     spec:
       containers:
-      - name: pet-connect-frontend
-        image: leqvin/petconnect
+      - name: psb-fe
+        image: leqvin/psb-fe:amd64
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
