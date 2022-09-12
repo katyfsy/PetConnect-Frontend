@@ -18,15 +18,6 @@ function AdvSearch({results, setResult, searchQuery, zipcode}) {
     if (filterType === 'gender') setGender(e.target.value)
     if (filterType === 'age') setAge(e.target.value)
     if (filterType === 'breed') setBreed(e.target.value)
-
-    // var params = {zip: zipcode ? zipcode : null, type: searchQuery, breed: breed, age: age, gender: gender}
-    // console.log('params', params)
-    // axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch", {params})
-    // axios.get("http://localhost:8080/api/petSearch", {params})
-    // .then((result) =>{
-    //   setResult(result.data.pets)
-    // })
-    // .catch(err=>console.log(err))
   }
 
   useEffect(()=>{
@@ -38,6 +29,11 @@ function AdvSearch({results, setResult, searchQuery, zipcode}) {
     })
     .catch(err=>console.log(err))},
     [gender, age, breed])
+
+    let babyType;
+    if (searchQuery === 'dog') babyType = 'Puppy';
+    else if (searchQuery === 'cat') babyType = 'Kitten';
+    else babyType = 'Baby';
 
     return (
       <>
@@ -55,7 +51,7 @@ function AdvSearch({results, setResult, searchQuery, zipcode}) {
           <h6 className="filterType">Age</h6>
           <select onChange={e=>{handleSelect(e, 'age')}}>
             <option value="">Any</option>
-            <option value="puppy">Puppy</option>
+            <option value={babyType}>{babyType}</option>
             <option value="young">Young</option>
             <option value="adult">Adult</option>
             <option value="senior">Senior</option>
