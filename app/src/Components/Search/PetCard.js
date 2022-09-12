@@ -1,23 +1,23 @@
 import React, {useState, useEffect} from 'react';
 import Card from 'react-bootstrap/Card';
-// import CardDeck from 'react-bootstrap/CardDeck';
 import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 
 
-
-function PetCard() {
+function PetCard({name, type, gender, age, breed}) {
 
   return(
     <Card style={{ width: '18rem' }}>
-    {/* <Card> */}
-      <Card.Img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350/100px180" />
+      <Link to="/pets" style={{ textDecoration: 'none', color: 'black' }}>
+        <Card.Img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350/100px180" />
+      </Link>
       <Card.Body>
-        <Card.Title>CICI</Card.Title>
+        <Card.Title>{name}</Card.Title>
         <Card.Text>
-          female
+          {gender}
         </Card.Text>
         <Card.Text>
-          young * ragdoll
+          {age} * {breed}
         </Card.Text>
         <Card.Text>
           Rescued by Humane Society

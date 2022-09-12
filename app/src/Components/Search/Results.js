@@ -26,29 +26,21 @@ function Results({matches, setResult, searchQuery, zipcode}){
                     {/* <p> column left: advanced search (dropdowns)</p> */}
                 </div>
                 <div className="searchResultsCol">
-                    <p> column right: cards (mini profiles) - for now just a list of names </p>
-                    <div >{
-                        matches === undefined ? (<div
-                                                    data-testid="no_matches">No matches</div>) :
-                        matches.map(match => {
-                            return(
-                                <div
-                                data-testid={`t-${match.zip}${match.name}`}
-                                key={`${match.zip}${match.name}`}>{match.name}, {match.type}, {match.gender}, {match.age}</div>
-                            )
-                        })}
-                    </div>
-                    <PetCard/>
-                    <Container>
+                    {/* <p> column right: cards (mini profiles) - for now just a list of names </p> */}
+                    <Container >
                         <Row xs={1} md={3}>
-                            <Col style = {{paddingRight: 0, paddingBottom: 10}}><PetCard/></Col>
-                            <Col style = {{paddingRight: 0, paddingBottom: 10}}><PetCard/></Col>
-                            <Col style = {{paddingRight: 0, paddingBottom: 10}}><PetCard/></Col>
-                            <Col style = {{paddingRight: 0, paddingBottom: 10}}><PetCard/></Col>
-                            <Col style = {{paddingRight: 0, paddingBottom: 10}}><PetCard/></Col>
+                            {matches === undefined ? (<div data-testid="no_matches">No matches</div>) :
+                                matches.map(match => {
+                                    return(
+                                        <Col style = {{paddingRight: 0, paddingBottom: 10}}>
+                                            <PetCard data-testid={`t-${match.zip}${match.name}`} key={`${match.zip}${match.name}`}
+                                                name={match.name} type={match.type} gender={match.gender} age={match.age} breed={match.breed}/>
+                                        </Col>
+                                    )
+                                })
+                            }
                         </Row>
                     </Container>
-
                 </div>
             </div>
         </div>
