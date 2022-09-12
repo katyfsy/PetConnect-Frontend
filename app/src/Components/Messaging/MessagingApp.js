@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import MessageChat from './MessageChat';
@@ -10,8 +10,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import './MessageChat.css';
 
-
-
 var stompClient = null;
 
 const MessagingApp = () => {
@@ -20,34 +18,21 @@ const MessagingApp = () => {
     // username: localStorage.getItem("username"),
     receiverName: '',
     connected: false,
-<<<<<<< HEAD
-    message: '',
-  });
-=======
     message: "",
     senderPhoto: localStorage.getItem('userphoto') ? localStorage.getItem('userphoto') : 'https://marshallspetzone.com/blog/wp-content/uploads/2017/09/7-1.jpg',
     receiverPhoto: 'https://marshallspetzone.com/blog/wp-content/uploads/2017/09/7-1.jpg'
   })
 
->>>>>>> 88192c062662ee453591c46dee33d2530bd7b4fd
-
-  const [privateChats, setPrivateChats] = useState(new Map());
+  const privateChatsRef = useRef(new Map());
+  const [privateChats, setPrivateChats] = useState(privateChatsRef.current);
 
   const [currentContact, setCurrentContact] = useState('');
 
   const [notificationList, setNotificationList] = useState([]);
 
-<<<<<<< HEAD
-  const onLanding = () => {
-    let Sock = new SockJS(
-      'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
-    );
-=======
-
   const onLanding = (event) => {
     event.preventDefault();
     let Sock = new SockJS('http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws');
->>>>>>> 88192c062662ee453591c46dee33d2530bd7b4fd
     // let Sock = new SockJS('http://localhost:8080/ws');
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
@@ -73,6 +58,8 @@ const MessagingApp = () => {
       // axios.get(`http://localhost:8080/messages/${username}`)
       .then((response) => {
         setPrivateChats(new Map(Object.entries(response.data)));
+        privateChatsRef.current = new Map(Object.entries(response.data));
+        console.log('privateChatsRef:, ', privateChatsRef.current)
       })
       .catch((err) => {
         console.log(err);
@@ -111,18 +98,21 @@ const MessagingApp = () => {
   };
 
   // notification if a message is received
-  const onPrivateMessageReceived = (payload) => {
-    getAllChats(userData.username);
+  const onPrivateMessageReceived = async (payload) => {
+
+    // getAllChats(userData.username);
     getAllNotifications(userData.username);
     let payloadData = JSON.parse(payload.body);
+    let conversation = privateChatsRef.current;
+    console.log('REF: ', conversation)
     // console.log('senderName:', payloadData['senderName'])
-    if (privateChats.get(payloadData.senderName)) {
+    if (privateChatsRef.current.get(payloadData.senderName)) {
       console.log(
         'from if statement: ',
-        privateChats.get(payloadData.senderName)
+        privateChatsRef.current.get(payloadData.senderName)
       );
-      privateChats.get(payloadData.senderName).push(payloadData);
-      setPrivateChats(new Map(privateChats));
+      privateChatsRef.current.get(payloadData.senderName).push(payloadData);
+      setPrivateChats(new Map(privateChatsRef.current));
     } else {
       console.log(
         'from else statement: ',
@@ -147,6 +137,7 @@ const MessagingApp = () => {
         senderPhoto: userData.senderPhoto,
         receiverPhoto: userData.receiverPhoto
       };
+      console.log("from sendPrivateMessage: ", !privateChats.get(chatMessage.receiverName))
       if (!privateChats.get(chatMessage.receiverName)) {
         privateChats.set(chatMessage.receiverName, []);
       }
@@ -155,7 +146,7 @@ const MessagingApp = () => {
       setPrivateChats(new Map(privateChats));
       console.log('after setting: ', privateChats);
       stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
-      setUserData({ ...userData, message: '' });
+      setUserData({ ...userData, 'message': '' });
     }
   };
 
@@ -164,47 +155,6 @@ const MessagingApp = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <div>
-      <div style={{ 'font-weight': 'bold' }}>Messaging Page</div>
-      <div style={{ 'font-weight': 'bold' }}>Username</div>
-      <input
-        id='user-name'
-        name='username'
-        placeholder='Enter the user name'
-        value={userData.username}
-        onChange={handleName}
-      />
-      <button onClick={onLanding}>Connect</button>
-      <hr />
-      <div style={{ 'font-weight': 'bold' }}>Receiver</div>
-      <input
-        id='receiver-name'
-        name='receiverName'
-        placeholder='Enter the receiver name'
-        value={userData.receiverName ? userData.receiverName : currentContact}
-        onChange={handleName}
-      />
-      <hr />
-      <ContactsList
-        username={userData.username}
-        privateChats={privateChats}
-        setCurrentContact={setCurrentContact}
-        setUserData={setUserData}
-        notificationList={notificationList}
-        setNotificationList={setNotificationList}
-      />
-      <hr />
-      <MessageChat
-        privateChats={privateChats}
-        currentContact={currentContact}
-      />
-      <InputBar
-        message={userData.message}
-        handleSend={handleSend}
-        handleMessage={handleMessage}
-      />
-=======
     <div style={{fontFamily: '"Nunito", "sans-serif"'}}>
           <div>
             <span style={{ 'font-weight': 'bold' }} className='spanSpacing'>
@@ -280,7 +230,6 @@ const MessagingApp = () => {
           </Col>
         </Row>
       </Container>
->>>>>>> 88192c062662ee453591c46dee33d2530bd7b4fd
     </div>
   );
 };
