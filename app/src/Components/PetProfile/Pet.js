@@ -7,9 +7,9 @@ import Header from "../Default/Header";
 import Container from "react-bootstrap/Container";
 
 function Pet() {
-  const [thisPet, setThisPet] = useState(null);
+  const [thisPet, setThisPet] = useState({});
   let petId = useParams();
-  console.log(petId);
+  // console.log(petId);
 
   useEffect(() => {
     fetch(
@@ -24,9 +24,10 @@ function Pet() {
         console.log(data);
         setThisPet(data);
       });
-  });
-  console.log("Pet Idddddd");
-  console.log(petId.id);
+
+  }, []);
+  // console.log("Pet Idddddd");
+  // console.log(petId.id);
   return (
     <>
       <Container>
