@@ -9,14 +9,17 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import './MessageChat.css';
+import { useLocation } from 'react-router-dom';
 
 var stompClient = null;
 
 const MessagingApp = () => {
+  const { state } = useLocation();
+  let { receiverName } = state;
   const [userData, setUserData] = useState({
     username: '',
     // username: localStorage.getItem("username"),
-    receiverName: '',
+    receiverName: receiverName || '',
     connected: false,
     message: "",
     senderPhoto: "",
