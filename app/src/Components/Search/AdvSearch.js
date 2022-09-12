@@ -9,18 +9,35 @@ import './AdvSearch.css';
 function AdvSearch({results, setResult, searchQuery, zipcode}) {
 
   const [gender, setGender] = useState([])
+  const [age, setAge] = useState([])
+  const [breed, setBreed] = useState([])
   const [matches, setMatches] = useState(results)
 
   const handleSelect = (e, filterType) => {
-    // console.log(e.target.value, filterType, searchQuery, zipcode)
-    var params = {type: searchQuery, zip: zipcode, [filterType]: e.target.value}
-    axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch", {params})
-    .then((result) =>{
+    console.log(e.target.value, filterType, searchQuery, zipcode)
+    if (filterType === 'gender') setGender(e.target.value)
+    if (filterType === 'age') setAge(e.target.value)
+    if (filterType === 'breed') setBreed(e.target.value)
 
+    // var params = {zip: zipcode ? zipcode : null, type: searchQuery, breed: breed, age: age, gender: gender}
+    // console.log('params', params)
+    // axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch", {params})
+    // axios.get("http://localhost:8080/api/petSearch", {params})
+    // .then((result) =>{
+    //   setResult(result.data.pets)
+    // })
+    // .catch(err=>console.log(err))
+  }
+
+  useEffect(()=>{
+    var params = {zip: zipcode ? zipcode : null, type: searchQuery, breed: breed, age: age, gender: gender};
+    console.log(params);
+    axios.get("http://localhost:8080/api/petSearch", {params})
+    .then((result) =>{
       setResult(result.data.pets)
     })
-    .catch(err=>console.log(err))
-  }
+    .catch(err=>console.log(err))},
+    [gender, age, breed])
 
     return (
       <>
