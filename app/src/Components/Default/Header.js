@@ -15,16 +15,6 @@ function Header() {
 
   const [username, setUserName] = useState("");
 
-  // function getToken() {
-  //   const tokenString = getBearerToken();
-  //   //This can be deleted once profile page is functional.
-  //   if (tokenString === "") {
-  //     return;
-  //   }
-  //   const userToken = JSON.parse(tokenString);
-  //   return userToken;
-  // }
-
   useEffect(() => {
     const doGetUser = () => {
       axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,

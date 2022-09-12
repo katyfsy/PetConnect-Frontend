@@ -8,7 +8,7 @@ import Reviews from '../Components/UserProfile/Reviews';
 // import getUser from '../Components/UserProfile/DummyData';
 import { getBearerToken, getUser } from "../Components/UserProfile/userInfo.js";
 
-function Profile() {
+function MyProfile() {
   const [form, setForm] = useState({
     username:'',
     firstName: '',
@@ -170,4 +170,4 @@ function Profile() {
   }
 }
 
-export default Profile;
+export default MyProfile;

@@ -7,6 +7,7 @@ import Login from './Pages/Login';
 import Profile from './Pages/Profile';
 import Messages from './Pages/Messages';
 import EditProfile from './Pages/EditProfile';
+import MyProfile from './Pages/MyProfile';
 import { Routes, Route, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import jwt_decode from "jwt-decode";
@@ -44,6 +45,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/searchresults" element={<SearchResults />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/profile/edit" element={<EditProfile />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
