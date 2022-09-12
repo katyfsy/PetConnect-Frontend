@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import './Results.css';
 import AdvSearch from './AdvSearch';
+import PetCard from './PetCard';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 
 // bar: [Number of matches] search word  distance (arrow)  near <location>
@@ -34,6 +38,17 @@ function Results({matches, setResult, searchQuery, zipcode}){
                             )
                         })}
                     </div>
+                    <PetCard/>
+                    <Container>
+                        <Row xs={1} md={3}>
+                            <Col style = {{paddingRight: 0, paddingBottom: 10}}><PetCard/></Col>
+                            <Col style = {{paddingRight: 0, paddingBottom: 10}}><PetCard/></Col>
+                            <Col style = {{paddingRight: 0, paddingBottom: 10}}><PetCard/></Col>
+                            <Col style = {{paddingRight: 0, paddingBottom: 10}}><PetCard/></Col>
+                            <Col style = {{paddingRight: 0, paddingBottom: 10}}><PetCard/></Col>
+                        </Row>
+                    </Container>
+
                 </div>
             </div>
         </div>
