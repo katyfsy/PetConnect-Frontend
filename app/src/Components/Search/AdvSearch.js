@@ -6,29 +6,23 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import './AdvSearch.css';
 
-function AdvSearch({results, setResult, searchQuery, zipcode}) {
+function AdvSearch({results, setResult, searchQuery, zipcode, radius}) {
 
   const [gender, setGender] = useState([])
   const [age, setAge] = useState([])
   const [breed, setBreed] = useState([])
   const [matches, setMatches] = useState(results)
 
-  const handleSelect = (e, filterType) => {
-    console.log(e.target.value, filterType, searchQuery, zipcode)
-    if (filterType === 'gender') setGender(e.target.value)
-    if (filterType === 'age') setAge(e.target.value)
-    if (filterType === 'breed') setBreed(e.target.value)
-  }
-
   useEffect(()=>{
-    var params = {zip: zipcode ? zipcode : null, type: searchQuery, breed: breed, age: age, gender: gender};
+    if(searchQuery === "" && zipcode === "") return;
+    var params = {zip: zipcode ? zipcode : null, type: searchQuery ? searchQuery : null, breed: breed, age: age, gender: gender, radius: radius};
     console.log(params);
     axios.get("http://localhost:8080/api/petSearch", {params})
     .then((result) =>{
       setResult(result.data.pets)
     })
     .catch(err=>console.log(err))},
-    [gender, age, breed])
+    [gender, age, breed, radius])
 
     let babyType;
     if (searchQuery === 'dog') babyType = 'Puppy';
@@ -40,7 +34,7 @@ function AdvSearch({results, setResult, searchQuery, zipcode}) {
       <div data-testid="adv-search" className="advSearchContainer">
         <div className="breed filter">
           <h6 className="filterType">Breed</h6>
-          <select onChange={e=>{handleSelect(e, 'breed')}}>
+          <select onChange={e=>setBreed(e.target.value)}>
             <option value="">Any</option>
             <option value="ragdoll">Ragdoll</option>
             <option value="british shorthair">British Shorthair</option>
@@ -49,7 +43,7 @@ function AdvSearch({results, setResult, searchQuery, zipcode}) {
 
         <div className="age filter">
           <h6 className="filterType">Age</h6>
-          <select onChange={e=>{handleSelect(e, 'age')}}>
+          <select onChange={e=>setAge(e.target.value)}>
             <option value="">Any</option>
             <option value={babyType}>{babyType}</option>
             <option value="young">Young</option>
@@ -59,7 +53,7 @@ function AdvSearch({results, setResult, searchQuery, zipcode}) {
         </div>
         <div className="gender filter">
           <h6 className="filterType">Gender</h6>
-          <select onChange={(e)=>{handleSelect(e, 'gender')}}>
+          <select onChange={(e)=>setGender(e.target.value)}>
             <option value="">Any</option>
             <option value="male">Male</option>
             <option value="female">Female</option>

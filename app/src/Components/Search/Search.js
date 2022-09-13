@@ -59,7 +59,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
 
   const handleSubmitClick = (e) => {
     e.preventDefault();
-    var params = {type: searchQuery, zip: zipcode ? zipcode : null}
+    var params = {type: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null}
     if (searchQuery.length === 0) {
       setDropdownDisplay(!dropdownDisplay);
     }
