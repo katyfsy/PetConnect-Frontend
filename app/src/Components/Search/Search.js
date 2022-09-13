@@ -49,6 +49,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
     }
     // local endpoint, using proxy: "api/petSearch"
     // axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch" + param)
+    //check if at least one state is not null
     axios.get("http://localhost:8080/api/petSearch" + param)
     .then((result)=>{
         setResult(result.data.pets);
@@ -59,7 +60,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
 
   const handleSubmitClick = (e) => {
     e.preventDefault();
-    var params = {type: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null}
+    var params = {type: searchQuery, zip: zipcode ? zipcode : null}
     if (searchQuery.length === 0) {
       setDropdownDisplay(!dropdownDisplay);
     }

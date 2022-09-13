@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row';
 
 function SearchResults() {
   const [result, setResult] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState([]);
   const [zipcode, setZipcode] = useState("");
 
   return (
