@@ -3,26 +3,24 @@ import Contact from './Contact';
 import ListGroup from 'react-bootstrap/ListGroup';
 import './ContactsList.css';
 
-
-// const ContactsList = ({ privateChats, setCurrentContact, notificationList, username, setNotificationList, currentContact }) => {
-
-//   let currentList = [...privateChats.keys()].map((contact) => {
-//     if (contact) {
-//       return (
-//         <Contact key={contact} contact={contact} setCurrentContact={setCurrentContact} notificationList={notificationList} setNotificationList={setNotificationList} username={username} currentContact={currentContact} />
-//       )
-//     }
-//   })
-
 const ContactsList = ({ privateChats, currentContact, setCurrentContact, notificationList, username, setNotificationList }) => {
 
-//   var mapAsc = new Map([...privateChats.entries()].sort((a,b)=>{
-//     return new Date(b) - new Date(a);
-// }));
-// console.log('mapAsc: ', mapAsc);
+let contactsSortedByRecentMessage = [...privateChats].sort(([k, v], [k2, v2])=> {
+  if (v[v.length - 1].timestamp > v2[v2.length - 1].timestamp) {
+    return -1;
+  }
+  if (v[v.length - 1].timestamp < v2[v2.length - 1].timestamp) {
+    return 1;
+  }
+  return 0;
+})
+  .map((name) => {
+    let contact = name[0];
+    return contact;
+  })
 
-  let currentList = [...privateChats.keys()].sort().map((contact) => {
-    // console.log('key', );
+// let currentList = [...privateChats.keys()].sort().map((contact) => {
+let currentList = contactsSortedByRecentMessage.map((contact) => {
     if (contact) {
       // verify sender vs receiver
       // let photo = username === privateChats.get(contact)[privateChats.get(contact).length-1]['senderName'] ? privateChats.get(contact)[0]['receiverPhoto'] : privateChats.get(contact)[0]['senderPhoto']
@@ -41,6 +39,7 @@ const ContactsList = ({ privateChats, currentContact, setCurrentContact, notific
           <div className='list-title'>Contact List</div>
           <ul className='list'>
             {currentList}
+
           </ul>
         </div>}
     </div>
