@@ -17,6 +17,7 @@
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
   margin: 5px 10px;
   border-radius: 5px;
+  background-color: antiquewhite;
 }
 .message-data{
   padding:5px;
@@ -25,6 +26,7 @@
 
 .message.self {
   justify-content: end;
+  background-color: aliceblue;
 }
 
 .avatar{

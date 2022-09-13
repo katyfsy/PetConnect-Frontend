@@ -1,6 +1,6 @@
 import React from 'react';
 import Contact from './Contact';
-import './ContactsList.css';
+import './css/ContactsList.css';
 
 const ContactsList = ({
   privateChats,

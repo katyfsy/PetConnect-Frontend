@@ -8,10 +8,8 @@ import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import './MessageChat.css';
 import { useLocation } from 'react-router-dom';
 import audio from './static/bark.wav';
-
 
 var stompClient = null;
 
@@ -215,7 +213,7 @@ const MessagingApp = () => {
   return (
     <div style={{ fontFamily: '"Nunito", "sans-serif"' }}>
       <div>
-        <span style={{ 'font-weight': 'bold' }} className='spanSpacing'>
+        <span style={{ 'font-weight': 'bold' }}>
           Username:
           <input
             id='user-name'
@@ -271,7 +269,6 @@ const MessagingApp = () => {
         <Row>
           <Col sm={4}>
             <ContactsList
-              className='members-list'
               username={userData.username}
               privateChats={privateChats}
               setCurrentContact={setCurrentContact}

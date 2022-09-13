@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Picker from 'emoji-picker-react';
 import { BsEmojiSmileFill } from 'react-icons/bs';
-import './InputBar.css';
+import './css/InputBar.css';
 import Modal from 'react-bootstrap/Modal';
 
 const InputBar = ({

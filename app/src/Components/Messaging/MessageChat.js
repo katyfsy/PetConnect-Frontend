@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
-import './MessageChat.css';
+import './css/MessageChat.css';
 
 const MessageChat = ({ privateChats, currentContact, username }) => {
   // need to add conditional to check if message is from user or contact to change alignment of message

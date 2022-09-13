@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import './Contact.css';
+import './css/Contact.css';
 // import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { MdOutlineMarkEmailUnread } from 'react-icons/md';
 
