@@ -40,17 +40,19 @@ const Contact = ({
             backgroundColor: '#F4976C',
           }}
         >
-          <img
-            className='align-image'
-            src={photo}
-            alt='contact_image'
-            width='50'
-            height='50'
-          />
-          {notificationList.includes(currentContact)
-            ? markAsRead(username, contact)
-            : null}
-          {contact}
+          <div className='left'>
+            <img
+              className='align-image'
+              src={photo}
+              alt='contact_image'
+              width='50'
+              height='50'
+            />
+            {notificationList.includes(currentContact)
+              ? markAsRead(username, contact)
+              : null}
+            {contact}
+          </div>
         </li>
       ))
     : (listItem = (
@@ -61,16 +63,21 @@ const Contact = ({
             markAsRead(username, contact);
           }}
         >
-          <img
-            className='align-image'
-            src={photo}
-            alt='contact_image'
-            width='50'
-            height='50'
-          />
-          {contact}
+          <div className='left'>
+            <img
+              className='align-image'
+              src={photo}
+              alt='contact_image'
+              width='50'
+              height='50'
+            />
+            {contact}
+          </div>
           {notificationList && notificationList.includes(contact) && (
-            <MdOutlineMarkEmailUnread style={{ color: 'orange' }} />
+            <MdOutlineMarkEmailUnread
+              className='right'
+              style={{ color: 'orange' }}
+            />
           )}
         </li>
       ));
