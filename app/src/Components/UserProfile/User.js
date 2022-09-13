@@ -1,19 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Card, ListGroup } from 'react-bootstrap';
+import axios from 'axios';
+import { getUser } from "./userInfo";
+import { useNavigate } from 'react-router-dom';
 
 function User() {
+  const [form, setForm] = useState({
+    username:'',
+    businessName: '',
+    phone: '',
+    email: '',
+    website: '',
+    userType: 'ORGANIZATION',
+    city: '',
+    state: '',
+    zipCode: '',
+    description: '',
+    userPhoto: ''
+  });
+
+  useEffect(() => {
+    const doGetUser = () => {
+      // route has to be changed later
+      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/public/user/test2`)
+        .then((res) => {
+          let result = res.data;
+          for(var key in result) {
+            if(result[key] === null) {
+              result[key] = "";
+            }
+            if(result.userPhoto === "") {
+              result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+            }
+          }
+          setForm(result);
+        })
+        .catch((err) => console.log(err));
+      }
+    doGetUser();
+  }, []);
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (getUser() === "test2") {
+      navigate('/myprofile');
+    } else {
+      navigate('/profile/test2');
+    }
+  }
+
   return (
-    <div className="card" style={{width: "18rem", "paddingTop": "10px"}}>
-      <img src="https://media-exp1.licdn.com/dms/image/C5603AQFjePXbNxBUAg/profile-displayphoto-shrink_800_800/0/1651714011617?e=1667433600&v=beta&t=hnxANu9HGou6nQM-jaUVUb4ZGySOAsv54P61HQdSTts" className="card-img-top" style={{"borderRadius": "10px"}} alt="Lucas Bonner"/>
-      <div className="card-body">
-        <h5 className="card-title">Lucas Bonner</h5>
-        <p className="card-text">Call me beep me if you wanna reach me</p>
-      </div>
-      <ul className="list-group list-group-flush">
-        <li className="list-group-item">Email: lucas@bonner.com</li>
-        <li className="list-group-item">Phone: 111-222-3333</li>
-        <li className="list-group-item">Beep: 111-222-3333</li>
-      </ul>
-    </div>
+    <Card style={{ width: '18rem' }}>
+      <Card.Img variant="top" src={form.userPhoto} style={{height: 200}} onClick={() => handleClick()}/>
+      <Card.Body>
+        <Card.Title>{form.businessName}</Card.Title>
+        <Card.Text>{form.description}</Card.Text>
+      </Card.Body>
+      <ListGroup className="list-group-flush">
+        <ListGroup.Item>Email: {form.email}</ListGroup.Item>
+        <ListGroup.Item>Phone: {form.phone}</ListGroup.Item>
+        <ListGroup.Item>City: {form.city} State: {form.state}</ListGroup.Item>
+      </ListGroup>
+      <Card.Body>
+        <Card.Link href={form.website}>Our website</Card.Link>
+      </Card.Body>
+    </Card>
   )
 }
 

@@ -3,14 +3,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import Image from "react-bootstrap/Image";
-import getUser from '../Components/UserProfile/DummyData';
+import { Container, Row, Button, Form, Col, Image } from 'react-bootstrap';
+// import getUser from '../Components/UserProfile/DummyData';
 import axios from 'axios';
+import DeleteBtn from '../Components/UserProfile/DeleteBtn';
+import { getBearerToken, getUser } from "../Components/UserProfile/userInfo.js"
 
 function EditProfile() {
 
@@ -21,7 +18,7 @@ function EditProfile() {
     phone: '',
     email: '',
     website: '',
-    userType: 'individual',
+    userType: 'ORGANIZATION',
     address: '',
     city: '',
     state: '',
@@ -38,23 +35,14 @@ function EditProfile() {
 
   const navigate = useNavigate();
 
-  function getToken() {
-    const tokenString = localStorage.getItem('token');
-    //This can be deleted once profile page is functional.
-    if (tokenString === "") {
-      return;
-    }
-    const userToken = JSON.parse(tokenString);
-    return userToken;
-  }
-
   useEffect(() => {
     const doGetUser = () => {
-      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`,
+      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
       {headers: {
-        'Authorization': getToken()
+        'Authorization': getBearerToken()
       }})
         .then((res) => {
+          console.log(res)
           let result = res.data;
           for(var key in result) {
             if(result[key] === null) {
@@ -88,9 +76,9 @@ function EditProfile() {
       e.preventDefault();
       form.userPhoto = userPhoto;
       console.log(form);
-      axios.patch(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`, form, {
+      axios.patch(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${getUser()}`, form, {
         headers: {
-          'Authorization': getToken()
+          'Authorization': getBearerToken()
         }
       })
         .then(() => {
@@ -111,7 +99,7 @@ function EditProfile() {
     // get presigned url from backend server
     axios.get("http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/upload",
       {headers: {
-        'Authorization': getToken()
+        'Authorization': getBearerToken()
       }})
         .then((res) => {
           console.log("S3 presigned URL for saving file", res.data);
@@ -136,7 +124,7 @@ function EditProfile() {
         })
   }
 
-  if(form.userType === "individual") {
+  if(form.userType === "USER") {
     return (
       <div>
         <Container>
@@ -266,7 +254,7 @@ function EditProfile() {
               <Form.Label>Description</Form.Label>
               <Form.Control as="textarea" rows={3} name="description" value={form.description} onChange={handleChange}/>
             </Form.Group>
-            <Button variant="primary" type="submit" href="/profile">
+            <Button variant="primary" type="submit" href="/myprofile">
               Cancel
             </Button>
             {" "}
@@ -274,6 +262,7 @@ function EditProfile() {
               Submit
             </Button>
          </Form>
+         <div align="end"><DeleteBtn /></div>
       </Container>
     </div>
   )
@@ -413,7 +402,7 @@ function EditProfile() {
             <Form.Label>Description</Form.Label>
             <Form.Control as="textarea" rows={3} name="description" value={form.description} onChange={handleChange}/>
           </Form.Group>
-          <Button variant="primary" type="submit" href="/profile">
+          <Button variant="primary" type="submit" href="/myprofile">
             Cancel
           </Button>
           {" "}
@@ -421,6 +410,7 @@ function EditProfile() {
             Submit
           </Button>
         </Form>
+        <div align="end"><DeleteBtn /></div>
       </Container>
     </div>
     )

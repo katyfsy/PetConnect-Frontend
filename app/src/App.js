@@ -7,11 +7,13 @@ import Login from './Pages/Login';
 import Profile from './Pages/Profile';
 import Messages from './Pages/Messages';
 import EditProfile from './Pages/EditProfile';
+import MyProfile from './Pages/MyProfile';
 import { Routes, Route, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import jwt_decode from "jwt-decode";
 import AddAPetForm from './Components/PetProfile/AddAPetForm';
 import Pet from './Components/PetProfile/Pet';
+import { getBearerToken, getUser } from "./Components/UserProfile/userInfo.js"
 
 function App() {
 
@@ -28,8 +30,8 @@ function App() {
 
   useEffect(() => {
     // clear local storage if token is expired
-    if(localStorage.getItem('token') !== "" && localStorage.getItem('token') !== null) {
-      const decodedToken = jwt_decode(localStorage.getItem('token'));
+    if(getBearerToken() !== "" && getBearerToken() !== null) {
+      const decodedToken = jwt_decode(getBearerToken());
       if(Math.ceil(new Date().getTime()/1000) > decodedToken.exp) {
         clearStorage();
         navigate('/login');
@@ -42,7 +44,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/searchresults" element={<SearchResults />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:username" element={<Profile />} />
+        <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/profile/edit" element={<EditProfile />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />

@@ -19,5 +19,62 @@ function getUser() {
 
 const photoURL = {userPhoto: "https://ih1.redbubble.net/image.3309494331.9897/aps,504x498,medium,transparent-pad,600x600,f8f8f8.jpg"};
 
+const orgReviews = [
+  {firstName: "Kun",
+  lastName: "Chen",
+  userPhoto: photoURL.userPhoto,
+  reviewTitle: "Good",
+  reviewDescription: "Nicexxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
+  reviewScore: 5,
+  upvotes: 2,
+  timeStamp: "time"
+  },
+  {firstName: "aaaa",
+  lastName: "bbbb",
+  userPhoto: photoURL.userPhoto,
+  reviewTitle: "bAd",
+  reviewDescription: "Terriblexxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
+  reviewScore: 1,
+  upvotes: 3,
+  timeStamp: "time"
+  },
+  {firstName: "ccc",
+  lastName: "ddd",
+  userPhoto: photoURL.userPhoto,
+  reviewTitle: "Good!!!",
+  reviewDescription: "Nice!!!xxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
+  reviewScore: 4,
+  upvotes: 0,
+  timeStamp: "time"
+  },
+  {firstName: "eee",
+  lastName: "fff",
+  userPhoto: photoURL.userPhoto,
+  reviewTitle: "GOOD",
+  reviewDescription: "NICExxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
+  reviewScore: 3,
+  upvotes: 6,
+  timeStamp: "time"
+  },
+  {firstName: "ggg",
+  lastName: "hhh",
+  userPhoto: photoURL.userPhoto,
+  reviewTitle: "GOOD!",
+  reviewDescription: "NICE! xxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
+  reviewScore: 5,
+  upvotes: 11,
+  timeStamp: "time"
+  },
+  {firstName: "ii",
+  lastName: "jj",
+  userPhoto: photoURL.userPhoto,
+  reviewTitle: "GOOD!",
+  reviewDescription: "NICE!!! xxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
+  reviewScore: 2,
+  upvotes: 11,
+  timeStamp: "time"
+  },
+]
+
 export default getUser;
-export {photoURL};
+export {photoURL, orgReviews};
