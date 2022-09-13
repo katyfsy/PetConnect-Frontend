@@ -7,6 +7,7 @@ import { Container, Row, Button, Form, Col, Image } from 'react-bootstrap';
 // import getUser from '../Components/UserProfile/DummyData';
 import axios from 'axios';
 import DeleteBtn from '../Components/UserProfile/DeleteBtn';
+import EditPwdBtn from '../Components/UserProfile/EditPwdBtn';
 import { getBearerToken, getUser } from "../Components/UserProfile/userInfo.js"
 
 function EditProfile() {
@@ -37,7 +38,7 @@ function EditProfile() {
 
   useEffect(() => {
     const doGetUser = () => {
-      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
+      axios.get(`http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
       {headers: {
         'Authorization': getBearerToken()
       }})
@@ -76,13 +77,13 @@ function EditProfile() {
       e.preventDefault();
       form.userPhoto = userPhoto;
       console.log(form);
-      axios.patch(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${getUser()}`, form, {
+      axios.patch(`http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/user/${getUser()}`, form, {
         headers: {
           'Authorization': getBearerToken()
         }
       })
         .then(() => {
-          navigate('/profile');
+          navigate('/profile/myprofile');
         })
         .catch((err) => console.log("patch error", err))
     }
@@ -97,7 +98,7 @@ function EditProfile() {
     event.preventDefault();
     const file = inputRef.current.files[0];
     // get presigned url from backend server
-    axios.get("http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/upload",
+    axios.get("http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/upload",
       {headers: {
         'Authorization': getBearerToken()
       }})
@@ -262,7 +263,9 @@ function EditProfile() {
               Submit
             </Button>
          </Form>
+         <div align="end"><EditPwdBtn /></div>
          <div align="end"><DeleteBtn /></div>
+         
       </Container>
     </div>
   )
@@ -411,6 +414,7 @@ function EditProfile() {
           </Button>
         </Form>
         <div align="end"><DeleteBtn /></div>
+        <div align="end"><EditPwdBtn /></div>
       </Container>
     </div>
     )

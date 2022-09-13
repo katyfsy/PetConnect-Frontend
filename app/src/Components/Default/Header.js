@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
 // import getUser from '../UserProfile/DummyData';
-import { getBearerToken, getUser } from "../UserProfile/userInfo.js"
+import { getBearerToken, getUser, clearStorage } from "../UserProfile/userInfo.js"
+
 
 
 function Header() {
@@ -12,12 +13,11 @@ function Header() {
     userPhoto: '',
     zipCode: ''
   });
-
   const [username, setUserName] = useState("");
 
   useEffect(() => {
     const doGetUser = () => {
-      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
+      axios.get(`http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
       {headers: {
         'Authorization': getBearerToken()
       }})
@@ -78,11 +78,6 @@ function Header() {
                 )}
             }
 
-  function clearStorage(){
-    localStorage.clear();
-    sessionStorage.clear();
-    console.log("signed out");
-  }
 
   if(username === "" || username === null) {
     return (

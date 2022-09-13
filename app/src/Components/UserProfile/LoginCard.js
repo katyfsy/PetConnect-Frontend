@@ -57,6 +57,7 @@ const LoginCard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("SERVER URL: ",process.env.PSB_API_URL)
     loginUser({ username, password });
   };
 

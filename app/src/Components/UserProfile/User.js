@@ -22,7 +22,7 @@ function User() {
   useEffect(() => {
     const doGetUser = () => {
       // route has to be changed later
-      axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/public/user/test2`)
+      axios.get(`http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/public/user/test2`)
         .then((res) => {
           let result = res.data;
           for(var key in result) {

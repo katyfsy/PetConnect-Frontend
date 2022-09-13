@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getBearerToken, getUser, clearStorage } from "./userInfo.js";
 
+
+
 const DeleteBtn = () => {
   const [show, setShow] = useState(false);
   const [username, setUserName] = useState();
@@ -11,12 +13,26 @@ const DeleteBtn = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const navigate = useNavigate();
+  let serverUrl = process.env.PSB_API_URL;
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setShowConf(true);
+  };
+
+  const deleteAccountConf = () =>{
+    deleteAccountService();
+  }
+
+  // Handle confirmation modal
+  const [showConf, setShowConf] = useState(false);
+  const handleShowConf = () => setShowConf(true);
+  const handleCloseConf = () => setShowConf(false);
 
   const deleteAccountAPI = () => {
     axios
       .delete(
-        `http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${username}`,
+        `http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/user/${username}`,
         {
           headers: { Authorization: getBearerToken() },
         }
@@ -52,7 +68,7 @@ const DeleteBtn = () => {
       .then(() => navigate("/", { replace: true }))
       .catch((error) => {
         console.log(error);
-        alert("Error Delete Service");
+        alert("Password or Username Incorrect!");
       });
   };
 
@@ -62,12 +78,12 @@ const DeleteBtn = () => {
         Delete Account
       </Button>
       <Modal show={show}>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Account</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div>Enter Username and Password to delete account.</div>
-          <Form>
+        <Form onSubmit={handleSubmit}>
+          <Modal.Header closeButton onClick={handleClose}>
+            <Modal.Title>Delete Account</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div>Enter Username and Password to delete account.</div>
             <Row className="form-group mt-4">
               <Col>
                 <div className="form-group mt-1">
@@ -76,7 +92,7 @@ const DeleteBtn = () => {
                     type="text"
                     required
                     className="form-control mt-1"
-                    placeholder="This action"
+                    placeholder="Cthon98"
                     onChange={(e) => setUserName(e.target.value)}
                   />
                 </div>
@@ -88,22 +104,36 @@ const DeleteBtn = () => {
                     type="password"
                     required
                     className="form-control mt-1"
-                    placeholder="cannot be undone!"
+                    placeholder="hunter2"
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </Col>
             </Row>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer className="mt-4">
-          <Button variant="danger" onClick={deleteAccountService}>
-            Delete Account
-          </Button>
-          <Button variant="outline-dark" onClick={handleClose}>
-            Cancel
-          </Button>
-        </Modal.Footer>
+          </Modal.Body>
+          <Modal.Footer className="mt-4">
+            <Button type="submit" variant="danger">
+              Delete Account
+            </Button>
+            <Modal centered show={showConf} onHide={handleCloseConf}>
+              <Modal.Header closeButton>
+                <Modal.Title>
+                  Are you sure?
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>This action cannot be undone!</Modal.Body>
+              <Modal.Footer>
+                <Button variant="outline-danger" onClick={deleteAccountConf}>Yes</Button>
+                <Button variant="outline-dark" onClick={handleCloseConf}>
+                  No
+                </Button>
+              </Modal.Footer>
+            </Modal>
+            <Button variant="outline-dark" onClick={handleClose}>
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </>
   );

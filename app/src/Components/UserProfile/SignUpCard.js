@@ -8,8 +8,11 @@ import { useNavigate } from "react-router-dom";
 
 const SignUpCard = () => {
   const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const [password, setpassword] = useState();
+  const [password1, setpassword1] = useState();
   const [firstName, setFirstName] = useState();
+  const [errMessage, setErrMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
   const [userType, setUserType] = useState();
@@ -17,13 +20,45 @@ const SignUpCard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    createUserService({ firstName, lastName, username, password, email });
+    pwdValidator();
+    // createUserService({ firstName, lastName, username, password, email });
   };
 
-  const handleClick = async (e) => {
-    e.preventDefault();
-    console.log(userType);
+  const pwdValidator = () => {
+    console.log("firing validator");
+    if (password !== password1) {
+      setErrMessage("Passwords do not match");
+      console.log(errMessage);
+    } else {
+      if (password.length < 8) {
+        setErrMessage("Your password must be at least 8 characters");
+      } else if (password.length > 16) {
+        setErrMessage("Your password must be fewer than 16 characters");
+      } else if (password.search(/[a-z]/) < 0) {
+        setErrMessage(
+          "Your password must contain at least one lowercase letter."
+        );
+      } else if (password.search(/[A-Z]/) < 0) {
+        setErrMessage(
+          "Your password must contain at least one uppercase letter."
+        );
+      } else if (password.search(/[!@#$%^&*]/) < 0) {
+        setErrMessage(
+          "Your password must contain at least one special character from !@#$%^&*"
+        );
+      } else if (password.search(/[0-9]/) < 0) {
+        setErrMessage("Your password must contain at least one digit.");
+      } else {
+        setErrMessage("");
+        createUserService({ firstName, lastName, username, password, email });
+      }
+    }
   };
+
+  // const handleClick = async (e) => {
+  //   e.preventDefault();
+  //   console.log(userType);
+  // };
 
   const deleteAccountService = (token) => {
     const date = new Date().toLocaleDateString("FR-CA");
@@ -46,7 +81,8 @@ const SignUpCard = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Error Delete Service");
+        setErrMessage("Error Creating New Account");
+        console.log("error deleting newly created account API"); // delete at production
       });
   };
 
@@ -56,7 +92,7 @@ const SignUpCard = () => {
       firstName: firstName,
       lastName: lastName,
       email: email,
-      userType: userType
+      userType: userType,
     };
     let apiLogin = {
       username: username,
@@ -67,7 +103,7 @@ const SignUpCard = () => {
       .then((res) => {
         axios
           .post(
-            "http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/users",
+            "http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/users",
             newUserBody,
             {
               headers: { Authorization: res.headers.authorization },
@@ -75,19 +111,27 @@ const SignUpCard = () => {
           )
           .then((response) => {
             if (response.status === 200) {
-              alert("Sign Up Successful");
-              navigate("/login", { replace: true });
+              setSuccessMessage("Account Successfully Created");
             }
           })
+          .then(() => {
+            setTimeout(() => {
+              setSuccessMessage("");
+              navigate("/login", { replace: true });
+            }, 1000);
+          })
           .catch((error) => {
-            console.log(error);
             deleteAccountService(res.headers.authorization);
-            alert("Error Signup API");
+            setErrMessage("Error Creating New Account");
+            console.log("error at API POST new account"); // delete at production
+            console.log(error);
           });
       })
-      .catch((error) => alert("Error Login Service"));
+      .catch((error) => {
+        setErrMessage("Error Creating New Account");
+        console.log("error logging in service to get token to create account on API") // delete at production
+      });
   };
-
 
   const createUserService = (credentials) => {
     axios
@@ -98,7 +142,11 @@ const SignUpCard = () => {
       .then((res) => {
         if (res.status === 202) createUserApi();
       })
-      .catch((error) => alert("Error Signup Service"));
+      .catch((error) => {
+        setErrMessage("Error Creating New Account");
+        console.log("error at service POST new account"); // delete at production
+        console.log(error);
+      });
   };
 
   return (
@@ -106,6 +154,12 @@ const SignUpCard = () => {
       <Form className="Auth-form" onSubmit={handleSubmit}>
         <div className="Auth-form-content">
           <h3 className="Auth-form-title">Sign Up</h3>
+          <Row className="mt-1 justify-content-center">
+            <div className="text-center text-success">{successMessage}</div>
+          </Row>
+          <Row className="mt-1 justify-content-center">
+            <div className="text-center text-danger">{errMessage}</div>
+          </Row>
           <div className="form-group mt-3">
             <label>Username</label>
             <input
@@ -159,36 +213,44 @@ const SignUpCard = () => {
               required
               className="form-control mt-1"
               placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setpassword(e.target.value)}
             />
           </div>
-          <div>
-            <Form className="mt-4" >
-              {["radio"].map((type) => (
-                <div key={`inline-${type}`} className="mb-3">
-                  <Form.Check
-                    inline
-                    label="USER"
-                    value="USER"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-1`}
-                    onChange={(e)=>setUserType(e.target.value)}
-                  />
-                  <Form.Check
-                    inline
-                    label="ORGANIZATION"
-                    value="ORGANIZATION"
-                    name="group1"
-                    type={type}
-                    id={`inline-${type}-2`}
-                    onChange={(e)=>setUserType(e.target.value)}
-                  />
-                </div>
-              ))}
-            </Form>
+          <div className="form-group mt-1">
+            <label>Confirm Password</label>
+            <input
+              type="password"
+              required
+              className="form-control mt-1"
+              placeholder="Password"
+              onChange={(e) => setpassword1(e.target.value)}
+            />
           </div>
-          <div className="d-grid mt-4">
+          <div className="mt-3">
+            {["radio"].map((type) => (
+              <div key={`inline-${type}`} className="mb-3">
+                <Form.Check
+                  inline
+                  label="USER"
+                  value="USER"
+                  name="group1"
+                  type={type}
+                  id={`inline-${type}-1`}
+                  onChange={(e) => setUserType(e.target.value)}
+                />
+                <Form.Check
+                  inline
+                  label="ORGANIZATION"
+                  value="ORGANIZATION"
+                  name="group1"
+                  type={type}
+                  id={`inline-${type}-2`}
+                  onChange={(e) => setUserType(e.target.value)}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="d-grid mt-2">
             <Button variant="outline-dark" type="submit">
               Sign Up
             </Button>
