@@ -17,15 +17,15 @@ const MessagingApp = () => {
   const { state } = useLocation();
   // let { receiverName } = state;
   const [userData, setUserData] = useState({
-    username: localStorage.getItem("username"),
+    username: localStorage.getItem('username'),
 
     // check the state, if state !== null -> redirected from pet page
     receiverName: state ? state.receiverName : '',
     connected: false,
-    message: "",
-    senderPhoto: "",
-    receiverPhoto: ""
-  })
+    message: '',
+    senderPhoto: '',
+    receiverPhoto: '',
+  });
 
   const privateChatsRef = useRef(new Map());
   const [privateChats, setPrivateChats] = useState(privateChatsRef.current);
@@ -41,7 +41,11 @@ const MessagingApp = () => {
       )
       .then((response) => {
         if (response.data.userPhoto === null) {
-          setUserData({ ...userData, senderPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png' });
+          setUserData({
+            ...userData,
+            senderPhoto:
+              'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png',
+          });
         } else {
           setUserData({ ...userData, senderPhoto: response.data.userPhoto });
         }
@@ -49,7 +53,8 @@ const MessagingApp = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [userData.username])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData.username]);
 
   useEffect(() => {
     if (userData.receiverName) {
@@ -59,28 +64,36 @@ const MessagingApp = () => {
         )
         .then((response) => {
           if (response.data.userPhoto === null) {
-            setUserData({ ...userData, receiverPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png' });
+            setUserData({
+              ...userData,
+              receiverPhoto:
+                'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png',
+            });
           } else {
-            setUserData({ ...userData, receiverPhoto: response.data.userPhoto });
+            setUserData({
+              ...userData,
+              receiverPhoto: response.data.userPhoto,
+            });
           }
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [userData.receiverName])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData.receiverName]);
 
   const onLanding = (event) => {
     event.preventDefault();
-    let Sock = new SockJS('http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws');
+    let Sock = new SockJS(
+      'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
+    );
     // let Sock = new SockJS('http://localhost:8080/ws');
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
     getAllChats(userData.username);
     getAllNotifications(userData.username);
   };
-
-
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
@@ -89,8 +102,6 @@ const MessagingApp = () => {
       onPrivateMessageReceived
     );
   };
-
-
 
   const getAllChats = (username) => {
     axios
@@ -141,11 +152,9 @@ const MessagingApp = () => {
 
   // notification if a message is received
   const onPrivateMessageReceived = async (payload) => {
-
     // getAllChats(userData.username);
     getAllNotifications(userData.username);
     let payloadData = JSON.parse(payload.body);
-    let conversation = privateChatsRef.current;
     // console.log('REF: ', conversation)
     // console.log('senderName:', payloadData['senderName'])
     if (privateChatsRef.current.get(payloadData.senderName)) {
@@ -177,7 +186,7 @@ const MessagingApp = () => {
         message: userData.message,
         status: 'MESSAGE',
         senderPhoto: userData.senderPhoto,
-        receiverPhoto: userData.receiverPhoto
+        receiverPhoto: userData.receiverPhoto,
       };
       // console.log("from sendPrivateMessage: ", !privateChats.get(chatMessage.receiverName))
       if (!privateChats.get(chatMessage.receiverName)) {
@@ -188,7 +197,7 @@ const MessagingApp = () => {
       setPrivateChats(new Map(privateChats));
       // console.log('after setting: ', privateChats);
       stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
-      setUserData({ ...userData, 'message': '' });
+      setUserData({ ...userData, message: '' });
     }
   };
 
@@ -254,7 +263,8 @@ const MessagingApp = () => {
       <Container>
         <Row>
           <Col sm={4}>
-            <ContactsList className='members-list'
+            <ContactsList
+              className='members-list'
               username={userData.username}
               privateChats={privateChats}
               setCurrentContact={setCurrentContact}
@@ -266,8 +276,18 @@ const MessagingApp = () => {
           </Col>
           <Col sm={8}>
             <Container>
-              <MessageChat privateChats={privateChats} currentContact={currentContact} username={userData.username} />
-              <InputBar setUserData={setUserData} userData={userData} handleSend={handleSend} handleMessage={handleMessage} currentContact={currentContact} />
+              <MessageChat
+                privateChats={privateChats}
+                currentContact={currentContact}
+                username={userData.username}
+              />
+              <InputBar
+                setUserData={setUserData}
+                userData={userData}
+                handleSend={handleSend}
+                handleMessage={handleMessage}
+                currentContact={currentContact}
+              />
             </Container>
           </Col>
         </Row>

@@ -1,10 +1,19 @@
 .member {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
   border-radius: 0px;
   color: #303C6C;
 }
 
 .member:hover{
-  background: grey;
+  background: #FBE8A6;
   color:#fff;
   cursor: pointer;
+}
+
+.align-image {
+  margin: 5px;
+  border-radius: 50%;
 }
