@@ -10,6 +10,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import './MessageChat.css';
 import { useLocation } from 'react-router-dom';
+import audio from './static/bark.wav';
+
 
 var stompClient = null;
 
@@ -80,8 +82,6 @@ const MessagingApp = () => {
     getAllNotifications(userData.username);
   };
 
-
-
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
     stompClient.subscribe(
@@ -89,8 +89,6 @@ const MessagingApp = () => {
       onPrivateMessageReceived
     );
   };
-
-
 
   const getAllChats = (username) => {
     axios
@@ -165,6 +163,7 @@ const MessagingApp = () => {
       privateChatsRef.current.set(payloadData.senderName, list);
       setPrivateChats(new Map(privateChatsRef.current));
     }
+    playAudio();
   };
 
   const sendPrivateMessage = () => {
@@ -191,6 +190,10 @@ const MessagingApp = () => {
       setUserData({ ...userData, 'message': '' });
     }
   };
+
+  const playAudio = () => {
+    new Audio(audio).play();
+  }
 
   const onError = (err) => {
     console.log(err);
