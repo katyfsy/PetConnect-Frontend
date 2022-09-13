@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import Search from '../Components/Search/Search';
@@ -13,6 +14,19 @@ function SearchResults() {
   const [searchQuery, setSearchQuery] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [radius, setRadius] = useState("10");
+  // const [city, setCity] = useState("");
+
+  // useEffect(()=>{
+  //   if (zipcode.length === 5) {
+  //     let token = "DemoOnly006uPUlZv4X5Mfy9aBBG0spllwbnC3rHskAIbOivceG2IW0M5Z6fLbg8";
+  //     console.log("http://www.zipcodeapi.com/rest/" + token + "/info.json/" + zipcode + "/degrees")
+  //     axios.get("http://www.zipcodeapi.com/rest/" + token + "/info.json/" + zipcode + "/degrees")
+  //     .then((result)=>{
+  //       setCity(result.city);
+  //     })
+  //     .catch(err=>console.log(err));
+  //   }
+  // }, [zipcode]);
 
   return (
     <>
