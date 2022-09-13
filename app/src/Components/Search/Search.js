@@ -74,6 +74,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
     .then((result)=>{
       if(result.data.pets === undefined) {
         setAutocompleteDisplay(false);
+        setResult(result.data.pets);
       } else {
         setSuggestions(result.data.pets);
         console.log("results from suggestions search:", result.data.pets);
