@@ -10,8 +10,8 @@ import EditProfile from './Pages/EditProfile';
 import { Routes, Route, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import jwt_decode from "jwt-decode";
-import AddAPetFormFunctional from './Components/PetProfile/AddAPetFormFunctional';
-import Pet from './Components/PetProfile/Pet';
+import AddAPet from './Pages/AddAPet';
+import PetProfile from './Pages/PetProfile';
 
 function App() {
 
@@ -49,9 +49,9 @@ function App() {
         {/* Pet Profile Routes */}
         <Route path="/pets" element={<Pets />} />
         <Route path="/messages" element={<Messages />} />
-        <Route path="/addpet" element={<AddAPetFormFunctional />} />
+        <Route path="/addpet" element={<AddAPet />} />
         {/* <Route path="/pet" element={<Pet />} /> */}
-        <Route path="/pet/:id" element={<Pet />} /> 
+        <Route path="/pet/:id" element={<PetProfile />} /> 
 
       </Routes>
     </div>
