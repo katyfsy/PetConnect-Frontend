@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
+import EditPet from "./EditPet";
 import Navigationbar from "../Default/Navbar";
 import Header from "../Default/Header";
 
