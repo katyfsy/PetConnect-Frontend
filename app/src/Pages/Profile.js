@@ -98,9 +98,6 @@ function Profile() {
             </Col>
           </Row>
           <hr className="mt-5 mb-3"/>
-          <Row>
-            <Reviews />
-          </Row>
         </Container>
       </div>
     )

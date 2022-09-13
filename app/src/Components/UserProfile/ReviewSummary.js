@@ -7,10 +7,14 @@ import { getBearerToken, getUser } from "./userInfo";
 import UploadMultiPics from './UploadMultiPics';
 
 function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveStars,
-                         filterFourStars, filterThreeStars, filterTwoStars, filterOneStars}) {
+                         filterFourStars, filterThreeStars, filterTwoStars, filterOneStars, updateReviews}) {
 
   const [show, setShow] = useState(false);
   const [star, setStar] = useState(0);
+  const [imageUrl, setImageUrl] = useState([]);
+  const [images, setImages] = useState([]);
+  const [presignedUrls, setPresignedUrls] = useState([])
+  const [urlCache, setUrlCache] = useState([]);
 
   const handleClose = () => {
     setShow(false);
@@ -27,12 +31,39 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
     reviewDescription: "",
     reviewScore: 0,
     upvotes: 0,
+    reviewImages: []
   });
 
   const params = useParams();
 
   const handleChange = (e) => {
     setReviewForm({ ...reviewForm, [e.target.name]: e.target.value });
+  }
+
+  const handleReviewPhotoSubmit = (urls, files) => {
+    let imageUrlList = imageUrl;
+    for(let i = 0; i < urls.length; i++) {
+      imageUrlList.push(urls[i].split("?")[0]);
+      // axios.put(urls[i], files[i],
+      //   {headers: {
+      //     "Content-Type": "application/octet-stream"
+      //   }
+      // })
+      // .catch((err) => {
+      //   console.log(err)
+      // })
+    }
+    setImageUrl(imageUrlList);
+  }
+
+  const handlePostRequest = (form) => {
+    // axios.post(`xxxx`, form,
+    // {headers: {
+    //   'Authorization': getBearerToken()
+    // }})
+    // .then(() => alert('post success'))
+    // .catch((err) => console.log(err));
+    console.log(form);
   }
 
   const handleReviewSubmit = () => {
@@ -48,8 +79,15 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
         reviewForm.writtenByUsername = res.data.username;
       })
       .then(() => {
-        console.log(reviewForm);
+        handleReviewPhotoSubmit(presignedUrls, images);
+      })
+      .then(() => {
+        reviewForm.reviewImages = imageUrl;
+        handlePostRequest(reviewForm);
         setStar(0);
+      })
+      .then(() => {
+        updateReviews();
       })
       .catch((err) => console.log('review submit error', err))
   }
@@ -151,7 +189,14 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
               <Form.Control as="textarea" rows={3} placeholder="What did you like or dislike?" name="reviewDescription" onChange={handleChange}/>
             </Form.Group>
           </Form>
-          <UploadMultiPics />
+          <UploadMultiPics
+            images={images}
+            setImages={setImages}
+            presignedUrls={presignedUrls}
+            setPresignedUrls={setPresignedUrls}
+            urlCache={urlCache}
+            setUrlCache={setUrlCache}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

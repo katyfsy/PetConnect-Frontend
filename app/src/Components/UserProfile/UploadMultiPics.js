@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Button, Image } from 'react-bootstrap';
+import axios from 'axios';
+import { getBearerToken } from "./userInfo";
 
-function UploadMultiPics() {
+function UploadMultiPics({ images, setImages, presignedUrls, setPresignedUrls, urlCache, setUrlCache}) {
 
   const MAX_COUNT = 5;
 
-  const [images, setImages] = useState([]);
   const [fileLimit, setFileLimit] = useState(false);
-
-
+  // const [images, setImages] = useState([]);
+  // const [presignedUrls, setPresignedUrls] = useState([])
+  // const [urlCache, setUrlCache] = useState([]);
 
   const handleUploadFiles = (files) => {
     const uploaded = [...images];
@@ -31,17 +33,41 @@ function UploadMultiPics() {
   const handleFileEvent =  (e) => {
     const chosenFiles = Array.prototype.slice.call(e.target.files);
     handleUploadFiles(chosenFiles);
+    for(let i = 0; i < e.target.files.length; i++) {
+      if(urlCache.length === 0) {
+        axios.get("http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/upload",
+        {headers: {
+          'Authorization': getBearerToken()
+        }})
+        .then((res) => {
+          let presignedUrlsList = presignedUrls;
+          presignedUrlsList.push(res.data);
+          setPresignedUrls(presignedUrlsList);
+        })
+      } else {
+        let presignedUrlsList = presignedUrls;
+        let urlCacheList = urlCache;
+        presignedUrlsList.push(urlCacheList.pop());
+        setPresignedUrls(presignedUrlsList);
+        setUrlCache(urlCacheList);
+      }
+    }
   }
 
   const handleRemoveImage = (imageName) => {
-    console.log(imageName);
     let uploaded = [...images];
     uploaded.forEach((uploadedImage, index) => {
       if(uploadedImage.name === imageName) {
-        uploaded.splice(index, index + 1);
+        uploaded.splice(index, 1);
       }
     })
     setImages(uploaded);
+    // save unused presigned urls to urlCache
+    let presignedUrlsList = presignedUrls;
+    let urlCacheList = urlCache;
+    urlCacheList.push(presignedUrlsList.pop());
+    setPresignedUrls(presignedUrlsList);
+    setUrlCache(urlCacheList);
   }
 
   return (
@@ -59,7 +85,7 @@ function UploadMultiPics() {
                     <Button
                       variant="outline-danger"
                       size="sm"
-                      style={{marginLeft:20, marginBottom:7}}
+                      style={{marginLeft:20, marginBottom:7, marginTop:3}}
                       onClick={() => handleRemoveImage(image.name)}
                     >Remove</Button>
                   </div>

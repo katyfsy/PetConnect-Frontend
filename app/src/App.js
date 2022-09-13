@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react';
 import jwt_decode from "jwt-decode";
 import AddAPetForm from './Components/PetProfile/AddAPetForm';
 import Pet from './Components/PetProfile/Pet';
-import { getBearerToken, getUser } from "./Components/UserProfile/userInfo.js"
+import { getBearerToken } from "./Components/UserProfile/userInfo.js"
 
 function App() {
 
@@ -22,14 +22,14 @@ function App() {
   //   return <Login setToken={setToken} />
   // }
   function clearStorage(){
-    localStorage.setItem('token', "");
-    localStorage.setItem('username', "");
+    localStorage.clear();
+    sessionStorage.clear();
   }
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // clear local storage if token is expired
+    // clear local and session storage if token is expired
     if(getBearerToken() !== "" && getBearerToken() !== null) {
       const decodedToken = jwt_decode(getBearerToken());
       if(Math.ceil(new Date().getTime()/1000) > decodedToken.exp) {

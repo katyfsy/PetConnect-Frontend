@@ -17,7 +17,7 @@ function MyProfile() {
     phone: '',
     email: '',
     website: '',
-    userType: 'individual',
+    userType: 'ORGANIZATION',
     address: '',
     city: '',
     state: '',
@@ -83,10 +83,6 @@ function MyProfile() {
                 <p className="text-start">{form.description}</p>
               </Row>
             </Col>
-          </Row>
-          <hr className="mt-5 mb-3"/>
-          <Row>
-            <Reviews />
           </Row>
         </Container>
       </div>

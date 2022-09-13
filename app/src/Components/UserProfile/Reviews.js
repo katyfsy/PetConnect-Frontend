@@ -3,6 +3,8 @@ import { Container, Dropdown, DropdownButton, Row, Col } from 'react-bootstrap';
 import SingleReview from './SingleReview';
 import ReviewSummary from './ReviewSummary';
 import {orgReviews} from './DummyData';
+import { getBearerToken } from "./userInfo";
+import axios from 'axios';
 
 function Reviews() {
   const [reviews, setReviews] = useState([]);
@@ -105,6 +107,18 @@ function Reviews() {
     setCurrentReviews(reviewList);
   }
 
+  const updateReviews = () => {
+    // axios.get(`xxx`,
+    // {headers: {
+    //   'Authorization': getBearerToken()
+    // }})
+    // .then((res) => {
+    //   console.log(res.data)
+    //   setReviews(res.data)
+    // })
+    // .catch((err) => console.log(err));
+  }
+
 
   return (
     <Container style={{paddingTop: "70px"}}>
@@ -119,6 +133,7 @@ function Reviews() {
             filterThreeStars={filterThreeStars}
             filterTwoStars={filterTwoStars}
             filterOneStars={filterOneStars}
+            updateReviews={updateReviews}
           />
         </Col>
         <Col xs={8}>
