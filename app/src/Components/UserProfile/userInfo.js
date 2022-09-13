@@ -26,6 +26,11 @@ const setUserNameSession = (username) => {
   sessionStorage.setItem("username", username);
 };
 
+function clearStorage(){
+    localStorage.clear();
+    sessionStorage.clear();
+  }
+
 export {
   getBearerToken,
   getUser,
@@ -33,4 +38,5 @@ export {
   setTokenSession,
   setUserNameLocal,
   setUserNameSession,
+  clearStorage
 };

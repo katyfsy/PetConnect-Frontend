@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { getBearerToken, getUser } from "./userInfo.js";
+import { getBearerToken, getUser, clearStorage } from "./userInfo.js";
 
 const DeleteBtn = () => {
   const [show, setShow] = useState(false);
@@ -12,16 +12,6 @@ const DeleteBtn = () => {
   const handleClose = () => setShow(false);
   const navigate = useNavigate();
 
-  const clearStorage = () => {
-    localStorage.setItem("token", "");
-    localStorage.setItem("username", "");
-  };
-
-  // const getToken = () => {
-  //   const tokenString = localStorage.getItem("token");
-  //   const userToken = JSON.parse(tokenString);
-  //   return userToken;
-  // };
 
   const deleteAccountAPI = () => {
     axios
