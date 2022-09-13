@@ -19,6 +19,7 @@ function PetCard({name, type, gender, age, breed}) {
     if (localStorage.getItem("token") === null) {
       setShowModal(true)
     } else {
+      //mark pet as favorite
       toggleShowToast();
     }
   }
