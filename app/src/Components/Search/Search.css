@@ -2,9 +2,10 @@
 .searchGroup{
   display: grid;
   grid-template-columns: 1fr 3fr 3fr 2fr 1fr;
+  gap: 10px;
   grid-template-areas:
     "left search zip btn right"
-    "dd   dd     dd  dd  dd";
+    "left   dd     dd  dd  dd";
 }
 
 #searchInput {
@@ -21,4 +22,9 @@
 
 .searchDropdownContainer {
   grid-area: dd;
+  text-align: left;
+}
+
+.boldText {
+  font-weight: bold;
 }

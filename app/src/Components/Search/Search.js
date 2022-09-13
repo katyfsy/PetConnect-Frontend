@@ -160,7 +160,8 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
                       className="searchOption"
                       key={i}
                     >
-                      <span>{value.type}:{value.breed}</span>
+                      <span className="boldText">{value.type}: </span>
+                      <span>{value.breed}</span>
                     </div>
                   );
                 })}
@@ -175,7 +176,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
               onChange={e=>setZipcode(e.target.value)}/>
           <button
             id="searchButton"
-
+            className="btn btn-primary"
             onClick={handleSubmitClick}>Search</button>
         </div>
       </form>
