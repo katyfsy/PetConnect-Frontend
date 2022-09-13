@@ -28,7 +28,8 @@ const orgReviews = [
   reviewDescription: "Nicexxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
   reviewScore: 5,
   upvotes: 2,
-  timeStamp: "time"
+  timeStamp: "2022-09-12T11:33:54.005406",
+  reviewImages: ["https://media.istockphoto.com/photos/boxes-picture-id83637181?b=1&k=20&m=83637181&s=170667a&w=0&h=3Ho0SwmMFbrMM9dC76wzSMshf_I8kTWKInuH1iMw77M=", "https://upload.wikimedia.org/wikipedia/commons/4/4a/100x100_logo.png"]
   },
   {reviewId: 2,
   firstName: "aaaa",
@@ -38,7 +39,8 @@ const orgReviews = [
   reviewDescription: "Terriblexxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
   reviewScore: 1,
   upvotes: 3,
-  timeStamp: "time"
+  timeStamp: "2022-09-10T11:33:54.005406",
+  reviewImages: ["https://media.istockphoto.com/photos/boxes-picture-id83637181?b=1&k=20&m=83637181&s=170667a&w=0&h=3Ho0SwmMFbrMM9dC76wzSMshf_I8kTWKInuH1iMw77M=", "https://upload.wikimedia.org/wikipedia/commons/4/4a/100x100_logo.png", "https://dummyimage.com/250/ffffff/000000", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX6oSZ1z4HOL6piEPh_E0BprfaN_IdBAwveX5zNf7uG_C9tcPCj755wsNagrs5EaWA&usqp=CAU", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcOvFn3dAbybSGsoZRh_5VcaytcVAZyk3Y8XhOd3j7GoGoTGRxdlyssPOM-Bl9c1yjGhA&usqp=CAU"]
   },
   {
   reviewId: 3,
@@ -49,7 +51,8 @@ const orgReviews = [
   reviewDescription: "Nice!!!xxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
   reviewScore: 4,
   upvotes: 0,
-  timeStamp: "time"
+  timeStamp: "2022-09-13T11:33:54.005406",
+  reviewImages: ["https://media.istockphoto.com/photos/boxes-picture-id83637181?b=1&k=20&m=83637181&s=170667a&w=0&h=3Ho0SwmMFbrMM9dC76wzSMshf_I8kTWKInuH1iMw77M="]
   },
   {
   reviewId: 4,
@@ -60,7 +63,8 @@ const orgReviews = [
   reviewDescription: "NICExxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
   reviewScore: 3,
   upvotes: 6,
-  timeStamp: "time"
+  timeStamp: "2022-09-13T08:33:54.005406",
+  reviewImages: ["https://media.istockphoto.com/photos/boxes-picture-id83637181?b=1&k=20&m=83637181&s=170667a&w=0&h=3Ho0SwmMFbrMM9dC76wzSMshf_I8kTWKInuH1iMw77M=", "https://upload.wikimedia.org/wikipedia/commons/4/4a/100x100_logo.png"]
   },
   {
   reviewId: 5,
@@ -71,7 +75,8 @@ const orgReviews = [
   reviewDescription: "NICE! xxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
   reviewScore: 5,
   upvotes: 11,
-  timeStamp: "time"
+  timeStamp: "2022-09-08T11:33:54.005406",
+  reviewImages: ["https://media.istockphoto.com/photos/boxes-picture-id83637181?b=1&k=20&m=83637181&s=170667a&w=0&h=3Ho0SwmMFbrMM9dC76wzSMshf_I8kTWKInuH1iMw77M=", "https://upload.wikimedia.org/wikipedia/commons/4/4a/100x100_logo.png", "https://p.kindpng.com/picc/s/70-708489_email-icons-100x100-png-transparent-png.png"]
   },
   {
   reviewId: 6,
@@ -82,7 +87,8 @@ const orgReviews = [
   reviewDescription: "NICE!!! xxxxxx, xxxxxx, xxxxx, xxxxxxxxxxxxxxxx, xxxxxxxx, xxxxxxxxxxxxxxxxxxxxxx.",
   reviewScore: 2,
   upvotes: 11,
-  timeStamp: "time"
+  timeStamp: "2022-09-13T12:33:54.005406",
+  reviewImages: []
   },
 ]
 

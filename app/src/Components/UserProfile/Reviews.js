@@ -100,9 +100,19 @@ function Reviews() {
   }
 
   const sortMostHelpful = () => {
-    let reviewList = reviews;
+    let reviewList = [...reviews];
     reviewList.sort((a, b) => {
       return b.upvotes - a.upvotes;
+    })
+    setCurrentReviews(reviewList);
+  }
+
+  const sortMostRecent = () => {
+    let reviewList = [...reviews];
+    reviewList.sort((a, b) => {
+      let da = new Date(a.timeStamp);
+      let db = new Date(b.timeStamp);
+      return db - da;
     })
     setCurrentReviews(reviewList);
   }
@@ -145,7 +155,7 @@ function Reviews() {
             variant="secondary"
             title={'Sort'}
           >
-            <Dropdown.Item eventKey="1">Most Recent</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortMostRecent()}>Most Recent</Dropdown.Item>
             <Dropdown.Item onClick={() => sortMostHelpful()}>Most Helpful</Dropdown.Item>
           </DropdownButton>
         </div>
