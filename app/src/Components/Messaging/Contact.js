@@ -61,9 +61,6 @@ const Contact = ({
             markAsRead(username, contact);
           }}
         >
-          {notificationList && notificationList.includes(contact) && (
-            <MdOutlineMarkEmailUnread style={{ color: 'orange' }} />
-          )}
           <img
             className='align-image'
             src={photo}
@@ -72,6 +69,9 @@ const Contact = ({
             height='50'
           />
           {contact}
+          {notificationList && notificationList.includes(contact) && (
+            <MdOutlineMarkEmailUnread style={{ color: 'orange' }} />
+          )}
         </li>
       ));
 
