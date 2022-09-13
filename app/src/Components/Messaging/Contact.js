@@ -21,30 +21,25 @@ const Contact = ({ contact, setCurrentContact, notificationList, setNotification
 
   let listItem;
   currentContact === contact ?
-  listItem =
-  <li
-    className='member'
-    style={{
-      backgroundColor: '#FBE8A6',
-      // color: notificationList && notificationList.includes(contact) ? 'red' : 'black',
-      // color: notificationList ? 'black' : 'green',
-    }}
+    listItem =
+    <li
+      className='member'
+      style={{
+        backgroundColor: '#FBE8A6',
+      }}
     >
-    <img className="rounded-circle" src={photo} alt='contact_image' width="50" height="50" />
-    {notificationList.includes(currentContact) ? markAsRead(username, contact) : null}
-    {contact}
-  </li> :
-  listItem =
-  <li
-    className='member'
-    // style={{
-    //   color: notificationList && notificationList.includes(contact) ? 'red' : 'black',
-    // }}
-    onClick={() => { console.log('After onClick', notificationList); setCurrentContact(contact); markAsRead(username, contact); }}>
+      <img className="rounded-circle" src={photo} alt='contact_image' width="50" height="50" />
+      {notificationList.includes(currentContact) ? markAsRead(username, contact) : null}
+      {contact}
+    </li> :
+    listItem =
+    <li
+      className='member'
+      onClick={() => { setCurrentContact(contact); markAsRead(username, contact); }}>
       {notificationList && notificationList.includes(contact) && <MdOutlineMarkEmailUnread style={{ color: 'orange' }} />}
       <img className="rounded-circle" src={photo} alt='contact_image' width="50" height="50" />
-    {contact}
-  </li>
+      {contact}
+    </li>
 
   return (
     listItem

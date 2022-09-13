@@ -15,11 +15,12 @@ var stompClient = null;
 
 const MessagingApp = () => {
   const { state } = useLocation();
-  let { receiverName } = state;
+  // let { receiverName } = state;
   const [userData, setUserData] = useState({
-    username: '',
-    // username: localStorage.getItem("username"),
-    receiverName: receiverName || '',
+    username: localStorage.getItem("username"),
+
+    // check the state, if state !== null -> redirected from pet page
+    receiverName: state ? state.receiverName : '',
     connected: false,
     message: "",
     senderPhoto: "",
@@ -51,20 +52,22 @@ const MessagingApp = () => {
   }, [userData.username])
 
   useEffect(() => {
-    axios
-      .get(
-        `http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/public/user/${userData.receiverName}`
-      )
-      .then((response) => {
-        if (response.data.userPhoto === null) {
-          setUserData({ ...userData, receiverPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png' });
-        } else {
-          setUserData({ ...userData, receiverPhoto: response.data.userPhoto });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (userData.receiverName) {
+      axios
+        .get(
+          `http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/public/user/${userData.receiverName}`
+        )
+        .then((response) => {
+          if (response.data.userPhoto === null) {
+            setUserData({ ...userData, receiverPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png' });
+          } else {
+            setUserData({ ...userData, receiverPhoto: response.data.userPhoto });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, [userData.receiverName])
 
   const onLanding = (event) => {
@@ -87,29 +90,7 @@ const MessagingApp = () => {
     );
   };
 
-  const getPhotos = (name) => {
-    axios
-      .get(
-        `http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/public/user/${name}`
-      )
-      .then((response) => {
-        let usernameList = privateChatsRef.current.keys();
 
-        for (let i = 0; i < usernameList.length; i++) {
-          // check the usernames in our contact list against the response.data
-          // if so
-            // set the privateChats
-        }
-
-
-        setPrivateChats(new Map(Object.entries(response.data)));
-        privateChatsRef.current = new Map(Object.entries(response.data));
-        console.log('privateChatsRef:, ', privateChatsRef.current)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
 
   const getAllChats = (username) => {
     axios
@@ -120,7 +101,7 @@ const MessagingApp = () => {
       .then((response) => {
         setPrivateChats(new Map(Object.entries(response.data)));
         privateChatsRef.current = new Map(Object.entries(response.data));
-        console.log('privateChatsRef:, ', privateChatsRef.current)
+        // console.log('privateChatsRef:, ', privateChatsRef.current)
       })
       .catch((err) => {
         console.log(err);
@@ -165,20 +146,20 @@ const MessagingApp = () => {
     getAllNotifications(userData.username);
     let payloadData = JSON.parse(payload.body);
     let conversation = privateChatsRef.current;
-    console.log('REF: ', conversation)
+    // console.log('REF: ', conversation)
     // console.log('senderName:', payloadData['senderName'])
     if (privateChatsRef.current.get(payloadData.senderName)) {
-      console.log(
-        'from if statement: ',
-        privateChatsRef.current.get(payloadData.senderName)
-      );
+      // console.log(
+      //   'from if statement: ',
+      //   privateChatsRef.current.get(payloadData.senderName)
+      // );
       privateChatsRef.current.get(payloadData.senderName).push(payloadData);
       setPrivateChats(new Map(privateChatsRef.current));
     } else {
-      console.log(
-        'from else statement: ',
-        privateChats.get(payloadData.senderName)
-      );
+      // console.log(
+      //   'from else statement: ',
+      //   privateChats.get(payloadData.senderName)
+      // );
       let list = [];
       list.push(payloadData);
       privateChatsRef.current.set(payloadData.senderName, list);
@@ -186,7 +167,7 @@ const MessagingApp = () => {
     }
   };
 
-    const sendPrivateMessage = () => {
+  const sendPrivateMessage = () => {
     if (stompClient) {
       let chatMessage = {
         senderName: userData.username,
@@ -198,14 +179,14 @@ const MessagingApp = () => {
         senderPhoto: userData.senderPhoto,
         receiverPhoto: userData.receiverPhoto
       };
-      console.log("from sendPrivateMessage: ", !privateChats.get(chatMessage.receiverName))
+      // console.log("from sendPrivateMessage: ", !privateChats.get(chatMessage.receiverName))
       if (!privateChats.get(chatMessage.receiverName)) {
         privateChats.set(chatMessage.receiverName, []);
       }
       privateChats.get(chatMessage.receiverName).push(chatMessage);
-      console.log('before setting: ', privateChats);
+      // console.log('before setting: ', privateChats);
       setPrivateChats(new Map(privateChats));
-      console.log('after setting: ', privateChats);
+      // console.log('after setting: ', privateChats);
       stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
       setUserData({ ...userData, 'message': '' });
     }
@@ -216,22 +197,22 @@ const MessagingApp = () => {
   };
 
   return (
-    <div style={{fontFamily: '"Nunito", "sans-serif"'}}>
-          <div>
-            <span style={{ 'font-weight': 'bold' }} className='spanSpacing'>
-              Username:
-              <input
-                id='user-name'
-                name='username'
-                placeholder='Enter the user name'
-                value={userData.username}
-                onChange={handleName}
-              />
-              <button onClick={onLanding}>Connect</button>
-            </span>
-            <span style={{ 'font-weight': 'bold' }}>
-              Receiver:
-              <input
+    <div style={{ fontFamily: '"Nunito", "sans-serif"' }}>
+      <div>
+        <span style={{ 'font-weight': 'bold' }} className='spanSpacing'>
+          Username:
+          <input
+            id='user-name'
+            name='username'
+            placeholder='Enter the user name'
+            value={userData.username}
+            onChange={handleName}
+          />
+          <button onClick={onLanding}>Connect</button>
+        </span>
+        <span style={{ 'font-weight': 'bold' }}>
+          Receiver:
+          <input
             id='receiver-name'
             name='receiverName'
             placeholder='Enter the receiver name'
@@ -240,9 +221,9 @@ const MessagingApp = () => {
             }
             onChange={handleName}
           />
-            </span>
-          </div>
-          <hr />
+        </span>
+      </div>
+      <hr />
       {/* <div>
         <div style={{ "font-weight": "bold" }}>Messaging Page</div>
         <span>
@@ -286,7 +267,7 @@ const MessagingApp = () => {
           <Col sm={8}>
             <Container>
               <MessageChat privateChats={privateChats} currentContact={currentContact} username={userData.username} />
-              <InputBar setUserData={setUserData} userData={userData} handleSend={handleSend} handleMessage={handleMessage} currentContact={currentContact}/>
+              <InputBar setUserData={setUserData} userData={userData} handleSend={handleSend} handleMessage={handleMessage} currentContact={currentContact} />
             </Container>
           </Col>
         </Row>
