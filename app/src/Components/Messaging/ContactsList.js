@@ -15,8 +15,7 @@ let contactsSortedByRecentMessage = [...privateChats].sort(([k, v], [k2, v2])=> 
   return 0;
 })
   .map((name) => {
-    let contact = name[0];
-    return contact;
+    return name[0];
   })
 
 // let currentList = [...privateChats.keys()].sort().map((contact) => {
