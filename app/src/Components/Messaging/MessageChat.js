@@ -16,6 +16,7 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
         <div>Click on contact to view messages.</div>
       ) : (
         <div className='chat-content'>
+          <div>
             {privateChats &&
               [...privateChats.get(currentContact)].map((message, index) => {
                 return (
@@ -49,6 +50,7 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
                   </div>
                 );
               })}
+              </div>
         </div>
       )}
     </Container>
