@@ -20,7 +20,8 @@ var stompClient = null;
 const MessagingApp = () => {
   const { state } = useLocation();
   const senderPhotoRef = useRef('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png');
-  // const ReceiverPhotoRef = useRef('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png');
+  const receiverPhotoRef = useRef('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png')
+
   const [userData, setUserData] = useState({
     username: getUser(),
     // check the state, if state !== null -> redirected from pet page
@@ -28,7 +29,7 @@ const MessagingApp = () => {
     connected: false,
     message: '',
     senderPhoto: senderPhotoRef.current,
-    receiverPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png',
+    receiverPhoto: receiverPhotoRef.current,
   });
   const privateChatsRef = useRef(new Map());
   const [privateChats, setPrivateChats] = useState(privateChatsRef.current);
@@ -60,20 +61,26 @@ const MessagingApp = () => {
 
   useEffect(() => {
     // remove the if once we retrieve from localhost (signup enabled)
-    if (userData.receiverName) {
+    if (currentContact) {
       axios
-        .get(`${PSB_API_URL}/api/public/user/${userData.receiverName}`)
+        .get(
+          `${PSB_API_URL}/api/public/user/${currentContact}`,
+        )
         .then((response) => {
+          console.log('Response from set receiverPhoto', response.data)
+          receiverPhotoRef.current = response.data.userPhoto;
+          console.log(receiverPhotoRef.current)
           setUserData({
             ...userData,
-            receiverPhoto: response.data.userPhoto,
+            receiverPhoto: receiverPhotoRef.current,
           });
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [userData.receiverName]);
+
+  }, [currentContact]);
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
@@ -158,7 +165,7 @@ const MessagingApp = () => {
         timestamp: Date().toString(),
         status: 'MESSAGE',
         senderPhoto: senderPhotoRef.current,
-        receiverPhoto: userData.receiverPhoto,
+        receiverPhoto: receiverPhotoRef.current,
       };
       if (!privateChats.get(chatMessage.receiverName)) {
         privateChatsRef.current.set(chatMessage.receiverName, []);

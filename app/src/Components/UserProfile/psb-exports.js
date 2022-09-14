@@ -10,6 +10,12 @@ const getUser = () => {
     : localStorage.getItem("username");
 };
 
+const getUserType = () => {
+  return localStorage.getItem("userType") === null
+    ? sessionStorage.getItem("userType")
+    : localStorage.getItem("userType");
+};
+
 const setTokenLocal = (token) => {
   localStorage.setItem("token", JSON.stringify(token));
 };
@@ -41,5 +47,6 @@ export {
   setUserNameLocal,
   setUserNameSession,
   clearStorage,
+  getUserType,
   PSB_API_URL
 };

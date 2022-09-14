@@ -24,8 +24,6 @@ const LoginCard = () => {
   const navigate = useNavigate();
 
   const togglePassword = () => {
-    // When the handler is invoked
-    // inverse the boolean state of passwordShown
     setPasswordShown(!passwordShown);
   };
 
