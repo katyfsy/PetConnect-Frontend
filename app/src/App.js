@@ -17,16 +17,10 @@ import { getBearerToken, getUser, clearStorage } from "./Components/UserProfile/
 
 function App() {
 
-  // const [token, setToken] = useState();
-  // if (!token){
-  //   return <Login setToken={setToken} />
-  // }
-
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    // clear local storage if token is expired
+    // clear local and session storage if token is expired
     if(getBearerToken() !== "" && getBearerToken() !== null) {
       const decodedToken = jwt_decode(getBearerToken());
       if(Math.ceil(new Date().getTime()/1000) > decodedToken.exp) {

@@ -6,7 +6,7 @@ import Header from '../Components/Default/Header';
 import { Container,Button, Row, Col, Image } from 'react-bootstrap';
 import Reviews from '../Components/UserProfile/Reviews';
 // import getUser from '../Components/UserProfile/DummyData';
-import { getBearerToken, getUser } from "../Components/UserProfile/psb-exports";
+import { getBearerToken, getUser, PSB_API_URL } from "../Components/UserProfile/psb-exports";
 
 function Profile() {
   const [form, setForm] = useState({
@@ -34,7 +34,7 @@ function Profile() {
     //   setForm(result);
     // }
     const doGetUser = () => {
-      axios.get(`http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
+      axios.get(`${PSB_API_URL}/api/user/${getUser()}`,
       {headers: {
         'Authorization': getBearerToken()
       }})
@@ -98,9 +98,6 @@ function Profile() {
             </Col>
           </Row>
           <hr className="mt-5 mb-3"/>
-          <Row>
-            <Reviews />
-          </Row>
         </Container>
       </div>
     )

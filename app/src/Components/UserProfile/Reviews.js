@@ -3,6 +3,8 @@ import { Container, Dropdown, DropdownButton, Row, Col } from 'react-bootstrap';
 import SingleReview from './SingleReview';
 import ReviewSummary from './ReviewSummary';
 import {orgReviews} from './DummyData';
+import { getBearerToken, getUser, PSB_API_URL } from "./userInfo";
+import axios from 'axios';
 
 function Reviews() {
   const [reviews, setReviews] = useState([]);
@@ -10,8 +12,20 @@ function Reviews() {
   const [avgRating, setAvgRating] = useState(0);
   const [ratingPercentage, setRatingPercentage] = useState([0,0,0,0,0]);
   const [ratingCount, setRatingCount] = useState([0,0,0,0,0]);
+  const [votedOnReviews, setVotedOnReviews] =useState([]);
 
   useEffect(() => {
+    axios.get(`${PSB_API_URL}/api/user/${getUser()}`,
+    {headers: {
+      'Authorization': getBearerToken()
+    }})
+    .then((res) => {
+      if(res.data.votedOnReviews === undefined || res.data.votedOnReviews === null) {
+        setVotedOnReviews([]);
+      } else {
+      setVotedOnReviews(res.data.votedOnReviews)
+    }})
+    .catch((err) => console.log(err))
     setReviews(orgReviews);
     setCurrentReviews(orgReviews);
     calculateAvgRating();
@@ -98,11 +112,33 @@ function Reviews() {
   }
 
   const sortMostHelpful = () => {
-    let reviewList = reviews;
+    let reviewList = [...reviews];
     reviewList.sort((a, b) => {
       return b.upvotes - a.upvotes;
     })
     setCurrentReviews(reviewList);
+  }
+
+  const sortMostRecent = () => {
+    let reviewList = [...reviews];
+    reviewList.sort((a, b) => {
+      let da = new Date(a.timeStamp);
+      let db = new Date(b.timeStamp);
+      return db - da;
+    })
+    setCurrentReviews(reviewList);
+  }
+
+  const updateReviews = () => {
+    // axios.get(`xxx`,
+    // {headers: {
+    //   'Authorization': getBearerToken()
+    // }})
+    // .then((res) => {
+    //   console.log(res.data)
+    //   setReviews(res.data)
+    // })
+    // .catch((err) => console.log(err));
   }
 
 
@@ -119,6 +155,7 @@ function Reviews() {
             filterThreeStars={filterThreeStars}
             filterTwoStars={filterTwoStars}
             filterOneStars={filterOneStars}
+            updateReviews={updateReviews}
           />
         </Col>
         <Col xs={8}>
@@ -130,14 +167,14 @@ function Reviews() {
             variant="secondary"
             title={'Sort'}
           >
-            <Dropdown.Item eventKey="1">Most Recent</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortMostRecent()}>Most Recent</Dropdown.Item>
             <Dropdown.Item onClick={() => sortMostHelpful()}>Most Helpful</Dropdown.Item>
           </DropdownButton>
         </div>
           <div className="overflow-auto" style={{height: 500}}>
             {
               currentReviews.map((review) => {
-                return <SingleReview review={review} key={review.firstName}/>
+                return <SingleReview review={review} key={review.firstName} votedOnReviews={votedOnReviews}/>
               })
             }
           </div>
