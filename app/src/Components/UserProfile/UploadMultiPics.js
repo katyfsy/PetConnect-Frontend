@@ -69,7 +69,7 @@ function UploadMultiPics({ images, setImages, presignedUrls, setPresignedUrls, u
 
   return (
     <div>
-      <h5>Upload Pictures</h5>
+      <h5>Upload Pictures ({images.length}/5)</h5>
       <Container>
         <Row>
           {images.map((image) => {

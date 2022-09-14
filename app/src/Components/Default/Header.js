@@ -2,10 +2,7 @@ import '../../Pages/Profile.css'
 import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
-// import getUser from '../UserProfile/DummyData';
 import { getBearerToken, getUser, clearStorage, PSB_API_URL } from "../UserProfile/psb-exports"
-
-
 
 function Header() {
   const [userIcon, setUserIcon] = useState({
@@ -38,10 +35,6 @@ function Header() {
       if(getBearerToken() !== null & getBearerToken() !== "") {
         doGetUser();
       }
-    //local data fetch for development
-    // const result = getUser();
-    // setUserIcon(result);
-    // setUserName(localStorage.getItem('username'));
   },[])
 
   const renderNotification = () => {
@@ -77,7 +70,6 @@ function Header() {
                   </OverlayTrigger>
                 )}
             }
-
 
   if(username === "" || username === null) {
     return (

@@ -26,14 +26,15 @@ function Reviews({ orgUsername }) {
     }})
     .then(() => {
       axios.get(`${PSB_API_URL}/api/public/reviews/${orgUsername}`)
-    .then((res) => {
-      setReviews(res.data.reviews);
-      setCurrentReviews(res.data.reviews);
-      calculateAvgRating(res.data.reviews);
-      calculateRatingPercent(res.data.reviews);
-    })
-    .catch((err) => console.log(err))
-    })
+        .then((res) => {
+          setReviews(res.data.reviews);
+          // setCurrentReviews(res.data.reviews);
+          sortMostRecent(res.data.reviews);
+          calculateAvgRating(res.data.reviews);
+          calculateRatingPercent(res.data.reviews);
+        })
+        .catch((err) => console.log(err))
+        })
     .catch((err) => console.log(err))
   },[orgUsername])
 
@@ -124,7 +125,7 @@ function Reviews({ orgUsername }) {
     setCurrentReviews(reviewList);
   }
 
-  const sortMostRecent = () => {
+  const sortMostRecent = (reviews) => {
     let reviewList = [...reviews];
     reviewList.sort((a, b) => {
       let da = new Date(a.timeStamp);
@@ -138,13 +139,13 @@ function Reviews({ orgUsername }) {
     axios.get(`${PSB_API_URL}/api/public/reviews/${orgUsername}`)
     .then((res) => {
       setReviews(res.data.reviews);
-      setCurrentReviews(res.data.reviews);
+      // setCurrentReviews(res.data.reviews);
+      sortMostRecent(res.data.reviews);
       calculateAvgRating(res.data.reviews);
       calculateRatingPercent(res.data.reviews);
     })
     .catch((err) => console.log(err));
   }
-
 
   return (
     <Container style={{paddingTop: "70px"}}>
@@ -172,7 +173,7 @@ function Reviews({ orgUsername }) {
             variant="secondary"
             title={'Sort'}
           >
-            <Dropdown.Item onClick={() => sortMostRecent()}>Most Recent</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortMostRecent(reviews)}>Most Recent</Dropdown.Item>
             <Dropdown.Item onClick={() => sortMostHelpful()}>Most Helpful</Dropdown.Item>
           </DropdownButton>
         </div>
