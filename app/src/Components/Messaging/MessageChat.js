@@ -10,15 +10,8 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
   // {message.senderName === username && <div className="avatar self">{message.senderName}</div>}
   // </li>
   const formatDate = (string) => {
-    var options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-    };
-    return new Date(string).toLocaleDateString([], options);
+    var options = { hour: 'numeric', minute: 'numeric' };
+    return new Date(string).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
     // return new Date(string).toLocaleDateString('en-US',options);
   };
 

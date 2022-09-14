@@ -163,6 +163,7 @@ const MessagingApp = () => {
           ? userData.receiverName
           : currentContact,
         message: userData.message,
+        timestamp: Date().toString(),
         status: 'MESSAGE',
         senderPhoto: userData.senderPhoto,
         receiverPhoto: userData.receiverPhoto,
