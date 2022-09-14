@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
-import Multiselect from 'multiselect-react-dropdown';
 import {components} from "react-select"
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';

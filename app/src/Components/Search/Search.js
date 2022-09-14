@@ -184,7 +184,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
 
 
   )
-
+}
 }
 
 export default Search;
