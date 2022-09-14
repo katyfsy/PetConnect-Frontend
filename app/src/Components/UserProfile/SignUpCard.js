@@ -5,7 +5,7 @@ import axios from "axios";
 import "./userProfile.css";
 import DeleteBtn from "./DeleteBtn";
 import { useNavigate } from "react-router-dom";
-import { PSB_API_URL } from "./psb-exports";
+import { PSB_API_URL, getBearerToken, getUser } from "./psb-exports";
 import PasswordStrengthIndicator from "./PwdIndicator.js";
 
 const SignUpCard = () => {

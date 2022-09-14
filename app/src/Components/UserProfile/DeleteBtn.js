@@ -117,7 +117,6 @@ const DeleteBtn = () => {
                     </Col>
                   </Row>
                   <Row>
-
                       <div onClick={togglePassword}>
                         {passwordShown ? (
                           <i className="bi bi-eye i-delete"></i>
@@ -125,7 +124,6 @@ const DeleteBtn = () => {
                           <i className="bi bi-eye-slash i-delete"></i>
                         )}
                       </div>
-
                     </Row>
                 </div>
             </Row>

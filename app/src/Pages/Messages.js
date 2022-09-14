@@ -4,6 +4,7 @@ import Header from '../Components/Default/Header';
 import MessagingApp from '../Components/Messaging/MessagingApp';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import './Messages.css';
 
 function Messages() {
   return (

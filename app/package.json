@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
+    "emoji-picker-react": "^3.6.2",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "i": "^0.3.7",
@@ -17,12 +18,17 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.4.0",
+    "react-dropzone": "^14.2.2",
+    "react-image-gallery": "^1.2.9",
+    "react-lightgallery": "^0.9.0",
     "react-rating": "^2.0.5",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.4.0",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
+    "sweetalert2": "^11.4.32",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -30,14 +36,8 @@
     "server": "nodemon server/index.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "proxy": "http://localhost:8080",
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "eject": "react-scripts eject",
+    "test:coverage": "npm run test -- --coverage"
   },
   "browserslist": {
     "production": [

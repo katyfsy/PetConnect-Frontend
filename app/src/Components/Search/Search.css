@@ -1,0 +1,30 @@
+
+.searchGroup{
+  display: grid;
+  grid-template-columns: 1fr 3fr 3fr 2fr 1fr;
+  gap: 10px;
+  grid-template-areas:
+    "left search zip btn right"
+    "left   dd     dd  dd  dd";
+}
+
+#searchInput {
+  grid-area: search;
+}
+
+#zipcodeInput{
+  grid-area: zip;
+}
+
+#searchButton {
+  grid-area: btn;
+}
+
+.searchDropdownContainer {
+  grid-area: dd;
+  text-align: left;
+}
+
+.boldText {
+  font-weight: bold;
+}
