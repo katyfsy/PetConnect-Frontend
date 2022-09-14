@@ -10,29 +10,30 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useLocation } from 'react-router-dom';
 import audio from './static/bark.wav';
-import { getUser, PSB_API_URL, getBearerToken } from "../UserProfile/psb-exports"
+import {
+  getUser,
+  PSB_API_URL,
+  getBearerToken,
+} from '../UserProfile/psb-exports';
 
 var stompClient = null;
-
 const MessagingApp = () => {
   const { state } = useLocation();
+  const senderPhotoRef = useRef('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png');
+  // const ReceiverPhotoRef = useRef('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png');
   const [userData, setUserData] = useState({
     username: getUser(),
     // check the state, if state !== null -> redirected from pet page
     receiverName: state ? state.receiverName : '',
     connected: false,
     message: '',
-    senderPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png',
+    senderPhoto: senderPhotoRef.current,
     receiverPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png',
   });
-
   const privateChatsRef = useRef(new Map());
   const [privateChats, setPrivateChats] = useState(privateChatsRef.current);
-
   const [currentContact, setCurrentContact] = useState('');
-
   const [notificationList, setNotificationList] = useState([]);
-
   useEffect(() => {
     if (userData.username) {
       let Sock = new SockJS(
@@ -45,25 +46,23 @@ const MessagingApp = () => {
       getAllNotifications(userData.username);
       axios
         .get(
-          `${PSB_API_URL}/api/public/user/${userData.username}.jpg`,
+          `${PSB_API_URL}/api/public/user/${userData.username}`,
         )
         .then((response) => {
-          setUserData({ ...userData, senderPhoto: response.data.userPhoto });
+          senderPhotoRef.current = response.data.userPhoto;
+          setUserData({ ...userData, senderPhoto: senderPhotoRef.current });
         })
         .catch((err) => {
           console.log(err);
         });
     }
-
   }, [userData.username]);
 
   useEffect(() => {
     // remove the if once we retrieve from localhost (signup enabled)
     if (userData.receiverName) {
       axios
-        .get(
-          `${PSB_API_URL}/api/public/users/${userData.receiverName}.jpg`,
-        )
+        .get(`${PSB_API_URL}/api/public/user/${userData.receiverName}`)
         .then((response) => {
           setUserData({
             ...userData,
@@ -74,7 +73,6 @@ const MessagingApp = () => {
           console.log(err);
         });
     }
-
   }, [userData.receiverName]);
 
   const onConnected = () => {
@@ -159,7 +157,7 @@ const MessagingApp = () => {
         message: userData.message,
         timestamp: Date().toString(),
         status: 'MESSAGE',
-        senderPhoto: userData.senderPhoto,
+        senderPhoto: senderPhotoRef.current,
         receiverPhoto: userData.receiverPhoto,
       };
       if (!privateChats.get(chatMessage.receiverName)) {
@@ -174,7 +172,7 @@ const MessagingApp = () => {
 
   const playAudio = () => {
     new Audio(audio).play();
-  }
+  };
 
   const onError = (err) => {
     console.log(err);
@@ -183,7 +181,7 @@ const MessagingApp = () => {
   return (
     <div style={{ fontFamily: '"Nunito", "sans-serif"' }}>
       <div>
-        <span style={{ 'fontWeight': 'bold' }}>
+        <span style={{ fontWeight: 'bold' }}>
           Receiver:
           <input
             id='receiver-name'
