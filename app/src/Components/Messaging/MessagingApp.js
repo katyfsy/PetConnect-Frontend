@@ -37,7 +37,7 @@ const MessagingApp = () => {
   useEffect(() => {
     axios
       .get(
-        `http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/public/user/${userData.username}`
+        `http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/public/user/${userData.username}`
       )
       .then((response) => {
         if (response.data.userPhoto === null) {
@@ -60,7 +60,7 @@ const MessagingApp = () => {
     if (userData.receiverName) {
       axios
         .get(
-          `http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/public/user/${userData.receiverName}`
+          `http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/public/user/${userData.receiverName}`
         )
         .then((response) => {
           if (response.data.userPhoto === null) {
