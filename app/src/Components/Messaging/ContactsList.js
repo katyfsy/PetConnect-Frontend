@@ -27,12 +27,11 @@ const ContactsList = ({
   // let currentList = [...privateChats.keys()].sort().map((contact) => {
   let currentList = contactsSortedByRecentMessage.map((contact) => {
     if (contact) {
-      // verify sender vs receiver
-      // let photo = username === privateChats.get(contact)[privateChats.get(contact).length-1]['senderName'] ? privateChats.get(contact)[0]['receiverPhoto'] : privateChats.get(contact)[0]['senderPhoto']
+      let recentChat = privateChats.get(contact)[privateChats.get(contact).length - 1]
       let photo =
-        username === privateChats.get(contact)[0]['senderName']
-          ? privateChats.get(contact)[0]['receiverPhoto']
-          : privateChats.get(contact)[0]['senderPhoto'];
+        username === recentChat['senderName']
+          ? recentChat['receiverPhoto']
+          : recentChat['senderPhoto'];
       return (
         <Contact
           key={contact}
