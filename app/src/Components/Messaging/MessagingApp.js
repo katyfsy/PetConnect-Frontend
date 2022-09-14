@@ -10,6 +10,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useLocation } from 'react-router-dom';
 import audio from './static/bark.wav';
+import { getUser } from "../UserProfile/psb-exports"
 
 var stompClient = null;
 
@@ -17,7 +18,7 @@ const MessagingApp = () => {
   const { state } = useLocation();
   const [userData, setUserData] = useState({
     // uncomment once the signup is open up
-    // username: localStorage.getItem('username'),
+    // username: getUser(),
     username: '',
     // check the state, if state !== null -> redirected from pet page
     receiverName: state ? state.receiverName : '',
@@ -48,7 +49,7 @@ const MessagingApp = () => {
           console.log(err);
         });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [userData.username]);
 
   useEffect(() => {
@@ -68,7 +69,7 @@ const MessagingApp = () => {
           console.log(err);
         });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [userData.receiverName]);
 
   const onLanding = (event) => {

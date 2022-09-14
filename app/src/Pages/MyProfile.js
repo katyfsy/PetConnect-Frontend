@@ -1,14 +1,14 @@
 import './Profile.css';
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
 import axios from 'axios';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import { Container,Button, Row, Col, Image } from 'react-bootstrap';
 import Reviews from '../Components/UserProfile/Reviews';
+// import getUser from '../Components/UserProfile/DummyData';
 import { getBearerToken, getUser, PSB_API_URL } from "../Components/UserProfile/psb-exports";
 
-function Profile() {
+function MyProfile() {
   const [form, setForm] = useState({
     username:'',
     firstName: '',
@@ -26,11 +26,14 @@ function Profile() {
     userPhoto: ''
   });
 
-  const params = useParams();
-
   useEffect(() => {
+    // local data fetch for development
+    // const doGetUser = async () => {
+    //   const result = await getUser();
+    //   setForm(result);
+    // }
     const doGetUser = () => {
-      axios.get(`${PSB_API_URL}/api/public/user/${params.username}`,
+      axios.get(`${PSB_API_URL}/api/user/${getUser()}`,
       {headers: {
         'Authorization': getBearerToken()
       }})
@@ -48,17 +51,7 @@ function Profile() {
         });
       }
     doGetUser();
-  }, [params.username]);
-
-  const renderEditOrMessageButton = () => {
-    if(getUser() === "" || getUser() === null) {
-      return <Button variant="primary" size="lg" href="/login" onClick={() => alert("Please login first to chat with the user.")}>
-               Message me
-             </Button>;
-    } else {
-      return <Button variant="primary" size="lg" href="/messages">Message me</Button>
-    }
-  }
+  }, []);
 
   if(form.userType === "USER") {
     return (
@@ -72,7 +65,7 @@ function Profile() {
             <Col>
               <Image src={form.userPhoto} roundedCircle className="profile-photo"/>
               <div>
-                {renderEditOrMessageButton()}
+                <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
               </div>
             </Col>
             <Col>
@@ -91,7 +84,6 @@ function Profile() {
               </Row>
             </Col>
           </Row>
-          <hr className="mt-5 mb-3"/>
         </Container>
       </div>
     )
@@ -107,7 +99,7 @@ function Profile() {
             <Col>
               <Image src={form.userPhoto} roundedCircle className="profile-photo"/>
               <div>
-                {renderEditOrMessageButton()}
+                <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
               </div>
             </Col>
             <Col>
@@ -154,7 +146,7 @@ function Profile() {
             </Col>
           </Row>
           <Row>
-              <Reviews orgUsername={params.username}/>
+              <Reviews />
           </Row>
         </Container>
       </div>
@@ -162,4 +154,4 @@ function Profile() {
   }
 }
 
-export default Profile;
+export default MyProfile;
