@@ -3,14 +3,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import Image from "react-bootstrap/Image";
-import getUser from '../Components/UserProfile/DummyData';
+import { Container, Row, Button, Form, Col, Image } from 'react-bootstrap';
 import axios from 'axios';
+import DeleteBtn from '../Components/UserProfile/DeleteBtn';
+import EditPwdBtn from '../Components/UserProfile/EditPwdBtn';
+import { getBearerToken, getUser, PSB_API_URL } from "../Components/UserProfile/psb-exports"
 
 function EditProfile() {
 
@@ -21,7 +18,7 @@ function EditProfile() {
     phone: '',
     email: '',
     website: '',
-    userType: 'individual',
+    userType: 'ORGANIZATION',
     address: '',
     city: '',
     state: '',
@@ -38,40 +35,26 @@ function EditProfile() {
 
   const navigate = useNavigate();
 
-  function getToken() {
-    const tokenString = localStorage.getItem('token');
-    //This can be deleted once profile page is functional.
-    if (tokenString === "") {
-      return;
-    }
-    const userToken = JSON.parse(tokenString);
-    return userToken;
-  }
-
   useEffect(() => {
     const doGetUser = () => {
-      // axios.get(`http://localhost:8080/api/user/${localStorage.getItem('username')}`,
-      // {headers: {
-      //   'Authorization': getToken()
-      // }})
-      //   .then((res) => {
-      //     console.log("user-data", res);
-      //     let result = res.data;
-      //     for(var key in result) {
-      //       if(result[key] === null) {
-      //         result[key] = "";
-      //       }
-      //       if(result.userPhoto === "") {
-      //         result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-      //       }
-      //     }
-      //     setForm(result);
-      //     setUserPhoto(result.userPhoto);
-      //   });
-      // using local dummy data
-      const result = getUser();
-      setForm(result);
-      setUserPhoto(result.userPhoto);
+      axios.get(`${PSB_API_URL}/api/user/${getUser()}`,
+      {headers: {
+        'Authorization': getBearerToken()
+      }})
+        .then((res) => {
+          console.log(res)
+          let result = res.data;
+          for(var key in result) {
+            if(result[key] === null) {
+              result[key] = "";
+            }
+            if(result.userPhoto === "") {
+              result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+            }
+          }
+          setForm(result);
+          setUserPhoto(result.userPhoto);
+        });
     }
     doGetUser();
   }, []);
@@ -89,13 +72,13 @@ function EditProfile() {
       e.preventDefault();
       form.userPhoto = userPhoto;
       console.log(form);
-      axios.patch(`http://localhost:8080/api/user/${localStorage.getItem('username')}`, form, {
+      axios.patch(`${PSB_API_URL}/api/user/${getUser()}`, form, {
         headers: {
-          'Authorization': getToken()
+          'Authorization': getBearerToken()
         }
       })
         .then(() => {
-          navigate('/profile');
+          navigate('/myprofile');
         })
         .catch((err) => console.log("patch error", err))
     }
@@ -110,9 +93,9 @@ function EditProfile() {
     event.preventDefault();
     const file = inputRef.current.files[0];
     // get presigned url from backend server
-    axios.get("http://localhost:8080/api/upload",
+    axios.get("${PSB_API_URL}/api/upload",
       {headers: {
-        'Authorization': getToken()
+        'Authorization': getBearerToken()
       }})
         .then((res) => {
           console.log("S3 presigned URL for saving file", res.data);
@@ -137,7 +120,7 @@ function EditProfile() {
         })
   }
 
-  if(form.userType === "individual") {
+  if(form.userType === "USER") {
     return (
       <div>
         <Container>
@@ -267,7 +250,7 @@ function EditProfile() {
               <Form.Label>Description</Form.Label>
               <Form.Control as="textarea" rows={3} name="description" value={form.description} onChange={handleChange}/>
             </Form.Group>
-            <Button variant="primary" type="submit" href="/profile">
+            <Button variant="primary" type="submit" href="/myprofile">
               Cancel
             </Button>
             {" "}
@@ -275,6 +258,9 @@ function EditProfile() {
               Submit
             </Button>
          </Form>
+         <div align="end"><EditPwdBtn /></div>
+         <div align="end"><DeleteBtn /></div>
+
       </Container>
     </div>
   )
@@ -414,7 +400,7 @@ function EditProfile() {
             <Form.Label>Description</Form.Label>
             <Form.Control as="textarea" rows={3} name="description" value={form.description} onChange={handleChange}/>
           </Form.Group>
-          <Button variant="primary" type="submit" href="/profile">
+          <Button variant="primary" type="submit" href="/myprofile">
             Cancel
           </Button>
           {" "}
@@ -422,6 +408,8 @@ function EditProfile() {
             Submit
           </Button>
         </Form>
+        <div align="end"><DeleteBtn /></div>
+        <div align="end"><EditPwdBtn /></div>
       </Container>
     </div>
     )
