@@ -26,6 +26,8 @@ function App() {
 
   const navigate = useNavigate();
 
+  const loggedIn = localStorage.getItem('token');
+
   useEffect(() => {
     // clear local storage if token is expired
     if (
@@ -51,7 +53,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         {/* Pet Profile Routes */}
         <Route path="/pets" element={<Pets />} />
-        <Route path="/messages" element={<Messages />} />
+        <Route path="/messages"   element={loggedIn ? <Messages/> : <Login />}/>
         <Route path="/addpet" element={<AddAPet />} />
         {/* <Route path="/pet" element={<Pet />} /> */}
         <Route path="/pet/:id" element={<PetProfile />} />

@@ -1,0 +1,27 @@
+.align-image {
+  margin: 5px;
+  border-radius: 50%;
+}
+
+.left {
+  margin-right:auto;
+}
+
+.member {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  border-radius: 0px;
+  color: #303C6C;
+}
+
+.member:hover{
+  background: #FBE8A6;
+  color:#fff;
+  cursor: pointer;
+}
+
+.right {
+  margin: 20px;
+}
