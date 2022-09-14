@@ -14,7 +14,7 @@ import { ImPlus } from "react-icons/im";
 import { GrFlag } from "react-icons/gr";
 import { GrLocation } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../UserProfile/psb-exports"
+import { getUser } from "../UserProfile/psb-exports";
 
 import "./Pet.css";
 

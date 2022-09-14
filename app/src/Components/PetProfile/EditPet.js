@@ -6,7 +6,8 @@ import Image from "react-bootstrap/Image";
 
 function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
   const [openPortal, setOpenPortal] = useState(false);
-  const [newPhotos, setNewPhotos] = useState([]);
+  const [deletePhotos, setDeletePhotos] = useState([]);
+  const [addPhotos, setAddPhotos] = useState([]);
   const [petAttributes, setPetAttributes] = useState({
     name: thisPet.name,
     location: thisPet.location,
@@ -19,6 +20,7 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     coverPhoto: thisPet.coverPhoto,
   });
   console.log(petAttributes);
+  console.log(addPhotos);
 
   function handleOnChange(e) {
     // console.log(e.target.type);
@@ -46,21 +48,24 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     if (photos.length == 0) {
       alert("At least one photo is required to upload");
     } else {
-    fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets/${thisPet.petId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(petAttributes),
-    })
-      .then((r) => r.json())
-      .catch((err) => {
-        console.log(err);
-      })
-      .then((data) => {
-        setIsEdit(false);
-        setThisPet(data);
-      });
+      fetch(
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets/${thisPet.petId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(petAttributes),
+        }
+      )
+        .then((r) => r.json())
+        .catch((err) => {
+          console.log(err);
+        })
+        .then((data) => {
+          setIsEdit(false);
+          setThisPet(data);
+        });
     }
   }
 
@@ -68,7 +73,8 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     if (e.target.value === petAttributes.coverPhoto) {
       alert("Must Select Different Cover Photo First Before Deletion");
     } else {
-      document.getElementById(`${i}`).remove();
+      console.log(thisPet.petId, i);
+      // document.getElementById(`${i}`).remove();
     }
   }
   return (
@@ -163,7 +169,37 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
             </div>
           );
         })}
+        {addPhotos?.map((photo) => {
+          return (
+            <div id={photo.name}>
+              <Image
+                style={{ display: "block", width: 250, padding: 30 }}
+                src={photo.preview}
+                key={photo.filename}
+                roundedCircle
+              />
 
+              <Button
+                onClick={(e) => handleDelete(e, photo.filename)}
+                value={photo.preview}
+              >
+                {" "}
+                Delete
+              </Button>
+
+              <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                <Form.Check
+                  name="coverPhoto"
+                  value={photo.preview}
+                  type="radio"
+                  label="Cover Photo"
+                  onClick={handleOnChange}
+                  defaultChecked={thisPet.coverPhoto === photo.preview}
+                />
+              </Form.Group>
+            </div>
+          );
+        })}
         <Button onClick={() => setOpenPortal(true)}> Add Photos</Button>
         <AddPhotosPortal
           refetchPet={refetchPet}
@@ -171,6 +207,8 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
           setOpenPortal={setOpenPortal}
           petId={thisPet.petId}
           thisPet={thisPet}
+          addPhotos={addPhotos}
+          setAddPhotos={setAddPhotos}
         />
       </div>
 
