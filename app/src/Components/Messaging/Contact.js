@@ -34,46 +34,46 @@ const Contact = ({
   let listItem;
   currentContact === contact
     ? (listItem = (
-        <li
-          className='member'
-          style={{
-            backgroundColor: '#F4976C',
-          }}
-        >
-          <img
-            className='align-image'
-            src={photo}
-            alt='contact_image'
-            width='50'
-            height='50'
-          />
-          {notificationList.includes(currentContact)
-            ? markAsRead(username, contact)
-            : null}
-          {contact}
-        </li>
-      ))
+      <li
+        className='member'
+        style={{
+          backgroundColor: '#F4976C',
+        }}
+      >
+        <img
+          className='align-image'
+          src={photo.toString()}
+          alt='contact_image'
+          width='50'
+          height='50'
+        />
+        {notificationList.includes(currentContact)
+          ? markAsRead(username, contact)
+          : null}
+        {contact}
+      </li>
+    ))
     : (listItem = (
-        <li
-          className='member'
-          onClick={() => {
-            setCurrentContact(contact);
-            markAsRead(username, contact);
-          }}
-        >
-          {notificationList && notificationList.includes(contact) && (
-            <MdOutlineMarkEmailUnread style={{ color: 'orange' }} />
-          )}
-          <img
-            className='align-image'
-            src={photo}
-            alt='contact_image'
-            width='50'
-            height='50'
-          />
-          {contact}
-        </li>
-      ));
+      <li
+        className='member'
+        onClick={() => {
+          setCurrentContact(contact);
+          markAsRead(username, contact);
+        }}
+      >
+        {notificationList && notificationList.includes(contact) && (
+          <MdOutlineMarkEmailUnread style={{ color: 'orange' }} />
+        )}
+        <img
+          className='align-image'
+          src={photo}
+          alt='contact_image'
+          width='50'
+          height='50'
+        />
+        {contact}
+      </li>
+    ));
 
   return listItem;
 };
