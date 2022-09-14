@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Form, Row, Col, InputGroup } from "react-bootstrap";
+import { Button, Form, Row, Col, Spinner } from "react-bootstrap";
 import axios from "axios";
 import "./userProfile.css";
 import DeleteBtn from "./DeleteBtn";
@@ -10,8 +10,7 @@ import PasswordStrengthIndicator from "./PwdIndicator.js";
 
 const SignUpCard = () => {
   const [username, setUserName] = useState();
-  const [password, setpassword] = useState();
-  const [password1, setpassword1] = useState();
+  const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState();
   const [errMessage, setErrMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -20,31 +19,28 @@ const SignUpCard = () => {
   const [userType, setUserType] = useState();
   const [passwordShown, setPasswordShown] = useState(false);
   const navigate = useNavigate();
-
   const [passwordFocused, setPasswordFocused] = useState(false);
-  const [password2, setPassword2] = useState("");
   const [passwordValidity, setPasswordValidity] = useState({
     minChar: null,
     number: null,
     specialChar: null,
     lowercase: null,
-    uppercase: null
+    uppercase: null,
   });
-
 
   const onChangePassword = (password) => {
     const isNumberRegx = /[0-9]/;
     const specialCharacterRegx = /[!@#$%^&*]/;
     const lowercaseRegx = /[a-z]/;
-    const uppercaseRegx = /[A-Z]/
-    setPassword2(password);
+    const uppercaseRegx = /[A-Z]/;
+    setPassword(password);
 
     setPasswordValidity({
       minChar: password.length >= 8 ? true : false,
       number: isNumberRegx.test(password) ? true : false,
       specialChar: specialCharacterRegx.test(password) ? true : false,
       lowercase: lowercaseRegx.test(password) ? true : false,
-      uppercase: uppercaseRegx.test(password) ? true : false
+      uppercase: uppercaseRegx.test(password) ? true : false,
     });
   };
 
@@ -62,32 +58,23 @@ const SignUpCard = () => {
 
   const pwdValidator = () => {
     console.log("firing validator");
-    if (password !== password1) {
-      setErrMessage("Passwords do not match");
-      console.log(errMessage);
+    if (password.length < 8) {
+      setErrMessage("Your password must be at least 8 characters");
+    } else if (password.length > 16) {
+      setErrMessage("Your password must be fewer than 16 characters");
+    } else if (password.search(/[!@#$%^&*]/) < 0) {
+      setErrMessage(
+        "Your password must contain at least one special character from !@#$%^&*"
+      );
+    } else if (password.search(/[a-z]/) < 0) {
+      setErrMessage("Your password must contain at least one lowercase letter");
+    } else if (password.search(/[A-Z]/) < 0) {
+      setErrMessage("Your password must contain at least one uppercase letter");
+    } else if (password.search(/[0-9]/) < 0) {
+      setErrMessage("Your password must contain at least one digit");
     } else {
-      if (password.length < 8) {
-        setErrMessage("Your password must be at least 8 characters");
-      } else if (password.length > 16) {
-        setErrMessage("Your password must be fewer than 16 characters");
-      } else if (password.search(/[a-z]/) < 0) {
-        setErrMessage(
-          "Your password must contain at least one lowercase letter."
-        );
-      } else if (password.search(/[A-Z]/) < 0) {
-        setErrMessage(
-          "Your password must contain at least one uppercase letter."
-        );
-      } else if (password.search(/[!@#$%^&*]/) < 0) {
-        setErrMessage(
-          "Your password must contain at least one special character from !@#$%^&*"
-        );
-      } else if (password.search(/[0-9]/) < 0) {
-        setErrMessage("Your password must contain at least one digit.");
-      } else {
-        setErrMessage("");
-        createUserService({ firstName, lastName, username, password, email });
-      }
+      setErrMessage("");
+      createUserService({ firstName, lastName, username, password, email });
     }
   };
 
@@ -142,15 +129,20 @@ const SignUpCard = () => {
             headers: { Authorization: res.headers.authorization },
           })
           .then((response) => {
-            if (response.status === 200) {
+            if (response.status === 202) {
               setSuccessMessage("Account Successfully Created");
             }
           })
           .then(() => {
             setTimeout(() => {
+              setSuccessMessage("Redirecting to Login");
+            }, 1000);
+          })
+          .then(() => {
+            setTimeout(() => {
               setSuccessMessage("");
               navigate("/login", { replace: true });
-            }, 1000);
+            }, 3000);
           })
           .catch((error) => {
             deleteAccountService(res.headers.authorization);
@@ -249,47 +241,32 @@ const SignUpCard = () => {
               <Col>
                 <label>Password </label>
               </Col>
-              <Col md="auto">
-              </Col>
-            </Row>
-            <Row>
-            <Col xs={10}>
-              <input
-                type={passwordShown ? "text" : "password"}
-                required
-                className="form-control mt-1"
-                placeholder="Password"
-                // onChange={(e) => setpassword(e.target.value)}
-                onFocus={() => setPasswordFocused(true)}
-                onChange={(e) => onChangePassword(e.target.value)}
-              />
-            </Col>
-            <Col >
+              <Col>
               <div onClick={togglePassword}>
-                {passwordShown ? (
-                  <i className="bi bi-eye"></i>
-                ) : (
-                  <i className="bi bi-eye-slash"></i>
-                )}
-              </div>
-            </Col>
+                  {passwordShown ? (
+                    <i className="bi bi-eye i-signup"></i>
+                  ) : (
+                    <i className="bi bi-eye-slash i-signup"></i>
+                  )}
+                </div>
+              </Col>
+              <Col md="auto"></Col>
             </Row>
-          </div>
-          <div className="form-group mt-1">
-            <label>Confirm Password </label>
-            <input
-              type={passwordShown ? "text" : "password"}
-              required
-              className="form-control mt-1"
-              placeholder="Password"
-              onChange={(e) => setpassword1(e.target.value)}
-            />
+                <input
+                  type={passwordShown ? "text" : "password"}
+                  required
+                  className="form-control mt-1"
+                  placeholder="Password"
+                  onFocus={() => setPasswordFocused(true)}
+                  onChange={(e) => onChangePassword(e.target.value)}
+                />
           </div>
           <div className="mt-3">
             {["radio"].map((type) => (
               <div key={`inline-${type}`} className="mb-3">
                 <Form.Check
                   inline
+                  required
                   label="USER"
                   value="USER"
                   name="group1"
@@ -299,6 +276,7 @@ const SignUpCard = () => {
                 />
                 <Form.Check
                   inline
+                  required
                   label="ORGANIZATION"
                   value="ORGANIZATION"
                   name="group1"

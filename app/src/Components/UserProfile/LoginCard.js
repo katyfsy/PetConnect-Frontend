@@ -5,37 +5,45 @@ import axios from "axios";
 import "./userProfile.css";
 import { useNavigate } from "react-router-dom";
 
-import {    getBearerToken,
+import {
+  getBearerToken,
   getUser,
   setTokenLocal,
   setTokenSession,
   setUserNameLocal,
   setUserNameSession,
-  PSB_API_URL } from "./psb-exports"
+  PSB_API_URL,
+} from "./psb-exports";
 
 const LoginCard = () => {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
   const [rememberMe, setRememberMe] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false);
 
   const navigate = useNavigate();
 
+  const togglePassword = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown(!passwordShown);
+  };
 
   const setToken = (token) => {
-    if(rememberMe){
+    if (rememberMe) {
       setTokenLocal(token);
     } else {
       setTokenSession(token);
     }
-  }
+  };
 
   const setUser = (user) => {
-    if(rememberMe){
+    if (rememberMe) {
       setUserNameLocal(user);
     } else {
       setUserNameSession(user);
     }
-  }
+  };
 
   const loginUser = (credentials) => {
     axios
@@ -46,44 +54,29 @@ const LoginCard = () => {
       .then((res) => setToken(res.headers.authorization))
       .then(() => setUser(username))
       .then(() => {
-        console.log("token: ", getBearerToken())
-        console.log("user: ", getUser())
+        console.log("token: ", getBearerToken());
+        console.log("user: ", getUser());
         navigate("/", { replace: true });
       })
       .catch((error) => {
         console.log(error);
         alert("Password or Username Incorrect!");
       });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("SERVER URL: ",process.env.PSB_API_URL)
+    console.log("SERVER URL: ", process.env.PSB_API_URL);
     loginUser({ username, password });
   };
 
   const handleRememberMe = (e) => {
-    if(e.target.checked){
-      setRememberMe(true)
+    if (e.target.checked) {
+      setRememberMe(true);
     } else {
-      setRememberMe(false)
+      setRememberMe(false);
     }
-  }
-  const[eye,seteye]=useState(true);
-const[password1,setpassword1]=useState("password");
-const[type,settype]=useState(false);
-  const Eye=()=>{
-    if(password=="password"){
-        setpassword1("text");
-        seteye(false);
-        settype(true);
-    }
-    else{
-        setpassword1("password");
-        seteye(true);
-        settype(false);
-    }
-}
+  };
 
   return (
     <div className="Auth-form-container">
@@ -100,20 +93,40 @@ const[type,settype]=useState(false);
             />
           </div>
           <div className="form-group mt-2">
-            <label>Password</label>
+          <Row>
+              <Col>
+                <label>Password </label>
+              </Col>
+              <Col>
+            <div onClick={togglePassword}>
+              {passwordShown ? (
+                <i className="bi bi-eye i-login"></i>
+              ) : (
+                <i className="bi bi-eye-slash i-login"></i>
+              )}
+            </div>
+            </Col>
+            </Row>
+
+ 
             <input
-              type="password"
+              type={passwordShown ? "text" : "password"}
               className="form-control mt-1"
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <i className="bi bi-eye"></i>
+
+
+
           </div>
           <div className="d-grid gap-2 mt-4 justify-content-center">
-          <Form.Check aria-label="option 1" type="checkbox" name="group1">
-          <Form.Check.Input type='checkbox' onChange={e => handleRememberMe(e)}/>
-            <Form.Check.Label>Remember Me</Form.Check.Label>
-          </Form.Check>
+            <Form.Check aria-label="option 1" type="checkbox" name="group1">
+              <Form.Check.Input
+                type="checkbox"
+                onChange={(e) => handleRememberMe(e)}
+              />
+              <Form.Check.Label>Remember Me</Form.Check.Label>
+            </Form.Check>
           </div>
           <div className="d-grid gap-2 mt-4">
             <Button variant="outline-dark" type="submit">
@@ -127,5 +140,5 @@ const[type,settype]=useState(false);
       </Form>
     </div>
   );
-}
+};
 export default LoginCard;

@@ -4,8 +4,8 @@ const PasswordStrengthIndicator = ({
   validity: { minChar, number, specialChar, lowercase, uppercase },
 }) => {
   return (
-    <div className="mt-3">
-      <ul className="text-muted">
+    <div className="mt-3 text-muted">
+
         <h6 className="text-dark">Password Requirements:</h6>
         <PasswordStrengthIndicatorItem
           isValid={minChar}
@@ -27,7 +27,6 @@ const PasswordStrengthIndicator = ({
           isValid={uppercase}
           text="At least 1 uppercase letter"
         />
-      </ul>
     </div>
   );
 };
