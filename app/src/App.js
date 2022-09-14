@@ -19,7 +19,7 @@ function App() {
 
   const navigate = useNavigate();
 
-  const loggedIn = localStorage.getItem('token');
+  const loggedIn = getBearerToken();
 
   useEffect(() => {
     // clear local and session storage if token is expired
