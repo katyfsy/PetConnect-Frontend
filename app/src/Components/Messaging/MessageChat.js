@@ -9,6 +9,18 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
   // <div className="message-data">{message.message}</div>
   // {message.senderName === username && <div className="avatar self">{message.senderName}</div>}
   // </li>
+  const formatDate = (string) => {
+    var options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    };
+    return new Date(string).toLocaleDateString([], options);
+    // return new Date(string).toLocaleDateString('en-US',options);
+  };
 
   return (
     <Container>
@@ -16,11 +28,11 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
         <div>Click on contact to view messages.</div>
       ) : (
         <div className='chat-content'>
-          <div>
+          <ul>
             {privateChats &&
               [...privateChats.get(currentContact)].map((message, index) => {
                 return (
-                  <div
+                  <li
                     className={`message ${
                       message.senderName === username && 'self'
                     }`}
@@ -47,10 +59,13 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
                         {/* {message.senderPhoto} */}
                       </div>
                     )}
-                  </div>
+                    <div className='message-time'>
+                      {formatDate(message.timestamp)}
+                    </div>
+                  </li>
                 );
               })}
-              </div>
+          </ul>
         </div>
       )}
     </Container>

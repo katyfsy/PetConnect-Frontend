@@ -43,7 +43,7 @@ const Contact = ({
           <div className='left'>
             <img
               className='align-image'
-              src={photo}
+              src={photo.toString()}
               alt='contact_image'
               width='50'
               height='50'
@@ -66,7 +66,7 @@ const Contact = ({
           <div className='left'>
             <img
               className='align-image'
-              src={photo}
+              src={photo.toString()}
               alt='contact_image'
               width='50'
               height='50'

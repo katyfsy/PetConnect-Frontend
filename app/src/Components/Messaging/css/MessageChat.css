@@ -36,6 +36,13 @@
   font-family: 'Nunito', sans-serif;
 }
 
+.message-time{
+  padding:5px;
+  font-family: 'Nunito', sans-serif;
+  color: slategray;
+  font-size: 12px;
+}
+
 .message.self {
   justify-content: end;
   background-color: aliceblue;

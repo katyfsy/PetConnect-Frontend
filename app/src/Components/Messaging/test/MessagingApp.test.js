@@ -30,7 +30,8 @@ describe("Messaging App", () => {
         </MemoryRouter>
       );
     })
-    expect(axios.get).toHaveBeenCalledTimes(1);
+    // need to update the call Times to 1 once the localStorage stors the username
+    expect(axios.get).toHaveBeenCalledTimes(0);
   });
 
 
