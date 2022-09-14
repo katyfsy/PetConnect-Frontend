@@ -5,8 +5,6 @@ import axios from 'axios';
 // import getUser from '../UserProfile/DummyData';
 import { getBearerToken, getUser, clearStorage, PSB_API_URL, getUserType } from "../UserProfile/psb-exports"
 
-
-
 function Header() {
   const [userIcon, setUserIcon] = useState({
     username: '',
@@ -47,10 +45,6 @@ function Header() {
       if(getBearerToken() !== null & getBearerToken() !== "") {
         doGetUser();
       }
-    //local data fetch for development
-    // const result = getUser();
-    // setUserIcon(result);
-    // setUserName(localStorage.getItem('username'));
   },[])
 
   const renderNotification = () => {
@@ -86,7 +80,6 @@ function Header() {
                   </OverlayTrigger>
                 )}
             }
-
 
   if(username === "" || username === null) {
     return (

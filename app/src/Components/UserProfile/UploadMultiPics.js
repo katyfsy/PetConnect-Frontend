@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Image } from 'react-bootstrap';
+import { Button, Image, Container, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { getBearerToken, PSB_API_URL } from "./psb-exports";
 
@@ -8,9 +8,6 @@ function UploadMultiPics({ images, setImages, presignedUrls, setPresignedUrls, u
   const MAX_COUNT = 5;
 
   const [fileLimit, setFileLimit] = useState(false);
-  // const [images, setImages] = useState([]);
-  // const [presignedUrls, setPresignedUrls] = useState([])
-  // const [urlCache, setUrlCache] = useState([]);
 
   const handleUploadFiles = (files) => {
     const uploaded = [...images];
@@ -72,26 +69,29 @@ function UploadMultiPics({ images, setImages, presignedUrls, setPresignedUrls, u
 
   return (
     <div>
-      <h5>Upload Pictures</h5>
-      {images.map((image) => {
-        return (<div>
-                  <Image
-                    src={URL.createObjectURL(image)}
-                    className="review-photo"
-                    thumbnail style={{width:100, marginLeft: 5}}
-                    key={image.name}
-                  />
-                  <div>
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      style={{marginLeft:20, marginBottom:7, marginTop:3}}
-                      onClick={() => handleRemoveImage(image.name)}
-                    >Remove</Button>
-                  </div>
-                </div>
-                )
-      })}
+      <h5>Upload Pictures ({images.length}/5)</h5>
+      <Container>
+        <Row>
+          {images.map((image) => {
+            return (<Col md="auto">
+                      <Image
+                        src={URL.createObjectURL(image)}
+                        className="review-photo"
+                        thumbnail style={{width:100, marginLeft: 5}}
+                        key={image.name}
+                      />
+                      <div>
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          style={{marginLeft:20, marginBottom:7, marginTop:3}}
+                          onClick={() => handleRemoveImage(image.name)}
+                        >Remove</Button>
+                      </div>
+                    </Col>)
+                  })}
+          </Row>
+      </Container>
       <div className="upload-button">
         <input onChange={handleFileEvent} type="file" multiple accept="image/*" disabled={fileLimit}/>
       </div>

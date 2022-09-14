@@ -9,27 +9,24 @@ function SingleReview({ review, votedOnReviews }) {
 
   const [upvotes, setUpvotes] = useState(review.upvotes);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [time, setTime] =useState();
 
   useEffect(() => {
     if(votedOnReviews.includes(review.reviewId)) {
       setButtonDisabled(true);
     }
+    let stillUtc = moment.utc(review.timeStamp).toDate();
+    let local = moment(stillUtc).local().format('YYYY-MM-DD HH:mm:ss');
+    setTime(local);
   }, [review.reviewId, votedOnReviews])
 
   const handleUpvote = () => {
-    // let newVotedOnReviews = votedOnReviews.push(review.reviewId);
-    // axios.patch(`${PSB_API_URL}/api/reviews/upvote/${review.reviewId}`,
-    //   {headers: {
-    //   'Authorization': getBearerToken()
-    //   }})
-    //   .then(() => {
-    //     axios.patch(`${PSB_API_URL}/api/user/${review.writtenByUsername}`, {votedOnReviews: newVotedOnReviews},
-    //     {headers: {
-    //       'Authorization': getBearerToken()
-    //     }})
-    //   })
-    //   .then(() => setUpvotes(upvotes + 1))
-    //   .catch((err) => console.log(err));
+    axios.patch(`${PSB_API_URL}/api/reviews/upvote/${review.reviewId}`, {},
+      {headers: {
+      'Authorization': getBearerToken()
+      }})
+      .then(() => setUpvotes(upvotes + 1))
+      .catch((err) => console.log(err));
     setUpvotes(upvotes + 1);
     setButtonDisabled(true);
   }
@@ -71,7 +68,7 @@ function SingleReview({ review, votedOnReviews }) {
       </Row>
       <Row className="mt-3">
         <Col xs={9}>
-          <p style={{textAlign: "left", paddingLeft: "20px"}}>{moment(review.timeStamp).fromNow()}</p>
+          <p style={{textAlign: "left", paddingLeft: "20px"}}>{moment(time).fromNow()}</p>
         </Col>
         <Col xs={1}>
             <Button variant="warning" disabled={buttonDisabled} onClick={() => handleUpvote()}>☺</Button>
