@@ -42,11 +42,11 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
     setSearchQuery(value);
     setDropdownDisplay(false);
     if (value === "All Cats") {
-      var param = "?type=cat";
+      var param = "?search=cat&type=cat";
       // set searchQuery to cat
       setSearchQuery("cat");
     } else if (value === "All Dogs"){
-      var param = "?type=dog";
+      var param = "?search=dog&type=dog";
       setSearchQuery("dog");
     }
 
@@ -105,7 +105,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
       if (zipcode.length === 0) {
         var params = searchQuery;
       } else {
-        params = searchQuery + " " + zipcode;
+        params = searchQuery + "  &zip=" + zipcode ;
       }
       console.log('params ===>:',params);
       // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
