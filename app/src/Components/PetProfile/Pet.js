@@ -14,6 +14,7 @@ import { ImPlus } from "react-icons/im";
 import { GrFlag } from "react-icons/gr";
 import { GrLocation } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
+import { getUser } from "../UserProfile/psb-exports"
 
 import "./Pet.css";
 
@@ -24,7 +25,7 @@ function Pet() {
   const [petPhotos, setPetPhotos] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [fetchPet, refetchPet] = useState(false);
-  let user = localStorage.getItem("username");
+  let user = getUser();
   let petId = useParams();
   const navigate = useNavigate();
   console.log(petId);
@@ -98,7 +99,7 @@ function Pet() {
                     size="md"
                     onClick={() =>
                       navigate("/messages", {
-                        state: { recieverName: thisPet.owner },
+                        state: { receiverName: thisPet.owner },
                       })
                     }
                   >

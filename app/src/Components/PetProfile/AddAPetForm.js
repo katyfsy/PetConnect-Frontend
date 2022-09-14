@@ -9,6 +9,8 @@ import Col from "react-bootstrap/Col";
 import "./AddAPetForm.css";
 import Photos from "./Photos";
 import axios from "axios";
+import { getUser } from "../UserProfile/psb-exports"
+
 
 function AddAPetFormFunctional() {
   const [petId, setPetId] = useState(null);
@@ -16,7 +18,7 @@ function AddAPetFormFunctional() {
   const [photos, setPhotos] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
-  let user = localStorage.getItem("username");
+  let user = getUser()
   console.log(user);
   const [requiredPetFields, setrequiredPetFields] = useState({
     owner: user.toString(),
@@ -142,7 +144,7 @@ function AddAPetFormFunctional() {
             <Form onSubmit={handleOnSubmit} id="add-pet-form">
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Owner</Form.Label>
-                {localStorage.getItem("username") == "" ? (
+                {getUser() == "" ? (
                   <Form.Control
                     name="owner"
                     className="pet-owner-name"
@@ -153,7 +155,7 @@ function AddAPetFormFunctional() {
                 ) : (
                   <Form.Control
                     name="owner"
-                    value={localStorage.getItem("username")}
+                    value={getUser()}
                     className="pet-owner-name"
                     type="text"
                     placeholder="Pet's Owner's Name"

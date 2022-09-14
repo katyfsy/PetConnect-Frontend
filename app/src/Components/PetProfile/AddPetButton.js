@@ -3,12 +3,13 @@ import Button from "react-bootstrap/Button";
 
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { getUser } from "../UserProfile/psb-exports"
 function AddPetButton() {
   let navigate = useNavigate();
 
   function handleOnClick(event) {
     event.preventDefault();
-    if (localStorage.getItem("username") == "") {
+    if (getUser() == null) {
       Swal.fire({
         icon: "error",
         title: "Must Login",

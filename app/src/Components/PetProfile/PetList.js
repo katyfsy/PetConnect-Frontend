@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import PetCard from "./PetCard";
+import { getUser } from "../UserProfile/psb-exports"
 
 function PetList() {
   const [petList, setPetList] = useState([]);
   const [myPetList, setMyPetList] = useState([]);
   const [isClicked, setIsClicked] = useState(false);
   console.log(myPetList);
-  let user = localStorage.getItem("username");
-  console.log(localStorage.getItem("username"));
+  let user = getUser();
+  console.log(getUser());
   useEffect(() => {
     fetch(
       "http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets"

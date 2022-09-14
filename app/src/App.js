@@ -12,30 +12,20 @@ import PetProfile from "./Pages/PetProfile";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
-import PetPhotoList from "./Components/PetProfile/PetPhotoList";
+import MyProfile from './Pages/MyProfile';
+import { getBearerToken, getUser, clearStorage } from "./Components/UserProfile/psb-exports"
 
 function App() {
-  // const [token, setToken] = useState();
-  // if (!token){
-  //   return <Login setToken={setToken} />
-  // }
-  function clearStorage() {
-    localStorage.setItem("token", "");
-    localStorage.setItem("username", "");
-  }
 
   const navigate = useNavigate();
 
   const loggedIn = localStorage.getItem('token');
 
   useEffect(() => {
-    // clear local storage if token is expired
-    if (
-      localStorage.getItem("token") !== "" &&
-      localStorage.getItem("token") !== null
-    ) {
-      const decodedToken = jwt_decode(localStorage.getItem("token"));
-      if (Math.ceil(new Date().getTime() / 1000) > decodedToken.exp) {
+    // clear local and session storage if token is expired
+    if(getBearerToken() !== "" && getBearerToken() !== null) {
+      const decodedToken = jwt_decode(getBearerToken());
+      if(Math.ceil(new Date().getTime()/1000) > decodedToken.exp) {
         clearStorage();
         navigate("/login");
       }
@@ -47,7 +37,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/searchresults" element={<SearchResults />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:username" element={<Profile />} />
+        <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/profile/edit" element={<EditProfile />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
@@ -57,7 +48,6 @@ function App() {
         <Route path="/addpet" element={<AddAPet />} />
         {/* <Route path="/pet" element={<Pet />} /> */}
         <Route path="/pet/:id" element={<PetProfile />} />
-        <Route path="/photolist" element={<PetPhotoList />} />
       </Routes>
     </div>
   );
