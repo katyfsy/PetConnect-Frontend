@@ -93,7 +93,7 @@ function EditProfile() {
     event.preventDefault();
     const file = inputRef.current.files[0];
     // get presigned url from backend server
-    axios.get("${PSB_API_URL}/api/upload",
+    axios.get(`${PSB_API_URL}/api/upload`,
       {headers: {
         'Authorization': getBearerToken()
       }})

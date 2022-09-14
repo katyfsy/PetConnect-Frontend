@@ -10,16 +10,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useLocation } from 'react-router-dom';
 import audio from './static/bark.wav';
-import { getUser } from "../UserProfile/psb-exports"
+import { getUser, PSB_API_URL, getBearerToken } from "../UserProfile/psb-exports"
 
 var stompClient = null;
 
 const MessagingApp = () => {
   const { state } = useLocation();
   const [userData, setUserData] = useState({
-    // uncomment once the signup is open up
-    // username: getUser(),
-    username: '',
+    username: getUser(),
     // check the state, if state !== null -> redirected from pet page
     receiverName: state ? state.receiverName : '',
     connected: false,
@@ -36,11 +34,18 @@ const MessagingApp = () => {
   const [notificationList, setNotificationList] = useState([]);
 
   useEffect(() => {
-    // remove the if once we retrieve from localhost (signup enabled)
     if (userData.username) {
+      let Sock = new SockJS(
+        'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
+      );
+      // let Sock = new SockJS('http://localhost:8080/ws');
+      stompClient = over(Sock);
+      stompClient.connect({}, onConnected, onError);
+      getAllChats(userData.username);
+      getAllNotifications(userData.username);
       axios
         .get(
-          `http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/public/user/${userData.username}`
+          `${PSB_API_URL}/api/public/user/${userData.username}.jpg`,
         )
         .then((response) => {
           setUserData({ ...userData, senderPhoto: response.data.userPhoto });
@@ -57,7 +62,7 @@ const MessagingApp = () => {
     if (userData.receiverName) {
       axios
         .get(
-          `http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/public/user/${userData.receiverName}`
+          `${PSB_API_URL}/api/public/users/${userData.receiverName}.jpg`,
         )
         .then((response) => {
           setUserData({
@@ -71,18 +76,6 @@ const MessagingApp = () => {
     }
 
   }, [userData.receiverName]);
-
-  const onLanding = (event) => {
-    event.preventDefault();
-    let Sock = new SockJS(
-      'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
-    );
-    // let Sock = new SockJS('http://localhost:8080/ws');
-    stompClient = over(Sock);
-    stompClient.connect({}, onConnected, onError);
-    getAllChats(userData.username);
-    getAllNotifications(userData.username);
-  };
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
@@ -190,17 +183,6 @@ const MessagingApp = () => {
   return (
     <div style={{ fontFamily: '"Nunito", "sans-serif"' }}>
       <div>
-        <span style={{ 'fontWeight': 'bold' }}>
-          Username:
-          <input
-            id='user-name'
-            name='username'
-            placeholder='Enter the user name'
-            value={userData.username}
-            onChange={handleName}
-          />
-          <button onClick={onLanding}>Connect</button>
-        </span>
         <span style={{ 'fontWeight': 'bold' }}>
           Receiver:
           <input

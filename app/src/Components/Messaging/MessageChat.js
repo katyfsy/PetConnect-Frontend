@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Container from 'react-bootstrap/Container';
 import './css/MessageChat.css';
 
@@ -9,6 +9,15 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
   // <div className="message-data">{message.message}</div>
   // {message.senderName === username && <div className="avatar self">{message.senderName}</div>}
   // </li>
+
+  let date = '';
+
+  const formatDayMonth = (string) => {
+    var options = { hour: 'numeric', minute: 'numeric' };
+    return new Date(string).toLocaleDateString(navigator.language, {});
+    // return new Date(string).toLocaleDateString('en-US',options);
+  };
+
   const formatDate = (string) => {
     var options = { hour: 'numeric', minute: 'numeric' };
     return new Date(string).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
@@ -31,6 +40,10 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
                     }`}
                     key={index}
                   >
+                    <div>
+                      {formatDayMonth(message.timestamp).toString() === date.toString() ? null :
+                        date = formatDayMonth(message.timestamp)
+                    }</div>
                     {message.senderName !== username && (
                       <div className='avatar'>
                         <img
