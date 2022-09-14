@@ -16,11 +16,10 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
         <div>Click on contact to view messages.</div>
       ) : (
         <div className='chat-content'>
-          <ul className='chat-messages'>
             {privateChats &&
               [...privateChats.get(currentContact)].map((message, index) => {
                 return (
-                  <li
+                  <div
                     className={`message ${
                       message.senderName === username && 'self'
                     }`}
@@ -47,10 +46,9 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
                         {/* {message.senderPhoto} */}
                       </div>
                     )}
-                  </li>
+                  </div>
                 );
               })}
-          </ul>
         </div>
       )}
     </Container>

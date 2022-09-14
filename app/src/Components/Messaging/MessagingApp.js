@@ -189,6 +189,7 @@ const MessagingApp = () => {
         senderPhoto: userData.senderPhoto,
         receiverPhoto: userData.receiverPhoto,
       };
+      console.log("CHAT MESSAGE: ", chatMessage);
       // console.log("from sendPrivateMessage: ", !privateChats.get(chatMessage.receiverName))
       if (!privateChats.get(chatMessage.receiverName)) {
         privateChats.set(chatMessage.receiverName, []);
@@ -213,7 +214,7 @@ const MessagingApp = () => {
   return (
     <div style={{ fontFamily: '"Nunito", "sans-serif"' }}>
       <div>
-        <span style={{ 'font-weight': 'bold' }}>
+        <span style={{ 'fontWeight': 'bold' }}>
           Username:
           <input
             id='user-name'
@@ -224,7 +225,7 @@ const MessagingApp = () => {
           />
           <button onClick={onLanding}>Connect</button>
         </span>
-        <span style={{ 'font-weight': 'bold' }}>
+        <span style={{ 'fontWeight': 'bold' }}>
           Receiver:
           <input
             id='receiver-name'
