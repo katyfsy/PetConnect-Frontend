@@ -3,7 +3,7 @@ import { Container, Dropdown, DropdownButton, Row, Col } from 'react-bootstrap';
 import SingleReview from './SingleReview';
 import ReviewSummary from './ReviewSummary';
 import {orgReviews} from './DummyData';
-import { getBearerToken } from "./userInfo";
+import { getBearerToken, getUser } from "./userInfo";
 import axios from 'axios';
 
 function Reviews() {
@@ -12,8 +12,20 @@ function Reviews() {
   const [avgRating, setAvgRating] = useState(0);
   const [ratingPercentage, setRatingPercentage] = useState([0,0,0,0,0]);
   const [ratingCount, setRatingCount] = useState([0,0,0,0,0]);
+  const [votedOnReviews, setVotedOnReviews] =useState([]);
 
   useEffect(() => {
+    axios.get(`a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
+    {headers: {
+      'Authorization': getBearerToken()
+    }})
+    .then((res) => {
+      if(res.data.votedOnReviews === undefined || res.data.votedOnReviews === null) {
+        setVotedOnReviews([]);
+      } else {
+      setVotedOnReviews(res.data.votedOnReviews)
+    }})
+    .catch((err) => console.log(err))
     setReviews(orgReviews);
     setCurrentReviews(orgReviews);
     calculateAvgRating();
@@ -162,7 +174,7 @@ function Reviews() {
           <div className="overflow-auto" style={{height: 500}}>
             {
               currentReviews.map((review) => {
-                return <SingleReview review={review} key={review.firstName}/>
+                return <SingleReview review={review} key={review.firstName} votedOnReviews={votedOnReviews}/>
               })
             }
           </div>

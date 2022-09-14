@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Card, Image, Col, Row } from 'react-bootstrap';
 import Rating from 'react-rating';
 import moment from 'moment';
 import axios from 'axios';
 
-function SingleReview({ review }) {
+function SingleReview({ review, votedOnReviews }) {
 
   const [upvotes, setUpvotes] = useState(review.upvotes);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  useEffect(() => {
+    if(votedOnReviews.includes(review.reviewId)) {
+      setButtonDisabled(true);
+    }
+  }, [review.reviewId, votedOnReviews])
 
   const handleUpvote = () => {
     // axios.patch(`api/reviews/upvote/${review.reviewId}`)
@@ -14,6 +21,7 @@ function SingleReview({ review }) {
     //   .then(() => setUpvotes(upvotes + 1))
     //   .catch((err) => console.log(err));
     setUpvotes(upvotes + 1);
+    setButtonDisabled(true);
   }
   return (
     <Card className="mb-5">
@@ -55,7 +63,7 @@ function SingleReview({ review }) {
           <p style={{textAlign: "left", paddingLeft: "20px"}}>{moment(review.timeStamp).fromNow()}</p>
         </Col>
         <Col xs={1}>
-            <Button variant="Light" onClick={() => handleUpvote()}>☺</Button>
+            <Button variant="Light" disabled={buttonDisabled} onClick={() => handleUpvote()}>☺</Button>
         </Col>
         <Col xs={2}>
           <p style={{textAlign: "left", paddingTop:"7px"}}>Helpful ({upvotes})</p>
