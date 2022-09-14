@@ -1,11 +1,16 @@
 import React, { useState, useMemo, useCallback } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import axios from "axios";
 import "./Photos.css";
 import { useDropzone } from "react-dropzone";
 
-const Photos = ({photos, coverPhoto, handleAddPhotos, handleRemovePhotos, handleCoverPhoto}) => {
-
+const Photos = ({
+  photos,
+  coverPhoto,
+  handleAddPhotos,
+  handleRemovePhotos,
+  handleCoverPhoto,
+}) => {
   const MAX_NUMBER_OF_PHOTOS = 5;
 
   const onDrop = useCallback(
@@ -29,12 +34,11 @@ const Photos = ({photos, coverPhoto, handleAddPhotos, handleRemovePhotos, handle
     [photos]
   );
 
-
   const handleRemoveThumb = (index) => {
     if (index === coverPhoto) {
       handleCoverPhoto(0);
     } else if (index < coverPhoto) {
-      handleCoverPhoto(coverPhoto - 1)
+      handleCoverPhoto(coverPhoto - 1);
     }
     handleRemovePhotos([
       ...photos.slice(0, index),
@@ -45,7 +49,6 @@ const Photos = ({photos, coverPhoto, handleAddPhotos, handleRemovePhotos, handle
   const printHandle = (e) => {
     console.log(e.target);
   };
-
 
   const {
     getRootProps,
@@ -66,7 +69,6 @@ const Photos = ({photos, coverPhoto, handleAddPhotos, handleRemovePhotos, handle
     },
   });
 
-
   const additionalClass = useMemo(() => {
     let className = "";
     if (isDragAccept) {
@@ -78,7 +80,6 @@ const Photos = ({photos, coverPhoto, handleAddPhotos, handleRemovePhotos, handle
     }
     return className;
   }, [isFocused, isDragAccept, isDragReject]);
-
 
   const previews = photos.map((photo, index) => (
     <div className="photo-preview" key={index}>
@@ -105,9 +106,9 @@ const Photos = ({photos, coverPhoto, handleAddPhotos, handleRemovePhotos, handle
           id={`photo_${index + 1}`}
           value={index}
           onChange={(e) => {
-            printHandle(e)
-            handleCoverPhoto(index)}
-          }
+            printHandle(e);
+            handleCoverPhoto(index);
+          }}
           checked={coverPhoto === index}
           name="coverPhoto"
         />
@@ -116,45 +117,45 @@ const Photos = ({photos, coverPhoto, handleAddPhotos, handleRemovePhotos, handle
     </div>
   ));
 
-
   return (
-
-    <div className="container">
-      <div className="photo-uploader-container">
-        <div className="pu-title">
-          {`Upload up to ${MAX_NUMBER_OF_PHOTOS} photos for this pet profile`}
-        </div>
-        <div {...getRootProps({ className: `dropzone ${additionalClass}` })}>
-          <input {...getInputProps()} />
-          <span>{isDragActive ? "🐈‍" : "🐈‍⬛"}</span>
-          <p>Drag n' drop images here</p>
-          <p>or</p>
-          <button className="pu-browse-button" type="button" onClick={open}>
-            Browse files...
-          </button>
-        </div>
-        <div className="pu-status">
-          {`${photos.length} / ${MAX_NUMBER_OF_PHOTOS}`}
-        </div>
-        <div className="preview-container">{previews}</div>
-        {/* <button
+    <>
+      {/* <div className="container"> */}
+        <div className="photo-uploader-container">
+          <div className="pu-title">
+            {`Upload up to ${MAX_NUMBER_OF_PHOTOS} photos for this pet profile`}
+          </div>
+          <div {...getRootProps({ className: `dropzone ${additionalClass}` })}>
+            <input {...getInputProps()} />
+            <span>{isDragActive ? "🐈‍" : "🐈‍⬛"}</span>
+            <p>Drag n' drop images here</p>
+            <p>or</p>
+            <button className="pu-browse-button" type="button" onClick={open}>
+              Browse files...
+            </button>
+          </div>
+          <div className="pu-status">
+            {`${photos.length} / ${MAX_NUMBER_OF_PHOTOS}`}
+          </div>
+          <div className="preview-container">{previews}</div>
+          {/* <button
           className="pu-upload-button"
           type="button"
           onClick={() => handleUpload(PET_ID)}
         >
           Upload Photos
         </button> */}
-      </div>
-    </div>
+        </div>
+      {/* </div> */}
+    </>
   );
 };
 
 Photos.propTypes = {
-    photos: PropTypes.array.isRequired,
-    coverPhoto: PropTypes.number.isRequired,
-    handleAddPhotos: PropTypes.func.isRequired,
-    handleRemovePhotos: PropTypes.func.isRequired,
-    handleCoverPhoto: PropTypes.func.isRequired,
-}
+  photos: PropTypes.array.isRequired,
+  coverPhoto: PropTypes.number.isRequired,
+  handleAddPhotos: PropTypes.func.isRequired,
+  handleRemovePhotos: PropTypes.func.isRequired,
+  handleCoverPhoto: PropTypes.func.isRequired,
+};
 
 export default Photos;

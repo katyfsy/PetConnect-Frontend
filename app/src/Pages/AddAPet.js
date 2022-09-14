@@ -1,4 +1,3 @@
-import React from "react";
 import Navigationbar from "../Components/Default/Navbar";
 import Header from "../Components/Default/Header";
 import AddAPetForm from "../Components/PetProfile/AddAPetForm";
@@ -12,9 +11,7 @@ function AddAPet() {
         <Header />
       </Container>
       <Navigationbar />
-      <Container>
         <AddAPetForm />
-      </Container>
     </>
   );
 }

@@ -4,6 +4,9 @@ import Form from "react-bootstrap/Form";
 import Pet from "./Pet";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import "./AddAPetForm.css";
 import Photos from "./Photos";
 import axios from "axios";
 
@@ -49,16 +52,24 @@ function AddAPetFormFunctional() {
       },
     };
     return axios
-      .post(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets`, JSON.stringify(requiredPetFields), options)
-          .then((res) =>{
-            return res.data.petId
-          })
-          .catch((err) => console.log(err));
-  }
-  
+      .post(
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets`,
+        JSON.stringify(requiredPetFields),
+        options
+      )
+      .then((res) => {
+        setPetId(res.data.petId)
+        return res.data.petId;
+      })
+      .catch((err) => console.log(err));
+  };
+
   const getPresignedUrls = (files) => {
     return axios
-      .post("http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/uploadAuth", files)
+      .post(
+        "http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/uploadAuth",
+        files
+      )
       .then((res) => {
         return res.data;
       });
@@ -74,8 +85,7 @@ function AddAPetFormFunctional() {
       files.push(fileData);
     }
     return files;
-  }
-
+  };
 
   const handleUpload = async (petId) => {
     let files = extractFileData(petId);
@@ -125,103 +135,111 @@ function AddAPetFormFunctional() {
   };
   return (
     <>
+      <br />
       <Container>
-        <Form onSubmit={handleOnSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Owner</Form.Label>
-            {localStorage.getItem("username") == "" ? (
-              <Form.Control
-                name="owner"
-                className="pet-owner-name"
-                type="text"
-                placeholder="Pet's Owner's Name"
-                onChange={handleOnChange}
-              />
-            ) : (
-              <Form.Control
-                name="owner"
-                value={localStorage.getItem("username")}
-                className="pet-owner-name"
-                type="text"
-                placeholder="Pet's Owner's Name"
-                onChange={handleOnChange}
-              />
-            )}
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              name="name"
-              className="pet-name"
-              type="text"
-              placeholder="Pet's Name"
-              onChange={handleOnChange}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Location</Form.Label>
-            <Form.Control
-              name="location"
-              className="pet-location"
-              type="text"
-              onChange={handleOnChange}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Type</Form.Label>
-            <Form.Select
-              name="type"
-              className="pet-type"
-              onChange={handleOnChange}
-            >
-              <option>Please Select from the list below</option>
-              <option value="dog">Dog</option>
-              <option value="cat">Cat</option>
-              <option value="bird">Bird</option>
-              <option value="horse">Horse</option>
-              <option value="fish">Fish</option>
-              <option value="farmAnimal">Farm Animal</option>
-              <option value="smallPet">Small Pet</option>
-              <option value="reptile">Reptile</option>
-            </Form.Select>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              className="petDescription"
-              name="description"
-              as="textarea"
-              onChange={handleOnChange}
-            />
-          </Form.Group>
-          <div>
-            <Photos
-              photos={photos}
-              coverPhoto={coverPhoto}
-              handleAddPhotos={handleAddPhotos}
-              handleRemovePhotos={handleRemovePhotos}
-              handleCoverPhoto={handleCoverPhoto}
-            />
-          </div>
+        <Row>
+          <Col></Col>
+          <Col style={{ width: "60%" }}>
+            <Form onSubmit={handleOnSubmit} id="add-pet-form">
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Owner</Form.Label>
+                {localStorage.getItem("username") == "" ? (
+                  <Form.Control
+                    name="owner"
+                    className="pet-owner-name"
+                    type="text"
+                    placeholder="Pet's Owner's Name"
+                    onChange={handleOnChange}
+                  />
+                ) : (
+                  <Form.Control
+                    name="owner"
+                    value={localStorage.getItem("username")}
+                    className="pet-owner-name"
+                    type="text"
+                    placeholder="Pet's Owner's Name"
+                    onChange={handleOnChange}
+                  />
+                )}
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  name="name"
+                  className="pet-name"
+                  type="text"
+                  placeholder="Pet's Name"
+                  onChange={handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Location</Form.Label>
+                <Form.Control
+                  name="location"
+                  className="pet-location"
+                  type="text"
+                  onChange={handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Type</Form.Label>
+                <Form.Select
+                  name="type"
+                  className="pet-type"
+                  onChange={handleOnChange}
+                >
+                  <option>Please Select from the list below</option>
+                  <option value="dog">Dog</option>
+                  <option value="cat">Cat</option>
+                  <option value="bird">Bird</option>
+                  <option value="horse">Horse</option>
+                  <option value="fish">Fish</option>
+                  <option value="farmAnimal">Farm Animal</option>
+                  <option value="smallPet">Small Pet</option>
+                  <option value="reptile">Reptile</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  className="petDescription"
+                  name="description"
+                  as="textarea"
+                  onChange={handleOnChange}
+                />
+              </Form.Group>
+              <div>
+                <Photos
+                  photos={photos}
+                  coverPhoto={coverPhoto}
+                  handleAddPhotos={handleAddPhotos}
+                  handleRemovePhotos={handleRemovePhotos}
+                  handleCoverPhoto={handleCoverPhoto}
+                />
+              </div>
 
-          {isClicked ? null : (
-            <Button
-              type="submit"
-              className="add-pet-button"
-            >
-              Add Pet
-            </Button>
-          )}
-          <br />
-          <br />
-          <Button type="submit" onClick={() => navigate(-1)}>
-            {" "}
-            Go Back{" "}
-          </Button>
-        </Form>
+              <br />
+              <Row>
+                <Col>
+                <Button variant="secondary" type="submit" onClick={() => navigate(-1)}>
+                  {"<"} Go Back
+                </Button>
+                </Col>
+                <Col>
+                {isClicked ? null : (
+                  <Button type="submit" className="add-pet-button">
+                    Add Pet
+                  </Button>
+                )}
+                </Col>
+              </Row>
+            </Form>
 
-        <br />
-        {isClicked ? <Pet requiredPetFields={requiredPetFields} /> : null}
+            <br />
+            {isClicked ? <Pet requiredPetFields={requiredPetFields} /> : null}
+          </Col>
+          <Col></Col>
+        </Row>
       </Container>
     </>
   );

@@ -5,9 +5,22 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
+import { BsBookmark } from "react-icons/bs";
+import { MdPets } from "react-icons/md";
+import { MdOutlinePets } from "react-icons/md";
+import { BsGenderFemale } from "react-icons/bs";
+import { BsGenderMale } from "react-icons/bs";
+import { ImPlus } from "react-icons/im";
+import { GrFlag } from "react-icons/gr";
+import { GrLocation } from "react-icons/gr";
+
+import "./Pet.css";
+
+import { LightgalleryItem } from "react-lightgallery";
 
 function Pet() {
   const [thisPet, setThisPet] = useState({});
+  const [petPhotos, setPetPhotos] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   let petId = useParams();
   console.log(petId);
@@ -25,6 +38,7 @@ function Pet() {
       .then((data) => {
         console.log(data);
         setThisPet(data);
+        setPetPhotos(data.photos);
       });
   }, []);
 
@@ -44,12 +58,6 @@ function Pet() {
   }
   return (
     <>
-      {user == thisPet.owner ? (
-        <>
-          <button onClick={() => setIsEdit(!isEdit)}>Edit</button>
-          <button onClick={handleOnDelete}>Delete</button>
-        </>
-      ) : null}
       <br />
 
       <Row className="mb-3">
@@ -57,29 +65,88 @@ function Pet() {
           <Image
             src={thisPet.coverPhoto}
             roundedCircle
-            className="profile-photo"
+            className="profile-photo rounded-circle"
           />
-          <div></div>
+          <BsBookmark />
+          <br />
+          {petPhotos.map((petPhoto) => (
+            <LightgalleryItem src={petPhoto.photo_url}>
+              <img
+                rounded-circle
+                src={petPhoto.photo_url}
+                width={"200"}
+                height={"200"}
+              />
+              {/* <img src="https://picsum.photos/200/300?image=2" /> */}
+            </LightgalleryItem>
+          ))}
         </Col>
         <Col>
+          <Row className="mb-3" id="pet-info-header">
+            <Col>
+              <h1 className="pet-name">{thisPet.name}</h1>
+              <p className="pet-location">
+                <GrLocation /> {thisPet.location}
+              </p>
+            </Col>
+            {user !== thisPet.owner ? (
+              <>
+                <Col>
+                  <Button variant="primary" size="md" href="/messages">
+                    Contact My Owner
+                  </Button>
+                </Col>
+                <Col>
+                  <Button variant="primary" size="md" href="/">
+                    <GrFlag /> Report Pet
+                  </Button>
+                </Col>
+                {/* <p className="user-email">{form.email}</p> */}
+              </>
+            ) : (
+              <>
+                <Col>
+                  <Button onClick={() => setIsEdit(!isEdit)}>Edit Details</Button>
+                </Col>
+                <Col>
+                  <br />
+                  <Button onClick={handleOnDelete}>Delete Pet</Button>
+                </Col>
+              </>
+            )}
+          </Row>
           <Row className="mb-3" id="user-name">
-            <h1 className="pet-name">{thisPet.name}</h1>
-            <p className="pet-location">{thisPet.location}</p>
+            <Col>
+              {" "}
+              <MdPets />{" "}
+            </Col>
+            <Col>
+              {user !== thisPet.owner ? (
+                <>
+                  <Button variant="primary" size="sm" href="/messages">
+                    Contact My Owner
+                  </Button>
+                </>
+              ) : null}
+            </Col>
           </Row>
-          <Row className="mb-3" id="contact-pet-owner">
-            <Button variant="primary" size="lg" href="/messages">
-              Contact My Owner
-            </Button>
-            <p className="user-email">{form.email}</p>
-          </Row>
+
           <Row className="mb-3" id="user-description">
             <h3 className="user-description">Description:</h3>
           </Row>
           <Row className="mb-3">
-            <p className="text-start">{form.description}</p>
+            {/* <p className="text-start">{form.description}</p> */}
           </Row>
         </Col>
-        <div>Pet Information Goes Here </div>
+        {/* {user == thisPet.owner ? (
+          <>
+            { <Button onClick={() => setIsEdit(!isEdit)}>Edit</Button>
+            <br />
+            <Button onClick={handleOnDelete}>Delete</Button> }
+          </>
+        ) : null} */}
+        <br/><br/>
+        <h3>Delete this section later </h3>
         {!isEdit ? (
           <>
             <p>Name: {thisPet.name}</p>

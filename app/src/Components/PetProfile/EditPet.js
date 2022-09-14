@@ -16,7 +16,7 @@ function EditPet({ thisPet, setIsEdit, setThisPet }) {
   function handleOnSubmit(e) {
     e.preventDefault();
     console.log(petAttributes);
-    fetch(`http://localhost:8080/api/pets/${thisPet.petId}`, {
+    fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets/${thisPet.petId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
