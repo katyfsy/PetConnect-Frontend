@@ -16,14 +16,17 @@ var stompClient = null;
 
 const MessagingApp = () => {
   const { state } = useLocation();
+  const senderPhotoRef = useRef('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png');
+  const receiverPhotoRef = useRef('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png')
+
   const [userData, setUserData] = useState({
     username: getUser(),
     // check the state, if state !== null -> redirected from pet page
     receiverName: state ? state.receiverName : '',
     connected: false,
     message: '',
-    senderPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png',
-    receiverPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png',
+    senderPhoto: senderPhotoRef.current,
+    receiverPhoto: receiverPhotoRef.current,
   });
 
   const privateChatsRef = useRef(new Map());
@@ -45,10 +48,11 @@ const MessagingApp = () => {
       getAllNotifications(userData.username);
       axios
         .get(
-          `${PSB_API_URL}/api/public/user/${userData.username}.jpg`,
+          `${PSB_API_URL}/api/public/user/${userData.username}`,
         )
         .then((response) => {
-          setUserData({ ...userData, senderPhoto: response.data.userPhoto });
+          senderPhotoRef.current = response.data.userPhoto;
+          setUserData({ ...userData, senderPhoto: senderPhotoRef.current });
         })
         .catch((err) => {
           console.log(err);
@@ -59,15 +63,18 @@ const MessagingApp = () => {
 
   useEffect(() => {
     // remove the if once we retrieve from localhost (signup enabled)
-    if (userData.receiverName) {
+    if (currentContact) {
       axios
         .get(
-          `${PSB_API_URL}/api/public/users/${userData.receiverName}.jpg`,
+          `${PSB_API_URL}/api/public/user/${currentContact}`,
         )
         .then((response) => {
+          console.log('Response from set receiverPhoto', response.data)
+          receiverPhotoRef.current = response.data.userPhoto;
+          console.log(receiverPhotoRef.current)
           setUserData({
             ...userData,
-            receiverPhoto: response.data.userPhoto,
+            receiverPhoto: receiverPhotoRef.current,
           });
         })
         .catch((err) => {
@@ -75,7 +82,7 @@ const MessagingApp = () => {
         });
     }
 
-  }, [userData.receiverName]);
+  }, [currentContact]);
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
@@ -159,8 +166,8 @@ const MessagingApp = () => {
         message: userData.message,
         timestamp: Date().toString(),
         status: 'MESSAGE',
-        senderPhoto: userData.senderPhoto,
-        receiverPhoto: userData.receiverPhoto,
+        senderPhoto: senderPhotoRef.current,
+        receiverPhoto: receiverPhotoRef.current,
       };
       if (!privateChats.get(chatMessage.receiverName)) {
         privateChatsRef.current.set(chatMessage.receiverName, []);
