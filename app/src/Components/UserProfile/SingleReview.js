@@ -12,7 +12,7 @@ function SingleReview({ review, votedOnReviews }) {
   const [time, setTime] =useState();
 
   useEffect(() => {
-    if(votedOnReviews.includes(review.reviewId)) {
+    if(votedOnReviews.includes(review.reviewId) || getBearerToken() === null) {
       setButtonDisabled(true);
     }
     let stillUtc = moment.utc(review.timeStamp).toDate();

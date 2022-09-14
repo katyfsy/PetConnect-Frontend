@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useParams } from "react-router-dom";
 import { getBearerToken, getUser, PSB_API_URL } from "./psb-exports";
 import UploadMultiPics from './UploadMultiPics';
+import Swal from 'sweetalert2';
 
 function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveStars, orgUsername,
                          filterFourStars, filterThreeStars, filterTwoStars, filterOneStars, updateReviews}) {
@@ -59,12 +60,21 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
     setImageUrl(imageUrlList);
   }
 
+  const postSuccessAlert = () => {
+    Swal.fire({
+      position: 'top',
+      title: 'Your review has been saved',
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
+
   const handlePostRequest = (form) => {
     axios.post(`${PSB_API_URL}/api/reviews/${orgUsername}`, form,
     {headers: {
       'Authorization': getBearerToken()
     }})
-    .then(() => alert('post success'))
+    .then(() => postSuccessAlert())
     .catch((err) => console.log(err));
   }
 
@@ -98,12 +108,19 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
     setStar(e);
   }
 
+  const loginAlert = () => {
+    Swal.fire({
+      title: 'ERROR',
+      text: 'Please login first to write a review.',
+    })
+  }
+
   const renderWriteReview = () => {
     if(getUser() === null || getUser() === "") {
       return (
       <div>
         <h5>Share your thoughts with other adopters</h5>
-        <Button onClick={() => alert("Please login first to write a review.")} >Write your review</Button>
+        <Button onClick={() => loginAlert()} >Write your review</Button>
       </div>
       )} else if (params.username !== getUser() && params.username !== undefined) {
         return (

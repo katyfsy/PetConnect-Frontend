@@ -30,7 +30,7 @@ function Profile() {
 
   useEffect(() => {
     const doGetUser = () => {
-      axios.get(`${PSB_API_URL}/api/public/user/${params.username}`,
+      axios.get(`${PSB_API_URL}/api/public/users/orgs/${params.username}`,
       {headers: {
         'Authorization': getBearerToken()
       }})

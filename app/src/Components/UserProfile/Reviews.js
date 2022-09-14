@@ -14,28 +14,30 @@ function Reviews({ orgUsername }) {
   const [votedOnReviews, setVotedOnReviews] =useState([]);
 
   useEffect(() => {
-    axios.get(`${PSB_API_URL}/api/user/${getUser()}`,
-    {headers: {
-      'Authorization': getBearerToken()
-    }})
+    if (getUser() !== null) {
+      axios.get(`${PSB_API_URL}/api/user/${getUser()}`,
+      {headers: {
+        'Authorization': getBearerToken()
+      }})
+      .then((res) => {
+        if(res.data.votedOnReviews === undefined || res.data.votedOnReviews === null) {
+          setVotedOnReviews([]);
+        } else {
+        setVotedOnReviews(res.data.votedOnReviews)
+      }})
+      .catch((err) => console.log(err))
+    }
+
+    axios.get(`${PSB_API_URL}/api/public/reviews/${orgUsername}`)
     .then((res) => {
-      if(res.data.votedOnReviews === undefined || res.data.votedOnReviews === null) {
-        setVotedOnReviews([]);
-      } else {
-      setVotedOnReviews(res.data.votedOnReviews)
-    }})
-    .then(() => {
-      axios.get(`${PSB_API_URL}/api/public/reviews/${orgUsername}`)
-        .then((res) => {
-          setReviews(res.data.reviews);
-          // setCurrentReviews(res.data.reviews);
-          sortMostRecent(res.data.reviews);
-          calculateAvgRating(res.data.reviews);
-          calculateRatingPercent(res.data.reviews);
-        })
-        .catch((err) => console.log(err))
-        })
+      setReviews(res.data.reviews);
+      // setCurrentReviews(res.data.reviews);
+      sortMostRecent(res.data.reviews);
+      calculateAvgRating(res.data.reviews);
+      calculateRatingPercent(res.data.reviews);
+    })
     .catch((err) => console.log(err))
+
   },[orgUsername])
 
   function calculateAvgRating(reviews) {
