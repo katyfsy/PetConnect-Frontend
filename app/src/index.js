@@ -12,9 +12,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* <LightgalleryProvider> */}
+      <LightgalleryProvider>
         <App />
-      {/* </LightgalleryProvider> */}
+      </LightgalleryProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
