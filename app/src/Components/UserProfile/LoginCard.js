@@ -10,7 +10,8 @@ import {    getBearerToken,
   setTokenLocal,
   setTokenSession,
   setUserNameLocal,
-  setUserNameSession} from "./userInfo.js"
+  setUserNameSession,
+  PSB_API_URL } from "./userInfo.js"
 
 const LoginCard = () => {
   const [username, setUserName] = useState();
@@ -68,6 +69,21 @@ const LoginCard = () => {
       setRememberMe(false)
     }
   }
+  const[eye,seteye]=useState(true);
+const[password1,setpassword1]=useState("password");
+const[type,settype]=useState(false);
+  const Eye=()=>{
+    if(password=="password"){
+        setpassword1("text");
+        seteye(false);
+        settype(true);
+    }
+    else{
+        setpassword1("password");
+        seteye(true);
+        settype(false);
+    }
+}
 
   return (
     <div className="Auth-form-container">
@@ -91,6 +107,7 @@ const LoginCard = () => {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
+            <i className="bi bi-eye"></i>
           </div>
           <div className="d-grid gap-2 mt-4 justify-content-center">
           <Form.Check aria-label="option 1" type="checkbox" name="group1">

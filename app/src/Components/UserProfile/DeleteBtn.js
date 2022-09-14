@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { getBearerToken, getUser, clearStorage } from "./userInfo.js";
+import { getBearerToken, PSB_API_URL, clearStorage } from "./userInfo.js";
 
 
 
@@ -13,7 +13,7 @@ const DeleteBtn = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const navigate = useNavigate();
-  let serverUrl = process.env.PSB_API_URL;
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ const DeleteBtn = () => {
   const deleteAccountAPI = () => {
     axios
       .delete(
-        `http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/user/${username}`,
+        `${PSB_API_URL}/api/user/${username}`,
         {
           headers: { Authorization: getBearerToken() },
         }

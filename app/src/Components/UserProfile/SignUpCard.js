@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Form, Row, Col } from "react-bootstrap";
+import { Button, Form, Row, Col, InputGroup } from "react-bootstrap";
 import axios from "axios";
 import "./userProfile.css";
 import DeleteBtn from "./DeleteBtn";
 import { useNavigate } from "react-router-dom";
+import { PSB_API_URL } from "./userInfo.js";
+import { Eye } from "react-bootstrap-icons";
+import PasswordStrengthIndicator from "./PwdIndicator.js";
 
 const SignUpCard = () => {
   const [username, setUserName] = useState();
@@ -16,7 +19,41 @@ const SignUpCard = () => {
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
   const [userType, setUserType] = useState();
+  const [passwordShown, setPasswordShown] = useState(false);
   const navigate = useNavigate();
+
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [password2, setPassword2] = useState("");
+  const [passwordValidity, setPasswordValidity] = useState({
+    minChar: null,
+    number: null,
+    specialChar: null,
+    lowercase: null,
+    uppercase: null
+  });
+
+
+  const onChangePassword = (password) => {
+    const isNumberRegx = /[0-9]/;
+    const specialCharacterRegx = /[!@#$%^&*]/;
+    const lowercaseRegx = /[a-z]/;
+    const uppercaseRegx = /[A-Z]/
+    setPassword2(password);
+
+    setPasswordValidity({
+      minChar: password.length >= 8 ? true : false,
+      number: isNumberRegx.test(password) ? true : false,
+      specialChar: specialCharacterRegx.test(password) ? true : false,
+      lowercase: lowercaseRegx.test(password) ? true : false,
+      uppercase: uppercaseRegx.test(password) ? true : false
+    });
+  };
+
+  const togglePassword = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown(!passwordShown);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -102,13 +139,9 @@ const SignUpCard = () => {
       .post("http://identity.galvanizelabs.net/api/auth", apiLogin)
       .then((res) => {
         axios
-          .post(
-            "http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/users",
-            newUserBody,
-            {
-              headers: { Authorization: res.headers.authorization },
-            }
-          )
+          .post(`${PSB_API_URL}/api/users`, newUserBody, {
+            headers: { Authorization: res.headers.authorization },
+          })
           .then((response) => {
             if (response.status === 200) {
               setSuccessMessage("Account Successfully Created");
@@ -129,7 +162,9 @@ const SignUpCard = () => {
       })
       .catch((error) => {
         setErrMessage("Error Creating New Account");
-        console.log("error logging in service to get token to create account on API") // delete at production
+        console.log(
+          "error logging in service to get token to create account on API"
+        ); // delete at production
       });
   };
 
@@ -153,14 +188,14 @@ const SignUpCard = () => {
     <div className="Auth-form-container">
       <Form className="Auth-form" onSubmit={handleSubmit}>
         <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Sign Up</h3>
-          <Row className="mt-1 justify-content-center">
+          <h4 className="Auth-form-title">Sign Up</h4>
+          <Row className="justify-content-center">
             <div className="text-center text-success">{successMessage}</div>
           </Row>
-          <Row className="mt-1 justify-content-center">
+          <Row className="justify-content-center">
             <div className="text-center text-danger">{errMessage}</div>
           </Row>
-          <div className="form-group mt-3">
+          <div className="form-group mt-1">
             <label>Username</label>
             <input
               type="text"
@@ -206,20 +241,45 @@ const SignUpCard = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          {passwordFocused && (
+            <PasswordStrengthIndicator validity={passwordValidity} />
+          )}
+
           <div className="form-group mt-1">
-            <label>Password</label>
-            <input
-              type="password"
-              required
-              className="form-control mt-1"
-              placeholder="Password"
-              onChange={(e) => setpassword(e.target.value)}
-            />
+            <Row>
+              <Col>
+                <label>Password </label>
+              </Col>
+              <Col md="auto">
+              </Col>
+            </Row>
+            <Row>
+            <Col xs={10}>
+              <input
+                type={passwordShown ? "text" : "password"}
+                required
+                className="form-control mt-1"
+                placeholder="Password"
+                // onChange={(e) => setpassword(e.target.value)}
+                onFocus={() => setPasswordFocused(true)}
+                onChange={(e) => onChangePassword(e.target.value)}
+              />
+            </Col>
+            <Col >
+              <div onClick={togglePassword}>
+                {passwordShown ? (
+                  <i className="bi bi-eye"></i>
+                ) : (
+                  <i className="bi bi-eye-slash"></i>
+                )}
+              </div>
+            </Col>
+            </Row>
           </div>
           <div className="form-group mt-1">
-            <label>Confirm Password</label>
+            <label>Confirm Password </label>
             <input
-              type="password"
+              type={passwordShown ? "text" : "password"}
               required
               className="form-control mt-1"
               placeholder="Password"

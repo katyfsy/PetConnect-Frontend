@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, ListGroup } from 'react-bootstrap';
 import axios from 'axios';
-import { getUser } from "./userInfo";
+import { getUser, PSB_API_URL } from "./userInfo";
 import { useNavigate } from 'react-router-dom';
 
 function User() {
@@ -22,7 +22,7 @@ function User() {
   useEffect(() => {
     const doGetUser = () => {
       // route has to be changed later
-      axios.get(`http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/public/user/test2`)
+      axios.get(`${PSB_API_URL}/api/public/user/test2`)
         .then((res) => {
           let result = res.data;
           for(var key in result) {

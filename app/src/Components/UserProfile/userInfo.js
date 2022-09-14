@@ -26,10 +26,12 @@ const setUserNameSession = (username) => {
   sessionStorage.setItem("username", username);
 };
 
-function clearStorage(){
+const clearStorage = () => {
     localStorage.clear();
     sessionStorage.clear();
   }
+
+const PSB_API_URL = "http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com";
 
 export {
   getBearerToken,
@@ -38,5 +40,6 @@ export {
   setTokenSession,
   setUserNameLocal,
   setUserNameSession,
-  clearStorage
+  clearStorage,
+  PSB_API_URL
 };
