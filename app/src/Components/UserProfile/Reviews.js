@@ -179,7 +179,7 @@ function Reviews({ orgUsername }) {
           <div className="overflow-auto" style={{height: 500}}>
             {
               currentReviews.map((review) => {
-                return <SingleReview review={review} key={review.firstName} votedOnReviews={votedOnReviews}/>
+                return <SingleReview review={review} key={review.reviewId} votedOnReviews={votedOnReviews}/>
               })
             }
           </div>

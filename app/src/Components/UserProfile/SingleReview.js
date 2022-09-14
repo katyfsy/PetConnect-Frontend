@@ -17,19 +17,12 @@ function SingleReview({ review, votedOnReviews }) {
   }, [review.reviewId, votedOnReviews])
 
   const handleUpvote = () => {
-    // let newVotedOnReviews = votedOnReviews.push(review.reviewId);
-    // axios.patch(`${PSB_API_URL}/api/reviews/upvote/${review.reviewId}`,
-    //   {headers: {
-    //   'Authorization': getBearerToken()
-    //   }})
-    //   .then(() => {
-    //     axios.patch(`${PSB_API_URL}/api/user/${review.writtenByUsername}`, {votedOnReviews: newVotedOnReviews},
-    //     {headers: {
-    //       'Authorization': getBearerToken()
-    //     }})
-    //   })
-    //   .then(() => setUpvotes(upvotes + 1))
-    //   .catch((err) => console.log(err));
+    axios.patch(`${PSB_API_URL}/api/reviews/upvote/${review.reviewId}`, {},
+      {headers: {
+      'Authorization': getBearerToken()
+      }})
+      .then(() => setUpvotes(upvotes + 1))
+      .catch((err) => console.log(err));
     setUpvotes(upvotes + 1);
     setButtonDisabled(true);
   }
