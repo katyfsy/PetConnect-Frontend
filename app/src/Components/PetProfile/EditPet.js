@@ -68,13 +68,18 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
         });
     }
   }
-
-  function handleDelete(e, i) {
+  console.log(deletePhotos);
+  function handleDelete(e, id) {
     if (e.target.value === petAttributes.coverPhoto) {
       alert("Must Select Different Cover Photo First Before Deletion");
     } else {
+      if (typeof id !== "string") {
+        console.log("in db");
+        setDeletePhotos([...deletePhotos, [thisPet.petId, id]]);
+      }
       console.log(thisPet.petId, i);
-      // document.getElementById(`${i}`).remove();
+
+      document.getElementById(`${i}`).remove();
     }
   }
   return (
@@ -175,12 +180,12 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
               <Image
                 style={{ display: "block", width: 250, padding: 30 }}
                 src={photo.preview}
-                key={photo.filename}
+                key={photo.name}
                 roundedCircle
               />
 
               <Button
-                onClick={(e) => handleDelete(e, photo.filename)}
+                onClick={(e) => handleDelete(e, photo.name)}
                 value={photo.preview}
               >
                 {" "}

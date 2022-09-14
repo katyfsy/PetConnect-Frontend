@@ -125,24 +125,23 @@ const Photos = ({
 
   return (
     <>
-   
-        <div className="photo-uploader-container">
-          <div className="pu-title">
+      <div className="photo-uploader-container">
+        <div className="pu-title">
           {`Upload up to ${maxPhotos} photos for this pet profile`}
-          </div>
-          <div {...getRootProps({ className: `dropzone ${additionalClass}` })}>
-            <input {...getInputProps()} />
-            <span>{isDragActive ? "🐈‍" : "🐈‍⬛"}</span>
-            <p>Drag n' drop images here</p>
-            <p>or</p>
-            <button className="pu-browse-button" type="button" onClick={open}>
-              Browse files...
-            </button>
-          </div>
+        </div>
+        <div {...getRootProps({ className: `dropzone ${additionalClass}` })}>
+          <input {...getInputProps()} />
+          <span>{isDragActive ? "🐈‍" : "🐈‍⬛"}</span>
+          <p>Drag n' drop images here</p>
+          <p>or</p>
+          <button className="pu-browse-button" type="button" onClick={open}>
+            Browse files...
+          </button>
+        </div>
         <div className="pu-status">{`${photos.length} / ${maxPhotos}`}</div>
-          <div className="preview-container">{previews}</div>
+        <div className="preview-container">{previews}</div>
       </div>
-      </>
+    </>
   );
 };
 

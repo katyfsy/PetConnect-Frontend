@@ -28,25 +28,14 @@ function AddPhotosPortal({
   const handleCoverPhoto = (selection) => {
     setCoverPhoto(selection);
   };
-  const extractFileData = (petId) => {
-    let files = [];
-    for (let i = 0; i < toAddPhotos.length; i++) {
-      let fileData = {};
-      fileData.preview = toAddPhotos[i].preview;
-      fileData.petId = petId;
-      fileData.filename = toAddPhotos[i].name;
-      fileData.filetype = toAddPhotos[i].type;
-      files.push(fileData);
-    }
-    return files;
-  };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (toAddPhotos.length == 0) {
       setOpenPortal(false);
     } else {
-      setAddPhotos(extractFileData(petId));
+      setToAddPhotos([]);
+      setAddPhotos(toAddPhotos);
       setOpenPortal(false);
     }
   };
@@ -61,7 +50,9 @@ function AddPhotosPortal({
         handleRemovePhotos={handleRemovePhotos}
         handleCoverPhoto={handleCoverPhoto}
         showRadios={false}
-        maxPhotos={MAX_NUMBER_OF_PHOTOS - thisPet.photos.length}
+        maxPhotos={
+          MAX_NUMBER_OF_PHOTOS - thisPet.photos.length - addPhotos.length
+        }
       />
       <button onClick={handleOnSubmit}>Upload Photos</button>
     </div>,
