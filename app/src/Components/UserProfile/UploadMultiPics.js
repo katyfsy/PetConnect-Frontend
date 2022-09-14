@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Image } from 'react-bootstrap';
 import axios from 'axios';
-import { getBearerToken, PSB_API_URL } from "./userInfo";
+import { getBearerToken, PSB_API_URL } from "./psb-exports";
 
 function UploadMultiPics({ images, setImages, presignedUrls, setPresignedUrls, urlCache, setUrlCache}) {
 

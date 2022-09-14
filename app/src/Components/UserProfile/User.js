@@ -22,11 +22,7 @@ function User() {
   useEffect(() => {
     const doGetUser = () => {
       // route has to be changed later
-<<<<<<< HEAD
       axios.get(`${PSB_API_URL}/api/public/user/test2`)
-=======
-      axios.get(`http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/public/user/test2`)
->>>>>>> 3aadf8f1a2ebc7a340cceb6edd2718f833700db4
         .then((res) => {
           let result = res.data;
           for(var key in result) {

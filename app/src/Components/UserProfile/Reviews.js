@@ -3,7 +3,7 @@ import { Container, Dropdown, DropdownButton, Row, Col } from 'react-bootstrap';
 import SingleReview from './SingleReview';
 import ReviewSummary from './ReviewSummary';
 import {orgReviews} from './DummyData';
-import { getBearerToken, getUser, PSB_API_URL } from "./userInfo";
+import { getBearerToken, getUser, PSB_API_URL } from "./psb-exports";
 import axios from 'axios';
 
 function Reviews() {
