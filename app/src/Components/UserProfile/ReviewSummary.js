@@ -17,8 +17,11 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
   const [urlCache, setUrlCache] = useState([]);
 
   const handleClose = () => {
+    setUrlCache(presignedUrls);
     setShow(false);
     setStar(0);
+    setImages([]);
+    setPresignedUrls([]);
   };
   const handleShow = () => setShow(true);
 
