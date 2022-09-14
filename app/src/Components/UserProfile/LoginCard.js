@@ -93,31 +93,27 @@ const LoginCard = () => {
             />
           </div>
           <div className="form-group mt-2">
-          <Row>
+            <Row>
               <Col>
                 <label>Password </label>
               </Col>
               <Col>
-            <div onClick={togglePassword}>
-              {passwordShown ? (
-                <i className="bi bi-eye i-login"></i>
-              ) : (
-                <i className="bi bi-eye-slash i-login"></i>
-              )}
-            </div>
-            </Col>
+                <div onClick={togglePassword}>
+                  {passwordShown ? (
+                    <i className="bi bi-eye i-login"></i>
+                  ) : (
+                    <i className="bi bi-eye-slash i-login"></i>
+                  )}
+                </div>
+              </Col>
             </Row>
 
- 
             <input
               type={passwordShown ? "text" : "password"}
               className="form-control mt-1"
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
-
-
-
           </div>
           <div className="d-grid gap-2 mt-4 justify-content-center">
             <Form.Check aria-label="option 1" type="checkbox" name="group1">
