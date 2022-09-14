@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-function EditPet({ thisPet, setIsEdit, setThisPet }) {
+import AddPhotosPortal from "./AddPhotosPortal";
+import Image from "react-bootstrap/Image";
+
+function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
+  const [openPortal, setOpenPortal] = useState(false);
+  const [newPhotos, setNewPhotos] = useState([]);
   const [petAttributes, setPetAttributes] = useState({
     name: thisPet.name,
     location: thisPet.location,
@@ -11,11 +16,36 @@ function EditPet({ thisPet, setIsEdit, setThisPet }) {
     weight: thisPet.weight,
     reproductiveStatus: thisPet.reproductiveStatus,
     reported: thisPet.reported,
+    coverPhoto: thisPet.coverPhoto,
   });
+  console.log(petAttributes);
+
+  function handleOnChange(e) {
+    // console.log(e.target.type);
+    if (e.target.type == "number")
+      setPetAttributes({
+        ...petAttributes,
+        [e.target.name]: parseInt(e.target.value),
+      });
+    else if (e.target.type == "checkbox") {
+      console.log(e);
+      setPetAttributes({
+        ...petAttributes,
+        [e.target.name]: e.target.checked,
+      });
+    } else {
+      setPetAttributes({
+        ...petAttributes,
+        [e.target.name]: e.target.value,
+      });
+    }
+  }
 
   function handleOnSubmit(e) {
     e.preventDefault();
-    console.log(petAttributes);
+    if (photos.length == 0) {
+      alert("At least one photo is required to upload");
+    } else {
     fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets/${thisPet.petId}`, {
       method: "PATCH",
       headers: {
@@ -31,27 +61,15 @@ function EditPet({ thisPet, setIsEdit, setThisPet }) {
         setIsEdit(false);
         setThisPet(data);
       });
+    }
   }
 
-  function handleOnChange(e) {
-    console.log(e);
-    if (e.target.type == "number")
-      setPetAttributes({
-        ...petAttributes,
-        [e.target.name]: parseInt(e.target.value),
-      });
-    else if (e.target.type == "checkbox") {
-      setPetAttributes({
-        ...petAttributes,
-        [e.target.name]: e.target.checked,
-      });
+  function handleDelete(e, i) {
+    if (e.target.value === petAttributes.coverPhoto) {
+      alert("Must Select Different Cover Photo First Before Deletion");
     } else {
-      setPetAttributes({
-        ...petAttributes,
-        [e.target.name]: e.target.value,
-      });
+      document.getElementById(`${i}`).remove();
     }
-    console.log(petAttributes);
   }
   return (
     <Form onSubmit={handleOnSubmit}>
@@ -112,6 +130,49 @@ function EditPet({ thisPet, setIsEdit, setThisPet }) {
           onChange={handleOnChange}
         />
       </Form.Group>
+
+      <div style={{ display: "flex", width: 50, padding: 30 }}>
+        {thisPet.photos.map((photo) => {
+          return (
+            <div id={photo.photoId}>
+              <Image
+                style={{ display: "block", width: 250, padding: 30 }}
+                src={photo.photo_url}
+                key={photo.photoId}
+                roundedCircle
+              />
+
+              <Button
+                onClick={(e) => handleDelete(e, photo.photoId)}
+                value={photo.photo_url}
+              >
+                {" "}
+                Delete
+              </Button>
+
+              <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                <Form.Check
+                  name="coverPhoto"
+                  value={photo.photo_url}
+                  type="radio"
+                  label="Cover Photo"
+                  onClick={handleOnChange}
+                  defaultChecked={thisPet.coverPhoto === photo.photo_url}
+                />
+              </Form.Group>
+            </div>
+          );
+        })}
+
+        <Button onClick={() => setOpenPortal(true)}> Add Photos</Button>
+        <AddPhotosPortal
+          refetchPet={refetchPet}
+          openPortal={openPortal}
+          setOpenPortal={setOpenPortal}
+          petId={thisPet.petId}
+          thisPet={thisPet}
+        />
+      </div>
 
       <h1>Additional Details</h1>
 

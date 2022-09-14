@@ -12,8 +12,10 @@ import axios from "axios";
 
 function AddAPetFormFunctional() {
   const [petId, setPetId] = useState(null);
+  const navigate = useNavigate();
   const [photos, setPhotos] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState(0);
+  const [isClicked, setIsClicked] = useState(false);
   let user = localStorage.getItem("username");
   console.log(user);
   const [requiredPetFields, setrequiredPetFields] = useState({
@@ -23,9 +25,7 @@ function AddAPetFormFunctional() {
     type: null,
     description: null,
   });
-  const [isClicked, setIsClicked] = useState(false);
-  const navigate = useNavigate();
-
+  const MAX_NUMBER_OF_PHOTOS = 5;
   const handleOnChange = (e) => {
     setrequiredPetFields({
       ...requiredPetFields,
@@ -58,7 +58,6 @@ function AddAPetFormFunctional() {
         options
       )
       .then((res) => {
-        setPetId(res.data.petId)
         return res.data.petId;
       })
       .catch((err) => console.log(err));
@@ -79,7 +78,7 @@ function AddAPetFormFunctional() {
     let files = [];
     for (let i = 0; i < photos.length; i++) {
       let fileData = {};
-      fileData.petId = petId.toString();
+      fileData.petId = petId;
       fileData.filename = photos[i].name;
       fileData.filetype = photos[i].type;
       files.push(fileData);
@@ -215,7 +214,9 @@ function AddAPetFormFunctional() {
                   handleAddPhotos={handleAddPhotos}
                   handleRemovePhotos={handleRemovePhotos}
                   handleCoverPhoto={handleCoverPhoto}
-                />
+              showRadios={true}
+              maxPhotos={MAX_NUMBER_OF_PHOTOS}
+            />
               </div>
 
               <br />

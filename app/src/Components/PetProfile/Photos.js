@@ -10,15 +10,17 @@ const Photos = ({
   handleAddPhotos,
   handleRemovePhotos,
   handleCoverPhoto,
+  showRadios,
+  maxPhotos,
 }) => {
-  const MAX_NUMBER_OF_PHOTOS = 5;
+  const [showRadio, setShowRadio] = useState(showRadios);
 
   const onDrop = useCallback(
     (acceptedPhotos) => {
       console.log("these are the accepted photos", acceptedPhotos);
       if (
         acceptedPhotos.length !== 0 &&
-        photos.length + acceptedPhotos.length <= 5
+        photos.length + acceptedPhotos.length <= maxPhotos
       ) {
         let newPhotos = acceptedPhotos.map((photo) =>
           Object.assign(photo, {
@@ -27,7 +29,7 @@ const Photos = ({
         );
         handleAddPhotos(newPhotos);
       } else {
-        alert(`Maximum number of photos allowed: ${MAX_NUMBER_OF_PHOTOS}`);
+        alert(`Maximum number of photos allowed: ${maxPhotos}`);
       }
       console.log("latestPhotos(one behind): ", photos);
     },
@@ -62,7 +64,7 @@ const Photos = ({
     onDrop,
     noClick: true,
     noKeyboard: true,
-    maxFiles: MAX_NUMBER_OF_PHOTOS,
+    maxFiles: maxPhotos,
     multiple: true,
     accept: {
       "image/*": [".jpeg", ".png"],
@@ -100,20 +102,24 @@ const Photos = ({
       >
         🗑 Remove
       </div>
-      <div className="thumb-radio-button">
-        <input
-          type="radio"
-          id={`photo_${index + 1}`}
-          value={index}
-          onChange={(e) => {
-            printHandle(e);
-            handleCoverPhoto(index);
-          }}
-          checked={coverPhoto === index}
-          name="coverPhoto"
-        />
-        <label htmlFor={`photo_${index + 1}`}>Cover Photo</label>
-      </div>
+      {showRadio ? (
+        <div className="thumb-radio-button">
+          <input
+            type="radio"
+            id={`photo_${index + 1}`}
+            value={index}
+            onChange={(e) => {
+              printHandle(e);
+              handleCoverPhoto(index);
+            }}
+            checked={coverPhoto === index}
+            name="coverPhoto"
+          />
+          <label htmlFor={`photo_${index + 1}`}>Cover Photo</label>
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   ));
 
@@ -122,7 +128,7 @@ const Photos = ({
       {/* <div className="container"> */}
         <div className="photo-uploader-container">
           <div className="pu-title">
-            {`Upload up to ${MAX_NUMBER_OF_PHOTOS} photos for this pet profile`}
+          {`Upload up to ${maxPhotos} photos for this pet profile`}
           </div>
           <div {...getRootProps({ className: `dropzone ${additionalClass}` })}>
             <input {...getInputProps()} />
@@ -133,9 +139,7 @@ const Photos = ({
               Browse files...
             </button>
           </div>
-          <div className="pu-status">
-            {`${photos.length} / ${MAX_NUMBER_OF_PHOTOS}`}
-          </div>
+        <div className="pu-status">{`${photos.length} / ${maxPhotos}`}</div>
           <div className="preview-container">{previews}</div>
           {/* <button
           className="pu-upload-button"
@@ -144,9 +148,8 @@ const Photos = ({
         >
           Upload Photos
         </button> */}
-        </div>
-      {/* </div> */}
-    </>
+      </div>
+      </>
   );
 };
 

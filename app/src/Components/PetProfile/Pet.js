@@ -13,19 +13,23 @@ import { BsGenderMale } from "react-icons/bs";
 import { ImPlus } from "react-icons/im";
 import { GrFlag } from "react-icons/gr";
 import { GrLocation } from "react-icons/gr";
+import { useNavigate } from "react-router-dom";
 
 import "./Pet.css";
 
 import { LightgalleryItem } from "react-lightgallery";
 
 function Pet() {
-  const [thisPet, setThisPet] = useState({});
+  const [thisPet, setThisPet] = useState(null);
   const [petPhotos, setPetPhotos] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
-  let petId = useParams();
-  console.log(petId);
-  let isLoggedIn = localStorage.getItem("username") == null ? false : true;
+  const [fetchPet, refetchPet] = useState(false);
   let user = localStorage.getItem("username");
+  let petId = useParams();
+  const navigate = useNavigate();
+  console.log(petId);
+
+  // Fetch Pet, with refetch to refetch new pet data upon finishing edit
   useEffect(() => {
     fetch(
       `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${petId.id}`
@@ -43,7 +47,7 @@ function Pet() {
   }, []);
 
   function handleOnDelete() {
-    fetch(`http://localhost:8080/api/pets/${petId.id}`, { method: "DELETE" })
+    fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${petId.id}`, { method: "DELETE" })
       .then((res) => res.json())
       .catch((err) => {
         console.error(err);
@@ -71,16 +75,12 @@ function Pet() {
           <br />
           {petPhotos.map((petPhoto) => (
             <LightgalleryItem src={petPhoto.photo_url}>
-              <img
-                rounded-circle
-                src={petPhoto.photo_url}
-                width={"200"}
-                height={"200"}
-              />
+              <img src={petPhoto.photo_url} width={"200"} height={"200"} />
               {/* <img src="https://picsum.photos/200/300?image=2" /> */}
             </LightgalleryItem>
           ))}
         </Col>
+        {/* <button onClick={() => navigate("/pets")}>Go Back</button> */}
         <Col>
           <Row className="mb-3" id="pet-info-header">
             <Col>
@@ -92,7 +92,15 @@ function Pet() {
             {user !== thisPet.owner ? (
               <>
                 <Col>
-                  <Button variant="primary" size="md" href="/messages">
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={() =>
+                      navigate("/messages", {
+                        state: { recieverName: thisPet.owner },
+                      })
+                    }
+                  >
                     Contact My Owner
                   </Button>
                 </Col>
@@ -106,7 +114,9 @@ function Pet() {
             ) : (
               <>
                 <Col>
-                  <Button onClick={() => setIsEdit(!isEdit)}>Edit Details</Button>
+                  <Button onClick={() => setIsEdit(!isEdit)}>
+                    Edit Details
+                  </Button>
                 </Col>
                 <Col>
                   <br />
@@ -120,35 +130,24 @@ function Pet() {
               {" "}
               <MdPets />{" "}
             </Col>
-            <Col>
-              {user !== thisPet.owner ? (
-                <>
-                  <Button variant="primary" size="sm" href="/messages">
-                    Contact My Owner
-                  </Button>
-                </>
-              ) : null}
-            </Col>
+  
           </Row>
 
           <Row className="mb-3" id="user-description">
             <h3 className="user-description">Description:</h3>
           </Row>
           <Row className="mb-3">
-            {/* <p className="text-start">{form.description}</p> */}
           </Row>
         </Col>
-        {/* {user == thisPet.owner ? (
-          <>
-            { <Button onClick={() => setIsEdit(!isEdit)}>Edit</Button>
-            <br />
-            <Button onClick={handleOnDelete}>Delete</Button> }
-          </>
-        ) : null} */}
-        <br/><br/>
+
+        <br />
+        <br />
         <h3>Delete this section later </h3>
         {!isEdit ? (
           <>
+            {/* {thisPet.photos?.map((photo) => {
+              return <img src={photo.photo_url} key={photo.photoId} alt="d" />;
+            })} */}
             <p>Name: {thisPet.name}</p>
             <p>Owner: {thisPet.owner}</p>
             <p>Location: {thisPet.location}</p>
@@ -171,6 +170,7 @@ function Pet() {
             thisPet={thisPet}
             setIsEdit={setIsEdit}
             setThisPet={setThisPet}
+            refetchPet={refetchPet}
           />
         )}
       </Row>

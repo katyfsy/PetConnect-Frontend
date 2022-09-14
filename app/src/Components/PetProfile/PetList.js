@@ -17,6 +17,7 @@ function PetList() {
         console.log("got data");
         setPetList(data.petsList);
         if (user) {
+          console.log("getting user data too");
           fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets?owner=${user}`)
             .then((res) => res.json())
             .then((Mydata) => {
@@ -28,10 +29,16 @@ function PetList() {
 
   return (
     <>
-      <button onClick={() => setIsClicked(true)}>Show my pets</button>
+      <button
+        onClick={() =>
+          user ? setIsClicked(!isClicked) : alert("Please Sign In")
+        }
+      >
+        {isClicked ? "Show All Pets" : "Show My Pets"}
+      </button>
       <h1>List of All Pets</h1>
 
-      <p
+      <div
         style={{
           width: 800,
           height: 500,
@@ -64,7 +71,7 @@ function PetList() {
                 description={petObj.description}
               />
             ))}
-      </p>
+      </div>
     </>
   );
 }
