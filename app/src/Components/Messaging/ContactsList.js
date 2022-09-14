@@ -21,9 +21,11 @@ const ContactsList = ({
       return 0;
     })
     .map((name) => {
-      
+
       return name[0];
     });
+
+    console.log('contactsSortedByRecentMessage', contactsSortedByRecentMessage);
 
   // let currentList = [...privateChats.keys()].sort().map((contact) => {
   let currentList = contactsSortedByRecentMessage.map((contact) => {
@@ -49,6 +51,8 @@ const ContactsList = ({
     }
   });
 
+  console.log('currentList of contacts:', currentList);
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       {privateChats.keys().length === 0 ? (
@@ -57,6 +61,7 @@ const ContactsList = ({
         <div className='contact-list'>
           <div className='list-title'>Contact List</div>
           <ul className='list'>{currentList}</ul>
+          {console.log('currentList of contacts from return:', currentList)}
         </div>
       )}
     </div>

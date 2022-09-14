@@ -21,11 +21,11 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
         <div>Click on contact to view messages.</div>
       ) : (
         <div className='chat-content'>
-          <ul>
+          <div className='chat-messages'>
             {privateChats &&
               [...privateChats.get(currentContact)].map((message, index) => {
                 return (
-                  <li
+                  <div
                     className={`message ${
                       message.senderName === username && 'self'
                     }`}
@@ -55,10 +55,10 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
                     <div className='message-time'>
                       {formatDate(message.timestamp)}
                     </div>
-                  </li>
+                  </div>
                 );
               })}
-          </ul>
+          </div>
         </div>
       )}
     </Container>

@@ -9,11 +9,11 @@
   flex-direction: column-reverse;
 }
 
-/* .chat-messages {
+.chat-messages {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   width: 100%;
-} */
+}
 
 .message {
   padding:5px;
@@ -24,11 +24,11 @@
   margin: 5px 10px;
   border-radius: 5px;
   background-color: antiquewhite;
-  /* min-width: 20px;
+  min-width: 20px;
   max-width: 70%;
   min-height: 50px;
   align-self: flex-start;
-  padding: 5px 10px; */
+  padding: 5px 10px;
 }
 
 .message-data{
@@ -46,12 +46,12 @@
 .message.self {
   justify-content: end;
   background-color: aliceblue;
-  /* align-self: flex-end;
+  align-self: flex-end;
   text-align: right;
   min-width: 20px;
   max-width: 70%;
   min-height: 50px;
-  padding: 5px 10px; */
+  padding: 5px 10px;
 }
 
 .avatar{
