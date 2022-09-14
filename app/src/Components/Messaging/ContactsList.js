@@ -21,6 +21,7 @@ const ContactsList = ({
       return 0;
     })
     .map((name) => {
+      
       return name[0];
     });
 
