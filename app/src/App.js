@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react';
 import jwt_decode from "jwt-decode";
 import AddAPetForm from './Components/PetProfile/AddAPetForm';
 import Pet from './Components/PetProfile/Pet';
-import { getBearerToken, getUser } from "./Components/UserProfile/userInfo.js"
+import { getBearerToken, getUser, clearStorage } from "./Components/UserProfile/psb-exports"
 
 function App() {
 
@@ -21,10 +21,7 @@ function App() {
   // if (!token){
   //   return <Login setToken={setToken} />
   // }
-  function clearStorage(){
-    localStorage.setItem('token', "");
-    localStorage.setItem('username', "");
-  }
+
 
   const navigate = useNavigate();
 

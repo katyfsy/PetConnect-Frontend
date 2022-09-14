@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { getBearerToken, getUser, clearStorage } from "./userInfo.js";
+import { getBearerToken, getUser, clearStorage } from "./psb-exports";
 
 const EditPwdBtn = () => {
   const [show, setShow] = useState(false);

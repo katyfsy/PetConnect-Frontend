@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, ListGroup } from 'react-bootstrap';
 import axios from 'axios';
-import { getUser, PSB_API_URL } from "./userInfo";
+import { getUser, PSB_API_URL } from "./psb-exports";
 import { useNavigate } from 'react-router-dom';
 
 function User() {

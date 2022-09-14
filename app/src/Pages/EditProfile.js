@@ -8,7 +8,7 @@ import { Container, Row, Button, Form, Col, Image } from 'react-bootstrap';
 import axios from 'axios';
 import DeleteBtn from '../Components/UserProfile/DeleteBtn';
 import EditPwdBtn from '../Components/UserProfile/EditPwdBtn';
-import { getBearerToken, getUser } from "../Components/UserProfile/userInfo.js"
+import { getBearerToken, getUser } from "../Components/UserProfile/psb-exports"
 
 function EditProfile() {
 

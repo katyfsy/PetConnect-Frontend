@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
 // import getUser from '../UserProfile/DummyData';
-import { getBearerToken, getUser, clearStorage } from "../UserProfile/userInfo.js"
+import { getBearerToken, getUser, clearStorage } from "../UserProfile/psb-exports"
 
 
 

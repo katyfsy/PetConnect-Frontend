@@ -6,7 +6,7 @@ import Header from '../Components/Default/Header';
 import { Container,Button, Row, Col, Image } from 'react-bootstrap';
 import Reviews from '../Components/UserProfile/Reviews';
 // import getUser from '../Components/UserProfile/DummyData';
-import { getBearerToken, getUser } from "../Components/UserProfile/userInfo.js";
+import { getBearerToken, getUser } from "../Components/UserProfile/psb-exports";
 
 function Profile() {
   const [form, setForm] = useState({

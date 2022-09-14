@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Row, Button, Container, Col, Modal, Form, ProgressBar } from 'react-bootstrap';
 import Rating from 'react-rating';
 import axios from 'axios';
+import { getBearerToken, getUser } from "./psb-exports";
 
 function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveStars,
                          filterFourStars, filterThreeStars, filterTwoStars, filterOneStars}) {
@@ -30,16 +31,11 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
     setReviewForm({ ...reviewForm, [e.target.name]: e.target.value });
   }
 
-  function getToken() {
-    const tokenString = localStorage.getItem('token');
-    const userToken = JSON.parse(tokenString);
-    return userToken;
-  }
 
   const handleReviewSubmit = () => {
-    axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${localStorage.getItem('username')}`,
+    axios.get(`http://a414ee7644d24448191aacdd7f94ef18-1719629393.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
       {headers: {
-        'Authorization': getToken()
+        'Authorization': getBearerToken()
       }})
       .then((res) => {
         reviewForm.firstName = res.data.firstName;

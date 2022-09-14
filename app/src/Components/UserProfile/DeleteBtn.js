@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { getBearerToken, PSB_API_URL, clearStorage } from "./userInfo.js";
+import { getBearerToken, PSB_API_URL, clearStorage } from "./psb-exports";
 
 
 

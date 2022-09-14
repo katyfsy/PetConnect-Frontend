@@ -11,7 +11,7 @@ import {    getBearerToken,
   setTokenSession,
   setUserNameLocal,
   setUserNameSession,
-  PSB_API_URL } from "./userInfo.js"
+  PSB_API_URL } from "./psb-exports"
 
 const LoginCard = () => {
   const [username, setUserName] = useState();
