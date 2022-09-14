@@ -14,7 +14,11 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
 
 
   const [dropdownDisplay, setDropdownDisplay] = useState(false);
-  const [options, setOptions] = useState(["All Cats", "All Dogs"]);
+  const [defaultSearches, setDefaultSearches] = useState(["All Cats", "All Dogs"]);
+
+  const [autocompleteDisplay, setAutocompleteDisplay] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+
   // const [searchQuery, setSearchQuery] = useState("");
   // const [zipcode, setZipcode] = useState("");
   // const [result, setResult] = useState([]);
@@ -38,43 +42,81 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
     setSearchQuery(value);
     setDropdownDisplay(false);
     if (value === "All Cats") {
-      var param = "?type=cat";
+      var param = "?search=cat&type=cat";
       // set searchQuery to cat
       setSearchQuery("cat");
     } else if (value === "All Dogs"){
-      var param = "?type=dog";
+      var param = "?search=dog&type=dog";
       setSearchQuery("dog");
-    } else {
-      var param = "";
     }
-    // local endpoint, using proxy: "api/petSearch"
-    axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch" + param)
+
+    // else {
+    //   var param = "";
+    // }
+    // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
+
+    axios.get("api/petSearch" + param)
     .then((result)=>{
         setResult(result.data.pets);
       })
     .catch(err=>console.log(err));
   };
 
+  const handleAutocomplete =  (value) => {
+    setDropdownDisplay(false);
+    setSearchQuery(value);
+    setAutocompleteDisplay(true);
+
+    console.log("handle Autocomplete: searchQuery:", value);
+    // get request - get suggestions and populate dropdown
+    // var param = `?search=${value}`;
+    axios.get("api/suggestions?search=" + value +"*")
+    .then((result)=>{
+      if(result.data.pets === undefined) {
+        setAutocompleteDisplay(false);
+        setResult(result.data.pets);
+      } else {
+        setSuggestions(result.data.pets);
+        console.log("results from suggestions search:", result.data.pets);
+       }
+      })
+    .catch(err=>console.log(err));
+  }
+
+  const handleSuggestionSearchClick = (value) => {
+    setAutocompleteDisplay(false);
+    var params = value.type + " " + value.breed;
+    setSearchQuery(params);
+    console.log("params chosen from suggestions ====", params);
+    axios.get("api/petSearch?search=" + params)
+    .then((result)=>{
+        setResult(result.data.pets);
+        console.log(result.data.pets);
+      })
+    .catch(err=>console.log(err));
+  }
+
 
   const handleSubmitClick = (e) => {
     e.preventDefault();
-
     if (searchQuery.length === 0) {
       setDropdownDisplay(!dropdownDisplay);
     } else {
       if (zipcode.length === 0) {
-        var params = {type: searchQuery};
+        var params = searchQuery;
       } else {
-        params = {type: searchQuery, zip: zipcode};
+        params = searchQuery + "  &zip=" + zipcode ;
       }
-      // console.log('params ===>:',params);
-      axios.get("http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch", {params})
+      console.log('params ===>:',params);
+      // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
+      axios.get("api/petSearch?search=" + params)
       .then((result)=>{
           setResult(result.data.pets);
         })
       .catch(err=>console.log(err));
     }
     };
+
 
 
   return (
@@ -85,14 +127,16 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
             type="text"
             id="searchInput"
             aria-label="search-pets"
+            autocomplete="off"
             placeholder="Search pets"
             onClick={() => setDropdownDisplay(!dropdownDisplay)}
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={e => handleAutocomplete(e.target.value)}
+            // onChange={e => setSearchQuery(e.target.value)}
           />
           {dropdownDisplay && (
             <div className="searchDropdownContainer">
-              {options
+              {defaultSearches
                 .map((value, i) => {
                   return (
                     <div
@@ -101,6 +145,23 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
                       key={i}
                     >
                       <span>{value}</span>
+                    </div>
+                  );
+                })}
+            </div>
+          )}
+          {autocompleteDisplay && (
+            <div className="searchDropdownContainer">
+              {suggestions
+                .map((value, i) => {
+                  return (
+                    <div
+                      onClick={()=>handleSuggestionSearchClick(value)}
+                      className="searchOption"
+                      key={i}
+                    >
+                      <span className="boldText">{value.type}: </span>
+                      <span>{value.breed}</span>
                     </div>
                   );
                 })}
@@ -115,7 +176,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
               onChange={e=>setZipcode(e.target.value)}/>
           <button
             id="searchButton"
-
+            className="btn btn-primary"
             onClick={handleSubmitClick}>Search</button>
         </div>
       </form>
