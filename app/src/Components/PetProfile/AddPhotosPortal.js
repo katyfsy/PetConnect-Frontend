@@ -26,7 +26,10 @@ function AddPhotosPortal({
   };
   const getPresignedUrls = (files) => {
     return axios
-      .post("http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/uploadAuth", files)
+      .post(
+        "http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/uploadAuth",
+        files
+      )
       .then((res) => {
         return res.data;
       });
@@ -78,12 +81,7 @@ function AddPhotosPortal({
     if (photos.length == 0) {
       alert("At least one photo is required to upload");
     } else {
-      //   let petId = await createPet();
-      // console.log("THIS IS THE PETID: ", petId);
-      // await handleUpload(petId);
-      // refetchPet(Math.random());
       setOpenPortal(false);
-      //   navigateToPetProfile(petId);
     }
   };
   if (!openPortal) return null;

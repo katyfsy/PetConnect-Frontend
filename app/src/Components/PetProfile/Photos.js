@@ -125,7 +125,7 @@ const Photos = ({
 
   return (
     <>
-      {/* <div className="container"> */}
+   
         <div className="photo-uploader-container">
           <div className="pu-title">
           {`Upload up to ${maxPhotos} photos for this pet profile`}
@@ -141,13 +141,6 @@ const Photos = ({
           </div>
         <div className="pu-status">{`${photos.length} / ${maxPhotos}`}</div>
           <div className="preview-container">{previews}</div>
-          {/* <button
-          className="pu-upload-button"
-          type="button"
-          onClick={() => handleUpload(PET_ID)}
-        >
-          Upload Photos
-        </button> */}
       </div>
       </>
   );

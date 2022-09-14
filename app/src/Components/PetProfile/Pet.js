@@ -47,7 +47,10 @@ function Pet() {
   }, []);
 
   function handleOnDelete() {
-    fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${petId.id}`, { method: "DELETE" })
+    fetch(
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${petId.id}`,
+      { method: "DELETE" }
+    )
       .then((res) => res.json())
       .catch((err) => {
         console.error(err);
@@ -76,11 +79,9 @@ function Pet() {
           {petPhotos.map((petPhoto) => (
             <LightgalleryItem src={petPhoto.photo_url}>
               <img src={petPhoto.photo_url} width={"200"} height={"200"} />
-              {/* <img src="https://picsum.photos/200/300?image=2" /> */}
             </LightgalleryItem>
           ))}
         </Col>
-        {/* <button onClick={() => navigate("/pets")}>Go Back</button> */}
         <Col>
           <Row className="mb-3" id="pet-info-header">
             <Col>
@@ -109,18 +110,23 @@ function Pet() {
                     <GrFlag /> Report Pet
                   </Button>
                 </Col>
-                {/* <p className="user-email">{form.email}</p> */}
               </>
             ) : (
               <>
                 <Col>
-                  <Button onClick={() => setIsEdit(!isEdit)}>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={() => setIsEdit(!isEdit)}
+                  >
                     Edit Details
                   </Button>
                 </Col>
                 <Col>
                   <br />
-                  <Button onClick={handleOnDelete}>Delete Pet</Button>
+                  <Button variant="primary" size="md" onClick={handleOnDelete}>
+                    Delete Pet
+                  </Button>
                 </Col>
               </>
             )}
@@ -128,16 +134,15 @@ function Pet() {
           <Row className="mb-3" id="user-name">
             <Col>
               {" "}
-              <MdPets />{" "}
+              <MdPets /> {thisPet.type}
             </Col>
-  
           </Row>
 
           <Row className="mb-3" id="user-description">
             <h3 className="user-description">Description:</h3>
+            <p>{thisPet.description}</p>
           </Row>
-          <Row className="mb-3">
-          </Row>
+          <Row className="mb-3"></Row>
         </Col>
 
         <br />
@@ -145,9 +150,6 @@ function Pet() {
         <h3>Delete this section later </h3>
         {!isEdit ? (
           <>
-            {/* {thisPet.photos?.map((photo) => {
-              return <img src={photo.photo_url} key={photo.photoId} alt="d" />;
-            })} */}
             <p>Name: {thisPet.name}</p>
             <p>Owner: {thisPet.owner}</p>
             <p>Location: {thisPet.location}</p>
