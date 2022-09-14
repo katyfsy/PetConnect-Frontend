@@ -6,6 +6,9 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import './AdvSearch.css';
 
+//search bar --> any string --> all elk results
+//show adv search filters : type, breed, age, gender
+
 function AdvSearch({results, setResult, searchQuery, zipcode, radius}) {
 
   const [gender, setGender] = useState([])
@@ -15,8 +18,12 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius}) {
 
   useEffect(()=>{
     if(searchQuery === "" && zipcode === "") return;
+    // var zip = zipcode ? zipcode : null
+    // var type = searchQuery ? searchQuery : null
+    // var radius = zipcode ? radius : null
     var params = {zip: zipcode ? zipcode : null, type: searchQuery ? searchQuery : null, breed: breed, age: age, gender: gender, radius: radius};
     console.log(params);
+    // axios.get("api/petsearch?search=*", {params})
     axios.get("http://localhost:8080/api/petSearch", {params})
     .then((result) =>{
       setResult(result.data.pets)
