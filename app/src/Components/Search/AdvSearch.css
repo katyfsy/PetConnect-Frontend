@@ -1,6 +1,6 @@
 .advSearchContainer{
   display: grid;
-  grid-template-rows: 15% 15% 15%;
+  grid-template-rows: 10% 10% 10% 10% 10%;
   grid-template-columns: 1fr;
   gap: 10px;
   margin: 10px;
@@ -17,13 +17,18 @@
   gap: 10px;
 }
 
-.age{
+.gender{
   grid-row-start: 2 / span 1;
   gap: 10px;
 }
 
-.breed{
+.age{
   grid-row-start: 3 / span 1;
+  gap: 10px;
+}
+
+.breed{
+  grid-row-start: 4 / span 1;
   gap: 10px;
 }
 
@@ -33,9 +38,9 @@
   grid-template-columns: 1fr;
 }
 
-.filterType{
+/* .filterType{
   grid-row-start: 1 / span 1;
-}
+} */
 
 .dropdown{
   grid-row-start: 2 / span 1;
@@ -45,6 +50,12 @@
 
 .displayBlock{
   display: block;
+}
+
+#applyFilterButton{
+  grid-row-start: 5 / span 1;
+  margin: 10px;
+  gap: 10px;
 }
 
 /* .optionContainer li:hover,

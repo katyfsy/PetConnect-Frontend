@@ -115,9 +115,8 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
           setResult(result.data.pets);
         })
       .catch(err=>console.log(err));
-    };
-
-
+    }
+  };
 
   return (
     <div>
@@ -181,10 +180,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
         </div>
       </form>
     </div>
-
-
   )
-}
 }
 
 export default Search;
