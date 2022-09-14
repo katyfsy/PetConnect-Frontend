@@ -31,7 +31,7 @@ const clearStorage = () => {
     sessionStorage.clear();
   }
 
-const PSB_API_URL = "http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com";
+const PSB_API_URL = "http://a543b64cddf7d436b98ac207005d3349-171391594.us-west-2.elb.amazonaws.com";
 
 export {
   getBearerToken,

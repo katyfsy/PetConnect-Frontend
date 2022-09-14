@@ -22,7 +22,7 @@ function User() {
   useEffect(() => {
     const doGetUser = () => {
       // route has to be changed later
-      axios.get(`${PSB_API_URL}/api/public/user/test2`)
+      axios.get(`${PSB_API_URL}/api/public/users/orgs/test2`)
         .then((res) => {
           let result = res.data;
           for(var key in result) {

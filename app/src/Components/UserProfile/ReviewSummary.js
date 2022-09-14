@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Row, Button, Container, Col, Modal, Form, ProgressBar } from 'react-bootstrap';
 import Rating from 'react-rating';
 import axios from 'axios';
-import { getBearerToken, getUser, PSB_API_URL } from "./psb-exports";
 import { useParams } from "react-router-dom";
+import { getBearerToken, getUser, PSB_API_URL } from "./psb-exports";
 import UploadMultiPics from './UploadMultiPics';
 
-function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveStars,
+function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveStars, orgUsername,
                          filterFourStars, filterThreeStars, filterTwoStars, filterOneStars, updateReviews}) {
 
   const [show, setShow] = useState(false);
@@ -44,26 +44,25 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
     let imageUrlList = imageUrl;
     for(let i = 0; i < urls.length; i++) {
       imageUrlList.push(urls[i].split("?")[0]);
-      // axios.put(urls[i], files[i],
-      //   {headers: {
-      //     "Content-Type": "application/octet-stream"
-      //   }
-      // })
-      // .catch((err) => {
-      //   console.log(err)
-      // })
+      axios.put(urls[i], files[i],
+        {headers: {
+          "Content-Type": "application/octet-stream"
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     }
     setImageUrl(imageUrlList);
   }
 
   const handlePostRequest = (form) => {
-    // axios.post(`xxxx`, form,
-    // {headers: {
-    //   'Authorization': getBearerToken()
-    // }})
-    // .then(() => alert('post success'))
-    // .catch((err) => console.log(err));
-    console.log(form);
+    axios.post(`${PSB_API_URL}/api/reviews/${orgUsername}`, form,
+    {headers: {
+      'Authorization': getBearerToken()
+    }})
+    .then(() => alert('post success'))
+    .catch((err) => console.log(err));
   }
 
   const handleReviewSubmit = () => {
@@ -87,7 +86,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
         setStar(0);
       })
       .then(() => {
-        updateReviews();
+        setTimeout(updateReviews, 1000);
       })
       .catch((err) => console.log('review submit error', err))
   }

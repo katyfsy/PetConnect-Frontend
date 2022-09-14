@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Container, Dropdown, DropdownButton, Row, Col } from 'react-bootstrap';
 import SingleReview from './SingleReview';
 import ReviewSummary from './ReviewSummary';
-import {orgReviews} from './DummyData';
 import { getBearerToken, getUser, PSB_API_URL } from "./psb-exports";
 import axios from 'axios';
 
-function Reviews() {
+function Reviews({ orgUsername }) {
   const [reviews, setReviews] = useState([]);
   const [currentReviews, setCurrentReviews] = useState([]);
   const [avgRating, setAvgRating] = useState(0);
@@ -25,14 +24,20 @@ function Reviews() {
       } else {
       setVotedOnReviews(res.data.votedOnReviews)
     }})
+    .then(() => {
+      axios.get(`${PSB_API_URL}/api/public/reviews/${orgUsername}`)
+    .then((res) => {
+      setReviews(res.data.reviews);
+      setCurrentReviews(res.data.reviews);
+      calculateAvgRating(res.data.reviews);
+      calculateRatingPercent(res.data.reviews);
+    })
     .catch((err) => console.log(err))
-    setReviews(orgReviews);
-    setCurrentReviews(orgReviews);
-    calculateAvgRating();
-    calculateRatingPercent();
-  },[reviews, avgRating])
+    })
+    .catch((err) => console.log(err))
+  },[orgUsername])
 
-  function calculateAvgRating() {
+  function calculateAvgRating(reviews) {
     if(reviews !== []) {
       let totalScore = 0;
       reviews.forEach(review => {
@@ -42,7 +47,7 @@ function Reviews() {
     }
   }
 
-  function calculateRatingPercent() {
+  function calculateRatingPercent(reviews) {
     if(reviews !== []) {
       let ratingPercentArray = [0,0,0,0,0];
       let ratingCountArray = [0,0,0,0,0];
@@ -130,15 +135,14 @@ function Reviews() {
   }
 
   const updateReviews = () => {
-    // axios.get(`xxx`,
-    // {headers: {
-    //   'Authorization': getBearerToken()
-    // }})
-    // .then((res) => {
-    //   console.log(res.data)
-    //   setReviews(res.data)
-    // })
-    // .catch((err) => console.log(err));
+    axios.get(`${PSB_API_URL}/api/public/reviews/${orgUsername}`)
+    .then((res) => {
+      setReviews(res.data.reviews);
+      setCurrentReviews(res.data.reviews);
+      calculateAvgRating(res.data.reviews);
+      calculateRatingPercent(res.data.reviews);
+    })
+    .catch((err) => console.log(err));
   }
 
 
@@ -156,6 +160,7 @@ function Reviews() {
             filterTwoStars={filterTwoStars}
             filterOneStars={filterOneStars}
             updateReviews={updateReviews}
+            orgUsername={orgUsername}
           />
         </Col>
         <Col xs={8}>

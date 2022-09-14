@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import { Container, Row, Button, Form, Col, Image } from 'react-bootstrap';
-// import getUser from '../Components/UserProfile/DummyData';
 import axios from 'axios';
 import DeleteBtn from '../Components/UserProfile/DeleteBtn';
 import EditPwdBtn from '../Components/UserProfile/EditPwdBtn';
@@ -56,10 +55,6 @@ function EditProfile() {
           setForm(result);
           setUserPhoto(result.userPhoto);
         });
-      // using local dummy data
-      // const result = getUser();
-      // setForm(result);
-      // setUserPhoto(result.userPhoto);
     }
     doGetUser();
   }, []);
@@ -265,7 +260,7 @@ function EditProfile() {
          </Form>
          <div align="end"><EditPwdBtn /></div>
          <div align="end"><DeleteBtn /></div>
-         
+
       </Container>
     </div>
   )

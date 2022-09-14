@@ -6,7 +6,6 @@ import "./userProfile.css";
 import DeleteBtn from "./DeleteBtn";
 import { useNavigate } from "react-router-dom";
 import { PSB_API_URL } from "./psb-exports";
-import { Eye } from "react-bootstrap-icons";
 import PasswordStrengthIndicator from "./PwdIndicator.js";
 
 const SignUpCard = () => {
