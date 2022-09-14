@@ -15,6 +15,13 @@ const EditPwdBtn = () => {
   const handleClose = () => setShow(false);
   const navigate = useNavigate();
 
+  const [passwordShown, setPasswordShown] = useState(false);
+
+  const togglePassword = () => {
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown(!passwordShown);
+  };
 
   const changePassword = () => {
     let rqstBody = {
@@ -23,7 +30,6 @@ const EditPwdBtn = () => {
       newPassword: newPassword,
     };
 
-
     axios
       .patch("http://identity.galvanizelabs.net/api/account/passwd", rqstBody, {
         headers: { Authorization: getBearerToken() },
@@ -31,9 +37,9 @@ const EditPwdBtn = () => {
       .then(() => setSuccessMessage("Password Changed!"))
       .then(() => {
         setTimeout(() => {
-            handleClose()
-            setSuccessMessage("")
-          }, 1000)
+          handleClose();
+          setSuccessMessage("");
+        }, 1000);
       })
       .catch((error) => {
         console.log(error);
@@ -44,10 +50,9 @@ const EditPwdBtn = () => {
   const pwdValidator = () => {
     if (newPassword !== newPasswordConf) {
       setMessage("Passwords do not match");
-    } else if (newPassword === currPassword){
-        setMessage("New and current passwords are the same")
-    } 
-    else {
+    } else if (newPassword === currPassword) {
+      setMessage("New and current passwords are the same");
+    } else {
       setMessage("");
       changePassword();
     }
@@ -74,9 +79,22 @@ const EditPwdBtn = () => {
             <Row className="form-group mt-4">
               <Col>
                 <div className="form-group mt-1">
-                  <label>Current Password</label>
+                  <Row>
+                    <Col>
+                      <label>Current Password</label>
+                    </Col>
+                    <Col>
+                      <div onClick={togglePassword}>
+                        {passwordShown ? (
+                          <i className="bi bi-eye i-edit"></i>
+                        ) : (
+                          <i className="bi bi-eye-slash i-edit"></i>
+                        )}
+                      </div>
+                    </Col>
+                  </Row>
                   <input
-                    type="password"
+                    type={passwordShown ? "text" : "password"}
                     required
                     className="form-control mt-1"
                     placeholder="Enter Current Password"
@@ -90,7 +108,7 @@ const EditPwdBtn = () => {
                 <div className="form-group mt-1">
                   <label>New Password</label>
                   <input
-                    type="password"
+                    type={passwordShown ? "text" : "password"}
                     required
                     className="form-control mt-1"
                     placeholder="New Password"
@@ -102,7 +120,7 @@ const EditPwdBtn = () => {
                 <div className="form-group mt-1">
                   <label>Confirm New Password</label>
                   <input
-                    type="password"
+                    type={passwordShown ? "text" : "password"}
                     required
                     className="form-control mt-1"
                     placeholder="Enter New Password Again"

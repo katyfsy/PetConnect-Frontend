@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
 // import getUser from '../UserProfile/DummyData';
-import { getBearerToken, getUser, clearStorage } from "../UserProfile/psb-exports"
+import { getBearerToken, getUser, clearStorage, PSB_API_URL } from "../UserProfile/psb-exports"
 
 
 
@@ -17,7 +17,7 @@ function Header() {
 
   useEffect(() => {
     const doGetUser = () => {
-      axios.get(`http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/user/${getUser()}`,
+      axios.get(`${PSB_API_URL}/api/user/${getUser()}`,
       {headers: {
         'Authorization': getBearerToken()
       }})
