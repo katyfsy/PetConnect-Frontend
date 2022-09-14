@@ -3,6 +3,7 @@ import SearchResults from "./Pages/SearchResults";
 import Home from "./Pages/Home";
 import Pets from "./Pages/Pets";
 import SignUp from "./Pages/SignUp";
+import Directory from "./Pages/Directory";
 import Login from "./Pages/Login";
 import Profile from "./Pages/Profile";
 import Messages from "./Pages/Messages";
@@ -48,6 +49,7 @@ function App() {
         <Route path="/addpet" element={<AddAPet />} />
         {/* <Route path="/pet" element={<Pet />} /> */}
         <Route path="/pet/:id" element={<PetProfile />} />
+        <Route path="/directory" element={<Directory />} />
       </Routes>
     </div>
   );
