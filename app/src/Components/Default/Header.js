@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
 // import getUser from '../UserProfile/DummyData';
-import { getBearerToken, getUser, clearStorage, PSB_API_URL } from "../UserProfile/psb-exports"
+import { getBearerToken, getUser, clearStorage, PSB_API_URL, getUserType } from "../UserProfile/psb-exports"
 
 
 
@@ -15,6 +15,14 @@ function Header() {
   });
   const [username, setUserName] = useState("");
 
+  const setUserType = (userType) => {
+    if (localStorage.getItem("token") === null){
+      sessionStorage.setItem("userType", userType)
+    } else {
+      localStorage.setItem("userType", userType)
+    }
+  }
+
   useEffect(() => {
     const doGetUser = () => {
       axios.get(`${PSB_API_URL}/api/user/${getUser()}`,
@@ -22,6 +30,7 @@ function Header() {
         'Authorization': getBearerToken()
       }})
         .then((res) => {
+          setUserType(res.data.userType);
           let result = res.data;
           for(var key in result) {
             if(result[key] === null) {
