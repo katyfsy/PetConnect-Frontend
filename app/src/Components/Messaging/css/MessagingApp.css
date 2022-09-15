@@ -1,0 +1,5 @@
+.chatBox {
+  border: 3px solid rgba(48, 60, 108, .7);
+  border-radius: 5px;
+  background-color: rgb(254, 249, 242);
+}

@@ -27,9 +27,8 @@ const InputBar = ({
 
   return (
     <div>
-      {/* {currentContact && */}
       <div className='input-bar'>
-        <form
+        <form className='input-bar-elements'
           onSubmit={(event) => {
             handleSend(event);
           }}
