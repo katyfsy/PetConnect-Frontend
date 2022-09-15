@@ -38,7 +38,8 @@ const ContactsList = ({
   // let currentList = [...privateChats.keys()].sort().map((contact) => {
   let currentList = contactsSortedByRecentMessage.map((contact) => {
     if (contact) {
-      let recentChat = privateChats.get(contact)[privateChats.get(contact).length - 1]
+      let recentChat = privateChats.get(contact)[privateChats.get(contact).length - 1];
+      console.log('length', recentChat);
       let photo =
         username === recentChat['senderName']
           ? recentChat['receiverPhoto']

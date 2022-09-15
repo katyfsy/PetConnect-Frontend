@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Container from 'react-bootstrap/Container';
 import './css/MessageChat.css';
 
-const MessageChat = ({ privateChats, currentContact, username, privateChatsRef }) => {
+const MessageChat = ({ privateChats, currentContact, username, receiverName}) => {
   // need to add conditional to check if message is from user or contact to change alignment of message
   //  <li className={`message ${message.senderName === username && "self"}`} key={index}>
   // {message.senderName !== username && <div className="avatar">{message.senderName}</div>}
@@ -27,7 +27,7 @@ const MessageChat = ({ privateChats, currentContact, username, privateChatsRef }
   return (
     <Container>
       {currentContact === '' ? (
-        <div>Click on contact to view messages.</div>
+        <div>{receiverName}</div>
       ) : (
         <div className='chat-content'>
           <div className='chat-messages'>

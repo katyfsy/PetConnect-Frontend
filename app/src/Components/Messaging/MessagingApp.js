@@ -44,10 +44,10 @@ const MessagingApp = () => {
 
   useEffect(() => {
     console.log('OUTSIDE');
-    if (!privateChats.get(currentContact)) {
+    if (!privateChats.get(userData.receiverName)) {
       console.log('INSIDE');
-      privateChatsRef.current.set(currentContact, []);
-      setPrivateChats(new Map(privateChatsRef.current));
+      privateChatsRef.current.set(userData.receiverName, []);
+      // setPrivateChats(new Map(privateChatsRef.current));
     }
   }, [state]);
 
@@ -198,7 +198,7 @@ const MessagingApp = () => {
         senderPhoto: senderPhotoRef.current,
         receiverPhoto: receiverPhotoRef.current,
       };
-      if (!privateChats.get(chatMessage.receiverName)) {
+      if (!privateChatsRef.current.get(chatMessage.receiverName)) {
         privateChatsRef.current.set(chatMessage.receiverName, []);
       }
       privateChatsRef.current.get(chatMessage.receiverName).push(chatMessage);
@@ -253,7 +253,7 @@ const MessagingApp = () => {
                 privateChats={privateChats}
                 currentContact={currentContact}
                 username={userData.username}
-                privateChatsRef={privateChatsRef.current}
+                receiverName={currentContact === '' ? userData.receiverName : currentContact}
               />
               <InputBar
                 setUserData={setUserData}
