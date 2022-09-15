@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useRef } from 'react';
 import SearchBar from './SearchBar';
 import Container from 'react-bootstrap/Container';
 import './css/MessageChat.css';
@@ -11,7 +11,9 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
   // {message.senderName === username && <div className="avatar self">{message.senderName}</div>}
   // </li>
 
-  const [search, setSearch] = useState('');
+  const searchRef = useRef('');
+  const [search, setSearch] = useState(searchRef.current);
+
   const [filteredMessages, setFilteredMessages] = useState(new Map());
   let date = '';
   let chats;
@@ -31,17 +33,25 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
   const handleSearchInput = (event) => {
     event.preventDefault();
     const value = event.target.value;
-    setSearch(value);
+    searchRef.current = value;
+    setSearch(searchRef.current);
   }
 
   const handleSearch = (event) => {
     event.preventDefault();
     if (search.length > 0) {
-      filterMessages(search);
+      filterMessages(searchRef.current);
     } else {
       setFilteredMessages(new Map());
     }
   };
+
+  const handleClear = (event) => {
+    event.preventDefault();
+    searchRef.current = '';
+    setSearch(searchRef.current);
+    setFilteredMessages(new Map());
+  }
 
   const filterMessages = () => {
     let searchedChats = new Map();
@@ -66,7 +76,14 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
 
   return (
     <Container>
-      <SearchBar privateChats={privateChats} handleSearchInput={handleSearchInput} handleSearch={handleSearch}/>
+      <SearchBar
+        searchRef={searchRef.current}
+        setSearch={setSearch}
+        privateChats={privateChats}
+        handleSearchInput={handleSearchInput}
+        handleSearch={handleSearch}
+        handleClear={handleClear}
+      />
       {currentContact === '' ? (
         <div>Click on contact to view messages.</div>
       ) : (
