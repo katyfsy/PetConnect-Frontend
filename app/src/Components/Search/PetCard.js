@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import { Link } from 'react-router-dom';
+import {getUser} from '../UserProfile/psb-exports';
 
 
 function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner}) {
@@ -16,7 +17,7 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner}) {
 
   const handleCloseModal = () => setShowModal(false);
   const handleShow = () => {
-    if (localStorage.getItem("token") === null) {
+    if (getUser() === null) {
       setShowModal(true)
     } else {
       //mark pet as favorite
@@ -27,7 +28,7 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner}) {
   return(
     <>
       <Card style={{ width: '18rem' }}>
-        <Link to="/pets" style={{ textDecoration: 'none', color: 'black' }}>
+        <Link to={`/pet/${petId}`} style={{ textDecoration: 'none', color: 'black' }}>
           <Card.Img src={coverPhoto} />
         </Link>
         <Card.Body>

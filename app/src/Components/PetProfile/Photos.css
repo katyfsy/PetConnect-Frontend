@@ -57,10 +57,10 @@
   cursor: pointer;
 }
 
-span {
+/* span {
   font-size: 2rem;
   color: #777;
-}
+} */
 
 .dropzone {
   text-align: center;
