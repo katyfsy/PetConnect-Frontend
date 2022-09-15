@@ -10,6 +10,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useLocation } from 'react-router-dom';
 import audio from './static/bark.wav';
+import './css/MessagingApp.css';
 import {
   getUser,
   PSB_API_URL,
@@ -272,7 +273,7 @@ const MessagingApp = () => {
           </button>
           </Col>
           <Col sm={8}>
-            <Container>
+            <Container className='chatBox'>
               <MessageChat
                 privateChats={privateChats}
                 currentContact={currentContact}
