@@ -5,34 +5,19 @@ import { MemoryRouter } from "react-router";
 
 jest.mock('axios')
 
-afterAll(() => {
-  jest.clearAllMocks();
-});
-
-
 describe("Messaging App", () => {
 
-  test("load Messaging App", async () => {
-    await act(async () => {
-      await axios.get.mockResolvedValueOnce({
-        data:
-        {
-          "firstName": "test",
-          "lastName": "user",
-          "userPhoto": 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.pn',
-          "username": "testuser"
-        }
-      })
-
-      render(
-        <MemoryRouter>
-          <MessagingApp />
-        </MemoryRouter>
-      );
-    })
-    // need to update the call Times to 1 once the localStorage stors the username
-    expect(axios.get).toHaveBeenCalledTimes(0);
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
+  test("load Messaging App", async () => {
+    render(
+      <MemoryRouter>
+        <MessagingApp />
+      </MemoryRouter>
+    );
+    expect(axios.get).toHaveBeenCalledTimes(0);
+  });
 
 })
