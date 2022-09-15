@@ -23,7 +23,7 @@ function AddAPetFormFunctional() {
   const [requiredPetFields, setrequiredPetFields] = useState({
     owner: user.toString(),
     name: null,
-    location: null,
+    zip: null,
     type: null,
     description: null,
   });
@@ -174,9 +174,9 @@ function AddAPetFormFunctional() {
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Location</Form.Label>
+                <Form.Label>Zipcode</Form.Label>
                 <Form.Control
-                  name="location"
+                  name="zip"
                   className="pet-location"
                   type="text"
                   onChange={handleOnChange}

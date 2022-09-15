@@ -10,6 +10,7 @@ function PetList() {
   let user = getUser();
   console.log(getUser());
   useEffect(() => {
+    if (petList.length > 0) {
     fetch(
       "http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets"
     )
@@ -26,6 +27,7 @@ function PetList() {
             });
         }
       });
+    }
   }, []);
 
   return (
