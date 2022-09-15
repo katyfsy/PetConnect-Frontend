@@ -42,6 +42,11 @@ const MessagingApp = () => {
   const [currentContact, setCurrentContact] = useState('');
   const [notificationList, setNotificationList] = useState([]);
 
+  const [messageSound, setMessageSound] = useState(localStorage.getItem('notificationSound') || 'true');
+  if (localStorage.getItem('notificationSound') === null) {
+    localStorage.setItem('notificationSound', 'true')
+  }
+
   useEffect(() => {
     console.log('OUTSIDE');
     if (!privateChats.get(userData.receiverName)) {
@@ -191,7 +196,7 @@ const MessagingApp = () => {
     if (stompClient) {
       let chatMessage = {
         senderName: userData.username,
-        receiverName:  currentContact ? currentContact : userData.receiverName,
+        receiverName: currentContact ? currentContact : userData.receiverName,
         message: userData.message,
         timestamp: Date().toString(),
         status: 'MESSAGE',
@@ -209,8 +214,24 @@ const MessagingApp = () => {
   };
 
   const playAudio = () => {
-    new Audio(audio).play();
+    if (localStorage.getItem('notificationSound') === 'true') {
+      new Audio(audio).play();
+    }
   };
+
+  const updateMessageSound = () => {
+    if (messageSound === 'true') {
+      setMessageSound('false');
+    } else {
+      setMessageSound('true');
+    }
+
+    if (localStorage.getItem('notificationSound') === 'true') {
+      localStorage.setItem('notificationSound', 'false')
+    } else {
+      localStorage.setItem('notificationSound', 'true')
+    }
+  }
 
   const onError = (err) => {
     console.log(err);
@@ -246,6 +267,9 @@ const MessagingApp = () => {
               setNotificationList={setNotificationList}
               currentContact={currentContact}
             />
+            <button className='input-button' onClick= {() => updateMessageSound()}>
+            {messageSound === 'true' ? 'Mute Messages' : 'Unmute messages' }
+          </button>
           </Col>
           <Col sm={8}>
             <Container>
