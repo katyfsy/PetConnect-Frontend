@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, Image, Col, Row } from 'react-bootstrap';
+import { Button, Card, Image, Col, Row, Modal, Carousel } from 'react-bootstrap';
 import Rating from 'react-rating';
 import moment from 'moment';
 import axios from 'axios';
@@ -10,6 +10,8 @@ function SingleReview({ review, votedOnReviews }) {
   const [upvotes, setUpvotes] = useState(review.upvotes);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [time, setTime] =useState();
+  const [show, setShow] = useState(false);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     if(votedOnReviews.includes(review.reviewId) || getBearerToken() === null) {
@@ -31,7 +33,17 @@ function SingleReview({ review, votedOnReviews }) {
     setButtonDisabled(true);
   }
 
+  const handleClose = () => setShow(false);
+  const handleShow = (e) => {
+    setShow(true);
+    setIndex(e);
+  };
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
+
   return (
+    <>
     <Card className="mb-5">
       <Card.Header as="h5">
         <Row>
@@ -62,8 +74,8 @@ function SingleReview({ review, votedOnReviews }) {
         </Card.Text>
       </Card.Body>
       <Row style={{marginLeft: 20}}>
-        {review.reviewImages.map((reviewImage) => {
-          return <Image src={reviewImage} style={{width:100}} key={reviewImage}/>
+        {review.reviewImages.map((reviewImage, imageIndex) => {
+          return <Image src={reviewImage} style={{width:100}} key={reviewImage} onClick={(e) => handleShow(imageIndex)}/>
         })}
       </Row>
       <Row className="mt-3">
@@ -78,6 +90,23 @@ function SingleReview({ review, votedOnReviews }) {
         </Col>
       </Row>
     </Card>
+
+    <Modal show={show} onHide={handleClose} size="lg">
+      <Modal.Header closeButton>
+        <Modal.Title>Review photos</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Carousel activeIndex={index} onSelect={handleSelect}>
+          {review.reviewImages.map((reviewImage) => {
+            return (
+              <Carousel.Item key={reviewImage}>
+                <Image width="800" src={reviewImage} key={reviewImage} alt="review photo" style={{objectFit: "cover", maxHeight: "100%"}}/>
+              </Carousel.Item>
+            )})}
+        </Carousel>
+      </Modal.Body>
+    </Modal>
+    </>
   );
 }
 

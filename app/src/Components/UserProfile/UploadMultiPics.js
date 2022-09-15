@@ -49,6 +49,9 @@ function UploadMultiPics({ images, setImages, presignedUrls, setPresignedUrls, u
         setUrlCache(urlCacheList);
       }
     }
+    //for presentation
+    console.log("presigned url list", presignedUrls);
+    console.log("deleted url cache", urlCache);
   }
 
   const handleRemoveImage = (imageName) => {
@@ -65,6 +68,10 @@ function UploadMultiPics({ images, setImages, presignedUrls, setPresignedUrls, u
     urlCacheList.push(presignedUrlsList.pop());
     setPresignedUrls(presignedUrlsList);
     setUrlCache(urlCacheList);
+
+    //for presentation
+    console.log("presigned url list", presignedUrls);
+    console.log("deleted url cache", urlCache);
   }
 
   return (
@@ -73,7 +80,7 @@ function UploadMultiPics({ images, setImages, presignedUrls, setPresignedUrls, u
       <Container>
         <Row>
           {images.map((image) => {
-            return (<Col md="auto">
+            return (<Col md="auto" key={image.name}>
                       <Image
                         src={URL.createObjectURL(image)}
                         className="review-photo"
@@ -86,6 +93,7 @@ function UploadMultiPics({ images, setImages, presignedUrls, setPresignedUrls, u
                           size="sm"
                           style={{marginLeft:20, marginBottom:7, marginTop:3}}
                           onClick={() => handleRemoveImage(image.name)}
+                          key={image.name}
                         >Remove</Button>
                       </div>
                     </Col>)
