@@ -55,7 +55,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
     // }
     // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
 
-    axios.get("api/petSearch" + param)
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/petSearch" + param)
     .then((result)=>{
         setResult(result.data.pets);
       })
@@ -70,7 +70,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
     console.log("handle Autocomplete: searchQuery:", value);
     // get request - get suggestions and populate dropdown
     // var param = `?search=${value}`;
-    axios.get("api/suggestions?search=" + value +"*")
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/suggestions?search=" + value +"*")
     .then((result)=>{
       if(result.data.pets === undefined) {
         setAutocompleteDisplay(false);
@@ -88,7 +88,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
     var params = value.type + " " + value.breed;
     setSearchQuery(params);
     console.log("params chosen from suggestions ====", params);
-    axios.get("api/petSearch?search=" + params)
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/petSearch?search=" + params)
     .then((result)=>{
         setResult(result.data.pets);
         console.log(result.data.pets);
@@ -109,7 +109,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
       }
       console.log('params ===>:',params);
       // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
-      axios.get("api/petSearch?search=" + params)
+      axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/petSearch?search=" + params)
       .then((result)=>{
           setResult(result.data.pets);
         })
