@@ -16,7 +16,6 @@ const MockContact = () => {
 }
 
 
-
 describe('Individual Contact', () => {
 
   test('renders Contact name and image', async () => {

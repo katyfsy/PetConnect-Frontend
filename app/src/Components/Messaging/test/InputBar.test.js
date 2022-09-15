@@ -40,16 +40,6 @@ describe('InputBar', () => {
     expect(inputBar.value).toBe('hello')
   })
 
-  // test('empty the input bar when send button is clicked', async () => {
-  //   render(<MockInputBar />)
-  //   const inputBar = screen.getByPlaceholderText(/Enter message/i)
-  //   const sendButton = screen.getByRole('button', { name: /Send/i })
-  //   fireEvent.change(inputBar, { target: { value: 'hello' } })
-  //   fireEvent.click(sendButton)
-  //   expect(inputBar.value).toBe('')
-  // })
-
-
 
 })
 
