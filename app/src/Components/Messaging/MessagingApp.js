@@ -15,12 +15,19 @@ import {
   PSB_API_URL,
   getBearerToken,
 } from '../UserProfile/psb-exports';
+import { GrStatusPlaceholder } from 'react-icons/gr';
 
 var stompClient = null;
 const MessagingApp = () => {
   const { state } = useLocation();
-  const senderPhotoRef = useRef('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png');
-  const receiverPhotoRef = useRef('https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png')
+  const privateChatsRef = useRef(new Map());
+  const senderPhotoRef = useRef(
+    'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'
+  );
+  const receiverPhotoRef = useRef(
+    'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'
+  );
+  const newConversationReceiverName = useRef(state ? state.receiverName : '');
 
   const [userData, setUserData] = useState({
     username: getUser(),
@@ -31,10 +38,19 @@ const MessagingApp = () => {
     senderPhoto: senderPhotoRef.current,
     receiverPhoto: receiverPhotoRef.current,
   });
-  const privateChatsRef = useRef(new Map());
   const [privateChats, setPrivateChats] = useState(privateChatsRef.current);
   const [currentContact, setCurrentContact] = useState('');
   const [notificationList, setNotificationList] = useState([]);
+
+  useEffect(() => {
+    console.log('OUTSIDE');
+    if (!privateChats.get(currentContact)) {
+      console.log('INSIDE');
+      privateChatsRef.current.set(currentContact, []);
+      setPrivateChats(new Map(privateChatsRef.current));
+    }
+  }, [state]);
+
   useEffect(() => {
     if (userData.username) {
       let Sock = new SockJS(
@@ -46,9 +62,7 @@ const MessagingApp = () => {
       getAllChats(userData.username);
       getAllNotifications(userData.username);
       axios
-        .get(
-          `${PSB_API_URL}/api/public/user/${userData.username}`,
-        )
+        .get(`${PSB_API_URL}/api/public/user/${userData.username}`)
         .then((response) => {
           senderPhotoRef.current = response.data.userPhoto;
           setUserData({ ...userData, senderPhoto: senderPhotoRef.current });
@@ -63,13 +77,11 @@ const MessagingApp = () => {
     // remove the if once we retrieve from localhost (signup enabled)
     if (currentContact) {
       axios
-        .get(
-          `${PSB_API_URL}/api/public/user/${currentContact}`,
-        )
+        .get(`${PSB_API_URL}/api/public/user/${currentContact}`)
         .then((response) => {
-          console.log('Response from set receiverPhoto', response.data)
+          console.log('Response from set receiverPhoto', response.data);
           receiverPhotoRef.current = response.data.userPhoto;
-          console.log(receiverPhotoRef.current)
+          console.log(receiverPhotoRef.current);
           setUserData({
             ...userData,
             receiverPhoto: receiverPhotoRef.current,
@@ -79,20 +91,19 @@ const MessagingApp = () => {
           console.log(err);
         });
     }
-
   }, [currentContact]);
 
   useEffect(() => {
     // remove the if once we retrieve from localhost (signup enabled)
-    if (userData.receiverName) {
+    if (newConversationReceiverName.current) {
       axios
         .get(
-          `${PSB_API_URL}/api/public/user/${userData.receiverName}`,
+          `${PSB_API_URL}/api/public/user/${newConversationReceiverName.current}`
         )
         .then((response) => {
-          console.log('Response from set receiverPhoto', response.data)
+          console.log('Response from set receiverPhoto', response.data);
           receiverPhotoRef.current = response.data.userPhoto;
-          console.log(receiverPhotoRef.current)
+          console.log('PHOTO:', receiverPhotoRef.current);
           setUserData({
             ...userData,
             receiverPhoto: receiverPhotoRef.current,
@@ -102,8 +113,7 @@ const MessagingApp = () => {
           console.log(err);
         });
     }
-
-  }, [userData.receiverName]);
+  }, []);
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
@@ -181,9 +191,7 @@ const MessagingApp = () => {
     if (stompClient) {
       let chatMessage = {
         senderName: userData.username,
-        receiverName: userData.receiverName
-          ? userData.receiverName
-          : currentContact,
+        receiverName:  currentContact ? currentContact : userData.receiverName,
         message: userData.message,
         timestamp: Date().toString(),
         status: 'MESSAGE',
@@ -218,7 +226,7 @@ const MessagingApp = () => {
             name='receiverName'
             placeholder='Enter the receiver name'
             value={
-              userData.receiverName ? userData.receiverName : currentContact
+              currentContact ? currentContact : userData.receiverName
             }
             onChange={handleName}
           />
@@ -245,6 +253,7 @@ const MessagingApp = () => {
                 privateChats={privateChats}
                 currentContact={currentContact}
                 username={userData.username}
+                privateChatsRef={privateChatsRef.current}
               />
               <InputBar
                 setUserData={setUserData}

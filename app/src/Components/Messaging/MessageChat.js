@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Container from 'react-bootstrap/Container';
 import './css/MessageChat.css';
 
-const MessageChat = ({ privateChats, currentContact, username }) => {
+const MessageChat = ({ privateChats, currentContact, username, privateChatsRef }) => {
   // need to add conditional to check if message is from user or contact to change alignment of message
   //  <li className={`message ${message.senderName === username && "self"}`} key={index}>
   // {message.senderName !== username && <div className="avatar">{message.senderName}</div>}
@@ -35,10 +35,9 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
               [...privateChats.get(currentContact)].map((message, index) => {
                 return (
                   <div className='chat-messages'>
-                  <div>
                   {formatDayMonth(message.timestamp).toString() === date.toString() ? null :
-                    date = formatDayMonth(message.timestamp)
-                }</div>
+                    (<div> <hr/> {date = formatDayMonth(message.timestamp)} </div>)
+                }
                   <div
                     className={`message ${
                       message.senderName === username && 'self'
