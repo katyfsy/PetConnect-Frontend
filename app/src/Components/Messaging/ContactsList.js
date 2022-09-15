@@ -11,11 +11,20 @@ const ContactsList = ({
   setNotificationList,
 }) => {
   let contactsSortedByRecentMessage = [...privateChats]
+    // .sort(([k, v], [k2, v2]) => {
+    //   if (v[v.length - 1].timestamp > v2[v2.length - 1].timestamp) {
+    //     return -1;
+    //   }
+    //   if (v[v.length - 1].timestamp < v2[v2.length - 1].timestamp) {
+    //     return 1;
+    //   }
+    //   return 0;
+    // })
     .sort(([k, v], [k2, v2]) => {
-      if (v[v.length - 1].timestamp > v2[v2.length - 1].timestamp) {
+      if (new Date(v[v.length - 1].timestamp) > new Date(v2[v2.length - 1].timestamp)) {
         return -1;
       }
-      if (v[v.length - 1].timestamp < v2[v2.length - 1].timestamp) {
+      if (new Date(v[v.length - 1].timestamp) < new Date(v2[v2.length - 1].timestamp)) {
         return 1;
       }
       return 0;
