@@ -89,7 +89,7 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
         <Form.Control
           name="owner"
           className="pet-owner-name"
-          type="readOnly"
+          readOnly={true}
           value={thisPet.owner}
         />
       </Form.Group>
