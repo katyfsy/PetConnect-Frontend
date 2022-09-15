@@ -1,0 +1,20 @@
+.input-bar {
+  position: relative;
+  left: 2%;
+  padding-bottom: 5%;
+}
+.input-message {
+  width: 83%;
+  border-radius: 5px;
+}
+
+.input-button {
+  border-radius: 5px;
+  background-color: #FBE8A6;
+}
+
+.input-button:hover {
+  background: grey;
+  color:#fff;
+  cursor: pointer;
+}

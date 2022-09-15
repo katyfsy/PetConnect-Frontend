@@ -1,15 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: petconnect-lb
+  name: psb-fe-lb
   labels:
-    app: pet-connect-frontend
+    app: psb-fe
 spec:
   type: LoadBalancer
   ports:
   - port: 80
     targetPort: 80
     protocol: TCP
-    # nodePort: 31000
   selector:
-    app: pet-connect-frontend
+    app: psb-fe

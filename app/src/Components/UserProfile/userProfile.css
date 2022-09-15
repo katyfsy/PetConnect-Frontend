@@ -35,3 +35,33 @@
     font-weight: 600;
     color: rgb(34, 34, 34);
   }
+
+  i {
+    position: relative;
+    right: 0;
+    top: 10px;
+  }
+
+  .i-edit {
+    position: relative;
+    left: 190px;
+    top: 35px;
+  }
+
+  .i-signup {
+    position: relative;
+    left: 70px;
+    top: 35px;
+  }
+
+  .i-login {
+    position: relative;
+    left: 55px;
+    top: 35px;
+  }
+
+  .i-delete {
+    position: relative;
+    left: 435px;
+    top: -30px;
+  }

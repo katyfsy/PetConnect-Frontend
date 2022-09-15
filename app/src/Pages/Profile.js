@@ -1,15 +1,12 @@
 import './Profile.css';
 import React, { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
+import axios from 'axios';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Image from "react-bootstrap/Image";
-import ReviewSummary from '../Components/UserProfile/ReviewSummary';
+import { Container,Button, Row, Col, Image } from 'react-bootstrap';
 import Reviews from '../Components/UserProfile/Reviews';
-import getUser from '../Components/UserProfile/DummyData';
+import { getBearerToken, getUser, PSB_API_URL } from "../Components/UserProfile/psb-exports";
 
 function Profile() {
   const [form, setForm] = useState({
@@ -20,7 +17,7 @@ function Profile() {
     phone: '',
     email: '',
     website: '',
-    userType: 'individual',
+    userType: 'ORGANIZATION',
     address: '',
     city: '',
     state: '',
@@ -29,60 +26,41 @@ function Profile() {
     userPhoto: ''
   });
 
+  const params = useParams();
+
   useEffect(() => {
-    const doGetUser = async () => {
-      const result = await getUser();
-      setForm(result);
-    }
+    const doGetUser = () => {
+      axios.get(`${PSB_API_URL}/api/public/user/${params.username}`,
+      {headers: {
+        'Authorization': getBearerToken()
+      }})
+        .then((res) => {
+          let result = res.data;
+          for(var key in result) {
+            if(result[key] === null) {
+              result[key] = "";
+            }
+            if(result.userPhoto === "") {
+              result.userPhoto = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+            }
+          }
+          setForm(result);
+        });
+      }
     doGetUser();
-  }, []);
-
-  function displayLoggedIn(){
-    let username = localStorage.getItem('username')
-    if (username === null || username === ""){
-      console.log("no username found")
-    } else {
-      console.log(username)
-    }
-  }
-
-  function clearStorage(){
-    localStorage.setItem('token', "");
-    localStorage.setItem('username', "");
-    console.log("signed out");
-  }
-  function getToken() {
-    const tokenString = localStorage.getItem('token');
-    const userToken = JSON.parse(tokenString);
-    return userToken;
-  }
-  function getUsername() {
-    const username = localStorage.getItem('username');
-    return username;
-  }
-
-  function displayToken(){
-    let token = localStorage.getItem('token')
-    if (token === null || token === ""){
-      console.log("no token found")
-    } else {
-      console.log(JSON.parse(token))
-    }
-  }
+  }, [params.username]);
 
   const renderEditOrMessageButton = () => {
-    if(getUsername() === "" || getUsername() === null) {
+    if(getUser() === "" || getUser() === null) {
       return <Button variant="primary" size="lg" href="/login" onClick={() => alert("Please login first to chat with the user.")}>
                Message me
              </Button>;
-    } else if(getUsername() === form.username) {
-      return <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
     } else {
-      return <Button variant="primary" size="lg" href="/profile/edit">Edit -> Message me</Button>
+      return <Button variant="primary" size="lg" href="/messages">Message me</Button>
     }
   }
 
-  if(form.userType === "individual") {
+  if(form.userType === "USER") {
     return (
       <div>
         <Container>
@@ -113,25 +91,7 @@ function Profile() {
               </Row>
             </Col>
           </Row>
-          <Row>
-            <Col>
-              <ReviewSummary />
-            </Col>
-            <Col>
-              <Reviews />
-            </Col>
-          </Row>
-          <Row>
-          <Button variant='outline-dark' onClick={displayLoggedIn}>
-              Show Logged In User
-          </Button>
-          <Button variant='outline-dark' onClick={displayToken}>
-              Get Token
-          </Button>
-          <Button variant='outline-dark' onClick={clearStorage}>
-              Sign Out
-          </Button>
-          </Row>
+          <hr className="mt-5 mb-3"/>
         </Container>
       </div>
     )
@@ -194,23 +154,7 @@ function Profile() {
             </Col>
           </Row>
           <Row>
-            <Col>
-              <ReviewSummary />
-            </Col>
-            <Col>
-              <Reviews />
-            </Col>
-          </Row>
-          <Row>
-          <Button variant='outline-dark' onClick={displayLoggedIn}>
-              Show Logged In User
-          </Button>
-          <Button variant='outline-dark' onClick={displayToken}>
-              Get Token
-          </Button>
-          <Button variant='outline-dark' onClick={clearStorage}>
-              Sign Out
-          </Button>
+              <Reviews orgUsername={params.username}/>
           </Row>
         </Container>
       </div>
