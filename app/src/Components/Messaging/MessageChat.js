@@ -34,16 +34,21 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
             {privateChats &&
               [...privateChats.get(currentContact)].map((message, index) => {
                 return (
+                  <div className='chat-messages'>
+                  <div>
+                  {formatDayMonth(message.timestamp).toString() === date.toString() ? null :
+                    date = formatDayMonth(message.timestamp)
+                }</div>
                   <div
                     className={`message ${
                       message.senderName === username && 'self'
                     }`}
                     key={index}
                   >
-                    <div>
+                    {/* <div>
                       {formatDayMonth(message.timestamp).toString() === date.toString() ? null :
                         date = formatDayMonth(message.timestamp)
-                    }</div>
+                    }</div> */}
                     {message.senderName !== username && (
                       <div className='avatar'>
                         <img
@@ -68,6 +73,7 @@ const MessageChat = ({ privateChats, currentContact, username }) => {
                     <div className='message-time'>
                       {formatDate(message.timestamp)}
                     </div>
+                  </div>
                   </div>
                 );
               })}
