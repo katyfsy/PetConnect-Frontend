@@ -76,6 +76,7 @@ const MessageChat = ({ privateChats, currentContact, username, receiverName}) =>
 
   return (
     <Container>
+      <h2>{receiverName}</h2>
       <SearchBar
         searchRef={searchRef.current}
         setSearch={setSearch}
@@ -85,8 +86,9 @@ const MessageChat = ({ privateChats, currentContact, username, receiverName}) =>
         handleClear={handleClear}
       />
       {currentContact === '' ? (
-        <div>{receiverName}</div>
+        <h2>Please click on a contact to see messages</h2>
       ) : (
+        <div>
         <div className='chat-content'>
           <div className='chat-messages'>
             {chats &&
@@ -135,6 +137,7 @@ const MessageChat = ({ privateChats, currentContact, username, receiverName}) =>
                 );
               })}
           </div>
+        </div>
         </div>
       )}
     </Container>
