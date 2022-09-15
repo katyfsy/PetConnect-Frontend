@@ -25,6 +25,7 @@ function AddAPetFormFunctional() {
     name: null,
     zip: null,
     type: null,
+    sex: null,
     description: null,
   });
   const MAX_NUMBER_OF_PHOTOS = 5;
@@ -125,8 +126,11 @@ function AddAPetFormFunctional() {
     } else {
       let petId = await createPet();
       // console.log("THIS IS THE PETID: ", petId);
-      await handleUpload(petId);
-      navigateToPetProfile(petId);
+      if (petId != null) {
+        await handleUpload(petId);
+        navigateToPetProfile(petId);
+      }
+
     }
   };
 
@@ -177,8 +181,8 @@ function AddAPetFormFunctional() {
                 <Form.Label>Zipcode</Form.Label>
                 <Form.Control
                   name="zip"
-                  className="pet-location"
-                  type="text"
+                  className="pet-zip"
+                  type="number"
                   onChange={handleOnChange}
                 />
               </Form.Group>
@@ -198,6 +202,19 @@ function AddAPetFormFunctional() {
                   <option value="farmAnimal">Farm Animal</option>
                   <option value="smallPet">Small Pet</option>
                   <option value="reptile">Reptile</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Sex</Form.Label>
+                <Form.Select
+                  name="sex"
+                  className="pet-sex"
+                  onChange={handleOnChange}
+                >
+                  <option>Please Select from the list below</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="unknown">Unknown</option>
                 </Form.Select>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
