@@ -82,6 +82,29 @@ const MessagingApp = () => {
 
   }, [currentContact]);
 
+  useEffect(() => {
+    // remove the if once we retrieve from localhost (signup enabled)
+    if (userData.receiverName) {
+      axios
+        .get(
+          `${PSB_API_URL}/api/public/user/${userData.receiverName}`,
+        )
+        .then((response) => {
+          console.log('Response from set receiverPhoto', response.data)
+          receiverPhotoRef.current = response.data.userPhoto;
+          console.log(receiverPhotoRef.current)
+          setUserData({
+            ...userData,
+            receiverPhoto: receiverPhotoRef.current,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+  }, [userData.receiverName]);
+
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
     stompClient.subscribe(
