@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PetCard from "./PetCard";
-import { getUser } from "../UserProfile/psb-exports"
+import { getUser } from "../UserProfile/psb-exports";
 
 function PetList() {
   const [petList, setPetList] = useState([]);
@@ -10,7 +10,6 @@ function PetList() {
   let user = getUser();
   console.log(getUser());
   useEffect(() => {
-    if (petList.length > 0) {
     fetch(
       "http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets"
     )
@@ -20,16 +19,20 @@ function PetList() {
         setPetList(data.petsList);
         if (user) {
           console.log("getting user data too");
-          fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets?owner=${user}`)
+          fetch(
+            `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets?owner=${user}`
+          )
             .then((res) => res.json())
             .then((Mydata) => {
               setMyPetList(Mydata.petsList);
             });
         }
       });
-    }
   }, []);
 
+  if (petList.length == 0) {
+    return null;
+  }
   return (
     <>
       <button
