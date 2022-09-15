@@ -9,8 +9,7 @@ import Col from "react-bootstrap/Col";
 import "./AddAPetForm.css";
 import Photos from "./Photos";
 import axios from "axios";
-import { getUser } from "../UserProfile/psb-exports"
-
+import { getUser } from "../UserProfile/psb-exports";
 
 function AddAPetFormFunctional() {
   const [petId, setPetId] = useState(null);
@@ -18,7 +17,7 @@ function AddAPetFormFunctional() {
   const [photos, setPhotos] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
-  let user = getUser()
+  let user = getUser();
   console.log(user);
   const [requiredPetFields, setrequiredPetFields] = useState({
     owner: user.toString(),
@@ -28,6 +27,7 @@ function AddAPetFormFunctional() {
     sex: null,
     description: null,
   });
+  console.log(requiredPetFields);
   const MAX_NUMBER_OF_PHOTOS = 5;
   const handleOnChange = (e) => {
     setrequiredPetFields({
@@ -128,9 +128,9 @@ function AddAPetFormFunctional() {
       // console.log("THIS IS THE PETID: ", petId);
       if (petId != null) {
         await handleUpload(petId);
+
         navigateToPetProfile(petId);
       }
-
     }
   };
 
@@ -161,9 +161,6 @@ function AddAPetFormFunctional() {
                     name="owner"
                     value={getUser()}
                     className="pet-owner-name"
-                    type="text"
-                    placeholder="Pet's Owner's Name"
-                    onChange={handleOnChange}
                   />
                 )}
               </Form.Group>
@@ -233,24 +230,28 @@ function AddAPetFormFunctional() {
                   handleAddPhotos={handleAddPhotos}
                   handleRemovePhotos={handleRemovePhotos}
                   handleCoverPhoto={handleCoverPhoto}
-              showRadios={true}
-              maxPhotos={MAX_NUMBER_OF_PHOTOS}
-            />
+                  showRadios={true}
+                  maxPhotos={MAX_NUMBER_OF_PHOTOS}
+                />
               </div>
 
               <br />
               <Row>
                 <Col>
-                <Button variant="secondary" type="submit" onClick={() => navigate(-1)}>
-                  {"<"} Go Back
-                </Button>
+                  <Button
+                    variant="secondary"
+                    type="submit"
+                    onClick={() => navigate(-1)}
+                  >
+                    {"<"} Go Back
+                  </Button>
                 </Col>
                 <Col>
-                {isClicked ? null : (
-                  <Button type="submit" className="add-pet-button">
-                    Add Pet
-                  </Button>
-                )}
+                  {isClicked ? null : (
+                    <Button type="submit" className="add-pet-button">
+                      Add Pet
+                    </Button>
+                  )}
                 </Col>
               </Row>
             </Form>
