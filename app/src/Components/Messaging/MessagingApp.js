@@ -69,8 +69,10 @@ const MessagingApp = () => {
       axios
         .get(`${PSB_API_URL}/api/public/user/${userData.username}`)
         .then((response) => {
-          senderPhotoRef.current = response.data.userPhoto;
-          setUserData({ ...userData, senderPhoto: senderPhotoRef.current });
+          if (response.data.userPhoto !== null) {
+            senderPhotoRef.current = response.data.userPhoto;
+            setUserData({ ...userData, senderPhoto: senderPhotoRef.current });
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -84,13 +86,13 @@ const MessagingApp = () => {
       axios
         .get(`${PSB_API_URL}/api/public/user/${currentContact}`)
         .then((response) => {
-          console.log('Response from set receiverPhoto', response.data);
-          receiverPhotoRef.current = response.data.userPhoto;
-          console.log(receiverPhotoRef.current);
-          setUserData({
-            ...userData,
-            receiverPhoto: receiverPhotoRef.current,
-          });
+          if (response.data.userPhoto !== null) {
+            receiverPhotoRef.current = response.data.userPhoto;
+            setUserData({
+              ...userData,
+              receiverPhoto: receiverPhotoRef.current,
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -106,13 +108,13 @@ const MessagingApp = () => {
           `${PSB_API_URL}/api/public/user/${newConversationReceiverName.current}`
         )
         .then((response) => {
-          console.log('Response from set receiverPhoto', response.data);
-          receiverPhotoRef.current = response.data.userPhoto;
-          console.log('PHOTO:', receiverPhotoRef.current);
-          setUserData({
-            ...userData,
-            receiverPhoto: receiverPhotoRef.current,
-          });
+          if (response.data.userPhoto !== null) {
+            receiverPhotoRef.current = response.data.userPhoto;
+            setUserData({
+              ...userData,
+              receiverPhoto: receiverPhotoRef.current,
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -246,9 +248,7 @@ const MessagingApp = () => {
             id='receiver-name'
             name='receiverName'
             placeholder='Enter the receiver name'
-            value={
-              currentContact ? currentContact : userData.receiverName
-            }
+            value={currentContact ? currentContact : userData.receiverName}
             onChange={handleName}
           />
         </span>
@@ -277,15 +277,38 @@ const MessagingApp = () => {
                 privateChats={privateChats}
                 currentContact={currentContact}
                 username={userData.username}
-                receiverName={currentContact === '' ? userData.receiverName : currentContact}
+                receiverName={
+                  currentContact === '' ? userData.receiverName : currentContact
+                }
               />
-              <InputBar
-                setUserData={setUserData}
-                userData={userData}
-                handleSend={handleSend}
-                handleMessage={handleMessage}
-                currentContact={currentContact}
-              />
+              {currentContact ? (
+                <InputBar
+                  setUserData={setUserData}
+                  userData={userData}
+                  handleSend={handleSend}
+                  handleMessage={handleMessage}
+                  currentContact={currentContact}
+                />
+              ) : (
+                userData.receiverName && (
+                  <InputBar
+                    setUserData={setUserData}
+                    userData={userData}
+                    handleSend={handleSend}
+                    handleMessage={handleMessage}
+                    currentContact={currentContact}
+                  />
+                )
+              )}
+              {/* {userData.receiverName && (
+                <InputBar
+                  setUserData={setUserData}
+                  userData={userData}
+                  handleSend={handleSend}
+                  handleMessage={handleMessage}
+                  currentContact={currentContact}
+                />
+              )} */}
             </Container>
           </Col>
         </Row>

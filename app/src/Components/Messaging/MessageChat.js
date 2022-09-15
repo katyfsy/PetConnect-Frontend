@@ -3,7 +3,12 @@ import SearchBar from './SearchBar';
 import Container from 'react-bootstrap/Container';
 import './css/MessageChat.css';
 
-const MessageChat = ({ privateChats, currentContact, username, receiverName}) => {
+const MessageChat = ({
+  privateChats,
+  currentContact,
+  username,
+  receiverName,
+}) => {
   // need to add conditional to check if message is from user or contact to change alignment of message
   //  <li className={`message ${message.senderName === username && "self"}`} key={index}>
   // {message.senderName !== username && <div className="avatar">{message.senderName}</div>}
@@ -26,7 +31,10 @@ const MessageChat = ({ privateChats, currentContact, username, receiverName}) =>
 
   const formatDate = (string) => {
     var options = { hour: 'numeric', minute: 'numeric' };
-    return new Date(string).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+    return new Date(string).toLocaleTimeString(navigator.language, {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
     // return new Date(string).toLocaleDateString('en-US',options);
   };
 
@@ -35,7 +43,7 @@ const MessageChat = ({ privateChats, currentContact, username, receiverName}) =>
     const value = event.target.value;
     searchRef.current = value;
     setSearch(searchRef.current);
-  }
+  };
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -51,22 +59,22 @@ const MessageChat = ({ privateChats, currentContact, username, receiverName}) =>
     searchRef.current = '';
     setSearch(searchRef.current);
     setFilteredMessages(new Map());
-  }
+  };
 
   const filterMessages = () => {
     let searchedChats = new Map();
     if (privateChats) {
       let messages = [];
       [...privateChats.get(currentContact)].map((message, index) => {
-        let content = (message.message).toLowerCase();
+        let content = message.message.toLowerCase();
         if (content.includes(search.toLowerCase())) {
           messages.push(message);
         }
-      })
+      });
       searchedChats.set(currentContact, messages);
       setFilteredMessages(new Map(searchedChats));
     }
-  }
+  };
 
   if (filteredMessages.size === 0) {
     chats = privateChats;
@@ -77,67 +85,76 @@ const MessageChat = ({ privateChats, currentContact, username, receiverName}) =>
   return (
     <Container>
       <h2>{receiverName}</h2>
-      <SearchBar
-        searchRef={searchRef.current}
-        setSearch={setSearch}
-        privateChats={privateChats}
-        handleSearchInput={handleSearchInput}
-        handleSearch={handleSearch}
-        handleClear={handleClear}
-      />
+      {currentContact && (
+        <SearchBar
+          searchRef={searchRef.current}
+          setSearch={setSearch}
+          privateChats={privateChats}
+          handleSearchInput={handleSearchInput}
+          handleSearch={handleSearch}
+          handleClear={handleClear}
+        />
+      )}
+
       {currentContact === '' ? (
-        <h2>Please click on a contact to see messages</h2>
+        <h2></h2>
       ) : (
         <div>
-        <div className='chat-content'>
-          <div className='chat-messages'>
-            {chats &&
-              [...chats.get(currentContact)].map((message, index) => {
-                return (
-                  <div className='chat-messages'>
-                  {formatDayMonth(message.timestamp).toString() === date.toString() ? null :
-                    (<div> <hr/> {date = formatDayMonth(message.timestamp)} </div>)
-                }
-                  <div
-                    className={`message ${
-                      message.senderName === username && 'self'
-                    }`}
-                    key={index}
-                  >
-                    {/* <div>
+          <div className='chat-content'>
+            <div className='chat-messages'>
+              {chats &&
+                [...chats.get(currentContact)].map((message, index) => {
+                  return (
+                    <div className='chat-messages'>
+                      {formatDayMonth(message.timestamp).toString() ===
+                      date.toString() ? null : (
+                        <div>
+                          {' '}
+                          <hr /> {
+                            (date = formatDayMonth(message.timestamp))
+                          }{' '}
+                        </div>
+                      )}
+                      <div
+                        className={`message ${
+                          message.senderName === username && 'self'
+                        }`}
+                        key={index}
+                      >
+                        {/* <div>
                       {formatDayMonth(message.timestamp).toString() === date.toString() ? null :
                         date = formatDayMonth(message.timestamp)
                     }</div> */}
-                    {message.senderName !== username && (
-                      <div className='avatar'>
-                        <img
-                          className='rounded-circle'
-                          src={message.senderPhoto}
-                          alt=''
-                        />
-                        {/* // {message.senderPhoto} */}
+                        {message.senderName !== username && (
+                          <div className='avatar'>
+                            <img
+                              className='rounded-circle'
+                              src={message.senderPhoto}
+                              alt=''
+                            />
+                            {/* // {message.senderPhoto} */}
+                          </div>
+                        )}
+                        <div className='message-data'>{message.message}</div>
+                        {message.senderName === username && (
+                          <div className='avatar self'>
+                            <img
+                              className='rounded-circle'
+                              src={message.senderPhoto}
+                              alt=''
+                            />
+                            {/* {message.senderPhoto} */}
+                          </div>
+                        )}
+                        <div className='message-time'>
+                          {formatDate(message.timestamp)}
+                        </div>
                       </div>
-                    )}
-                    <div className='message-data'>{message.message}</div>
-                    {message.senderName === username && (
-                      <div className='avatar self'>
-                        <img
-                          className='rounded-circle'
-                          src={message.senderPhoto}
-                          alt=''
-                        />
-                        {/* {message.senderPhoto} */}
-                      </div>
-                    )}
-                    <div className='message-time'>
-                      {formatDate(message.timestamp)}
                     </div>
-                  </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+            </div>
           </div>
-        </div>
         </div>
       )}
     </Container>
