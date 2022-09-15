@@ -120,13 +120,13 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
       return (
       <div>
         <h5>Share your thoughts with other adopters</h5>
-        <Button onClick={() => loginAlert()} >Write your review</Button>
+        <Button style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}} onClick={() => loginAlert()} >Write your review</Button>
       </div>
       )} else if (params.username !== getUser() && params.username !== undefined) {
         return (
           <div>
             <h5>Share your thoughts with other adopters</h5>
-            <Button onClick={handleShow} >Write your review</Button>
+            <Button style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}} onClick={handleShow} >Write your review</Button>
           </div>
       )}
   }
@@ -148,7 +148,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           <p onClick={() => filterFiveStars()}>5 Star ({ratingCount[4]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar now={ratingPercentage[4]} label={`${ratingPercentage[4]}%`} />
+          <ProgressBar variant="warning" now={ratingPercentage[4]} label={`${ratingPercentage[4]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
@@ -156,7 +156,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           <p onClick={() => filterFourStars()}>4 Star ({ratingCount[3]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar now={ratingPercentage[3]} label={`${ratingPercentage[3]}%`} />
+          <ProgressBar variant="warning" now={ratingPercentage[3]} label={`${ratingPercentage[3]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
@@ -164,7 +164,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           <p onClick={() => filterThreeStars()}>3 Star  ({ratingCount[2]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar now={ratingPercentage[2]} label={`${ratingPercentage[2]}%`} />
+          <ProgressBar variant="warning" now={ratingPercentage[2]} label={`${ratingPercentage[2]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
@@ -172,7 +172,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           <p onClick={() => filterTwoStars()}>2 Star ({ratingCount[1]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar now={ratingPercentage[1]} label={`${ratingPercentage[1]}%`} />
+          <ProgressBar variant="warning" now={ratingPercentage[1]} label={`${ratingPercentage[1]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
@@ -180,15 +180,15 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           <p onClick={() => filterOneStars()}>1 Star  ({ratingCount[0]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar now={ratingPercentage[0]} label={`${ratingPercentage[0]}%`} />
+          <ProgressBar variant="warning" now={ratingPercentage[0]} label={`${ratingPercentage[0]}%`} />
         </Col>
       </Row>
       <Row style={{paddingTop: "30px"}}>
         {renderWriteReview()}
       </Row>
       <Modal show={show} onHide={handleClose} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Create Review</Modal.Title>
+        <Modal.Header closeButton style={{backgroundColor: "#8F9ED9"}}>
+          <Modal.Title style={{color: "white"}}>Create Review</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <h5>Rate your experience</h5>
@@ -218,10 +218,10 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}} onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={() => {handleClose(); handleReviewSubmit()}}>
+          <Button style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}} onClick={() => {handleClose(); handleReviewSubmit()}}>
             Submit
           </Button>
         </Modal.Footer>

@@ -2,7 +2,6 @@ import '../../Pages/Profile.css'
 import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
-// import getUser from '../UserProfile/DummyData';
 import { getBearerToken, getUser, clearStorage, PSB_API_URL, getUserType } from "../UserProfile/psb-exports"
 
 function Header() {
@@ -83,9 +82,9 @@ function Header() {
 
   if(username === "" || username === null) {
     return (
-      <Navbar>
+      <Navbar style={{backgroundColor: "#F4976C"}}>
         <Container>
-          <Navbar.Brand href="/" style={{height: "96px", paddingTop: "33px"}}>PET CONNECT</Navbar.Brand>
+          <Navbar.Brand href="/" style={{height: "96px", paddingTop: "33px", color: "white"}}>PET CONNECT</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
               <Button href='/login' variant="light">Login</Button>
@@ -96,9 +95,9 @@ function Header() {
     );
   } else {
     return (
-      <Navbar>
+      <Navbar style={{backgroundColor: "#F4976C"}}>
         <Container>
-          <Navbar.Brand href="/">PET CONNECT</Navbar.Brand>
+          <Navbar.Brand href="/" style={{height: "96px", paddingTop: "33px", color: "white"}}>PET CONNECT</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse align="right" className="justify-content-end" expand="lg">
             <NavDropdown align="end" className="w-25 p-3" title={

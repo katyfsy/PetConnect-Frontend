@@ -169,10 +169,10 @@ function Reviews({ orgUsername }) {
         <Col xs={8}>
         <div className="mb-2" align="left">
           <DropdownButton
+            variant="warning"
             key='up'
             id={'dropdown-button-drop-up'}
             drop='up'
-            variant="secondary"
             title={'Sort'}
           >
             <Dropdown.Item onClick={() => sortMostRecent(reviews)}>Most Recent</Dropdown.Item>

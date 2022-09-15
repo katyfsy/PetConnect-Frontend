@@ -45,7 +45,7 @@ function SingleReview({ review, votedOnReviews }) {
   return (
     <>
     <Card className="mb-5">
-      <Card.Header as="h5">
+      <Card.Header as="h5" style={{backgroundColor: "#8F9ED9"}}>
         <Row>
           <Col xs={3}>
             <div style={{paddingTop:10}}>
@@ -58,11 +58,11 @@ function SingleReview({ review, votedOnReviews }) {
             </div>
           </Col>
           <Col xs={6}>
-            <Card.Title align="start" style={{"paddingTop": "15px"}}>{review.reviewTitle}</Card.Title>
+            <Card.Title align="start" style={{"paddingTop": "15px",color: "white"}}>{review.reviewTitle}</Card.Title>
           </Col>
           <Col>
           <Image src={review.userPhoto} roundedCircle width="40"/>
-            <Card.Text style={{fontSize: '15px'}}>
+            <Card.Text style={{fontSize: '15px', color: "white"}}>
               {review.firstName} {review.lastName}
             </Card.Text>
           </Col>
