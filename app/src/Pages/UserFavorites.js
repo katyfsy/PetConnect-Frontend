@@ -29,7 +29,6 @@ function UserFavorites() {
         )
         .then((res) => {
           petData.push(res.data);
-          console.log(petData);
           if(petData.length === favoritesList.length) {
             setData(petData);
           }
@@ -58,6 +57,13 @@ function UserFavorites() {
   }, []);
 
   const deleteFavor = (petId) => {
+    for(let i = 0; i < data.length; i++) {
+      if(data[i].petId === petId) {
+        let newData = data;
+        newData.splice(i, 1);
+        setData([...newData]);
+      }
+    }
   }
 
   const PetCard = data.map((element) => {
@@ -70,7 +76,7 @@ function UserFavorites() {
     }
     return (
       <Card style={{ width: "18rem" }}>
-        <FavButton petId={element.petId} isFavor={isFavor} />
+        <FavButton petId={element.petId} isFavor={isFavor} deleteFavor={(e) => deleteFavor(e)}/>
         <a href={`/pet/${element.petId}`}><Card.Img variant="top" src={element.coverPhoto} style={{height: 200}} onClick={() => handleClick()}/></a>
 
         <Card.Body>

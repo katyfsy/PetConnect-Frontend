@@ -7,12 +7,11 @@ import {
   PSB_API_URL,
 } from "../UserProfile/psb-exports.js";
 
-function FavButton ({ petId, isFavor }) {
+function FavButton ({ petId, isFavor, deleteFavor }) {
 
   const [favor, setFavor] = useState(false);
 
   useEffect(() => {
-    console.log(isFavor);
     setFavor(isFavor);
   }, [])
 
@@ -42,6 +41,7 @@ function FavButton ({ petId, isFavor }) {
         .then(() => {
           console.log("deleted favorites");
           setFavor(false);
+          deleteFavor(petId);
         })
         .catch((err) => console.log(err));
   }

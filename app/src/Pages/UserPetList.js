@@ -22,7 +22,6 @@ function UserPetList() {
 
   const getData = async () => {
     const { data } = await axios.get(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets?owner=${username}`);
-    console.log(data.petsList)
     setData(data.petsList);
   };
 
