@@ -27,6 +27,7 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     reported: thisPet.reported,
     coverPhoto: thisPet.coverPhoto,
   });
+  2;
 
   console.log("these are state of attributes:", petAttributes);
   console.log("photo state", addPhotos);
@@ -111,8 +112,6 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      alert("At least one photo is required to upload");
     }
   };
 
