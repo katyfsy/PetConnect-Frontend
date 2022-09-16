@@ -120,25 +120,33 @@ function AddAPetFormFunctional() {
   };
 
   const handleOnSubmit = async (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    console.log(e.currentTaget);
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
 
-      if (photos.length == 0) {
-        alert("At least one photo is required to upload");
-      } else {
-        let petId = await createPet();
-        // console.log("THIS IS THE PETID: ", petId);
-        if (petId != null) {
-          await handleUpload(petId);
-          navigateToPetProfile(petId);
-        }
-      }
+
+    const form = e.currentTarget;
+    console.log(e.currentTarget);
+    console.log(form.checkValidity());
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
     }
 
+    e.preventDefault();
+
+    if (photos.length == 0) {
+      alert("At least one photo is required to upload");
+    } else {
+      let petId = await createPet();
+      // console.log("THIS IS THE PETID: ", petId);
+      if (petId != null) {
+        await handleUpload(petId);
+        navigateToPetProfile(petId);
+      }
+    }
     setValidated(true);
+
+
+
+
   };
 
   const navigateToPetProfile = (id) => {
@@ -181,7 +189,7 @@ function AddAPetFormFunctional() {
                   />
                 )}
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="validateName">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   required
@@ -196,7 +204,7 @@ function AddAPetFormFunctional() {
                   Please enter your pet's name.
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="validateZip">
                 <Form.Label>Zipcode</Form.Label>
                 <Form.Control
                   required
@@ -210,7 +218,7 @@ function AddAPetFormFunctional() {
                   Please enter a zipcode.
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="validateType">
                 <Form.Label>Type</Form.Label>
                 <Form.Select
                   name="type"
@@ -228,7 +236,7 @@ function AddAPetFormFunctional() {
                   <option value="reptile">Reptile</option>
                 </Form.Select>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="validateSex">
                 <Form.Label>Sex</Form.Label>
                 <Form.Select
                   name="sex"
@@ -241,7 +249,7 @@ function AddAPetFormFunctional() {
                   <option value="unknown">Unknown</option>
                 </Form.Select>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="validateDescription">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   required
