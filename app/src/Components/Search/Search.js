@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Search.css';
 
 
-function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
+function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, setBreed, setType}){
   // ======
   // Working Default Dropdown (click outside will close dropdown)
   // 1. Need to work on CSS to make sure the dropdown lies under search input bar
@@ -85,6 +85,10 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
 
   const handleSuggestionSearchClick = (value) => {
     setAutocompleteDisplay(false);
+    console.log('breed', value.breed);
+    console.log('type', value.type);
+    setBreed(value.breed);
+    setType(value.type);
     var params = value.type + " " + value.breed;
     setSearchQuery(params);
     console.log("params chosen from suggestions ====", params);

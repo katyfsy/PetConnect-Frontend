@@ -8,44 +8,28 @@ import './AdvSearch.css';
 //search bar --> any string --> all elk results
 //show adv search filters : type, breed, age, gender
 
-function AdvSearch({results, setResult, searchQuery, zipcode, radius}) {
+function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, setBreed, type, setType}) {
 
   const [gender, setGender] = useState("")
   const [age, setAge] = useState("")
-  const [breed, setBreed] = useState("")
-  const [type, setType] = useState("")
   const [matches, setMatches] = useState(results)
 
-  const [allBreeds, setAllBreeds] = useState(["Any"])
+  const [allBreeds, setAllBreeds] = useState(["Any"]);
+  const [allTypes, setAllTypes] = useState(["Any", "cat", "dog"]);
 
-  // useEffect(()=>{
-  //   if(searchQuery === "" && zipcode === "") return;
-  //   var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
-  //   console.log(params);
-  //   axios.get("http://localhost:8080/api/petSearch?search=*", {params})
-  //   // axios.get("http://localhost:8080/api/petSearch", {params})
-  //   .then((result) =>{
-  //     setResult(result.data.pets)
-  //   })
-  //   .catch(err=>console.log(err))},
-  //   [type, gender, age, breed])
-
-    const handleFilterClick = (e) => {
-      console.log('clicked')
-
-      // if(searchQuery === "" && zipcode === "") return;
-      var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
-      console.log(params);
-      axios.get("http://localhost:8080/api/petSearch?search=*", {params})
-      // axios.get("http://localhost:8080/api/petSearch", {params})
-      .then((result) =>{
-        setResult(result.data.pets)
-      })
-      .catch(err=>console.log(err))
-    }
+  const handleFilterClick = (e) => {
+    var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
+    console.log(params);
+    axios.get("http://localhost:8080/api/petSearch?search=*", {params})
+    // axios.get("http://localhost:8080/api/petSearch", {params})
+    .then((result) =>{
+      setResult(result.data.pets)
+    })
+    .catch(err=>console.log(err))
+  }
 
     useEffect(() => {
-      if (type === "") {
+      if (type === "Any") {
         var params = ""
       } else {
         params = "?type=" + type;
@@ -69,17 +53,32 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius}) {
       <div className="type filter">
           <h6 className="filterType">Type</h6>
           <select onChange={e=>setType(e.target.value)}>
-            <option value="">Any</option>
+            {/* <option value="">Any</option>
             <option value="cat">Cat</option>
-            <option value="dog">Dog</option>
+            <option value="dog">Dog</option> */}
+            {
+              allTypes.map(typeOption => {
+                  if(type === typeOption){
+                    return <option value={typeOption} selected>{typeOption}</option>
+                  } else {
+                    return <option value={typeOption}>{typeOption}</option>
+                  }
+                }
+              )
+            }
           </select>
         </div>
         <div className="breed filter">
           <h6 className="filterType">Breed</h6>
           <select onChange={e=>setBreed(e.target.value)}>
             {
-              allBreeds.map(breed =>
-                <option value={breed}>{breed}</option>
+              allBreeds.map(breedOption => {
+                  if(breed === breedOption){
+                    return <option value={breedOption} selected>{breedOption}</option>
+                  } else {
+                    return <option value={breedOption}>{breedOption}</option>
+                  }
+                }
               )
             }
           </select>
