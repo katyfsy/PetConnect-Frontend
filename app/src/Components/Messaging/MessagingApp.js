@@ -272,26 +272,18 @@ const MessagingApp = () => {
             {messageSound === 'true' ? 'Mute Messages' : 'Unmute messages' }
           </button>
           </Col>
-          <Col sm={8}>
-            <Container className='chatBox'>
-              <MessageChat
-                privateChats={privateChats}
-                currentContact={currentContact}
-                username={userData.username}
-                receiverName={
-                  currentContact === '' ? userData.receiverName : currentContact
-                }
-              />
-              {currentContact ? (
-                <InputBar
-                  setUserData={setUserData}
-                  userData={userData}
-                  handleSend={handleSend}
-                  handleMessage={handleMessage}
+          {currentContact !== '' &&
+            <Col sm={8}>
+              <Container className='chatBox'>
+                <MessageChat
+                  privateChats={privateChats}
                   currentContact={currentContact}
+                  username={userData.username}
+                  receiverName={
+                    currentContact === '' ? userData.receiverName : currentContact
+                  }
                 />
-              ) : (
-                userData.receiverName && (
+                {currentContact ? (
                   <InputBar
                     setUserData={setUserData}
                     userData={userData}
@@ -299,19 +291,20 @@ const MessagingApp = () => {
                     handleMessage={handleMessage}
                     currentContact={currentContact}
                   />
-                )
-              )}
-              {/* {userData.receiverName && (
-                <InputBar
-                  setUserData={setUserData}
-                  userData={userData}
-                  handleSend={handleSend}
-                  handleMessage={handleMessage}
-                  currentContact={currentContact}
-                />
-              )} */}
-            </Container>
-          </Col>
+                ) : (
+                  userData.receiverName && (
+                    <InputBar
+                      setUserData={setUserData}
+                      userData={userData}
+                      handleSend={handleSend}
+                      handleMessage={handleMessage}
+                      currentContact={currentContact}
+                    />
+                  )
+                )}
+              </Container>
+            </Col>
+          }
         </Row>
       </Container>
     </div>
