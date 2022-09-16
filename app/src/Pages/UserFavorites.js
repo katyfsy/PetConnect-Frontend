@@ -71,12 +71,8 @@ function UserFavorites() {
     return (
       <Card style={{ width: "18rem" }}>
         <FavButton petId={element.petId} isFavor={isFavor} />
-        <Card.Img
-          variant="top"
-          src={element.coverPhoto}
-          style={{ height: 200 }}
-          onClick={() => handleClick()}
-        />
+        <a href={`/pet/${element.petId}`}><Card.Img variant="top" src={element.coverPhoto} style={{height: 200}} onClick={() => handleClick()}/></a>
+
         <Card.Body>
           <Card.Title>{element.name}</Card.Title>
           <Card.Text>{element.description}</Card.Text>
