@@ -10,11 +10,13 @@ import './AdvSearch.css';
 
 function AdvSearch({results, setResult, searchQuery, zipcode, radius}) {
 
-  const [gender, setGender] = useState([])
-  const [age, setAge] = useState([])
-  const [breed, setBreed] = useState([])
-  const [type, setType] = useState([])
+  const [gender, setGender] = useState("")
+  const [age, setAge] = useState("")
+  const [breed, setBreed] = useState("")
+  const [type, setType] = useState("")
   const [matches, setMatches] = useState(results)
+
+  const [allBreeds, setAllBreeds] = useState(["Any"])
 
   useEffect(()=>{
     if(searchQuery === "" && zipcode === "") return;
@@ -31,6 +33,18 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius}) {
     const handleFilterClick = (e) => {
       console.log('clicked')
     }
+
+    useEffect(() => {
+      if (type === "") {
+        var params = ""
+      } else {
+        params = "?type=" + type;
+      }
+      axios.get("http://localhost:8080/api/breeds" + params)
+      .then(result => {
+        setAllBreeds(["Any", ...result.data])})
+      .catch(err => console.log(err))
+    },[type])
 
     let babyType;
     if (searchQuery === 'dog') babyType = 'Puppy';
@@ -53,9 +67,11 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius}) {
         <div className="breed filter">
           <h6 className="filterType">Breed</h6>
           <select onChange={e=>setBreed(e.target.value)}>
-            <option value="">Any</option>
-            <option value="ragdoll">Ragdoll</option>
-            <option value="british shorthair">British Shorthair</option>
+            {
+              allBreeds.map(breed =>
+                <option value={breed}>{breed}</option>
+              )
+            }
           </select>
         </div>
         <div className="age filter">
