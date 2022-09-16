@@ -2,10 +2,10 @@
 .searchGroup{
   display: grid;
   grid-template-columns: 1fr 3fr 3fr 2fr 1fr;
-  gap: 10px;
+  gap: 5px;
   grid-template-areas:
     "left search zip btn right"
-    "left   dd     dd  dd  dd";
+    "left   dd    dd  dd  dd";
 }
 
 #searchInput {
@@ -28,3 +28,4 @@
 .boldText {
   font-weight: bold;
 }
+
