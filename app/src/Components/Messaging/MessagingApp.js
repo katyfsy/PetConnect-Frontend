@@ -268,7 +268,7 @@ const MessagingApp = () => {
               setNotificationList={setNotificationList}
               currentContact={currentContact}
             />
-            <button className='input-button' onClick= {() => updateMessageSound()}>
+            <button className='input-button'  style={messageSound === 'true' ? null : {backgroundColor: 'gray'}} onClick= {() => updateMessageSound()}>
             {messageSound === 'true' ? 'Mute Messages' : 'Unmute messages' }
           </button>
           </Col>
