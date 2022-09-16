@@ -18,20 +18,30 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius}) {
 
   const [allBreeds, setAllBreeds] = useState(["Any"])
 
-  useEffect(()=>{
-    if(searchQuery === "" && zipcode === "") return;
-    var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
-    console.log(params);
-    axios.get("http://localhost:8080/api/petSearch?search=*", {params})
-    // axios.get("http://localhost:8080/api/petSearch", {params})
-    .then((result) =>{
-      setResult(result.data.pets)
-    })
-    .catch(err=>console.log(err))},
-    [type, gender, age, breed])
+  // useEffect(()=>{
+  //   if(searchQuery === "" && zipcode === "") return;
+  //   var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
+  //   console.log(params);
+  //   axios.get("http://localhost:8080/api/petSearch?search=*", {params})
+  //   // axios.get("http://localhost:8080/api/petSearch", {params})
+  //   .then((result) =>{
+  //     setResult(result.data.pets)
+  //   })
+  //   .catch(err=>console.log(err))},
+  //   [type, gender, age, breed])
 
     const handleFilterClick = (e) => {
       console.log('clicked')
+
+      // if(searchQuery === "" && zipcode === "") return;
+      var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
+      console.log(params);
+      axios.get("http://localhost:8080/api/petSearch?search=*", {params})
+      // axios.get("http://localhost:8080/api/petSearch", {params})
+      .then((result) =>{
+        setResult(result.data.pets)
+      })
+      .catch(err=>console.log(err))
     }
 
     useEffect(() => {
