@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Pet from "./Pet";
@@ -17,6 +17,11 @@ function AddAPetFormFunctional() {
   const [photos, setPhotos] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
+
+  // const [isSuccess, setIsSuccess] = useState(false);
+  // const [progress, setProgress] = useState(0);
+  // const [currentUpload, setCurrentUpload] = useState(0);
+
   let user = getUser();
   console.log(user);
   const [requiredPetFields, setrequiredPetFields] = useState({
@@ -89,23 +94,41 @@ function AddAPetFormFunctional() {
     return files;
   };
 
+
+
   const handleUpload = async (petId) => {
     let files = extractFileData(petId);
     console.log(files);
     let urls = await getPresignedUrls(files);
+    // let filesProgress = [];
+    // filesProgress.push(progress)
+    // setFilesProgress(filesProgress)
+    // setProgress(0)
 
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
+        setCurrentUpload(i)
         let options = {
           headers: {
             "Content-Type": photos[i].type,
           },
+          // onUploadProgress: (progressEvent) => {
+          //   const progress = (progressEvent.loaded / progressEvent.total) * 100;
+          //   console.log("THIS IS THE UPLOAD PROGRESSS: ", progress);
+          //   setProgress(progress)
+          // },
+          // onDownloadProgress: (progressEvent) => {
+          //   const progress = 50 + (progresssEvent.loaded / progressEvent.total) * 100;
+          //   console.log("THIS IS THE PROGRESSS: ", progress);
+          //   setProgress(progress);
+          // }
         };
+
         await axios
           .put(urls[i], photos[i], options)
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
-      }
+    }
       alert("Photos uploaded successfully");
       await axios
         .post(
@@ -232,6 +255,8 @@ function AddAPetFormFunctional() {
                   handleCoverPhoto={handleCoverPhoto}
                   showRadios={true}
                   maxPhotos={MAX_NUMBER_OF_PHOTOS}
+                  // progress={progress}
+                  // currentUpload={currentUpload}
                 />
               </div>
 
