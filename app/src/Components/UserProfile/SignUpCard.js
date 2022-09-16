@@ -44,6 +44,10 @@ const SignUpCard = () => {
     });
   };
 
+  function hasWhiteSpace(s) {
+    return /\s/g.test(s);
+  }
+
   const togglePassword = () => {
     // When the handler is invoked
     // inverse the boolean state of passwordShown
@@ -57,7 +61,8 @@ const SignUpCard = () => {
   };
 
   const pwdValidator = () => {
-    console.log("firing validator");
+    console.log(/\s/g.test(username))
+    console.log(/[A-Z]/.test(username))
     if (password.length < 8) {
       setErrMessage("Your password must be at least 8 characters");
     } else if (password.length > 16) {
@@ -72,7 +77,12 @@ const SignUpCard = () => {
       setErrMessage("Your password must contain at least one uppercase letter");
     } else if (password.search(/[0-9]/) < 0) {
       setErrMessage("Your password must contain at least one digit");
-    } else {
+    }  else if (/\s/g.test(username) || /[A-Z]/.test(username)) {
+      setErrMessage("Username must be lowercase and have no spaces");
+    } else if (/\s/g.test(username)) {
+      setErrMessage("Username must be lowercase and have no spaces");
+    }
+    else {
       setErrMessage("");
       createUserService({ firstName, lastName, username, password, email });
     }
@@ -169,7 +179,11 @@ const SignUpCard = () => {
         if (res.status === 202) createUserApi();
       })
       .catch((error) => {
-        setErrMessage("Error Creating New Account");
+        if (error.response.status === 400) {
+          setErrMessage(error.response.data)
+        } else {
+          setErrMessage("Error Creating New Account");
+        }
         console.log("error at service POST new account"); // delete at production
         console.log(error);
       });

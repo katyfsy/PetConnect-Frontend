@@ -36,11 +36,6 @@
     color: rgb(34, 34, 34);
   }
 
-  i {
-    position: relative;
-    right: 0;
-    top: 10px;
-  }
 
   .i-edit {
     position: relative;
@@ -64,4 +59,9 @@
     position: relative;
     left: 435px;
     top: -30px;
+  }
+
+  .hheart {
+    position: relative;
+    top: 0px;
   }
