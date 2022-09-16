@@ -5,7 +5,8 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
-import { BsBookmark } from "react-icons/bs";
+import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa"; //filled heart
 import { MdPets } from "react-icons/md";
 import { MdOutlinePets } from "react-icons/md";
 import { BsGenderFemale } from "react-icons/bs";
@@ -22,6 +23,8 @@ import { LightgalleryItem } from "react-lightgallery";
 
 function Pet() {
   const [thisPet, setThisPet] = useState(null);
+  const [calculateLike, setCalcLike] = useState(0);
+  const [liked, setLiked] = useState(false);
   const [petPhotos, setPetPhotos] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [fetchPet, refetchPet] = useState(false);
@@ -41,7 +44,7 @@ function Pet() {
         console.error(err);
       })
       .then((data) => {
-        console.log(data);
+        setCalcLike(data.favoriteCount);
         setThisPet(data);
         setPetPhotos(data.photos);
       });
@@ -60,6 +63,45 @@ function Pet() {
         console.log(data);
       });
   }
+  function handleLike() {
+    fetch(
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/addFavorite/${petId.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        console.error(err);
+      })
+      .then((data) => {
+        setCalcLike(data.favoriteCount);
+      });
+
+    setLiked(!liked);
+  }
+  function handleRemoveLike() {
+    fetch(
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/removeFavorite/${petId.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        console.error(err);
+      })
+      .then((data) => {
+        setCalcLike(data.favoriteCount);
+      });
+    setLiked(!liked);
+  }
 
   if (thisPet == null) {
     return null;
@@ -75,10 +117,14 @@ function Pet() {
             roundedCircle
             className="profile-photo rounded-circle"
           />
-          <BsBookmark />
+
           <br />
           {petPhotos.map((petPhoto) => (
-            <LightgalleryItem key={petPhoto.photoId} src={petPhoto.photo_url} group={"any"}>
+            <LightgalleryItem
+              key={petPhoto.photoId}
+              src={petPhoto.photo_url}
+              group={"any"}
+            >
               <img src={petPhoto.photo_url} width={"200"} height={"200"} />
             </LightgalleryItem>
           ))}
@@ -88,7 +134,7 @@ function Pet() {
             <Col>
               <h1 className="pet-name">{thisPet.name}</h1>
               <p className="pet-location">
-                <GrLocation /> {thisPet.location}
+                <GrLocation size={28} /> {thisPet.location}
               </p>
             </Col>
             {user !== thisPet.owner ? (
@@ -103,14 +149,27 @@ function Pet() {
                       })
                     }
                   >
-                    Contact My Owner
+                    Contact Owner
                   </Button>
                 </Col>
+
+                {!liked ? (
+                  <Col>
+                    <FaRegHeart size={42} onClick={() => handleLike()} />
+                  </Col>
+                  
+                ) : (
+                  <Col>
+                    <FaHeart color="red" size={42} onClick={() => handleRemoveLike()} />
+                  </Col>
+                )}
+                {calculateLike}
                 <Col>
                   <Button variant="primary" size="md" href="/">
                     <GrFlag /> Report Pet
                   </Button>
                 </Col>
+                {/* {calculateLike} */}
               </>
             ) : (
               <>
