@@ -120,9 +120,10 @@ function AddAPetFormFunctional() {
   };
 
   const handleOnSubmit = async (e) => {
+    e.preventDefault();
     const form = e.currentTarget;
+    console.log(e.currentTaget);
     if (form.checkValidity() === false) {
-      e.preventDefault();
       e.stopPropagation();
 
       if (photos.length == 0) {
@@ -152,11 +153,11 @@ function AddAPetFormFunctional() {
           <Col></Col>
           <Col style={{ width: "60%" }}>
             <h3>Let's create the pet's profile</h3>
-            <br/>
+            <br />
             <Form
-              onSubmit={handleOnSubmit}
               noValidate
               validated={validated}
+              onSubmit={handleOnSubmit}
               id="add-pet-form"
             >
               <Form.Group className="mb-3" controlId="formBasicEmail">
