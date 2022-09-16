@@ -3,11 +3,14 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import AddPhotosPortal from "./AddPhotosPortal";
 import Image from "react-bootstrap/Image";
+import axios from "axios";
 
 function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
   const [openPortal, setOpenPortal] = useState(false);
   const [deletePhotos, setDeletePhotos] = useState([]);
   const [addPhotos, setAddPhotos] = useState([]);
+  const [progress, setProgress] = useState(0);
+  const [currentUpload, setCurrentUpload] = useState(0);
   const [petAttributes, setPetAttributes] = useState({
     name: thisPet.name,
     location: thisPet.location,
@@ -49,31 +52,36 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
   const handleUpload = async (photos, petId) => {
     let files = extractFileData(petId);
     console.log(files);
-    // let urls = await getPresignedUrls(files);
+    let urls = await getPresignedUrls(files);
 
-    // if (photos.length > 0) {
-    //   for (let i = 0; i < photos.length; i++) {
-    //     let options = {
-    //       headers: {
-    //         "Content-Type": photos[i].type,
-    //       },
-    //     };
-    //     await axios
-    //       .put(urls[i], photos[i], options)
-    //       .then((res) => console.log(res))
-    //       .catch((err) => console.log(err));
-    //   }
-    //   alert("Photos uploaded successfully");
-    //   await axios
-    //     .post(
-    //       `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[coverPhoto].name}`
-    //     )
-    //     .then((res) => console.log(res))
-    //     .then((res) => alert("PERSISTED"))
-    //     .catch((err) => console.log(err));
-    // } else {
-    //   alert("At least one photo is required to upload");
-    // }
+    if (photos.length > 0) {
+      for (let i = 0; i < photos.length; i++) {
+        setCurrentUpload(i);
+        let options = {
+          headers: {
+            "Content-Type": photos[i].type,
+          },
+          onUploadProgress: (progressEvent) => {
+            const progress = (progressEvent.loaded / progressEvent.total) * 100;
+            setProgress(progress);
+          },
+        };
+        await axios
+          .put(urls[i], photos[i], options)
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+      }
+      alert("Photos uploaded successfully");
+      await axios
+        .post(
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[0].name}`
+        )
+        .then((res) => console.log(res))
+        .then((res) => alert("PERSISTED"))
+        .catch((err) => console.log(err));
+    } else {
+      alert("At least one photo is required to upload");
+    }
   };
 
   function handleOnChange(e) {
@@ -162,7 +170,7 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     //   deleteDatabase();
     // }
     if (addPhotos.length > 0) {
-      await handleUpload(addPhotos, thisPet);
+      await handleUpload(addPhotos, thisPet.petId);
       // await handlePatch();
       // navigateToPetProfile(petId);
     }
@@ -302,6 +310,8 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
           thisPet={thisPet}
           addPhotos={addPhotos}
           setAddPhotos={setAddPhotos}
+          progress={progress}
+          currentUpload={currentUpload}
         />
       </div>
 

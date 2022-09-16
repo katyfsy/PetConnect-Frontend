@@ -6,9 +6,9 @@ function PetList() {
   const [petList, setPetList] = useState([]);
   const [myPetList, setMyPetList] = useState([]);
   const [isClicked, setIsClicked] = useState(false);
-  console.log(myPetList);
+  // console.log(myPetList);
   let user = getUser();
-  console.log(getUser());
+  // console.log(getUser());
   useEffect(() => {
     fetch(
       "http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets"
@@ -20,19 +20,16 @@ function PetList() {
         if (user) {
           console.log("getting user data too");
           fetch(
-            `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets?owner=${user}`
+            `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets?owner=${user}`
           )
             .then((res) => res.json())
-            .catch((err) => {
-              console.log(err);
-            })
-            .then((Mydata) => {
-              console.log(Mydata);
-              setMyPetList(Mydata.petsList);
+            .then((data) => {
+              console.log(data);
+              setMyPetList(data.petsList);
             });
         }
       });
-  }, []);
+  }, [user]);
 
   if (petList.length == 0) {
     return null;
