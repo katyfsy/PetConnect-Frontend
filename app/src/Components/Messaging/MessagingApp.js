@@ -40,7 +40,7 @@ const MessagingApp = () => {
     receiverPhoto: receiverPhotoRef.current,
   });
   const [privateChats, setPrivateChats] = useState(privateChatsRef.current);
-  const [currentContact, setCurrentContact] = useState('');
+  const [currentContact, setCurrentContact] = useState(state ? state.receiverName : '');
   const [notificationList, setNotificationList] = useState([]);
 
   const [messageSound, setMessageSound] = useState(localStorage.getItem('notificationSound') || 'true');
