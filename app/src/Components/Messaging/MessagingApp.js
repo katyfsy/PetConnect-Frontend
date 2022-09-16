@@ -40,7 +40,7 @@ const MessagingApp = () => {
     receiverPhoto: receiverPhotoRef.current,
   });
   const [privateChats, setPrivateChats] = useState(privateChatsRef.current);
-  const [currentContact, setCurrentContact] = useState('');
+  const [currentContact, setCurrentContact] = useState(state ? state.receiverName : '');
   const [notificationList, setNotificationList] = useState([]);
 
   const [messageSound, setMessageSound] = useState(localStorage.getItem('notificationSound') || 'true');
@@ -242,20 +242,6 @@ const MessagingApp = () => {
 
   return (
     <div style={{ fontFamily: '"Nunito", "sans-serif"' }}>
-      <div>
-        <span style={{ fontWeight: 'bold' }}>
-          Receiver:
-          <input
-            id='receiver-name'
-            name='receiverName'
-            placeholder='Enter the receiver name'
-            value={currentContact ? currentContact : userData.receiverName}
-            onChange={handleName}
-          />
-        </span>
-      </div>
-      <hr />
-
       <Container>
         <Row>
           <Col sm={4}>
