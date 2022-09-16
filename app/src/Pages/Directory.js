@@ -31,7 +31,7 @@ function Directory() {
     return (
       <tr>
         <td>
-          <a href={`/profile/${element.username}`}>{element.username} </a>
+          <a href={`/profile/${element.username}`}>{element.businessName} </a>
         </td>
         <td>
           <a href={`/petlist/${element.username}`}>
