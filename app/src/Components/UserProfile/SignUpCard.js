@@ -17,6 +17,8 @@ const SignUpCard = () => {
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
   const [userType, setUserType] = useState();
+  const [businessName, setBusinessName] = useState();
+  const [businessNameShown, setbusinessNameShown] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
   const navigate = useNavigate();
   const [passwordFocused, setPasswordFocused] = useState(false);
@@ -54,6 +56,14 @@ const SignUpCard = () => {
     setPasswordShown(!passwordShown);
   };
 
+  const toggleBusinessName = (role) => {
+    if (role === "USER") {
+      setbusinessNameShown(false);
+    } else {
+      setbusinessNameShown(true);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     pwdValidator();
@@ -61,8 +71,8 @@ const SignUpCard = () => {
   };
 
   const pwdValidator = () => {
-    console.log(/\s/g.test(username))
-    console.log(/[A-Z]/.test(username))
+    console.log(/\s/g.test(username));
+    console.log(/[A-Z]/.test(username));
     if (password.length < 8) {
       setErrMessage("Your password must be at least 8 characters");
     } else if (password.length > 16) {
@@ -77,12 +87,11 @@ const SignUpCard = () => {
       setErrMessage("Your password must contain at least one uppercase letter");
     } else if (password.search(/[0-9]/) < 0) {
       setErrMessage("Your password must contain at least one digit");
-    }  else if (/\s/g.test(username) || /[A-Z]/.test(username)) {
+    } else if (/\s/g.test(username) || /[A-Z]/.test(username)) {
       setErrMessage("Username must be lowercase and have no spaces");
     } else if (/\s/g.test(username)) {
       setErrMessage("Username must be lowercase and have no spaces");
-    }
-    else {
+    } else {
       setErrMessage("");
       createUserService({ firstName, lastName, username, password, email });
     }
@@ -126,6 +135,7 @@ const SignUpCard = () => {
       lastName: lastName,
       email: email,
       userType: userType,
+      businessName: businessName
     };
     let apiLogin = {
       username: username,
@@ -180,7 +190,7 @@ const SignUpCard = () => {
       })
       .catch((error) => {
         if (error.response.status === 400) {
-          setErrMessage(error.response.data)
+          setErrMessage(error.response.data);
         } else {
           setErrMessage("Error Creating New Account");
         }
@@ -256,7 +266,7 @@ const SignUpCard = () => {
                 <label>Password </label>
               </Col>
               <Col>
-              <div onClick={togglePassword}>
+                <div onClick={togglePassword}>
                   {passwordShown ? (
                     <i className="bi bi-eye i-signup"></i>
                   ) : (
@@ -266,18 +276,18 @@ const SignUpCard = () => {
               </Col>
               <Col md="auto"></Col>
             </Row>
-                <input
-                  type={passwordShown ? "text" : "password"}
-                  required
-                  className="form-control mt-1"
-                  placeholder="Password"
-                  onFocus={() => setPasswordFocused(true)}
-                  onChange={(e) => onChangePassword(e.target.value)}
-                />
+            <input
+              type={passwordShown ? "text" : "password"}
+              required
+              className="form-control mt-1"
+              placeholder="Password"
+              onFocus={() => setPasswordFocused(true)}
+              onChange={(e) => onChangePassword(e.target.value)}
+            />
           </div>
           <div className="mt-3">
             {["radio"].map((type) => (
-              <div key={`inline-${type}`} className="mb-3">
+              <div key={`inline-${type}`} className="mb-2">
                 <Form.Check
                   inline
                   required
@@ -285,6 +295,7 @@ const SignUpCard = () => {
                   value="USER"
                   name="group1"
                   type={type}
+                  onClick={(e) => toggleBusinessName(e.target.value)}
                   id={`inline-${type}-1`}
                   onChange={(e) => setUserType(e.target.value)}
                 />
@@ -295,11 +306,29 @@ const SignUpCard = () => {
                   value="ORGANIZATION"
                   name="group1"
                   type={type}
+                  onClick={(e) => toggleBusinessName(e.target.value)}
                   id={`inline-${type}-2`}
                   onChange={(e) => setUserType(e.target.value)}
                 />
               </div>
             ))}
+          </div>
+          <div>
+            {businessNameShown ? (
+              <div className="form-group">
+                <label>Business Name</label>
+                <input
+                  type="text"
+                  required
+                  className="form-control"
+                  placeholder="e.g Pet Shop Boys"
+                  onChange={(e) => setBusinessName(e.target.value)}
+                />
+                <div className="mt-3"></div>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
           <div className="d-grid mt-2">
             <Button variant="outline-dark" type="submit">
