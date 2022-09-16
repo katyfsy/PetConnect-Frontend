@@ -18,38 +18,28 @@ function UserFavorites() {
   const [favorites, setFavorites] = useState([]);
 
   const username = useParams().username;
-  // const username = "testuser"
 
-  // const getData = async () => {
-  // const { data } = await axios.get(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets?owner=${username}`);
-  // console.log(data.petsList)
-  // setData(data.petsList);
-  // };
-  let petData = [];
-  const getPetList = async () => {
+  const getPetList = async (favoritesList) => {
 
-    for (let petId of favorites) {
+    let petData = [];
+    for (let petId of favoritesList) {
       await axios
         .get(
           `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${petId}`
         )
         .then((res) => {
-          // petData.push(res.data);
-          setDataFunc(res.data);
+          petData.push(res.data);
+          console.log(petData);
+          if(petData.length === favoritesList.length) {
+            setData(petData);
+          }
         })
     }
-
-    // setData([...petData, pet]) 
   };
 
-  const setDataFunc =(pet) => {
-    console.log(pet)
-      setData([...petData, pet])
-  }
-
-  const getFavorites = async () => {
+  const getFavorites = () => {
     if (getUser() !== null) {
-      await axios
+      axios
         .get(`${PSB_API_URL}/api/user/${getUser()}/favorites`, {
           headers: {
             Authorization: getBearerToken(),
@@ -57,16 +47,18 @@ function UserFavorites() {
         })
         .then((res) => {
           setFavorites(res.data.favorites);
+          getPetList(res.data.favorites);
         })
         .catch((err) => console.log(err));
     }
   };
-  
+
   useEffect(() => {
-    
     getFavorites();
-    getPetList();
   }, []);
+
+  const deleteFavor = (petId) => {
+  }
 
   const PetCard = data.map((element) => {
     let adopted = element.adopted ? "Yes" : "No";
