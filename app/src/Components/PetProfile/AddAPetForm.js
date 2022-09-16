@@ -128,13 +128,17 @@ function AddAPetForm() {
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
     }
-      alert("Photos uploaded successfully");
+      // alert("Photos uploaded successfully");
       await axios
         .post(
           `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[coverPhoto].name}`
         )
         .then((res) => console.log(res))
-        .then((res) => alert("PERSISTED"))
+        .then((res) => setTimeout(() => {
+          alert("Photos uploaded successfully");
+          navigateToPetProfile(petId);
+        }, 1000))
+          // alert("PERSISTED"))
         .catch((err) => console.log(err));
     } else {
       alert("At least one photo is required to upload");
@@ -151,7 +155,7 @@ function AddAPetForm() {
       if (petId != null) {
         await handleUpload(petId);
 
-        navigateToPetProfile(petId);
+        // navigateToPetProfile(petId);
       }
     }
   };

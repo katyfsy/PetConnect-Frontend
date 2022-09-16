@@ -20,7 +20,8 @@ const Photos = ({
   // console.log("asdlkfjals;dkfjalskdfj", progress, currentUpload)
 
   const onDrop = useCallback(
-    (acceptedPhotos) => {
+    (acceptedPhotos, event) => {
+      console.log(event)
       console.log("these are the accepted photos", acceptedPhotos);
       if (
         acceptedPhotos.length !== 0 &&
@@ -33,7 +34,7 @@ const Photos = ({
         );
         handleAddPhotos(newPhotos);
       } else {
-        alert(`Maximum number of photos allowed: ${maxPhotos}`);
+        alert(`Only image files allowed.  Maximum number of photos allowed: ${maxPhotos}`);
       }
       console.log("latestPhotos(one behind): ", photos);
     },
@@ -64,6 +65,7 @@ const Photos = ({
     isDragAccept,
     isDragReject,
     isDragActive,
+    event
   } = useDropzone({
     onDrop,
     noClick: true,
