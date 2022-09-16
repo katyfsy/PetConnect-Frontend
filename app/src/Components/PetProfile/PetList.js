@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PetCard from "./PetCard";
-import { getUser } from "../UserProfile/psb-exports"
+import { getUser } from "../UserProfile/psb-exports";
 
 function PetList() {
   const [petList, setPetList] = useState([]);
@@ -10,7 +10,6 @@ function PetList() {
   let user = getUser();
   console.log(getUser());
   useEffect(() => {
-    // if (petList.length > 0) {
     fetch(
       "http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets"
     )
@@ -20,16 +19,24 @@ function PetList() {
         setPetList(data.petsList);
         if (user) {
           console.log("getting user data too");
-          fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets?owner=${user}`)
+          fetch(
+            `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets?owner=${user}`
+          )
             .then((res) => res.json())
+            .catch((err) => {
+              console.log(err);
+            })
             .then((Mydata) => {
+              console.log(Mydata);
               setMyPetList(Mydata.petsList);
             });
         }
       });
-    // }
   }, []);
 
+  if (petList.length == 0) {
+    return null;
+  }
   return (
     <>
       <button
@@ -51,29 +58,33 @@ function PetList() {
       >
         {/* {console.log(typeof petList)}
         {console.log(petList)} */}
-        {isClicked
-          ? myPetList.map((petObj) => (
-              <PetCard
-                id={petObj.petId}
-                key={petObj.petId}
-                owner={petObj.owner}
-                name={petObj.name}
-                location={petObj.location}
-                type={petObj.type}
-                description={petObj.description}
-              />
-            ))
-          : petList.map((petObj) => (
-              <PetCard
-                id={petObj.petId}
-                key={petObj.petId}
-                owner={petObj.owner}
-                name={petObj.name}
-                location={petObj.location}
-                type={petObj.type}
-                description={petObj.description}
-              />
-            ))}
+        {!isClicked ? (
+          petList.map((petObj) => (
+            <PetCard
+              id={petObj.petId}
+              key={petObj.petId}
+              owner={petObj.owner}
+              name={petObj.name}
+              location={petObj.location}
+              type={petObj.type}
+              description={petObj.description}
+            />
+          ))
+        ) : myPetList.length == 0 ? (
+          <div>You Have No Pets</div>
+        ) : (
+          myPetList.map((petObj) => (
+            <PetCard
+              id={petObj.petId}
+              key={petObj.petId}
+              owner={petObj.owner}
+              name={petObj.name}
+              location={petObj.location}
+              type={petObj.type}
+              description={petObj.description}
+            />
+          ))
+        )}
       </div>
     </>
   );

@@ -19,8 +19,62 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     reported: thisPet.reported,
     coverPhoto: thisPet.coverPhoto,
   });
-  console.log(petAttributes);
-  console.log(addPhotos);
+  console.log("these are state of attributes:", petAttributes);
+  console.log("photo state", addPhotos);
+  console.log("deletestate", deletePhotos);
+
+  const getPresignedUrls = (files) => {
+    return axios
+      .post(
+        "http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/uploadAuth",
+        files
+      )
+      .then((res) => {
+        return res.data;
+      });
+  };
+
+  const extractFileData = (photos, petId) => {
+    let files = [];
+    for (let i = 0; i < photos.length; i++) {
+      let fileData = {};
+      fileData.petId = petId;
+      fileData.filename = photos[i].name;
+      fileData.filetype = photos[i].type;
+      files.push(fileData);
+    }
+    return files;
+  };
+
+  const handleUpload = async (photos, petId) => {
+    let files = extractFileData(petId);
+    console.log(files);
+    // let urls = await getPresignedUrls(files);
+
+    // if (photos.length > 0) {
+    //   for (let i = 0; i < photos.length; i++) {
+    //     let options = {
+    //       headers: {
+    //         "Content-Type": photos[i].type,
+    //       },
+    //     };
+    //     await axios
+    //       .put(urls[i], photos[i], options)
+    //       .then((res) => console.log(res))
+    //       .catch((err) => console.log(err));
+    //   }
+    //   alert("Photos uploaded successfully");
+    //   await axios
+    //     .post(
+    //       `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[coverPhoto].name}`
+    //     )
+    //     .then((res) => console.log(res))
+    //     .then((res) => alert("PERSISTED"))
+    //     .catch((err) => console.log(err));
+    // } else {
+    //   alert("At least one photo is required to upload");
+    // }
+  };
 
   function handleOnChange(e) {
     // console.log(e.target.type);
@@ -30,7 +84,6 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
         [e.target.name]: parseInt(e.target.value),
       });
     else if (e.target.type == "checkbox") {
-      console.log(e);
       setPetAttributes({
         ...petAttributes,
         [e.target.name]: e.target.checked,
@@ -43,11 +96,28 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     }
   }
 
-  function handleOnSubmit(e) {
-    e.preventDefault();
-    if (photos.length == 0) {
-      alert("At least one photo is required to upload");
+  // Functionality when pressing the delete button
+  function handleDelete(e, id) {
+    if (e.target.value === petAttributes.coverPhoto) {
+      alert("Must Select Different Cover Photo First Before Deletion");
     } else {
+      if (typeof id !== "string") {
+        console.log("in db");
+        setDeletePhotos([...deletePhotos, [thisPet.petId, id]]);
+        document.getElementById(`${id}`).remove();
+      }
+      console.log(thisPet.petId, id);
+      if (typeof id == "string") {
+        const photosWithOutDeleted = addPhotos.filter(
+          (photo) => photo.name !== id
+        );
+        setAddPhotos(photosWithOutDeleted);
+      }
+    }
+  }
+
+  function handlePatch(success) {
+    if (success) {
       fetch(
         `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets/${thisPet.petId}`,
         {
@@ -68,20 +138,37 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
         });
     }
   }
-  console.log(deletePhotos);
-  function handleDelete(e, id) {
-    if (e.target.value === petAttributes.coverPhoto) {
-      alert("Must Select Different Cover Photo First Before Deletion");
-    } else {
-      if (typeof id !== "string") {
-        console.log("in db");
-        setDeletePhotos([...deletePhotos, [thisPet.petId, id]]);
-      }
-      console.log(thisPet.petId, i);
 
-      document.getElementById(`${i}`).remove();
-    }
+  // set alert if its false
+  function deleteDatabase() {
+    deletePhotos.forEach((photo) => {
+      fetch(
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${petId}?photoId=${photo.photoId}`,
+        { method: "DELETE" }
+      )
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error(err);
+        })
+        .then((data) => {
+          console.log(data);
+        });
+    });
+    return false;
   }
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    // if (deletePhotos.length > 0) {
+    //   deleteDatabase();
+    // }
+    if (addPhotos.length > 0) {
+      await handleUpload(addPhotos, thisPet);
+      // await handlePatch();
+      // navigateToPetProfile(petId);
+    }
+  };
+  console.log(deletePhotos);
+
   return (
     <Form onSubmit={handleOnSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -89,7 +176,7 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
         <Form.Control
           name="owner"
           className="pet-owner-name"
-          type="readOnly"
+          readOnly={true}
           value={thisPet.owner}
         />
       </Form.Group>
@@ -205,6 +292,7 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
             </div>
           );
         })}
+        <div />
         <Button onClick={() => setOpenPortal(true)}> Add Photos</Button>
         <AddPhotosPortal
           refetchPet={refetchPet}

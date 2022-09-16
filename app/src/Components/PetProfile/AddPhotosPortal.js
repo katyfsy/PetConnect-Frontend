@@ -34,8 +34,8 @@ function AddPhotosPortal({
     if (toAddPhotos.length == 0) {
       setOpenPortal(false);
     } else {
+      setAddPhotos([...addPhotos, ...toAddPhotos]);
       setToAddPhotos([]);
-      setAddPhotos(toAddPhotos);
       setOpenPortal(false);
     }
   };

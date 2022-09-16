@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Pet from "./Pet";
@@ -9,16 +9,20 @@ import Col from "react-bootstrap/Col";
 import "./AddAPetForm.css";
 import Photos from "./Photos";
 import axios from "axios";
-import { getUser } from "../UserProfile/psb-exports";
-
-function AddAPetFormFunctional() {
+import { getUser } from "../UserProfile/psb-exports";;
+function AddAPetForm() {
   const [petId, setPetId] = useState(null);
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
   const [photos, setPhotos] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
-  let user = getUser();
+
+  // const [isSuccess, setIsSuccess] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [currentUpload, setCurrentUpload] = useState(0);
+
+  let user = getUser();;
   console.log(user);
   const [requiredPetFields, setrequiredPetFields] = useState({
     owner: user.toString(),
@@ -28,6 +32,7 @@ function AddAPetFormFunctional() {
     sex: null,
     description: null,
   });
+  console.log(requiredPetFields);
   const MAX_NUMBER_OF_PHOTOS = 5;
   const handleOnChange = (e) => {
     setrequiredPetFields({
@@ -89,23 +94,40 @@ function AddAPetFormFunctional() {
     return files;
   };
 
+
+
   const handleUpload = async (petId) => {
     let files = extractFileData(petId);
     console.log(files);
     let urls = await getPresignedUrls(files);
+    // let filesProgress = [];
+    // filesProgress.push(progress)
+    // setFilesProgress(filesProgress)
+    // setProgress(0)
 
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
+        setCurrentUpload(i)
         let options = {
           headers: {
             "Content-Type": photos[i].type,
           },
+          onUploadProgress: (progressEvent) => {
+            const progress = (progressEvent.loaded / progressEvent.total) * 100;
+            setProgress(progress)
+          },
+          // onDownloadProgress: (progressEvent) => {
+          //   const progress = 50 + (progresssEvent.loaded / progressEvent.total) * 100;
+          //   console.log("THIS IS THE PROGRESSS: ", progress);
+          //   setProgress(progress);
+          // }
         };
+
         await axios
           .put(urls[i], photos[i], options)
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
-      }
+    }
       alert("Photos uploaded successfully");
       await axios
         .post(
@@ -121,10 +143,8 @@ function AddAPetFormFunctional() {
 
   const handleOnSubmit = async (e) => {
 
-
     const form = e.currentTarget;
-    console.log(e.currentTarget);
-    console.log(form.checkValidity());
+
     if (form.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
@@ -139,14 +159,11 @@ function AddAPetFormFunctional() {
       // console.log("THIS IS THE PETID: ", petId);
       if (petId != null) {
         await handleUpload(petId);
+
         navigateToPetProfile(petId);
       }
     }
     setValidated(true);
-
-
-
-
   };
 
   const navigateToPetProfile = (id) => {
@@ -181,11 +198,9 @@ function AddAPetFormFunctional() {
                 ) : (
                   <Form.Control
                     name="owner"
-                    value={getUser()}
+                    defaultValue={getUser()}
+                    disabled={true}
                     className="pet-owner-name"
-                    type="text"
-                    placeholder="Pet's Owner's Name"
-                    onChange={handleOnChange}
                   />
                 )}
               </Form.Group>
@@ -272,6 +287,8 @@ function AddAPetFormFunctional() {
                   handleCoverPhoto={handleCoverPhoto}
                   showRadios={true}
                   maxPhotos={MAX_NUMBER_OF_PHOTOS}
+                  progress={progress}
+                  currentUpload={currentUpload}
                 />
               </div>
 
@@ -306,4 +323,4 @@ function AddAPetFormFunctional() {
   );
 }
 
-export default AddAPetFormFunctional;
+export default AddAPetForm;
