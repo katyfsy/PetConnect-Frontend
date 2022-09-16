@@ -18,12 +18,9 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius}) {
 
   useEffect(()=>{
     if(searchQuery === "" && zipcode === "") return;
-    // var zip = zipcode ? zipcode : null
-    // var type = searchQuery ? searchQuery : null
-    // var radius = zipcode ? radius : null
-    var params = {zip: zipcode ? zipcode : null, type: searchQuery ? searchQuery : null, breed: breed ? breed : null, age: age ? age : null, gender: gender ? gender : null, radius: zipcode ? radius : null};
+    var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
     console.log(params);
-    axios.get("api/petSearch?search=*", {params})
+    axios.get("http://localhost:8080/api/petSearch?search=*", {params})
     // axios.get("http://localhost:8080/api/petSearch", {params})
     .then((result) =>{
       setResult(result.data.pets)
@@ -81,7 +78,8 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius}) {
         </div>
         <button
             id="applyFilterButton"
-            className="btn btn-primary"
+            className="btn btn-secondary"
+            style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}}
             onClick={handleFilterClick}>Apply Filters</button>
       </div>
       </>

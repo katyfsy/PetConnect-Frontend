@@ -18,7 +18,7 @@ function Results({matches, setResult, searchQuery, zipcode, radius}){
 
         <div>
             <div className="topBar">
-                <p> Top bar [# matches] search-word  distance (arrow)  near LOCATION </p>
+                {/* <p> Top bar [# matches] search-word  distance (arrow)  near LOCATION </p> */}
             </div>
             <div className="main">
                 <div className="advancedSearchCol">
