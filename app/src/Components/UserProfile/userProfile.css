@@ -61,6 +61,14 @@
     top: -30px;
   }
 
+  .i-heart {
+    position: relative;
+    left: 106px;
+    top: 47px;
+    font-size: 30px;
+    color: white;
+  }
+
   .hheart {
     position: relative;
     top: 0px;

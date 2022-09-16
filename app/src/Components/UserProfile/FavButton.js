@@ -48,11 +48,11 @@ function FavButton ({ petId, isFavor }) {
 
   if(favor === false) {
     return (
-      <Button onClick={handleAddFavorites}>add</Button>
+      <i onClick={handleAddFavorites} className="bi bi-heart i-heart"></i>
     );
   } else {
     return (
-      <Button onClick={handleDeleteFavorites}>delete</Button>
+      <i onClick={handleDeleteFavorites} className="bi bi-heart-fill i-heart"></i>
     );
   }
 }
