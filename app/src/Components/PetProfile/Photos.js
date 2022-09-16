@@ -20,8 +20,7 @@ const Photos = ({
   // console.log("asdlkfjals;dkfjalskdfj", progress, currentUpload)
 
   const onDrop = useCallback(
-    (acceptedPhotos, event) => {
-      console.log(event)
+    (acceptedPhotos) => {
       console.log("these are the accepted photos", acceptedPhotos);
       if (
         acceptedPhotos.length !== 0 &&
@@ -65,7 +64,6 @@ const Photos = ({
     isDragAccept,
     isDragReject,
     isDragActive,
-    event
   } = useDropzone({
     onDrop,
     noClick: true,
