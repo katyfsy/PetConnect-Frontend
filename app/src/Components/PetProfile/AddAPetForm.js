@@ -13,6 +13,7 @@ import { getUser } from "../UserProfile/psb-exports";
 
 function AddAPetForm() {
   const [petId, setPetId] = useState(null);
+  const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
   const [photos, setPhotos] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState(0);
@@ -142,18 +143,24 @@ function AddAPetForm() {
   };
 
   const handleOnSubmit = async (e) => {
-    e.preventDefault();
-    if (photos.length == 0) {
-      alert("At least one photo is required to upload");
-    } else {
-      let petId = await createPet();
-      // console.log("THIS IS THE PETID: ", petId);
-      if (petId != null) {
-        await handleUpload(petId);
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
 
-        navigateToPetProfile(petId);
+      if (photos.length == 0) {
+        alert("At least one photo is required to upload");
+      } else {
+        let petId = await createPet();
+        // console.log("THIS IS THE PETID: ", petId);
+        if (petId != null) {
+          await handleUpload(petId);
+          navigateToPetProfile(petId);
+        }
       }
     }
+
+    setValidated(true);
   };
 
   const navigateToPetProfile = (id) => {
@@ -167,7 +174,14 @@ function AddAPetForm() {
         <Row>
           <Col></Col>
           <Col style={{ width: "60%" }}>
-            <Form onSubmit={handleOnSubmit} id="add-pet-form">
+            <h3>Let's create the pet's profile</h3>
+            <br/>
+            <Form
+              onSubmit={handleOnSubmit}
+              noValidate
+              validated={validated}
+              id="add-pet-form"
+            >
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Owner</Form.Label>
                 {getUser() == "" ? (
@@ -190,21 +204,31 @@ function AddAPetForm() {
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
+                  required
                   name="name"
                   className="pet-name"
                   type="text"
                   placeholder="Pet's Name"
                   onChange={handleOnChange}
                 />
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  Please enter your pet's name.
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Zipcode</Form.Label>
                 <Form.Control
+                  required
                   name="zip"
                   className="pet-zip"
                   type="number"
                   onChange={handleOnChange}
                 />
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  Please enter a zipcode.
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Type</Form.Label>
@@ -213,7 +237,7 @@ function AddAPetForm() {
                   className="pet-type"
                   onChange={handleOnChange}
                 >
-                  <option>Please Select from the list below</option>
+                  {/* <option>Please Select from the list below</option> */}
                   <option value="dog">Dog</option>
                   <option value="cat">Cat</option>
                   <option value="bird">Bird</option>
@@ -231,7 +255,7 @@ function AddAPetForm() {
                   className="pet-sex"
                   onChange={handleOnChange}
                 >
-                  <option>Please Select from the list below</option>
+                  {/* <option>Please Select from the list below</option> */}
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                   <option value="unknown">Unknown</option>
@@ -240,11 +264,16 @@ function AddAPetForm() {
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
+                  required
                   className="petDescription"
                   name="description"
                   as="textarea"
                   onChange={handleOnChange}
                 />
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  Tell us a little more about your pet.
+                </Form.Control.Feedback>
               </Form.Group>
               <div>
                 <Photos
