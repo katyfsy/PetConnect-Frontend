@@ -71,9 +71,9 @@ function Profile() {
   if(form.userType === "USER") {
     return (
       <div className="profilePage">
-        <Container>
+        {/* <Container> */}
           <Header/>
-        </Container>
+        {/* </Container> */}
         <Navigationbar/>
         <Container>
           <Row className="mb-3">
@@ -106,9 +106,9 @@ function Profile() {
   } else {
     return (
       <div className="profilePage">
-        <Container>
+        {/* <Container> */}
           <Header/>
-        </Container>
+        {/* </Container> */}
         <Navigationbar/>
         <Container>
           <Row className="mb-3">

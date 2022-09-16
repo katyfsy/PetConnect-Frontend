@@ -92,8 +92,8 @@ function SingleReview({ review, votedOnReviews }) {
     </Card>
 
     <Modal show={show} onHide={handleClose} size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title>Review photos</Modal.Title>
+      <Modal.Header closeButton style={{backgroundColor: "#8F9ED9"}}>
+        <Modal.Title style={{color: "white"}}>Review photos</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Carousel activeIndex={index} onSelect={handleSelect}>

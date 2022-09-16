@@ -22,3 +22,11 @@ sup {
 .profilePage {
   background-color: #F1EEEA;
 }
+.header {
+  background-image: url("../Components/Default/HeaderPics/Pet-Banner.jpeg");
+  background-size: 700px 150px;
+  background-repeat: no-repeat;
+  height: 150px;
+  background-position: center;
+  background-color: white;
+}
