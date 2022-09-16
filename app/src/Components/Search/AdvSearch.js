@@ -28,17 +28,34 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
     .catch(err=>console.log(err))
   }
 
-    useEffect(() => {
-      if (type === "Any") {
-        var params = ""
-      } else {
-        params = "?type=" + type;
-      }
-      axios.get("http://localhost:8080/api/breeds" + params)
-      .then(result => {
-        setAllBreeds(["Any", ...result.data])})
-      .catch(err => console.log(err))
-    },[type])
+  useEffect(() => {
+    const searchArray = searchQuery.split(' ');
+    if (searchArray.includes('dog')) setType('dog');
+    if (searchArray.includes('cat')) setType('cat');
+  },[searchQuery])
+
+  useEffect(() => {
+    if (type === "Any") {
+      var params = ""
+    } else {
+      params = "?type=" + type;
+    }
+    axios.get("http://localhost:8080/api/breeds" + params)
+    .then(result => {
+      setAllBreeds(["Any", ...result.data])})
+    .catch(err => console.log(err))
+  },[type])
+
+  useEffect(() => {
+      var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
+    console.log(params);
+    axios.get("http://localhost:8080/api/petSearch?search=*", {params})
+    // axios.get("http://localhost:8080/api/petSearch", {params})
+    .then((result) =>{
+      setResult(result.data.pets)
+    })
+    .catch(err=>console.log(err))
+  },[radius])
 
     let babyType;
     if (searchQuery === 'dog') babyType = 'Puppy';
@@ -53,9 +70,6 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
       <div className="type filter">
           <h6 className="filterType">Type</h6>
           <select onChange={e=>setType(e.target.value)}>
-            {/* <option value="">Any</option>
-            <option value="cat">Cat</option>
-            <option value="dog">Dog</option> */}
             {
               allTypes.map(typeOption => {
                   if(type === typeOption){

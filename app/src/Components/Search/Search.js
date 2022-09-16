@@ -43,10 +43,12 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     setDropdownDisplay(false);
     if (value === "All Cats") {
       var param = "?search=cat&type=cat";
+      setType("cat");
       // set searchQuery to cat
       setSearchQuery("cat");
     } else if (value === "All Dogs"){
       var param = "?search=dog&type=dog";
+      setType("dog");
       setSearchQuery("dog");
     }
 
