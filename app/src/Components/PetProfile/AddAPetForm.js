@@ -240,11 +240,12 @@ function AddAPetForm() {
               <Form.Group className="mb-3" controlId="validateType">
                 <Form.Label>Type</Form.Label>
                 <Form.Select
+                  required
                   name="type"
                   className="pet-type"
                   onChange={handleOnChange}
                 >
-                  {/* <option>Please Select from the list below</option> */}
+                  {/* <option>Select type</option> */}
                   <option value="dog">Dog</option>
                   <option value="cat">Cat</option>
                   <option value="bird">Bird</option>
@@ -258,6 +259,7 @@ function AddAPetForm() {
               <Form.Group className="mb-3" controlId="validateSex">
                 <Form.Label>Sex</Form.Label>
                 <Form.Select
+                  required
                   name="sex"
                   className="pet-sex"
                   onChange={handleOnChange}
