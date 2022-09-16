@@ -11,7 +11,7 @@ import Photos from "./Photos";
 import axios from "axios";
 import { getUser } from "../UserProfile/psb-exports";
 
-function AddAPetFormFunctional() {
+function AddAPetForm() {
   const [petId, setPetId] = useState(null);
   const navigate = useNavigate();
   const [photos, setPhotos] = useState([]);
@@ -19,8 +19,8 @@ function AddAPetFormFunctional() {
   const [isClicked, setIsClicked] = useState(false);
 
   // const [isSuccess, setIsSuccess] = useState(false);
-  // const [progress, setProgress] = useState(0);
-  // const [currentUpload, setCurrentUpload] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [currentUpload, setCurrentUpload] = useState(0);
 
   let user = getUser();
   console.log(user);
@@ -112,11 +112,10 @@ function AddAPetFormFunctional() {
           headers: {
             "Content-Type": photos[i].type,
           },
-          // onUploadProgress: (progressEvent) => {
-          //   const progress = (progressEvent.loaded / progressEvent.total) * 100;
-          //   console.log("THIS IS THE UPLOAD PROGRESSS: ", progress);
-          //   setProgress(progress)
-          // },
+          onUploadProgress: (progressEvent) => {
+            const progress = (progressEvent.loaded / progressEvent.total) * 100;
+            setProgress(progress)
+          },
           // onDownloadProgress: (progressEvent) => {
           //   const progress = 50 + (progresssEvent.loaded / progressEvent.total) * 100;
           //   console.log("THIS IS THE PROGRESSS: ", progress);
@@ -182,7 +181,8 @@ function AddAPetFormFunctional() {
                 ) : (
                   <Form.Control
                     name="owner"
-                    value={getUser()}
+                    defaultValue={getUser()}
+                    disabled={true}
                     className="pet-owner-name"
                   />
                 )}
@@ -255,8 +255,8 @@ function AddAPetFormFunctional() {
                   handleCoverPhoto={handleCoverPhoto}
                   showRadios={true}
                   maxPhotos={MAX_NUMBER_OF_PHOTOS}
-                  // progress={progress}
-                  // currentUpload={currentUpload}
+                  progress={progress}
+                  currentUpload={currentUpload}
                 />
               </div>
 
@@ -291,4 +291,4 @@ function AddAPetFormFunctional() {
   );
 }
 
-export default AddAPetFormFunctional;
+export default AddAPetForm;
