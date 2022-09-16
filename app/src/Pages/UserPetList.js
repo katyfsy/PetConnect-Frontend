@@ -11,9 +11,11 @@ import {
   PSB_API_URL,
 } from "../Components/UserProfile/psb-exports";
 import axios from "axios";
+import FavButton from '../Components/UserProfile/FavButton';
 
 function UserPetList() {
   const [data, setData] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
   const username = useParams().username;
   // const username = "testuser"
@@ -23,15 +25,36 @@ function UserPetList() {
     console.log(data.petsList)
     setData(data.petsList);
   };
+
+  const getFavorites = () => {
+    if(getUser() !== null) {
+      axios.get(`${PSB_API_URL}/api/user/${getUser()}/favorites`,
+      {headers: {
+        'Authorization': getBearerToken()
+      }})
+      .then((res) => {
+        console.log("get favorites result",res.data.favorites);
+        setFavorites(res.data.favorites);
+      })
+      .catch((err) => console.log(err));
+    }
+  }
   useEffect(() => {
     getData();
+    getFavorites();
   }, []);
 
   const PetCard = data.map((element) => {
     let adopted = element.adopted ? "Yes" : "No"
-
+    let isFavor;
+    if(favorites.includes(element.petId)) {
+      isFavor = true;
+    } else {
+      isFavor = false;
+    }
     return (
       <Card style={{ width: '18rem' }}>
+        <FavButton petId={element.petId} isFavor={isFavor}/>
       <Card.Img variant="top" src={element.coverPhoto} style={{height: 200}} onClick={() => handleClick()}/>
       <Card.Body>
         <Card.Title>{element.name}</Card.Title>
