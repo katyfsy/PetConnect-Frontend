@@ -4,13 +4,18 @@ import Button from "react-bootstrap/Button";
 import AddPhotosPortal from "./AddPhotosPortal";
 import Image from "react-bootstrap/Image";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
+  const navigate = useNavigate();
   const [openPortal, setOpenPortal] = useState(false);
+
   const [deletePhotos, setDeletePhotos] = useState([]);
   const [addPhotos, setAddPhotos] = useState([]);
+
   const [progress, setProgress] = useState(0);
   const [currentUpload, setCurrentUpload] = useState(0);
+
   const [petAttributes, setPetAttributes] = useState({
     name: thisPet.name,
     location: thisPet.location,
@@ -22,6 +27,7 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     reported: thisPet.reported,
     coverPhoto: thisPet.coverPhoto,
   });
+
   console.log("these are state of attributes:", petAttributes);
   console.log("photo state", addPhotos);
   console.log("deletestate", deletePhotos);
@@ -48,12 +54,32 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     }
     return files;
   };
+  function findCoverPhotoName(listOfPhotos) {
+    if (petAttributes.coverPhoto.includes("blob")) {
+      let p = listOfPhotos.filter((photo) => {
+        console.log(
+          photo.preview,
+          petAttributes.coverPhoto,
+          photo.preview === petAttributes.coverPhoto
+        );
+        return photo.preview === petAttributes.coverPhoto;
+      });
+      return p[0].name;
+    }
+
+    // some regex
+
+    let x = petAttributes.coverPhoto.substring(
+      petAttributes.coverPhoto.lastIndexOf("/") + 1
+    );
+    console.log(x);
+    return x;
+  }
 
   const handleUpload = async (photos, petId) => {
-    let files = extractFileData(petId);
+    let files = extractFileData(photos, petId);
     console.log(files);
     let urls = await getPresignedUrls(files);
-
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
         setCurrentUpload(i);
@@ -74,11 +100,17 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
       alert("Photos uploaded successfully");
       await axios
         .post(
-          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[0].name}`
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${findCoverPhotoName(
+            photos
+          )}`
         )
         .then((res) => console.log(res))
-        .then((res) => alert("PERSISTED"))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          alert("PERSISTED");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       alert("At least one photo is required to upload");
     }
@@ -111,7 +143,7 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     } else {
       if (typeof id !== "string") {
         console.log("in db");
-        setDeletePhotos([...deletePhotos, [thisPet.petId, id]]);
+        setDeletePhotos([...deletePhotos, id]);
         document.getElementById(`${id}`).remove();
       }
       console.log(thisPet.petId, id);
@@ -124,57 +156,61 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     }
   }
 
-  function handlePatch(success) {
-    if (success) {
-      fetch(
-        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com/:8080/api/pets/${thisPet.petId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(petAttributes),
-        }
-      )
-        .then((r) => r.json())
-        .catch((err) => {
-          console.log(err);
-        })
-        .then((data) => {
-          setIsEdit(false);
-          setThisPet(data);
-        });
+  function handlePatch() {
+    if (petAttributes.coverPhoto.includes("blob")) {
+      let newatt = { ...petAttributes };
+      delete newatt.coverPhoto;
+      setPetAttributes(newatt);
     }
+    fetch(
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${thisPet.petId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(petAttributes),
+      }
+    )
+      .then((r) => r.json())
+      .catch((err) => {
+        console.log(err);
+      })
+      .then((data) => {
+        console.log(data);
+      });
   }
 
   // set alert if its false
-  function deleteDatabase() {
-    deletePhotos.forEach((photo) => {
+  function deleteDatabase(photosToDelete) {
+    if (photosToDelete.length == 0) {
+      return true;
+    }
+    photosToDelete.forEach((photo) => {
       fetch(
-        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${petId}?photoId=${photo.photoId}`,
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${thisPet.petId}?photoId=${photo}`,
         { method: "DELETE" }
       )
         .then((res) => res.json())
         .catch((err) => {
           console.error(err);
+          return false;
         })
         .then((data) => {
           console.log(data);
         });
     });
-    return false;
+    return true;
   }
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    // if (deletePhotos.length > 0) {
-    //   deleteDatabase();
-    // }
-    if (addPhotos.length > 0) {
+    await handlePatch();
+    let successDeleting = await deleteDatabase(deletePhotos);
+    if (successDeleting) {
       await handleUpload(addPhotos, thisPet.petId);
-      // await handlePatch();
-      // navigateToPetProfile(petId);
     }
   };
+
   console.log(deletePhotos);
 
   return (
@@ -364,6 +400,13 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
           onChange={handleOnChange}
         />
       </Form.Group>
+
+      <Button
+        onClick={() => findCoverPhotoName(addPhotos)}
+        className="add-pet-button"
+      >
+        Test
+      </Button>
       <Button type="submit" className="add-pet-button">
         Finish Editing
       </Button>

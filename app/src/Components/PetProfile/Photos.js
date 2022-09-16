@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
-import ProgressBar from 'react-bootstrap/ProgressBar';
+import ProgressBar from "react-bootstrap/ProgressBar";
 import axios from "axios";
 import "./Photos.css";
 import { useDropzone } from "react-dropzone";
@@ -14,7 +14,7 @@ const Photos = ({
   showRadios,
   maxPhotos,
   progress,
-  currentUpload
+  currentUpload,
 }) => {
   const [showRadio, setShowRadio] = useState(showRadios);
   // console.log("asdlkfjals;dkfjalskdfj", progress, currentUpload)
@@ -125,10 +125,12 @@ const Photos = ({
         <div></div>
       )}
       <div>
-        {currentUpload === index ? <ProgressBar now={progress}/> :
-          <ProgressBar now={currentUpload > index ? 100 : 0} />}
+        {currentUpload === index ? (
+          <ProgressBar now={progress} />
+        ) : (
+          <ProgressBar now={currentUpload > index ? 100 : 0} />
+        )}
       </div>
-
     </div>
   ));
 
@@ -161,7 +163,7 @@ Photos.propTypes = {
   handleRemovePhotos: PropTypes.func.isRequired,
   handleCoverPhoto: PropTypes.func.isRequired,
   progress: PropTypes.number.isRequired,
-  currentUpload: PropTypes.number.isRequired
+  currentUpload: PropTypes.number.isRequired,
 };
 
 export default Photos;

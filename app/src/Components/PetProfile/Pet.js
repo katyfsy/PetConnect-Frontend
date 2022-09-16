@@ -45,7 +45,7 @@ function Pet() {
         setThisPet(data);
         setPetPhotos(data.photos);
       });
-  }, []);
+  }, [isEdit]);
 
   function handleOnDelete() {
     fetch(
@@ -78,7 +78,11 @@ function Pet() {
           <BsBookmark />
           <br />
           {petPhotos.map((petPhoto) => (
-            <LightgalleryItem key={petPhoto.photoId} src={petPhoto.photo_url} group={"any"}>
+            <LightgalleryItem
+              key={petPhoto.photoId}
+              src={petPhoto.photo_url}
+              group={"any"}
+            >
               <img src={petPhoto.photo_url} width={"200"} height={"200"} />
             </LightgalleryItem>
           ))}

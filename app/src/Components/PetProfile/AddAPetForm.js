@@ -32,7 +32,7 @@ function AddAPetForm() {
     sex: null,
     description: null,
   });
-  console.log(requiredPetFields);
+  console.log(photos);
   const MAX_NUMBER_OF_PHOTOS = 5;
   const handleOnChange = (e) => {
     setrequiredPetFields({
@@ -94,8 +94,6 @@ function AddAPetForm() {
     return files;
   };
 
-
-
   const handleUpload = async (petId) => {
     let files = extractFileData(petId);
     console.log(files);
@@ -107,14 +105,14 @@ function AddAPetForm() {
 
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
-        setCurrentUpload(i)
+        setCurrentUpload(i);
         let options = {
           headers: {
             "Content-Type": photos[i].type,
           },
           onUploadProgress: (progressEvent) => {
             const progress = (progressEvent.loaded / progressEvent.total) * 100;
-            setProgress(progress)
+            setProgress(progress);
           },
           // onDownloadProgress: (progressEvent) => {
           //   const progress = 50 + (progresssEvent.loaded / progressEvent.total) * 100;
@@ -127,7 +125,7 @@ function AddAPetForm() {
           .put(urls[i], photos[i], options)
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
-    }
+      }
       alert("Photos uploaded successfully");
       await axios
         .post(
