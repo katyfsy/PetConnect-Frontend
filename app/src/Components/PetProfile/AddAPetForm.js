@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Modal from 'react-bootstrap/Modal';
+// import Modal from 'react-bootstrap/Modal';
 import Pet from "./Pet";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
@@ -43,6 +43,7 @@ function AddAPetForm() {
   });
   console.log(requiredPetFields);
   const MAX_NUMBER_OF_PHOTOS = 5;
+
   const handleOnChange = (e) => {
     setrequiredPetFields({
       ...requiredPetFields,
@@ -145,15 +146,15 @@ function AddAPetForm() {
         .then((res) => console.log(res))
         .then((res) => {
           setShowAlert(true)
-          setAlertTitle("")
-          setAlertText("Photos uploaded successfully")
+          setAlertTitle("Congratulations")
+          setAlertText("Pet profile created successfully")
           setAlertType("success")
           setHandleOnExited(true)
         })
         .catch((err) => console.log(err));
     } else {
       setShowAlert(true)
-      setAlertTitle("")
+      setAlertTitle("Photo requirements not met")
       setAlertText("Pet profiles require at least one photo")
       setAlertType("error")
       setHandleOnExited(false)
@@ -167,25 +168,39 @@ function AddAPetForm() {
     if (form.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
-    }
-
-    e.preventDefault();
-
-    if (photos.length == 0) {
       setShowAlert(true)
-      setAlertTitle("")
-      setAlertText("Pet profiles require at least one photo")
+      setAlertTitle("Incomplete form")
+      setAlertText("Fill out required fields")
       setAlertType("error")
       setHandleOnExited(false)
-      // alert("At least one photo is required to upload");
     } else {
-      let petId = await createPet();
+
+      e.preventDefault();
+
+    let petId = await createPet();
       if (petId != null) {
         setPetId(petId)
         await handleUpload(petId);
       }
     }
     setValidated(true);
+
+    // if (photos.length == 0) {
+    //   setShowAlert(true)
+    //   setAlertTitle("")
+    //   setAlertText("Pet profiles require at least one photo")
+    //   setAlertType("error")
+    //   setValidated(false)
+    //   // alert("At least one photo is required to upload");
+    // } else {
+    //   let petId = await createPet();
+    //   if (petId != null) {
+    //     setPetId(petId)
+    //     await handleUpload(petId);
+    //   }
+    //   // setValidated(true);
+    // }
+    // setValidated(true);
   };
 
   const navigateToPetProfile = (id) => {
@@ -261,9 +276,10 @@ function AddAPetForm() {
                   required
                   name="type"
                   className="pet-type"
+                  defaultValue={null}
                   onChange={handleOnChange}
                 >
-                  {/* <option>Select type</option> */}
+                  <option value="">Select type</option>
                   <option value="dog">Dog</option>
                   <option value="cat">Cat</option>
                   <option value="bird">Bird</option>
@@ -282,7 +298,7 @@ function AddAPetForm() {
                   className="pet-sex"
                   onChange={handleOnChange}
                 >
-                  {/* <option>Please Select from the list below</option> */}
+                  <option value="">Select sex</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                   <option value="unknown">Unknown</option>

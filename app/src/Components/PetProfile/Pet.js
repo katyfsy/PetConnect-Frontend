@@ -157,7 +157,7 @@ function Pet() {
                   <Col>
                     <FaRegHeart size={42} onClick={() => handleLike()} />
                   </Col>
-                  
+
                 ) : (
                   <Col>
                     <FaHeart color="red" size={42} onClick={() => handleRemoveLike()} />
@@ -212,8 +212,9 @@ function Pet() {
           <>
             <p>Name: {thisPet.name}</p>
             <p>Owner: {thisPet.owner}</p>
-            <p>Location: {thisPet.location}</p>
+            <p>Zip: {thisPet.zip}</p>
             <p>Type: {thisPet.type}</p>
+            <p>Sex: {thisPet.sex}</p>
             <p>Description: {thisPet.description}</p>
 
             <p>Weight: {thisPet.weight}</p>
