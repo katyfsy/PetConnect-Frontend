@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import ProgressBar from 'react-bootstrap/ProgressBar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFolder, faFolderOpen } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
 import "./Photos.css";
 import { useDropzone } from "react-dropzone";
@@ -140,7 +142,8 @@ const Photos = ({
         </div>
         <div {...getRootProps({ className: `dropzone ${additionalClass}` })}>
           <input {...getInputProps()} />
-          <span>{isDragActive ? "🐈‍" : "🐈‍⬛"}</span>
+          <FontAwesomeIcon className={isDragActive ? "dropzone-icon-active" : "dropzone-icon-inactive"} icon={isDragActive ? faFolderOpen : faFolder} />
+          {/* <span>{isDragActive ? "🐈‍" : "🐈‍⬛"}</span> */}
           <p>Drag n' drop images here</p>
           <p>or</p>
           <button className="pu-browse-button" type="button" onClick={open}>

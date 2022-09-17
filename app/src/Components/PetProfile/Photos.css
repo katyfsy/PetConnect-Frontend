@@ -57,6 +57,16 @@
   cursor: pointer;
 }
 
+.dropzone-icon-active {
+  font-size: 2rem;
+  color: rgb(40, 87, 196);
+}
+
+.dropzone-icon-inactive {
+  font-size: 2rem;
+  color: rgb(64, 64, 64);
+}
+
 span {
   font-size: 2rem;
   color: #777;

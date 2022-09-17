@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Modal from 'react-bootstrap/Modal';
 import Pet from "./Pet";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
@@ -8,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./AddAPetForm.css";
 import Photos from "./Photos";
+import Alert from "./AlertModalPetForms"
 import axios from "axios";
 import { getUser } from "../UserProfile/psb-exports";;
 function AddAPetForm() {
@@ -18,10 +20,17 @@ function AddAPetForm() {
   const [coverPhoto, setCoverPhoto] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
 
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const [handleOnExited, setHandleOnExited] = useState(false)
+
   // const [isSuccess, setIsSuccess] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentUpload, setCurrentUpload] = useState(0);
 
+  let onExited = null;
   let user = getUser();;
   console.log(user);
   const [requiredPetFields, setrequiredPetFields] = useState({
@@ -134,14 +143,20 @@ function AddAPetForm() {
           `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[coverPhoto].name}`
         )
         .then((res) => console.log(res))
-        .then((res) => setTimeout(() => {
-          alert("Photos uploaded successfully");
-          navigateToPetProfile(petId);
-        }, 1000))
-          // alert("PERSISTED"))
+        .then((res) => {
+          setShowAlert(true)
+          setAlertTitle("")
+          setAlertText("Photos uploaded successfully")
+          setAlertType("success")
+          setHandleOnExited(true)
+        })
         .catch((err) => console.log(err));
     } else {
-      alert("At least one photo is required to upload");
+      setShowAlert(true)
+      setAlertTitle("")
+      setAlertText("Pet profiles require at least one photo")
+      setAlertType("error")
+      setHandleOnExited(false)
     }
   };
 
@@ -157,14 +172,17 @@ function AddAPetForm() {
     e.preventDefault();
 
     if (photos.length == 0) {
-      alert("At least one photo is required to upload");
+      setShowAlert(true)
+      setAlertTitle("")
+      setAlertText("Pet profiles require at least one photo")
+      setAlertType("error")
+      setHandleOnExited(false)
+      // alert("At least one photo is required to upload");
     } else {
       let petId = await createPet();
-      // console.log("THIS IS THE PETID: ", petId);
       if (petId != null) {
+        setPetId(petId)
         await handleUpload(petId);
-
-        // navigateToPetProfile(petId);
       }
     }
     setValidated(true);
@@ -324,6 +342,14 @@ function AddAPetForm() {
           </Col>
           <Col></Col>
         </Row>
+        <Alert
+          show={showAlert}
+          text={alertText}
+          title={alertTitle}
+          type={alertType}
+          onHide={() => setShowAlert(false)}
+          onExited={(handleOnExited) ? () => navigateToPetProfile(petId) : null}
+        />
       </Container>
     </>
   );
