@@ -128,7 +128,7 @@ const Photos = ({
     maxFiles: maxPhotos - photos.length,
     multiple: true,
     accept: {
-      "image/jpg": [".jpeg", ".jpg"],
+      "image/jpeg": [".jpeg", ".jpg"],
       "image/png": [".png"],
       "image/webp": [".wepb"],
       "image/bmp": [".bmp"]
