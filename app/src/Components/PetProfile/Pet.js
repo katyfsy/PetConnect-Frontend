@@ -24,7 +24,6 @@ import { LightgalleryItem } from "react-lightgallery";
 function Pet() {
   const [thisPet, setThisPet] = useState(null);
   const [calculateLike, setCalcLike] = useState(0);
-  const [removeLike, setRemoveLike] = useState(null);
   const [liked, setLiked] = useState(false);
   const [petPhotos, setPetPhotos] = useState([]);
   const [isEdit, setIsEdit] = useState(false);

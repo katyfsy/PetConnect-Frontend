@@ -33,7 +33,7 @@ const Photos = ({
         );
         handleAddPhotos(newPhotos);
       } else {
-        alert(`Maximum number of photos allowed: ${maxPhotos}`);
+        alert(`Only image files allowed.  Maximum number of photos allowed: ${maxPhotos}`);
       }
       console.log("latestPhotos(one behind): ", photos);
     },

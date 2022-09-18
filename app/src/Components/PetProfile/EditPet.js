@@ -49,31 +49,31 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
   const handleUpload = async (photos, petId) => {
     let files = extractFileData(petId);
     console.log(files);
-    let urls = await getPresignedUrls(files);
+    // let urls = await getPresignedUrls(files);
 
-    if (photos.length > 0) {
-      for (let i = 0; i < photos.length; i++) {
-        let options = {
-          headers: {
-            "Content-Type": photos[i].type,
-          },
-        };
-        await axios
-          .put(urls[i], photos[i], options)
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
-      }
-      alert("Photos uploaded successfully");
-      await axios
-        .post(
-          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[coverPhoto].name}`
-        )
-        .then((res) => console.log(res))
-        .then((res) => alert("PERSISTED"))
-        .catch((err) => console.log(err));
-    } else {
-      alert("At least one photo is required to upload");
-    }
+    // if (photos.length > 0) {
+    //   for (let i = 0; i < photos.length; i++) {
+    //     let options = {
+    //       headers: {
+    //         "Content-Type": photos[i].type,
+    //       },
+    //     };
+    //     await axios
+    //       .put(urls[i], photos[i], options)
+    //       .then((res) => console.log(res))
+    //       .catch((err) => console.log(err));
+    //   }
+    //   alert("Photos uploaded successfully");
+    //   await axios
+    //     .post(
+    //       `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[coverPhoto].name}`
+    //     )
+    //     .then((res) => console.log(res))
+    //     .then((res) => alert("PERSISTED"))
+    //     .catch((err) => console.log(err));
+    // } else {
+    //   alert("At least one photo is required to upload");
+    // }
   };
 
   function handleOnChange(e) {
@@ -95,6 +95,27 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
       });
     }
   }
+
+  // Functionality when pressing the delete button
+  function handleDelete(e, id) {
+    if (e.target.value === petAttributes.coverPhoto) {
+      alert("Must Select Different Cover Photo First Before Deletion");
+    } else {
+      if (typeof id !== "string") {
+        console.log("in db");
+        setDeletePhotos([...deletePhotos, [thisPet.petId, id]]);
+        document.getElementById(`${id}`).remove();
+      }
+      console.log(thisPet.petId, id);
+      if (typeof id == "string") {
+        const photosWithOutDeleted = addPhotos.filter(
+          (photo) => photo.name !== id
+        );
+        setAddPhotos(photosWithOutDeleted);
+      }
+    }
+  }
+
   function handlePatch(success) {
     if (success) {
       fetch(
@@ -120,38 +141,34 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
 
   // set alert if its false
   function deleteDatabase() {
-    return true;
+    deletePhotos.forEach((photo) => {
+      fetch(
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${petId}?photoId=${photo.photoId}`,
+        { method: "DELETE" }
+      )
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error(err);
+        })
+        .then((data) => {
+          console.log(data);
+        });
+    });
+    return false;
   }
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    if (deletePhotos.length > 0) {
-      let success = await deleteDatabse();
-    }
-    if (success) {
+    // if (deletePhotos.length > 0) {
+    //   deleteDatabase();
+    // }
+    if (addPhotos.length > 0) {
       await handleUpload(addPhotos, thisPet);
-      await handlePatch();
-      navigateToPetProfile(petId);
+      // await handlePatch();
+      // navigateToPetProfile(petId);
     }
   };
   console.log(deletePhotos);
-  function handleDelete(e, id) {
-    if (e.target.value === petAttributes.coverPhoto) {
-      alert("Must Select Different Cover Photo First Before Deletion");
-    } else {
-      if (typeof id !== "string") {
-        console.log("in db");
-        setDeletePhotos([...deletePhotos, [thisPet.petId, id]]);
-      }
-      console.log(thisPet.petId, id);
-      if (typeof id == "string") {
-        const photosWithOutDelated = addPhotos.filter(
-          (photo) => photo.name !== id
-        );
-        setAddPhotos(photosWithOutDelated);
-      }
-      // document.getElementById(`${id}`).remove();
-    }
-  }
+
   return (
     <Form onSubmit={handleOnSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">

@@ -9,8 +9,7 @@ import Col from "react-bootstrap/Col";
 import "./AddAPetForm.css";
 import Photos from "./Photos";
 import axios from "axios";
-import { getUser } from "../UserProfile/psb-exports";
-
+import { getUser } from "../UserProfile/psb-exports";;
 function AddAPetForm() {
   const [petId, setPetId] = useState(null);
   const [validated, setValidated] = useState(false);
@@ -23,7 +22,7 @@ function AddAPetForm() {
   const [progress, setProgress] = useState(0);
   const [currentUpload, setCurrentUpload] = useState(0);
 
-  let user = getUser();
+  let user = getUser();;
   console.log(user);
   const [requiredPetFields, setrequiredPetFields] = useState({
     owner: user.toString(),
@@ -129,13 +128,17 @@ function AddAPetForm() {
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
     }
-      alert("Photos uploaded successfully");
+      // alert("Photos uploaded successfully");
       await axios
         .post(
           `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[coverPhoto].name}`
         )
         .then((res) => console.log(res))
-        .then((res) => alert("PERSISTED"))
+        .then((res) => setTimeout(() => {
+          alert("Photos uploaded successfully");
+          navigateToPetProfile(petId);
+        }, 1000))
+          // alert("PERSISTED"))
         .catch((err) => console.log(err));
     } else {
       alert("At least one photo is required to upload");
@@ -143,23 +146,27 @@ function AddAPetForm() {
   };
 
   const handleOnSubmit = async (e) => {
+
     const form = e.currentTarget;
+
     if (form.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
-
-      if (photos.length == 0) {
-        alert("At least one photo is required to upload");
-      } else {
-        let petId = await createPet();
-        // console.log("THIS IS THE PETID: ", petId);
-        if (petId != null) {
-          await handleUpload(petId);
-          navigateToPetProfile(petId);
-        }
-      }
     }
 
+    e.preventDefault();
+
+    if (photos.length == 0) {
+      alert("At least one photo is required to upload");
+    } else {
+      let petId = await createPet();
+      // console.log("THIS IS THE PETID: ", petId);
+      if (petId != null) {
+        await handleUpload(petId);
+
+        // navigateToPetProfile(petId);
+      }
+    }
     setValidated(true);
   };
 
@@ -175,11 +182,11 @@ function AddAPetForm() {
           <Col></Col>
           <Col style={{ width: "60%" }}>
             <h3>Let's create the pet's profile</h3>
-            <br/>
+            <br />
             <Form
-              onSubmit={handleOnSubmit}
               noValidate
               validated={validated}
+              onSubmit={handleOnSubmit}
               id="add-pet-form"
             >
               <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -201,7 +208,7 @@ function AddAPetForm() {
                   />
                 )}
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="validateName">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   required
@@ -216,7 +223,7 @@ function AddAPetForm() {
                   Please enter your pet's name.
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="validateZip">
                 <Form.Label>Zipcode</Form.Label>
                 <Form.Control
                   required
@@ -230,14 +237,15 @@ function AddAPetForm() {
                   Please enter a zipcode.
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="validateType">
                 <Form.Label>Type</Form.Label>
                 <Form.Select
+                  required
                   name="type"
                   className="pet-type"
                   onChange={handleOnChange}
                 >
-                  {/* <option>Please Select from the list below</option> */}
+                  {/* <option>Select type</option> */}
                   <option value="dog">Dog</option>
                   <option value="cat">Cat</option>
                   <option value="bird">Bird</option>
@@ -248,9 +256,10 @@ function AddAPetForm() {
                   <option value="reptile">Reptile</option>
                 </Form.Select>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="validateSex">
                 <Form.Label>Sex</Form.Label>
                 <Form.Select
+                  required
                   name="sex"
                   className="pet-sex"
                   onChange={handleOnChange}
@@ -261,7 +270,7 @@ function AddAPetForm() {
                   <option value="unknown">Unknown</option>
                 </Form.Select>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" controlId="validateDescription">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   required
