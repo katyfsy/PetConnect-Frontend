@@ -130,7 +130,7 @@ const Photos = ({
     accept: {
       "image/jpeg": [".jpeg", ".jpg"],
       "image/png": [".png"],
-      "image/webp": [".wepb"],
+      "image/webp": [".webp"],
       "image/bmp": [".bmp"]
     },
   });
