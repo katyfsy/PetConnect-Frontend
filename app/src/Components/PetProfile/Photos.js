@@ -195,15 +195,14 @@ const Photos = ({
   return (
     <>
       <div className="photo-uploader-container">
-        <div className="pu-title">
+        {/* <div className="pu-title">
           {`Upload up to ${maxPhotos} photos for this pet profile`}
-        </div>
+        </div> */}
         <div {...getRootProps({ className: `dropzone ${additionalClass}` })}>
           <input {...getInputProps()} />
           <FontAwesomeIcon className={isDragActive ? "dropzone-icon-active" : "dropzone-icon-inactive"} icon={isDragActive ? faFolderOpen : faFolder} />
           {/* <span>{isDragActive ? "🐈‍" : "🐈‍⬛"}</span> */}
-          <p>Drag n' drop images here</p>
-          <p>or</p>
+          <p>Drag n' drop or select up to {maxPhotos}</p>
           <button className="pu-browse-button" type="button" onClick={open}>
             Browse files...
           </button>

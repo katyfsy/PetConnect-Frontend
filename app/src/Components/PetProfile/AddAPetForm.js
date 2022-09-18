@@ -211,9 +211,9 @@ function AddAPetForm() {
     <>
       <br />
       <Container>
-        <Row>
+        {/* <Row> */}
           <Col></Col>
-          <Col style={{ width: "60%" }}>
+          {/* <Col xs={5}> */}
             <h3>Let's create the pet's profile</h3>
             <br />
             <Form
@@ -222,103 +222,110 @@ function AddAPetForm() {
               onSubmit={handleOnSubmit}
               id="add-pet-form"
             >
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Owner</Form.Label>
-                {getUser() == "" ? (
-                  <Form.Control
-                    name="owner"
-                    className="pet-owner-name"
-                    type="text"
-                    placeholder="Pet's Owner's Name"
-                    onChange={handleOnChange}
-                  />
-                ) : (
-                  <Form.Control
-                    name="owner"
-                    defaultValue={getUser()}
-                    disabled={true}
-                    className="pet-owner-name"
-                  />
-                )}
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="validateName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  required
-                  name="name"
-                  className="pet-name"
-                  type="text"
-                  placeholder="Pet's Name"
-                  onChange={handleOnChange}
-                />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                <Form.Control.Feedback type="invalid">
-                  Please enter your pet's name.
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="validateZip">
-                <Form.Label>Zipcode</Form.Label>
-                <Form.Control
-                  required
-                  name="zip"
-                  className="pet-zip"
-                  type="number"
-                  onChange={handleOnChange}
-                />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                <Form.Control.Feedback type="invalid">
-                  Please enter a zipcode.
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="validateType">
-                <Form.Label>Type</Form.Label>
-                <Form.Select
-                  required
-                  name="type"
-                  className="pet-type"
-                  defaultValue={null}
-                  onChange={handleOnChange}
-                >
-                  <option value="">Select type</option>
-                  <option value="dog">Dog</option>
-                  <option value="cat">Cat</option>
-                  <option value="bird">Bird</option>
-                  <option value="horse">Horse</option>
-                  <option value="fish">Fish</option>
-                  <option value="farmAnimal">Farm Animal</option>
-                  <option value="smallPet">Small Pet</option>
-                  <option value="reptile">Reptile</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="validateSex">
-                <Form.Label>Sex</Form.Label>
-                <Form.Select
-                  required
-                  name="sex"
-                  className="pet-sex"
-                  onChange={handleOnChange}
-                >
-                  <option value="">Select sex</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="unknown">Unknown</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="validateDescription">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  required
-                  className="petDescription"
-                  name="description"
-                  as="textarea"
-                  onChange={handleOnChange}
-                />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                <Form.Control.Feedback type="invalid">
-                  Tell us a little more about your pet.
-                </Form.Control.Feedback>
-              </Form.Group>
-              <div>
+          <Form.Group as={Col} xs={5} className="mb-3" controlId="formOwnersName">
+            <Form.Label>Owner</Form.Label>
+            {getUser() == "" ? (
+              <Form.Control
+                name="owner"
+                className="pet-owner-name"
+                type="text"
+                placeholder="Pet's Owner's Name"
+                onChange={handleOnChange}
+              />
+            ) : (
+              <Form.Control
+                name="owner"
+                defaultValue={getUser()}
+                disabled={true}
+                className="pet-owner-name"
+              />
+            )}
+          </Form.Group>
+
+          <Form.Group as={Col} xs={5} className="mb-3" controlId="formPetsName">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              required
+              name="name"
+              className="pet-name"
+              type="text"
+              placeholder="Pet's Name"
+              onChange={handleOnChange}
+            />
+            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              Please enter your pet's name.
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group as={Col} xs={5} className="mb-3" controlId="formZip">
+            <Form.Label>Zipcode</Form.Label>
+            <Form.Control
+              required
+              name="zip"
+              className="pet-zip"
+              type="number"
+              onChange={handleOnChange}
+            />
+            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              Please enter a zipcode.
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group as={Col} xs={5} className="mb-3" controlId="formType">
+            <Form.Label>Type</Form.Label>
+            <Form.Select
+              required
+              name="type"
+              className="pet-type"
+              onChange={handleOnChange}
+            >
+              <option value="">Select type</option>
+              <option value="dog">Dog</option>
+              <option value="cat">Cat</option>
+              <option value="bird">Bird</option>
+              <option value="horse">Horse</option>
+              <option value="fish">Fish</option>
+              <option value="farmAnimal">Farm Animal</option>
+              <option value="smallPet">Small Pet</option>
+              <option value="reptile">Reptile</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group as={Col} xs={5} className="mb-3" controlId="formSex">
+            <Form.Label>Sex</Form.Label>
+            <Form.Select
+              required
+              name="sex"
+              className="pet-sex"
+              onChange={handleOnChange}
+            >
+              <option value="">Select sex</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="unknown">Unknown</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group as={Col} xs={5} className="mb-3" controlId="formDescription">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              required
+              className="petDescription"
+              name="description"
+              as="textarea"
+              onChange={handleOnChange}
+            />
+            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              Tell us a little more about your pet.
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group as={Col} xs={7} className="mb-3" controlId="formPhotos">
+            <Form.Label>Photos</Form.Label>
+            <div>
                 <Photos
                   photos={photos}
                   coverPhoto={coverPhoto}
@@ -331,8 +338,20 @@ function AddAPetForm() {
                   currentUpload={currentUpload}
                 />
               </div>
+          </Form.Group>
+
+
+
+
+
 
               <br />
+              {/* </Col> */}
+          <Col></Col>
+        {/* </Row> */}
+        <Row>
+
+              </Row>
               <Row>
                 <Col>
                   <Button
@@ -355,9 +374,7 @@ function AddAPetForm() {
 
             <br />
             {isClicked ? <Pet requiredPetFields={requiredPetFields} /> : null}
-          </Col>
-          <Col></Col>
-        </Row>
+
         <Alert
           show={showAlert}
           text={alertText}

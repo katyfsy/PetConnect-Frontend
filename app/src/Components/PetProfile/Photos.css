@@ -1,10 +1,11 @@
 .photo-uploader-container {
-  display: flex;
-  flex-direction: column;
+  padding-top: 30px;
+  /* display: flex;
+  flex-direction: column; */
   /*background: lightslategrey;*/
-  max-width: 600px;
-  margin: auto;
-  padding: 30px;
+  /* max-width: 600px; */
+  /* margin: auto; */
+  /* padding: 30px; */
 }
 
 .pu-title {
@@ -73,8 +74,9 @@ span {
 }
 
 .dropzone {
+  padding-top: 50px;
+  padding-bottom: 30px;
   text-align: center;
-  padding: 20px;
   border: 2px dashed #eeeeee;
   background-color: #fafafa;
   color: #bdbdbd;
