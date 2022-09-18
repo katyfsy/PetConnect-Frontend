@@ -209,20 +209,18 @@ function AddAPetForm() {
   };
   return (
     <>
-      <br />
-      <Container>
-        {/* <Row> */}
-          <Col></Col>
-          {/* <Col xs={5}> */}
-            <h3>Let's create the pet's profile</h3>
-            <br />
-            <Form
-              noValidate
-              validated={validated}
-              onSubmit={handleOnSubmit}
-              id="add-pet-form"
-            >
-          <Form.Group as={Col} xs={5} className="mb-3" controlId="formOwnersName">
+      <Container className="addpet-form-container">
+
+        <h3>Let's create the pet's profile</h3>
+        <br />
+        <Form className="addpet-form"
+          noValidate
+          validated={validated}
+          onSubmit={handleOnSubmit}
+          id="add-pet-form"
+        >
+
+          <Form.Group className="mb-3 form-fields" controlId="ownerValidation">
             <Form.Label>Owner</Form.Label>
             {getUser() == "" ? (
               <Form.Control
@@ -242,7 +240,7 @@ function AddAPetForm() {
             )}
           </Form.Group>
 
-          <Form.Group as={Col} xs={5} className="mb-3" controlId="formPetsName">
+          <Form.Group className="mb-3 form-fields" controlId="nameValidation">
             <Form.Label>Name</Form.Label>
             <Form.Control
               required
@@ -258,7 +256,7 @@ function AddAPetForm() {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group as={Col} xs={5} className="mb-3" controlId="formZip">
+          <Form.Group className="mb-3 form-fields" controlId="zipValidation">
             <Form.Label>Zipcode</Form.Label>
             <Form.Control
               required
@@ -273,7 +271,7 @@ function AddAPetForm() {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group as={Col} xs={5} className="mb-3" controlId="formType">
+          <Form.Group className="mb-3 form-fields" controlId="typeValidation">
             <Form.Label>Type</Form.Label>
             <Form.Select
               required
@@ -293,7 +291,7 @@ function AddAPetForm() {
             </Form.Select>
           </Form.Group>
 
-          <Form.Group as={Col} xs={5} className="mb-3" controlId="formSex">
+          <Form.Group className="mb-3 form-fields" controlId="sexValidation">
             <Form.Label>Sex</Form.Label>
             <Form.Select
               required
@@ -308,7 +306,7 @@ function AddAPetForm() {
             </Form.Select>
           </Form.Group>
 
-          <Form.Group as={Col} xs={5} className="mb-3" controlId="formDescription">
+          <Form.Group className="mb-3 form-fields" controlId="descriptionValidation">
             <Form.Label>Description</Form.Label>
             <Form.Control
               required
@@ -323,57 +321,76 @@ function AddAPetForm() {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group as={Col} xs={7} className="mb-3" controlId="formPhotos">
+          <Form.Group className="mb-3 photos-form-container" >
             <Form.Label>Photos</Form.Label>
-            <div>
-                <Photos
-                  photos={photos}
-                  coverPhoto={coverPhoto}
-                  handleAddPhotos={handleAddPhotos}
-                  handleRemovePhotos={handleRemovePhotos}
-                  handleCoverPhoto={handleCoverPhoto}
-                  showRadios={true}
-                  maxPhotos={MAX_NUMBER_OF_PHOTOS}
-                  progress={progress}
-                  currentUpload={currentUpload}
-                />
-              </div>
+
+              <Photos
+                photos={photos}
+                coverPhoto={coverPhoto}
+                handleAddPhotos={handleAddPhotos}
+                handleRemovePhotos={handleRemovePhotos}
+                handleCoverPhoto={handleCoverPhoto}
+                showRadios={true}
+                maxPhotos={MAX_NUMBER_OF_PHOTOS}
+                progress={progress}
+                currentUpload={currentUpload}
+              />
+
           </Form.Group>
 
+          <div className="mb-3 buttons-form-container" >
+            <Form.Group className="mb-3" >
+              <Button
+                variant="secondary"
+                type="submit"
+                onClick={() => navigate(-1)}
+              >
+                {"<"} Go Back
+              </Button>
+            </Form.Group>
+
+            <Form.Group className="mb-3" >
+              {isClicked ? null : (
+                <Button type="submit" className="add-pet-button">
+                  Add Pet
+                </Button>
+              )}
+            </Form.Group>
+          </div>
+
+
+            {/* <Col sm={{ span: 10, offset: 2 }}>
+              {isClicked ? null : (
+                <Button type="submit" className="add-pet-button">
+                  Add Pet
+                </Button>
+              )}
+            </Col> */}
 
 
 
+          {/* <Row>
+            <Col>
+              <Button
+                variant="secondary"
+                type="submit"
+                onClick={() => navigate(-1)}
+              >
+                {"<"} Go Back
+              </Button>
+            </Col>
+            <Col>
+              {isClicked ? null : (
+                <Button type="submit" className="add-pet-button">
+                  Add Pet
+                </Button>
+              )}
+            </Col>
+          </Row> */}
+        </Form>
 
-
-              <br />
-              {/* </Col> */}
-          <Col></Col>
-        {/* </Row> */}
-        <Row>
-
-              </Row>
-              <Row>
-                <Col>
-                  <Button
-                    variant="secondary"
-                    type="submit"
-                    onClick={() => navigate(-1)}
-                  >
-                    {"<"} Go Back
-                  </Button>
-                </Col>
-                <Col>
-                  {isClicked ? null : (
-                    <Button type="submit" className="add-pet-button">
-                      Add Pet
-                    </Button>
-                  )}
-                </Col>
-              </Row>
-            </Form>
-
-            <br />
-            {isClicked ? <Pet requiredPetFields={requiredPetFields} /> : null}
+        <br />
+        {isClicked ? <Pet requiredPetFields={requiredPetFields} /> : null}
 
         <Alert
           show={showAlert}

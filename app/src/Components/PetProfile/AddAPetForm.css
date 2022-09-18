@@ -1,5 +1,32 @@
-#add-pet-form{
+.addpet-form-container {
+    margin-top: 30px;
+
+}
+
+.addpet-form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-content: center;
+    max-width: 60%;
     /* max-width: 60%; */
+}
 
+.form-fields {
+    width: 300px;
+    align-self: center;
 
+}
+
+.photos-form-container {
+    width: 500px;
+    align-self: center;
+}
+
+.buttons-form-container {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    width: 500px;
+    justify-content: space-around;
 }

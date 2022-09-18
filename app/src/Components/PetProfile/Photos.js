@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import ProgressBar from 'react-bootstrap/ProgressBar';
-
+import Button from 'react-bootstrap/Button';
 import Alert from "./AlertModalPetForms"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFolder, faFolderOpen } from '@fortawesome/free-solid-svg-icons'
+import { faFolder, faFolderOpen, faCircleMinus } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
 import "./Photos.css";
 import { useDropzone } from "react-dropzone";
@@ -128,9 +128,9 @@ const Photos = ({
     maxFiles: maxPhotos - photos.length,
     multiple: true,
     accept: {
-      "image/jpg": [".jpeg", ".jpg"],
+      "image/jpeg": [".jpeg", ".jpg"],
       "image/png": [".png"],
-      "image/webp": [".wepb"],
+      "image/webp": [".webp"],
       "image/bmp": [".bmp"]
     },
   });
@@ -149,45 +149,40 @@ const Photos = ({
 
   const previews = photos.map((photo, index) => (
     <div className="photo-preview" key={index}>
-      <div className="thumb">
-        <div className="thumb-inner">
-          <img
-            className="thumb-photo"
-            src={photo.preview}
-            alt="preview"
+      <div className="thumb-information">
+      {coverPhoto === index ? <div className="thumb-radio-button-label">Cover Photo</div> : <></>}
+        <div className="thumb">
+          <div className="thumb-inner">
+            <img
+              className="thumb-photo"
+              src={photo.preview}
+              alt="preview"
             // Revoke data uri after image is loaded
             // onLoad={() => { URL.revokeObjectURL(photo.preview) }}
-          />
+            />
+            <FontAwesomeIcon className="thumb-remove-button" icon={faCircleMinus} onClick={() => handleRemoveThumb(index)} />
+          </div>
         </div>
+        {showRadio ? (
+          <div className="thumb-radio-button">
+            <input
+              type="radio"
+              id={`photo_${index + 1}`}
+              value={index}
+              onChange={(e) => {
+                printHandle(e);
+                handleCoverPhoto(index);
+              }}
+              checked={coverPhoto === index}
+              name="coverPhoto"
+            />
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
-      <div
-        className="thumb-remove-button"
-        onClick={() => handleRemoveThumb(index)}
-      >
-        🗑 Remove
-      </div>
-      {showRadio ? (
-        <div className="thumb-radio-button">
-          <input
-            type="radio"
-            id={`photo_${index + 1}`}
-            value={index}
-            onChange={(e) => {
-              printHandle(e);
-              handleCoverPhoto(index);
-            }}
-            checked={coverPhoto === index}
-            name="coverPhoto"
-          />
-          <label htmlFor={`photo_${index + 1}`}>Cover Photo</label>
-        </div>
-      ) : (
-        <div></div>
-      )}
-      <div>
-        {currentUpload === index ? <ProgressBar now={progress}/> :
-          <ProgressBar now={currentUpload > index ? 100 : 0} />}
-      </div>
+      {currentUpload === index ? <ProgressBar now={progress} /> :
+        <ProgressBar now={currentUpload > index ? 100 : 0} />}
 
     </div>
   ));
@@ -201,11 +196,8 @@ const Photos = ({
         <div {...getRootProps({ className: `dropzone ${additionalClass}` })}>
           <input {...getInputProps()} />
           <FontAwesomeIcon className={isDragActive ? "dropzone-icon-active" : "dropzone-icon-inactive"} icon={isDragActive ? faFolderOpen : faFolder} />
-          {/* <span>{isDragActive ? "🐈‍" : "🐈‍⬛"}</span> */}
           <p>Drag n' drop or select up to {maxPhotos}</p>
-          <button className="pu-browse-button" type="button" onClick={open}>
-            Browse files...
-          </button>
+          <Button variant={isDragActive ? "primary" : "secondary"} onClick={open}>Browse files...</Button>
         </div>
         <div className="pu-status">{`${photos.length} / ${maxPhotos}`}</div>
         <div className="preview-container">{previews}</div>
