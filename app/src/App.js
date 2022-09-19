@@ -14,6 +14,8 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import MyProfile from './Pages/MyProfile';
+import ResetPassword from './Pages/ResetPassword';
+import ChangePassword from './Pages/ChangePassword';
 import UserPetList from './Pages/UserPetList'
 import UserFavorites from './Pages/UserFavorites'
 import { getBearerToken, getUser, clearStorage } from "./Components/UserProfile/psb-exports"
@@ -54,6 +56,8 @@ function App() {
         <Route path="/directory" element={<Directory />} />
         <Route path="/petlist/:username" element={<UserPetList />} />
         <Route path="/user/favorites" element={<UserFavorites />} />
+        <Route path="/user/reset" element={<ResetPassword />} />
+        <Route path="/user/reset/:key" element={<ChangePassword />} />
       </Routes>
     </div>
   );
