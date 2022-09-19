@@ -288,8 +288,13 @@ const MessagingApp = () => {
               {messageSound === 'true' ? 'Mute Messages' : 'Unmute messages'}
             </button>
           </Col>
-          {currentContact !== '' && (
-            <Col sm={8}>
+          {currentContact === '' ?
+            (<Col sm={8}>
+              <Container className='chatBox'>
+                <div>Click an existing contact to the left<br/> or <br/>Message a new contact through the Pets page</div>
+              </Container>
+            </Col>)
+            : (<Col sm={8}>
               <Container className='chatBox'>
                 <MessageChat
                   privateChats={privateChats}
@@ -322,7 +327,7 @@ const MessagingApp = () => {
                 )}
               </Container>
             </Col>
-          )}
+            )}
         </Row>
       </Container>
     </div>
