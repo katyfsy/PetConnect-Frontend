@@ -6,6 +6,7 @@ import PetCard from './PetCard';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Alert from 'react-bootstrap/Alert';
 import useStore from '../../useStore';
 import {
     getBearerToken,
@@ -53,7 +54,9 @@ function Results({matches, setResult, searchQuery, zipcode, radius, setBreed, br
                     {/* <p> column right: cards (mini profiles) - for now just a list of names </p> */}
                     <Container >
                         <Row xs={1} md={3}>
-                            {matches === undefined ? (<div data-testid="no_matches">No matches</div>) :
+                            {matches === undefined ?
+                                <Alert id="noMatchAlert" data-testid="no_matches" variant={'info'}>Unfortunately, there's no match based on your search</Alert>
+                                :
                                 matches.map(match => {
                                     return(
                                         <Col style = {{paddingRight: 0, paddingBottom: 10}} key={`${match.petId}`}>
