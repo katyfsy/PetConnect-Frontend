@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Search.css';
 
 
-function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
+function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, setBreed, setType}){
   // ======
   // Working Default Dropdown (click outside will close dropdown)
   // 1. Need to work on CSS to make sure the dropdown lies under search input bar
@@ -43,10 +43,12 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
     setDropdownDisplay(false);
     if (value === "All Cats") {
       var param = "?search=cat&type=cat";
+      setType("cat");
       // set searchQuery to cat
       setSearchQuery("cat");
     } else if (value === "All Dogs"){
       var param = "?search=dog&type=dog";
+      setType("dog");
       setSearchQuery("dog");
     }
 
@@ -82,6 +84,10 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
 
   const handleSuggestionSearchClick = (value) => {
     setAutocompleteDisplay(false);
+    console.log('breed', value.breed);
+    console.log('type', value.type);
+    setBreed(value.breed);
+    setType(value.type);
     var params = value.type + " " + value.breed;
     setSearchQuery(params);
     console.log("params chosen from suggestions ====", params);
@@ -96,25 +102,26 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
 
   const handleSubmitClick = (e) => {
     e.preventDefault();
-    if (searchQuery.length === 0) {
+    if (searchQuery.length === 0 && zipcode.length === 0) {
       setDropdownDisplay(!dropdownDisplay);
     } else {
-      if (zipcode.length === 0) {
-        var params = searchQuery;
-      } else {
-        params = searchQuery + "  &zip=" + zipcode ;
+      if (zipcode.length === 0 && searchQuery.length !== 0) {
+        var params = searchQuery
+      } else if (zipcode.length !== 0 && searchQuery.length === 0){
+        params = '*' + "&zip=" + zipcode ;
+      } else if (zipcode.length !== 0 && searchQuery.length !== 0){
+        params = searchQuery + "&zip=" + zipcode ;
       }
       console.log('params ===>:',params);
       // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
       axios.get("http://localhost:8080/api/suggestions?search=" + params)
       .then((result)=>{
+          console.log('result', result.data.pets)
           setResult(result.data.pets);
         })
       .catch(err=>console.log(err));
     }
-    };
-
-
+  };
 
   return (
     <div>
@@ -179,10 +186,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode}){
         </div>
       </form>
     </div>
-
-
   )
-
 }
 
 export default Search;

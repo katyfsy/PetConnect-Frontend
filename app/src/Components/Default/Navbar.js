@@ -16,13 +16,13 @@ function Navigationbar() {
   }
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar  expand="lg">
       <Container>
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Collapse style={{backgroundColor: "#8F9ED9"}} id="basic-navbar-nav">
           <Nav className="me-auto">
-            {isLoggedIn() ? <Nav.Link href="/myprofile">MyProfile</Nav.Link> : null}
-            <Nav.Link href="/pets">Pets</Nav.Link>
-            <Nav.Link href="/messages">Messages</Nav.Link>
+            {isLoggedIn() ? <Nav.Link style={{color: "white"}} href="/myprofile">MyProfile</Nav.Link> : null}
+            <Nav.Link style={{color: "white"}} href="/pets">Pets</Nav.Link>
+            <Nav.Link style={{color: "white"}} href="/messages">Messages</Nav.Link>
 
             <NavDropdown className="justify-content-end" title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
