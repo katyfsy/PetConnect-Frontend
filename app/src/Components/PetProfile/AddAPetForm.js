@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { Button, Form, Container } from "react-bootstrap";
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 // import Modal from 'react-bootstrap/Modal';

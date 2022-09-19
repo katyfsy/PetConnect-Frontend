@@ -183,11 +183,6 @@ const Photos = ({
           <div></div>
         )}
       </div>
-<<<<<<< HEAD
-      {currentUpload === index ? <ProgressBar now={progress} /> :
-        <ProgressBar now={currentUpload > index ? 100 : 0} />}
-
-=======
       <div
         className="thumb-remove-button"
         onClick={() => handleRemoveThumb(index)}
@@ -221,7 +216,6 @@ const Photos = ({
           )}
         </div>
       ) : null}
->>>>>>> petprofile/main
     </div>
   ));
 
