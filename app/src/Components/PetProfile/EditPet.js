@@ -6,8 +6,7 @@ import Image from "react-bootstrap/Image";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
-  const navigate = useNavigate();
+function EditPet({ thisPet, setIsEdit, refetchPet }) {
   const [openPortal, setOpenPortal] = useState(false);
 
   const [deletePhotos, setDeletePhotos] = useState([]);
@@ -207,6 +206,7 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
     let successDeleting = await deleteDatabase(deletePhotos);
     if (successDeleting) {
       await handleUpload(addPhotos, thisPet.petId);
+      setIsEdit(false);
     }
   };
 
@@ -338,10 +338,8 @@ function EditPet({ thisPet, setIsEdit, setThisPet, refetchPet }) {
         <div />
         <Button onClick={() => setOpenPortal(true)}> Add Photos</Button>
         <AddPhotosPortal
-          refetchPet={refetchPet}
           openPortal={openPortal}
           setOpenPortal={setOpenPortal}
-          petId={thisPet.petId}
           thisPet={thisPet}
           addPhotos={addPhotos}
           setAddPhotos={setAddPhotos}

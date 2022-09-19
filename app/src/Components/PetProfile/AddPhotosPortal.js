@@ -9,8 +9,6 @@ function AddPhotosPortal({
   setAddPhotos,
   openPortal,
   setOpenPortal,
-  petId,
-  refetchPet,
   thisPet,
 }) {
   const [coverPhoto, setCoverPhoto] = useState(0);
