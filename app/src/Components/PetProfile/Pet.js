@@ -25,6 +25,8 @@ function Pet() {
   const [thisPet, setThisPet] = useState(null);
   const [calculateLike, setCalcLike] = useState(0);
   const [liked, setLiked] = useState(false);
+  const [reportStatus, updateReportStatus] = useState(false);
+  const [reportedHere, setReportedHere] = useState(false);
   const [petPhotos, setPetPhotos] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [fetchPet, refetchPet] = useState(false);
@@ -45,6 +47,7 @@ function Pet() {
       })
       .then((data) => {
         setCalcLike(data.favoriteCount);
+        updateReportStatus(data.reported);
         setThisPet(data);
         setPetPhotos(data.photos);
       });
@@ -101,6 +104,27 @@ function Pet() {
         setCalcLike(data.favoriteCount);
       });
     setLiked(!liked);
+  }
+
+  function handleReporting(){
+    fetch(
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/report/${petId.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        console.error(err);
+      })
+      .then((data) => {
+        updateReportStatus(data.reported);
+        console.log(data);
+      });
+    setReportedHere(!reportedHere);
   }
 
   function getPetIcon(petType) {
@@ -197,11 +221,11 @@ function Pet() {
                 )}
                 {calculateLike}
                 <Col>
-                  <Button variant="primary" size="md" href="/">
+                  <Button variant="primary" size="md" onClick={() => handleReporting()}>
                     <GrFlag /> Report Pet
                   </Button>
                 </Col>
-                {/* {calculateLike} */}
+                {reportedHere}
               </>
             ) : (
               <>
@@ -250,7 +274,7 @@ function Pet() {
           <Row className="mb-3" id="user-description"></Row>
           <Row className="mb-3">
             <Tabs
-              defaultActiveKey="profile"
+              defaultActiveKey="description"
               id="uncontrolled-tab-example"
               className="mb-3"
             >
@@ -258,23 +282,21 @@ function Pet() {
                 <p>{thisPet.description}</p>
               </Tab>
               <Tab eventKey="info" title="Aditional Info">
-              <p>Name: {thisPet.name}</p>
-            <p>Owner: {thisPet.owner}</p>
-            <p>Location: {thisPet.location}</p>
-            <p>Type: {thisPet.type}</p>
-            <p>Description: {thisPet.description}</p>
+                <p>Name: {thisPet.name}</p>
+                <p>Owner: {thisPet.owner}</p>
+                <p>Location: {thisPet.zip}</p>
+                <p>Type: {thisPet.type}</p>
+                <p>Weight: {thisPet.weight}</p>
+                <p>Age: {thisPet.age}</p>
+                <p>Sex: {thisPet.sex}</p>
+                <p>
+                  Reproductive Status:{" "}
+                  {thisPet.reproductiveStatus ? "No Kids" : "Yes Kids"}
+                </p>
 
-            <p>Weight: {thisPet.weight}</p>
-            <p>Age: {thisPet.age}</p>
-            <p>Sex: {thisPet.sex}</p>
-            <p>
-              Reproductive Status:{" "}
-              {thisPet.reproductiveStatus ? "No Kids" : "Yes Kids"}
-            </p>
-
-            <p>Likes: {thisPet.favoriteCount}</p>
-            <p>Reported: {thisPet.reported ? "true" : "false"}</p>
-            <p>Adopted: {thisPet.adopted ? "true" : "false"}</p>
+                <p>Likes: {thisPet.favoriteCount}</p>
+                <p>Reported: {thisPet.reported ? "true" : "false"}</p>
+                <p>Adopted: {thisPet.adopted ? "true" : "false"}</p>
               </Tab>
               <Tab eventKey="contact" title="Contact">
                 Contact
@@ -285,9 +307,7 @@ function Pet() {
 
         <br />
         <br />
-        {!isEdit ? (
-          null
-        ) : (
+        {!isEdit ? null : (
           <EditPet
             thisPet={thisPet}
             setIsEdit={setIsEdit}
