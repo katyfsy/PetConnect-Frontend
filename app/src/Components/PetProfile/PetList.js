@@ -46,46 +46,48 @@ function PetList() {
       </button>
       <h1>List of All Pets</h1>
       <Row xs={1} md={2} className="g-4">
-          <div
-            style={{
-              width: 800,
-              height: 500,
-              // marginLeft: "20%",
-              marginTop: "30px",
-            }}
-          >
-            {/* {console.log(typeof petList)}
+        <div
+          style={{
+            width: 800,
+            height: 500,
+            // marginLeft: "20%",
+            marginTop: "30px",
+          }}
+        >
+          {/* {console.log(typeof petList)}
         {console.log(petList)} */}
 
-            {!isClicked ? (
-              petList.map((petObj) => (
-                <PetCard
-                  id={petObj.petId}
-                  key={petObj.petId}
-                  owner={petObj.owner}
-                  name={petObj.name}
-                  zip={petObj.zip}
-                  type={petObj.type}
-                  description={petObj.description}
-                  coverPhoto={petObj.coverPhoto}
-                />
-              ))
-            ) : myPetList.length == 0 ? (
-              <div>You Have No Pets</div>
-            ) : (
-              myPetList.map((petObj) => (
-                <PetCard
-                  id={petObj.petId}
-                  key={petObj.petId}
-                  owner={petObj.owner}
-                  name={petObj.name}
-                  location={petObj.location}
-                  type={petObj.type}
-                  description={petObj.description}
-                />
-              ))
-            )}
-          </div>
+          {!isClicked ? (
+            petList.map((petObj) => (
+              <PetCard
+                id={petObj.petId}
+                key={petObj.petId}
+                owner={petObj.owner}
+                name={petObj.name}
+                zip={petObj.zip}
+                type={petObj.type}
+                description={petObj.description}
+                coverPhoto={petObj.coverPhoto}
+              />
+            ))
+          ) : myPetList.length == 0 ? (
+            <div>You Have No Pets</div>
+          ) : (
+            myPetList.map((petObj) => (
+              <PetCard
+                zip={petObj.zip}
+                id={petObj.petId}
+                key={petObj.petId}
+                owner={petObj.owner}
+                name={petObj.name}
+                location={petObj.location}
+                type={petObj.type}
+                description={petObj.description}
+                coverPhoto={petObj.coverPhoto}
+              />
+            ))
+          )}
+        </div>
       </Row>
     </>
   );

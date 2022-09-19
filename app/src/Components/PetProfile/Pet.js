@@ -106,7 +106,7 @@ function Pet() {
     setLiked(!liked);
   }
 
-  function handleReporting(){
+  function handleReporting() {
     fetch(
       `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/report/${petId.id}`,
       {
@@ -221,7 +221,11 @@ function Pet() {
                 )}
                 {calculateLike}
                 <Col>
-                  <Button variant="primary" size="md" onClick={() => handleReporting()}>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={() => handleReporting()}
+                  >
                     <GrFlag /> Report Pet
                   </Button>
                 </Col>
@@ -235,7 +239,7 @@ function Pet() {
                     size="md"
                     onClick={() => setIsEdit(!isEdit)}
                   >
-                    Edit Details
+                    {!isEdit ? "Edit Details" : "Cancel Edit"}
                   </Button>
                 </Col>
                 <Col>
