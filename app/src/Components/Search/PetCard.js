@@ -76,7 +76,7 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFa
         </Link>
       </Modal.Footer>
     </Modal>
-    <ToastContainer className="p-3" position='top-end'>
+    <ToastContainer className="p-3" position='top-end' containerPosition='fixed'>
       <Toast show={showToast} onClose={toggleShowToast} delay={3000} autohide>
             <Toast.Header>
               <strong className="me-auto">PetConnect</strong>
