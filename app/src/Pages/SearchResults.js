@@ -8,14 +8,18 @@ import AdvSearch from '../Components/Search/AdvSearch';
 import SearchTopBar from '../Components/Search/SearchTopBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import useStore from '../useStore';
 
 function SearchResults() {
-  const [result, setResult] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [zipcode, setZipcode] = useState("");
-  const [radius, setRadius] = useState("10");
-  const [breed, setBreed] = useState("");
-  const [type, setType] = useState("");
+  // const [result, setResult] = useState([]);
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [zipcode, setZipcode] = useState("");
+  // const [radius, setRadius] = useState("10");
+  // const [breed, setBreed] = useState("");
+  // const [type, setType] = useState("");
+
+  const {result, setResult, searchQuery, setSearchQuery,
+  zipcode, setZipcode, radius, setRadius, breed, setBreed, type, setType} = useStore();
 
 
   return (

@@ -1,6 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
+// import { Link } from 'react-router-dom';
 import './Search.css';
+import { useNavigate, useParams } from 'react-router-dom';
+
+
 
 
 function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, setBreed, setType}){
@@ -8,6 +12,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
   const [dropdownDisplay, setDropdownDisplay] = useState(false);
   const [defaultSearches, setDefaultSearches] = useState(["All Cats", "All Dogs"]);
 
+  const navigate = useNavigate();
   const [autocompleteDisplay, setAutocompleteDisplay] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
 
@@ -30,6 +35,10 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     };
   });
 
+  const handleNavigationToResults = () => {
+    navigate('/searchresults');
+  }
+
   const handleDefaultSearchClick = value => {
     setSearchQuery(value);
     setDropdownDisplay(false);
@@ -44,14 +53,14 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
       setSearchQuery("dog");
     }
 
-    // else {
-    //   var param = "";
-    // }
+
+
     // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
 
     axios.get("http://localhost:8080/api/petSearch" + param)
     .then((result)=>{
         setResult(result.data.pets);
+        handleNavigationToResults();
       })
     .catch(err=>console.log(err));
   };
@@ -89,7 +98,8 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     axios.get("http://localhost:8080/api/petSearch?search=" + params)
     .then((result)=>{
         setResult(result.data.pets);
-        console.log(result.data.pets);
+        handleNavigationToResults();
+        // console.log(result.data.pets);
       })
     .catch(err=>console.log(err));
   }
@@ -111,7 +121,8 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
       // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
       axios.get("http://localhost:8080/api/petSearch?search=" + params)
       .then((result)=>{
-          console.log('result', result.data.pets)
+          // console.log('result', result.data.pets);
+          handleNavigationToResults();
           setResult(result.data.pets);
         })
       .catch(err=>console.log(err));
