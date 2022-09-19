@@ -1,0 +1,27 @@
+.quickSearchBtns{
+  padding-top:300px;
+  position: fixed;
+}
+
+/* .quickSearchButtons{
+  display: grid;
+  grid-template-columns: 0.5fr 3fr 3fr 3fr 3fr 0.5fr;
+  gap: 10px;
+  grid-template-areas:
+    "left dog cat other org right";
+}
+
+.dogBtn {
+  grid-area: dog;
+}
+
+.catBtn {
+  grid-area: cat;
+}
+.otherBtn {
+  grid-area: other;
+}
+
+.orgBtn {
+  grid-area: org;
+} */

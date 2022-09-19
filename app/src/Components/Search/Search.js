@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
-// import { Link } from 'react-router-dom';
 import './Search.css';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -9,6 +8,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, setBreed, setType}){
 
+
+
   const [dropdownDisplay, setDropdownDisplay] = useState(false);
   const [defaultSearches, setDefaultSearches] = useState(["All Cats", "All Dogs"]);
 
@@ -16,15 +17,13 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
   const [autocompleteDisplay, setAutocompleteDisplay] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
 
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [zipcode, setZipcode] = useState("");
-  // const [result, setResult] = useState([]);
   const wrapperRef = useRef(null);
 
   const handleClickOutside = e => {
     const { current: wrap } = wrapperRef;
     if (wrap && !wrap.contains(e.target)) {
       setDropdownDisplay(false);
+      setAutocompleteDisplay(false);
     }
   };
 
@@ -45,7 +44,6 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     if (value === "All Cats") {
       var param = "?search=cat&type=cat";
       setType("cat");
-      // set searchQuery to cat
       setSearchQuery("cat");
     } else if (value === "All Dogs"){
       var param = "?search=dog&type=dog";
@@ -70,6 +68,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     setSearchQuery(value);
     setAutocompleteDisplay(true);
 
+
     console.log("handle Autocomplete: searchQuery:", value);
     // get request - get suggestions and populate dropdown
     // var param = `?search=${value}`;
@@ -77,6 +76,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     .then((result)=>{
       if(result.data.pets === undefined) {
         setAutocompleteDisplay(false);
+
         setResult(result.data.pets);
       } else {
         setSuggestions(result.data.pets);

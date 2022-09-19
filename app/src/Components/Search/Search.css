@@ -23,8 +23,13 @@
 .searchDropdownContainer {
   grid-area: dd;
   text-align: left;
+  margin-bottom: 300px;
+  margin-left: 2em;
+  position: relative;
+  z-index: 500;
 }
 
 .boldText {
   font-weight: bold;
 }
+
