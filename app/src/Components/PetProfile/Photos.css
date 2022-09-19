@@ -3,8 +3,13 @@
   /* display: flex;
   flex-direction: column; */
   /*background: lightslategrey;*/
+<<<<<<< HEAD
   /* max-width: 600px; */
   /* margin: auto; */
+=======
+  max-width: 600px;
+  margin: auto;
+>>>>>>> petprofile/main
   /* padding: 30px; */
 }
 

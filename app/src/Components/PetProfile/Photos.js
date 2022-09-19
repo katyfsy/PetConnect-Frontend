@@ -19,7 +19,8 @@ const Photos = ({
   showRadios,
   maxPhotos,
   progress,
-  currentUpload
+  currentUpload,
+  adding,
 }) => {
   const [showRadio, setShowRadio] = useState(showRadios);
 
@@ -182,9 +183,45 @@ const Photos = ({
           <div></div>
         )}
       </div>
+<<<<<<< HEAD
       {currentUpload === index ? <ProgressBar now={progress} /> :
         <ProgressBar now={currentUpload > index ? 100 : 0} />}
 
+=======
+      <div
+        className="thumb-remove-button"
+        onClick={() => handleRemoveThumb(index)}
+      >
+        🗑 Remove
+      </div>
+      {showRadio ? (
+        <div className="thumb-radio-button">
+          <input
+            type="radio"
+            id={`photo_${index + 1}`}
+            value={index}
+            onChange={(e) => {
+              printHandle(e);
+              handleCoverPhoto(index);
+            }}
+            checked={coverPhoto === index}
+            name="coverPhoto"
+          />
+          <label htmlFor={`photo_${index + 1}`}>Cover Photo</label>
+        </div>
+      ) : (
+        <div></div>
+      )}
+      {adding ? (
+        <div>
+          {currentUpload === index ? (
+            <ProgressBar now={progress} />
+          ) : (
+            <ProgressBar now={currentUpload > index ? 100 : 0} />
+          )}
+        </div>
+      ) : null}
+>>>>>>> petprofile/main
     </div>
   ));
 
@@ -221,7 +258,7 @@ Photos.propTypes = {
   handleRemovePhotos: PropTypes.func.isRequired,
   handleCoverPhoto: PropTypes.func.isRequired,
   progress: PropTypes.number.isRequired,
-  currentUpload: PropTypes.number.isRequired
+  currentUpload: PropTypes.number.isRequired,
 };
 
 export default Photos;
