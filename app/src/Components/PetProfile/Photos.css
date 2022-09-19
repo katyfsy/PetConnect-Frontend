@@ -1,5 +1,4 @@
 .photo-uploader-container {
-  padding-top: 30px;
   margin-bottom: 20px;
   /* display: flex;
   flex-direction: column; */
@@ -18,11 +17,19 @@
 
 .pu-status {
   text-align: end;
-  margin-top: 0;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 0.5rem;
   font-size: 12px;
   font-weight: 700;
   color: black;
+}
+
+.pu-status-error {
+  text-align: end;
+  margin-top: 5px;
+  margin-bottom: 0.5rem;
+  font-size: 10px;
+  color: #dc3545;
 }
 
 .pu-browse-button {
@@ -144,6 +151,11 @@ span {
   color:rgb(40, 87, 196);
   font-size: 14px;
   text-align: start;
+}
+
+.remove-button {
+  font-size: 8px !important;
+
 }
 
 .thumb-remove-button:hover {

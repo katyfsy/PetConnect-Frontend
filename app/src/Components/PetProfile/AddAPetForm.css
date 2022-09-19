@@ -12,6 +12,24 @@
     /* max-width: 60%; */
 }
 
+.addpet-form-section {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    justify-content: space-between;
+    width: 300px;
+}
+
+.form-fields-2-row {
+    width: 130px;
+    /* align-self: center; */
+}
+
+.form-fields-3-row {
+    width: 80px;
+    align-self: center;
+}
+
 .form-fields {
     width: 300px;
     align-self: center;
@@ -26,7 +44,25 @@
 .buttons-form-container {
     display: flex;
     flex-direction: row;
-    margin: auto;
     width: 500px;
     justify-content: space-around;
+}
+
+
+.form-error {
+    text-align: start;
+    font-size: 10px !important;
+}
+
+.pet-photos-control {
+    /* display: none !important; */
+}
+
+.form-error-photos {
+    text-align: end;
+    font-size: 10px !important;
+}
+
+form-input {
+    font-size: 8px !important;
 }

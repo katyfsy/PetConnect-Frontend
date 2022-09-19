@@ -163,6 +163,7 @@ const Photos = ({
             <FontAwesomeIcon className="thumb-remove-button" icon={faCircleMinus} onClick={() => handleRemoveThumb(index)} />
           </div>
         </div>
+        {/* <Button className="remove-button" variant="outline-danger" size="sm" onClick={() => handleRemoveThumb(index)}>Remove</Button> */}
         {showRadio ? (
           <div className="thumb-radio-button">
             <input
@@ -189,6 +190,7 @@ const Photos = ({
 
   return (
     <>
+     {photos.length > 0 ? <div className="pu-status">{`${photos.length} / ${maxPhotos}`}</div> : <div className="pu-status-error">{'at least on photo required'}</div>}
       <div className="photo-uploader-container">
         {/* <div className="pu-title">
           {`Upload up to ${maxPhotos} photos for this pet profile`}
@@ -199,7 +201,6 @@ const Photos = ({
           <p>Drag n' drop or select up to {maxPhotos}</p>
           <Button variant={isDragActive ? "primary" : "secondary"} onClick={open}>Browse files...</Button>
         </div>
-        <div className="pu-status">{`${photos.length} / ${maxPhotos}`}</div>
         <div className="preview-container">{previews}</div>
         <Alert
           show={showAlert}
