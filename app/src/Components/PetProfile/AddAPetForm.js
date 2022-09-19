@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-// import Modal from 'react-bootstrap/Modal';
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import Pet from "./Pet";
 import { useNavigate } from "react-router-dom";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import "./AddAPetForm.css";
 import Photos from "./Photos";
 import Alert from "./AlertModalPetForms"
 import axios from "axios";
-import { getUser } from "../UserProfile/psb-exports";;
+import { getUser } from "../UserProfile/psb-exports";
+
 function AddAPetForm() {
   const [petId, setPetId] = useState(null);
   const [validated, setValidated] = useState(false);
@@ -41,7 +37,7 @@ function AddAPetForm() {
     sex: null,
     description: null,
   });
-  console.log(requiredPetFields);
+  console.log(photos);
   const MAX_NUMBER_OF_PHOTOS = 5;
 
   const handleOnChange = (e) => {
@@ -104,8 +100,6 @@ function AddAPetForm() {
     return files;
   };
 
-
-
   const handleUpload = async (petId) => {
     let files = extractFileData(petId);
     console.log(files);
@@ -117,14 +111,14 @@ function AddAPetForm() {
 
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
-        setCurrentUpload(i)
+        setCurrentUpload(i);
         let options = {
           headers: {
             "Content-Type": photos[i].type,
           },
           onUploadProgress: (progressEvent) => {
             const progress = (progressEvent.loaded / progressEvent.total) * 100;
-            setProgress(progress)
+            setProgress(progress);
           },
           // onDownloadProgress: (progressEvent) => {
           //   const progress = 50 + (progresssEvent.loaded / progressEvent.total) * 100;
@@ -137,7 +131,7 @@ function AddAPetForm() {
           .put(urls[i], photos[i], options)
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
-    }
+      }
       // alert("Photos uploaded successfully");
       await axios
         .post(
@@ -162,7 +156,6 @@ function AddAPetForm() {
   };
 
   const handleOnSubmit = async (e) => {
-
     const form = e.currentTarget;
 
     if (form.checkValidity() === false) {
@@ -329,6 +322,7 @@ function AddAPetForm() {
                   maxPhotos={MAX_NUMBER_OF_PHOTOS}
                   progress={progress}
                   currentUpload={currentUpload}
+                  adding={true}
                 />
               </div>
 
@@ -372,3 +366,4 @@ function AddAPetForm() {
 }
 
 export default AddAPetForm;
+git s

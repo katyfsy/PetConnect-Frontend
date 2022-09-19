@@ -19,7 +19,8 @@ const Photos = ({
   showRadios,
   maxPhotos,
   progress,
-  currentUpload
+  currentUpload,
+  adding,
 }) => {
   const [showRadio, setShowRadio] = useState(showRadios);
 
@@ -184,11 +185,15 @@ const Photos = ({
       ) : (
         <div></div>
       )}
-      <div>
-        {currentUpload === index ? <ProgressBar now={progress}/> :
-          <ProgressBar now={currentUpload > index ? 100 : 0} />}
-      </div>
-
+      {adding ? (
+        <div>
+          {currentUpload === index ? (
+            <ProgressBar now={progress} />
+          ) : (
+            <ProgressBar now={currentUpload > index ? 100 : 0} />
+          )}
+        </div>
+      ) : null}
     </div>
   ));
 
@@ -229,7 +234,7 @@ Photos.propTypes = {
   handleRemovePhotos: PropTypes.func.isRequired,
   handleCoverPhoto: PropTypes.func.isRequired,
   progress: PropTypes.number.isRequired,
-  currentUpload: PropTypes.number.isRequired
+  currentUpload: PropTypes.number.isRequired,
 };
 
 export default Photos;
