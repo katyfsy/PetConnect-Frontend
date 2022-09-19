@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Button from 'react-bootstrap/Button';
 import Alert from "./AlertModalPetForms"
+import PhotoPreviews from "./PhotoPreviews"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFolder, faFolderOpen, faCircleMinus } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
@@ -148,82 +149,82 @@ const Photos = ({
     return className;
   }, [isFocused, isDragAccept, isDragReject]);
 
-  const previews = photos.map((photo, index) => (
-    <div className="photo-preview" key={index}>
-      <div className="thumb-information">
-        {coverPhoto === index ? <div className="thumb-radio-button-label">Cover Photo</div> : <></>}
-        <div className="thumb" onClick={(e) => handleCoverPhoto(index)}>
-          <div className="thumb-inner">
-            <img
-              className="thumb-photo"
-              src={photo.preview}
-              alt="preview"
-            // Revoke data uri after image is loaded
-            // onLoad={() => { URL.revokeObjectURL(photo.preview) }}
-            />
-            {/* <FontAwesomeIcon className="thumb-remove-button" icon={faCircleMinus} onClick={() => handleRemoveThumb(index)} /> */}
-          </div>
-        </div>
-        <div className="thumb-caption">
-          <Button className="remove-button" variant="outline-danger" size="sm" onClick={() => handleRemoveThumb(index)}>Remove</Button>
-          {showRadio ? (
-            <div className="thumb-radio-button">
-              <input
-                type="radio"
-                id={`photo_${index + 1}`}
-                value={index}
-                onChange={(e) => {
-                  printHandle(e);
-                  handleCoverPhoto(index);
-                }}
-                checked={coverPhoto === index}
-                name="coverPhoto"
-              />
-            </div>
-          ) : (
-            <div></div>
-          )}
-        </div>
-      </div>
-      {/* <div
-        className="thumb-remove-button"
-        onClick={() => handleRemoveThumb(index)}
-      >
-        🗑 Remove
-      </div>
-      {showRadio ? (
-        <div className="thumb-radio-button">
-          <input
-            type="radio"
-            id={`photo_${index + 1}`}
-            value={index}
-            onChange={(e) => {
-              printHandle(e);
-              handleCoverPhoto(index);
-            }}
-            checked={coverPhoto === index}
-            name="coverPhoto"
-          />
-          <label htmlFor={`photo_${index + 1}`}>Cover Photo</label>
-        </div>
-      ) : (
-        <div></div>
-      )} */}
-      {adding ? (
-        <div>
-          {currentUpload === index ? (
-            <ProgressBar now={progress} />
-          ) : (
-            <ProgressBar now={currentUpload > index ? 100 : 0} />
-          )}
-        </div>
-      ) : null}
-    </div>
-  ));
+  // const previews = photos.map((photo, index) => (
+  //   <div className="photo-preview" key={index}>
+  //     <div className="thumb-information">
+  //       {coverPhoto === index ? <div className="thumb-radio-button-label">Cover Photo</div> : <></>}
+  //       <div className="thumb" onClick={(e) => handleCoverPhoto(index)}>
+  //         <div className="thumb-inner">
+  //           <img
+  //             className="thumb-photo"
+  //             src={photo.preview}
+  //             alt="preview"
+  //           // Revoke data uri after image is loaded
+  //           // onLoad={() => { URL.revokeObjectURL(photo.preview) }}
+  //           />
+  //           {/* <FontAwesomeIcon className="thumb-remove-button" icon={faCircleMinus} onClick={() => handleRemoveThumb(index)} /> */}
+  //         </div>
+  //       </div>
+  //       <div className="thumb-caption">
+  //         <Button className="remove-button" variant="outline-danger" size="sm" onClick={() => handleRemoveThumb(index)}>Remove</Button>
+  //         {showRadio ? (
+  //           <div className="thumb-radio-button">
+  //             <input
+  //               type="radio"
+  //               id={`photo_${index + 1}`}
+  //               value={index}
+  //               onChange={(e) => {
+  //                 printHandle(e);
+  //                 handleCoverPhoto(index);
+  //               }}
+  //               checked={coverPhoto === index}
+  //               name="coverPhoto"
+  //             />
+  //           </div>
+  //         ) : (
+  //           <div></div>
+  //         )}
+  //       </div>
+  //     </div>
+  //     {/* <div
+  //       className="thumb-remove-button"
+  //       onClick={() => handleRemoveThumb(index)}
+  //     >
+  //       🗑 Remove
+  //     </div>
+  //     {showRadio ? (
+  //       <div className="thumb-radio-button">
+  //         <input
+  //           type="radio"
+  //           id={`photo_${index + 1}`}
+  //           value={index}
+  //           onChange={(e) => {
+  //             printHandle(e);
+  //             handleCoverPhoto(index);
+  //           }}
+  //           checked={coverPhoto === index}
+  //           name="coverPhoto"
+  //         />
+  //         <label htmlFor={`photo_${index + 1}`}>Cover Photo</label>
+  //       </div>
+  //     ) : (
+  //       <div></div>
+  //     )} */}
+  //     {adding ? (
+  //       <div>
+  //         {currentUpload === index ? (
+  //           <ProgressBar now={progress} />
+  //         ) : (
+  //           <ProgressBar now={currentUpload > index ? 100 : 0} />
+  //         )}
+  //       </div>
+  //     ) : null}
+  //   </div>
+  // ));
 
   return (
     <>
-     {photos.length > 0 ? <div className="pu-status">{`${photos.length} / ${maxPhotos}`}</div> : <div className="pu-status-error">{'at least on photo required'}</div>}
+     {photos.length > 0 ? <div className="pu-status">{`${photos.length} / ${maxPhotos}`}</div> : <div className="pu-status-error">{'at least one photo required'}</div>}
       <div className="photo-uploader-container">
         {/* <div className="pu-title">
           {`Upload up to ${maxPhotos} photos for this pet profile`}
@@ -234,7 +235,18 @@ const Photos = ({
           <p>Drag n' drop or select up to {maxPhotos}</p>
           <Button variant={isDragActive ? "primary" : "secondary"} onClick={open}>Browse files...</Button>
         </div>
-        <div className="preview-container">{previews}</div>
+        <div className="preview-container">
+            <PhotoPreviews
+              photos={photos}
+              coverPhoto={coverPhoto}
+              handleCoverPhoto={handleCoverPhoto}
+              handleRemoveThumb={handleRemoveThumb}
+              currentUpload={currentUpload}
+              progress={progress}
+              showRadio={showRadio}
+              adding={adding}
+            />
+        </div>
         <Alert
           show={showAlert}
           text={alertText}
