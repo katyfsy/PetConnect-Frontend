@@ -20,12 +20,6 @@ const ResetPassword = () => {
   const [email, setEmail] = useState();
   const [resetUrl, setResetUrl] = useState("");
 
-  const secretKey = "psb123"
-
-  const testUser = "test2"
-
-  let encodedString = btoa(EMAIL_ID.SECRET_KEY + " " + testUser)
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     doGetUser();
@@ -35,6 +29,13 @@ const ResetPassword = () => {
     Swal.fire({
       title: 'ERROR',
       text: 'User does not exist.',
+    })
+  }
+
+  const sentEmailAlert = () => {
+    Swal.fire({
+      title: 'Successful',
+      text: 'You will receive a Email soon.',
     })
   }
 
@@ -64,6 +65,7 @@ const ResetPassword = () => {
       .then(
         function (response) {
           console.log('SUCCESS!', response.status, response.text);
+          sentEmailAlert();
         },
         function (error) {
           console.log('FAILED...', error);
