@@ -63,7 +63,7 @@ function Pet() {
         console.error(err);
       })
       .then((data) => {
-        console.log(data);
+        navigate();
       });
   }
   function handleLike() {
