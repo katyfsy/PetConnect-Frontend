@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import {Form, Button, Container, Row, Col } from "react-bootstrap";
 import Pet from "./Pet";
 import { useNavigate } from "react-router-dom";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import "./AddAPetForm.css";
 import Photos from "./Photos";
 import axios from "axios";
-import { getUser } from "../UserProfile/psb-exports";;
+import { getUser } from "../UserProfile/psb-exports";
+
 function AddAPetForm() {
   const [petId, setPetId] = useState(null);
   const [validated, setValidated] = useState(false);

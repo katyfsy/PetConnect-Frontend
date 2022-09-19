@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import EditPet from "./EditPet";
-import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
-import { FaRegHeart } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa"; //filled heart
+import { Button, Row, Col, Image } from "react-bootstrap";
+import { FaRegHeart, FaHeart, FaCat, FaFish } from "react-icons/fa";
 import { MdPets } from "react-icons/md";
-import { MdOutlinePets } from "react-icons/md";
-import { BsGenderFemale } from "react-icons/bs";
-import { BsGenderMale } from "react-icons/bs";
+import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
+import { RiGenderlessFill } from "react-icons/ri";
 import { ImPlus } from "react-icons/im";
-import { GrFlag } from "react-icons/gr";
-import { GrLocation } from "react-icons/gr";
+import { GrFlag, GrLocation } from "react-icons/gr";
+import {
+  GiHummingbird,
+  GiHorseHead,
+  GiGoat,
+  GiRabbitHead,
+  GiReptileTail,
+} from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../UserProfile/psb-exports";
-
 import "./Pet.css";
 
 import { LightgalleryItem } from "react-lightgallery";
@@ -103,6 +103,33 @@ function Pet() {
     setLiked(!liked);
   }
 
+  function getPetIcon(petType) {
+    if (petType === "dog") {
+      return <MdPets size={28} />;
+    }
+    if (petType === "cat") {
+      return <FaCat size={28} />;
+    }
+    if (petType === "bird") {
+      return <GiHummingbird size={28} />;
+    }
+    if (petType === "horse") {
+      return <GiHorseHead size={28} />;
+    }
+    if (petType === "fish") {
+      return <FaFish size={28} />;
+    }
+    if (petType === "farmAnimal") {
+      return <GiGoat size={28} />;
+    }
+    if (petType === "smallPet") {
+      return <GiRabbitHead size={28} />;
+    }
+    if (petType === "reptile") {
+      return <GiReptileTail size={28} />;
+    }
+  }
+
   if (thisPet == null) {
     return null;
   }
@@ -132,10 +159,12 @@ function Pet() {
         <Col>
           <Row className="mb-3" id="pet-info-header">
             <Col>
-              <h1 className="pet-name">{thisPet.name}</h1>
-              <p className="pet-location">
-                <GrLocation size={28} /> {thisPet.location}
-              </p>
+              <Row>
+                <h1 className="pet-name">{thisPet.name}</h1>
+                <p className="pet-location">
+                  <GrLocation size={28} /> {thisPet.zip}
+                </p>
+              </Row>
             </Col>
             {user !== thisPet.owner ? (
               <>
@@ -157,10 +186,13 @@ function Pet() {
                   <Col>
                     <FaRegHeart size={42} onClick={() => handleLike()} />
                   </Col>
-                  
                 ) : (
                   <Col>
-                    <FaHeart color="red" size={42} onClick={() => handleRemoveLike()} />
+                    <FaHeart
+                      color="red"
+                      size={42}
+                      onClick={() => handleRemoveLike()}
+                    />
                   </Col>
                 )}
                 {calculateLike}
@@ -193,16 +225,32 @@ function Pet() {
           </Row>
           <Row className="mb-3" id="user-name">
             <Col>
-              {" "}
-              <MdPets /> {thisPet.type}
+              {getPetIcon(thisPet.type)} {thisPet.type}{" "}
+              {thisPet.sex == "male" ? (
+                <>
+                  <BsGenderMale size={28} /> {thisPet.sex}
+                </>
+              ) : thisPet.sex == "female" ? (
+                <>
+                  <BsGenderFemale size={28} /> {thisPet.sex}
+                </>
+              ) : (
+                <>
+                  <RiGenderlessFill size={28} /> Gender Unknown
+                </>
+              )}
             </Col>
+            {/* <Col>
+              {" "}
+              <Row className="mb-3"></Row>
+            </Col> */}
           </Row>
-
+          {/* <Col></Col> */}
+          <br/>
           <Row className="mb-3" id="user-description">
             <h3 className="user-description">Description:</h3>
             <p>{thisPet.description}</p>
           </Row>
-          <Row className="mb-3"></Row>
         </Col>
 
         <br />
@@ -218,6 +266,7 @@ function Pet() {
 
             <p>Weight: {thisPet.weight}</p>
             <p>Age: {thisPet.age}</p>
+            <p>Sex: {thisPet.sex}</p>
             <p>
               Reproductive Status:{" "}
               {thisPet.reproductiveStatus ? "No Kids" : "Yes Kids"}
