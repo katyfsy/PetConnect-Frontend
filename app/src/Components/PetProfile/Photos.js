@@ -151,8 +151,8 @@ const Photos = ({
   const previews = photos.map((photo, index) => (
     <div className="photo-preview" key={index}>
       <div className="thumb-information">
-      {coverPhoto === index ? <div className="thumb-radio-button-label">Cover Photo</div> : <></>}
-        <div className="thumb">
+        {coverPhoto === index ? <div className="thumb-radio-button-label">Cover Photo</div> : <></>}
+        <div className="thumb" onClick={(e) => handleCoverPhoto(index)}>
           <div className="thumb-inner">
             <img
               className="thumb-photo"
@@ -161,29 +161,31 @@ const Photos = ({
             // Revoke data uri after image is loaded
             // onLoad={() => { URL.revokeObjectURL(photo.preview) }}
             />
-            <FontAwesomeIcon className="thumb-remove-button" icon={faCircleMinus} onClick={() => handleRemoveThumb(index)} />
+            {/* <FontAwesomeIcon className="thumb-remove-button" icon={faCircleMinus} onClick={() => handleRemoveThumb(index)} /> */}
           </div>
         </div>
-        {/* <Button className="remove-button" variant="outline-danger" size="sm" onClick={() => handleRemoveThumb(index)}>Remove</Button> */}
-        {showRadio ? (
-          <div className="thumb-radio-button">
-            <input
-              type="radio"
-              id={`photo_${index + 1}`}
-              value={index}
-              onChange={(e) => {
-                printHandle(e);
-                handleCoverPhoto(index);
-              }}
-              checked={coverPhoto === index}
-              name="coverPhoto"
-            />
-          </div>
-        ) : (
-          <div></div>
-        )}
+        <div className="thumb-caption">
+          <Button className="remove-button" variant="outline-danger" size="sm" onClick={() => handleRemoveThumb(index)}>Remove</Button>
+          {showRadio ? (
+            <div className="thumb-radio-button">
+              <input
+                type="radio"
+                id={`photo_${index + 1}`}
+                value={index}
+                onChange={(e) => {
+                  printHandle(e);
+                  handleCoverPhoto(index);
+                }}
+                checked={coverPhoto === index}
+                name="coverPhoto"
+              />
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
       </div>
-      <div
+      {/* <div
         className="thumb-remove-button"
         onClick={() => handleRemoveThumb(index)}
       >
@@ -206,7 +208,7 @@ const Photos = ({
         </div>
       ) : (
         <div></div>
-      )}
+      )} */}
       {adding ? (
         <div>
           {currentUpload === index ? (
