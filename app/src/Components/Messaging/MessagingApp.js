@@ -30,6 +30,8 @@ const MessagingApp = () => {
   );
   const newConversationReceiverName = useRef(state ? state.receiverName : '');
 
+  let messageId = '';
+
   const [userData, setUserData] = useState({
     username: getUser(),
     // check the state, if state !== null -> redirected from pet page
@@ -40,12 +42,16 @@ const MessagingApp = () => {
     receiverPhoto: receiverPhotoRef.current,
   });
   const [privateChats, setPrivateChats] = useState(privateChatsRef.current);
-  const [currentContact, setCurrentContact] = useState(state ? state.receiverName : '');
+  const [currentContact, setCurrentContact] = useState(
+    state ? state.receiverName : ''
+  );
   const [notificationList, setNotificationList] = useState([]);
 
-  const [messageSound, setMessageSound] = useState(localStorage.getItem('notificationSound') || 'true');
+  const [messageSound, setMessageSound] = useState(
+    localStorage.getItem('notificationSound') || 'true'
+  );
   if (localStorage.getItem('notificationSound') === null) {
-    localStorage.setItem('notificationSound', 'true')
+    localStorage.setItem('notificationSound', 'true');
   }
 
   useEffect(() => {
@@ -58,6 +64,7 @@ const MessagingApp = () => {
   }, [state]);
 
   useEffect(() => {
+    console.log('HELLO FROM USERDATA.USERNAME USE EFFECT');
     if (userData.username) {
       let Sock = new SockJS(
         'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
@@ -94,7 +101,8 @@ const MessagingApp = () => {
               receiverPhoto: receiverPhotoRef.current,
             });
           } else {
-            receiverPhotoRef.current = 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png';
+            receiverPhotoRef.current =
+              'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png';
             setUserData({
               ...userData,
               receiverPhoto: receiverPhotoRef.current,
@@ -109,7 +117,7 @@ const MessagingApp = () => {
 
   useEffect(() => {
     // remove the if once we retrieve from localhost (signup enabled)
-    console.log("IN THE USE EFFECT, FIX NOW")
+    console.log('IN THE USE EFFECT, FIX NOW');
     if (newConversationReceiverName.current) {
       axios
         .get(
@@ -189,17 +197,26 @@ const MessagingApp = () => {
     // getAllChats(userData.username);
     getAllNotifications(userData.username);
     let payloadData = JSON.parse(payload.body);
-
-    if (privateChatsRef.current.get(payloadData.senderName)) {
-      privateChatsRef.current.get(payloadData.senderName).push(payloadData);
-      setPrivateChats(new Map(privateChatsRef.current));
+    if (messageId !== payloadData.id) {
+      if (privateChatsRef.current.get(payloadData.senderName)) {
+        privateChatsRef.current.get(payloadData.senderName).push(payloadData);
+        setPrivateChats(new Map(privateChatsRef.current));
+      } else {
+        let list = [];
+        list.push(payloadData);
+        privateChatsRef.current.set(payloadData.senderName, list);
+        setPrivateChats(new Map(privateChatsRef.current));
+      }
+      console.log(
+        'PRIVATE MESSAGE RECEIVED: ',
+        privateChats.get(payloadData.senderName)
+      );
+      console.log('PRIVATE MESSAGE ID: ', payloadData.id);
+      playAudio();
+      messageId = payloadData.id;
     } else {
-      let list = [];
-      list.push(payloadData);
-      privateChatsRef.current.set(payloadData.senderName, list);
-      setPrivateChats(new Map(privateChatsRef.current));
+      console.log('CAUGHT DUPLICATE BUG D:<');
     }
-    playAudio();
   };
 
   const sendPrivateMessage = () => {
@@ -237,11 +254,11 @@ const MessagingApp = () => {
     }
 
     if (localStorage.getItem('notificationSound') === 'true') {
-      localStorage.setItem('notificationSound', 'false')
+      localStorage.setItem('notificationSound', 'false');
     } else {
-      localStorage.setItem('notificationSound', 'true')
+      localStorage.setItem('notificationSound', 'true');
     }
-  }
+  };
 
   const onError = (err) => {
     console.log(err);
@@ -261,11 +278,17 @@ const MessagingApp = () => {
               setNotificationList={setNotificationList}
               currentContact={currentContact}
             />
-            <button className='input-button'  style={messageSound === 'true' ? null : {backgroundColor: 'gray'}} onClick= {() => updateMessageSound()}>
-            {messageSound === 'true' ? 'Mute Messages' : 'Unmute messages' }
-          </button>
+            <button
+              className='input-button'
+              style={
+                messageSound === 'true' ? null : { backgroundColor: 'gray' }
+              }
+              onClick={() => updateMessageSound()}
+            >
+              {messageSound === 'true' ? 'Mute Messages' : 'Unmute messages'}
+            </button>
           </Col>
-          {currentContact !== '' &&
+          {currentContact !== '' && (
             <Col sm={8}>
               <Container className='chatBox'>
                 <MessageChat
@@ -273,7 +296,9 @@ const MessagingApp = () => {
                   currentContact={currentContact}
                   username={userData.username}
                   receiverName={
-                    currentContact === '' ? userData.receiverName : currentContact
+                    currentContact === ''
+                      ? userData.receiverName
+                      : currentContact
                   }
                 />
                 {currentContact ? (
@@ -297,7 +322,7 @@ const MessagingApp = () => {
                 )}
               </Container>
             </Col>
-          }
+          )}
         </Row>
       </Container>
     </div>
