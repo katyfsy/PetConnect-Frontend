@@ -8,6 +8,7 @@ import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
 import { RiGenderlessFill } from "react-icons/ri";
 import { ImPlus } from "react-icons/im";
 import { GrFlag, GrLocation } from "react-icons/gr";
+import Alert from "./AlertModalPetForms";
 import {
   GiHummingbird,
   GiHorseHead,
@@ -30,6 +31,13 @@ function Pet() {
   const [petPhotos, setPetPhotos] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [fetchPet, refetchPet] = useState(false);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const [handleOnExited, setHandleOnExited] = useState(false);
+
   let user = getUser();
   let petId = useParams();
   const navigate = useNavigate();
@@ -51,7 +59,7 @@ function Pet() {
         setThisPet(data);
         setPetPhotos(data.photos);
       });
-  }, [isEdit]);
+  }, [isEdit, fetchPet]);
 
   function handleOnDelete() {
     fetch(
@@ -63,7 +71,12 @@ function Pet() {
         console.error(err);
       })
       .then((data) => {
-        navigate();
+        console.log("deleteddd");
+        setShowAlert(true);
+        setAlertTitle("Congratulations");
+        setAlertText("Pet Profile successfully Deleted");
+        setAlertType("success");
+        setHandleOnExited(true);
       });
   }
   function handleLike() {
@@ -122,6 +135,7 @@ function Pet() {
       })
       .then((data) => {
         updateReportStatus(data.reported);
+        refetchPet(Math.random());
         console.log(data);
       });
     setReportedHere(!reportedHere);
@@ -320,6 +334,15 @@ function Pet() {
           />
         )}
       </Row>
+      <Alert
+        show={showAlert}
+        text={alertText}
+        title={alertTitle}
+        type={alertType}
+        onHide={() => setShowAlert(false)}
+        onExited={handleOnExited ? () => navigate("/pets") : null}
+        // handleOnExited('/pets')
+      />
       <br />
     </>
   );
