@@ -1,6 +1,7 @@
 .photo-uploader-container {
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 20px;
+  /* display: flex;
+  flex-direction: column; */
   /*background: lightslategrey;*/
   max-width: 600px;
   margin: auto;
@@ -16,11 +17,19 @@
 
 .pu-status {
   text-align: end;
-  margin-top: 0;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 0.5rem;
   font-size: 12px;
   font-weight: 700;
   color: black;
+}
+
+.pu-status-error {
+  text-align: end;
+  margin-top: 5px;
+  margin-bottom: 0.5rem;
+  font-size: 10px;
+  color: #dc3545;
 }
 
 .pu-browse-button {
@@ -57,18 +66,29 @@
   cursor: pointer;
 }
 
+.dropzone-icon-active {
+  font-size: 2rem;
+  color: rgb(40, 87, 196);
+}
+
+.dropzone-icon-inactive {
+  font-size: 2rem;
+  color: rgb(108, 117, 125);
+  margin-bottom: 10px;
+}
+
 span {
   font-size: 2rem;
   color: #777;
 }
 
 .dropzone {
+  padding-top: 50px;
+  padding-bottom: 30px;
   text-align: center;
-  padding: 20px;
   border: 2px dashed #eeeeee;
   background-color: #fafafa;
   color: #bdbdbd;
-  margin-bottom: 8px;
 }
 
 .accept {
@@ -86,10 +106,15 @@ span {
 .preview-container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  align-items: flex-end;
   flex-wrap: wrap;
   gap: 15px 15px;
-  margin-top: 16;
+}
+
+.thumb-information {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .thumb {
@@ -100,14 +125,15 @@ span {
   border: 1px solid #eaeaea;
   margin-bottom: 8;
   margin-right: 8;
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   padding: 4px;
   box-sizing: border-box;
 }
 
 .thumb-inner {
   display: flex;
+  position: relative;
   min-width: 0;
   overflow: hidden;
 }
@@ -118,14 +144,31 @@ span {
   height: 100%;
 }
 
+.thumb-remove-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color:rgb(40, 87, 196);
+  font-size: 14px;
+  text-align: start;
+}
+
+.remove-button {
+  font-size: 8px !important;
+
+}
+
+.thumb-remove-button:hover {
+  color:rgb(171, 8, 8);
+  cursor: pointer;
+}
+
 .thumb-radio-button {
   display: flex;
   justify-items: flex-start;
   align-items: center;
-  /* margin-right: 2;
-  width: 100;
-  height: 100;
-  padding: 4; */
+  margin-top: 7px;
+  margin-bottom: 7px;
   font-size: 12px;
 }
 
@@ -133,27 +176,15 @@ span {
   cursor: pointer;
 }
 
-.thumb-radio-button label {
+.thumb-radio-button-label {
   font-size: 10px;
-  margin-left: 3px;
+  font-weight: 700;
+  margin-bottom: 5px;
 }
 
-.thumb-radio-button label:hover {
+.thumb-radio-button-label:hover {
   color:rgb(40, 87, 196);
   font-weight: 700;
   cursor: pointer;
 }
 
-.thumb-remove-button {
-  margin-top: 7px;
-  margin-left: 3px;
-  margin-bottom: 7px;
-  font-size: 10px;
-  text-align: start;
-}
-
-.thumb-remove-button:hover {
-  color:rgb(40, 87, 196);
-  font-weight: 700;
-  cursor: pointer;
-}

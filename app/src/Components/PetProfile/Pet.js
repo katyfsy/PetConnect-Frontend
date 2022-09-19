@@ -288,7 +288,7 @@ function Pet() {
               <Tab eventKey="info" title="Aditional Info">
                 <p>Name: {thisPet.name}</p>
                 <p>Owner: {thisPet.owner}</p>
-                <p>Location: {thisPet.zip}</p>
+                <p>Zip: {thisPet.zip}</p>
                 <p>Type: {thisPet.type}</p>
                 <p>Weight: {thisPet.weight}</p>
                 <p>Age: {thisPet.age}</p>
