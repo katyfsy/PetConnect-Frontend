@@ -12,17 +12,17 @@ import Col from 'react-bootstrap/Col';
 // column left: advanced search (dropdowns)
 // column right: cards (mini profiles) - for now just a list of names
 
-function Results({matches, setResult, searchQuery, zipcode}){
+function Results({matches, setResult, searchQuery, zipcode, radius, setBreed, breed, type, setType}){
     return(
     <div data-testid="results">
 
         <div>
             <div className="topBar">
-                <p> Top bar [# matches] search-word  distance (arrow)  near LOCATION </p>
+                {/* <p> Top bar [# matches] search-word  distance (arrow)  near LOCATION </p> */}
             </div>
             <div className="main">
                 <div className="advancedSearchCol">
-                    <AdvSearch setResult={setResult} results={matches} searchQuery={searchQuery} zipcode={zipcode}/>
+                    <AdvSearch setResult={setResult} results={matches} searchQuery={searchQuery} zipcode={zipcode} radius={radius} setType={setType} type={type} setBreed={setBreed} breed={breed} type={type} setType={setType}/>
                     {/* <p> column left: advanced search (dropdowns)</p> */}
                 </div>
                 <div className="searchResultsCol">
