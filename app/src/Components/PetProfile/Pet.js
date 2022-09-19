@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import EditPet from "./EditPet";
-import { Button, Row, Col, Image } from "react-bootstrap";
+import { Button, Row, Col, Image, Tab, Tabs } from "react-bootstrap";
 import { FaRegHeart, FaHeart, FaCat, FaFish } from "react-icons/fa";
 import { MdPets } from "react-icons/md";
 import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
@@ -246,19 +246,19 @@ function Pet() {
             </Col> */}
           </Row>
           {/* <Col></Col> */}
-          <br/>
-          <Row className="mb-3" id="user-description">
-            <h3 className="user-description">Description:</h3>
-            <p>{thisPet.description}</p>
-          </Row>
-        </Col>
-
-        <br />
-        <br />
-        <h3>Delete this section later </h3>
-        {!isEdit ? (
-          <>
-            <p>Name: {thisPet.name}</p>
+          <br />
+          <Row className="mb-3" id="user-description"></Row>
+          <Row className="mb-3">
+            <Tabs
+              defaultActiveKey="profile"
+              id="uncontrolled-tab-example"
+              className="mb-3"
+            >
+              <Tab eventKey="description" title="Description">
+                <p>{thisPet.description}</p>
+              </Tab>
+              <Tab eventKey="info" title="Aditional Info">
+              <p>Name: {thisPet.name}</p>
             <p>Owner: {thisPet.owner}</p>
             <p>Location: {thisPet.location}</p>
             <p>Type: {thisPet.type}</p>
@@ -275,7 +275,18 @@ function Pet() {
             <p>Likes: {thisPet.favoriteCount}</p>
             <p>Reported: {thisPet.reported ? "true" : "false"}</p>
             <p>Adopted: {thisPet.adopted ? "true" : "false"}</p>
-          </>
+              </Tab>
+              <Tab eventKey="contact" title="Contact">
+                Contact
+              </Tab>
+            </Tabs>
+          </Row>
+        </Col>
+
+        <br />
+        <br />
+        {!isEdit ? (
+          null
         ) : (
           <EditPet
             thisPet={thisPet}
