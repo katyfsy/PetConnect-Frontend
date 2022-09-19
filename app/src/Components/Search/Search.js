@@ -4,14 +4,6 @@ import './Search.css';
 
 
 function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, setBreed, setType}){
-  // ======
-  // Working Default Dropdown (click outside will close dropdown)
-  // 1. Need to work on CSS to make sure the dropdown lies under search input bar
-  // 2. useEffect to update options when searchQuery changes (for later tickets: show suggested
-  //     search given what's typed)
-  // 3. Enhance: use Bootstrap list to create the suggested options
-  // ======
-
 
   const [dropdownDisplay, setDropdownDisplay] = useState(false);
   const [defaultSearches, setDefaultSearches] = useState(["All Cats", "All Dogs"]);
@@ -40,8 +32,6 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
 
   const handleDefaultSearchClick = value => {
     setSearchQuery(value);
-    setAutocompleteDisplay(false);
-    setDropdownDisplay(false);
     if (value === "All Cats") {
       var param = "?search=cat&type=cat";
       setType("cat");
@@ -67,7 +57,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     setSearchQuery(value);
     setAutocompleteDisplay(true);
 
-    console.log("handle Autocomplete: searchQuery:", value);
+    // console.log("handle Autocomplete: searchQuery:", value);
     // get request - get suggestions and populate dropdown
     // var param = `?search=${value}`;
     axios.get("http://localhost:8080/api/suggestions?search=" + value )
@@ -77,7 +67,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
         setResult(result.data.pets);
       } else {
         setSuggestions(result.data.pets);
-        console.log("results from suggestions search:", result.data.pets);
+        // console.log("results from suggestions search:", result.data.pets);
        }
       })
     .catch(err=>console.log(err));
@@ -86,17 +76,17 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
   const handleSuggestionSearchClick = (value) => {
     setDropdownDisplay(false);
     setAutocompleteDisplay(false);
-    console.log('breed', value.breed);
-    console.log('type', value.type);
+    // console.log('breed', value.breed);
+    // console.log('type', value.type);
     setBreed(value.breed);
     setType(value.type);
     var params = value.type + " " + value.breed;
     setSearchQuery(params);
-    console.log("params chosen from suggestions ====", params);
+    // console.log("params chosen from suggestions ====", params);
     axios.get("http://localhost:8080/api/petSearch?search=" + params)
     .then((result)=>{
         setResult(result.data.pets);
-        console.log(result.data.pets);
+        // console.log(result.data.pets);
       })
     .catch(err=>console.log(err));
   }
@@ -105,8 +95,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
   const handleSubmitClick = (e) => {
     e.preventDefault();
     if (searchQuery.length === 0 && zipcode.length === 0) {
-      setDropdownDisplay(!dropdownDisplay);
-      // setAutocompleteDisplay(false);
+      // setDropdownDisplay(!dropdownDisplay);
     } else {
       if (zipcode.length === 0 && searchQuery.length !== 0) {
         setDropdownDisplay(false);
@@ -114,13 +103,15 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
       } else if (zipcode.length !== 0 && searchQuery.length === 0){
         params = '*' + "&zip=" + zipcode ;
       } else if (zipcode.length !== 0 && searchQuery.length !== 0){
+        setDropdownDisplay(false);
+
         params = searchQuery + "&zip=" + zipcode ;
       }
-      console.log('params ===>:',params);
+      // console.log('params ===>:',params);
       // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
       axios.get("http://localhost:8080/api/suggestions?search=" + params)
       .then((result)=>{
-          console.log('result', result.data.pets)
+          // console.log('result', result.data.pets)
           setResult(result.data.pets);
         })
       .catch(err=>console.log(err));
@@ -137,7 +128,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
             aria-label="search-pets"
             autocomplete="off"
             placeholder="Search pets"
-            onClick={() => setDropdownDisplay(!dropdownDisplay)}
+            onClick={() => setDropdownDisplay(!autocompleteDisplay)}
             value={searchQuery}
             onChange={e => handleAutocomplete(e.target.value)}
           />
