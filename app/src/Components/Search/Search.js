@@ -40,6 +40,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
 
   const handleDefaultSearchClick = value => {
     setSearchQuery(value);
+    setAutocompleteDisplay(false);
     setDropdownDisplay(false);
     if (value === "All Cats") {
       var param = "?search=cat&type=cat";
@@ -83,6 +84,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
   }
 
   const handleSuggestionSearchClick = (value) => {
+    setDropdownDisplay(false);
     setAutocompleteDisplay(false);
     console.log('breed', value.breed);
     console.log('type', value.type);
@@ -104,8 +106,10 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     e.preventDefault();
     if (searchQuery.length === 0 && zipcode.length === 0) {
       setDropdownDisplay(!dropdownDisplay);
+      // setAutocompleteDisplay(false);
     } else {
       if (zipcode.length === 0 && searchQuery.length !== 0) {
+        setDropdownDisplay(false);
         var params = searchQuery
       } else if (zipcode.length !== 0 && searchQuery.length === 0){
         params = '*' + "&zip=" + zipcode ;
