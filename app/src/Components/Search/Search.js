@@ -52,9 +52,6 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
       setSearchQuery("dog");
     }
 
-    // else {
-    //   var param = "";
-    // }
     // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
 
     axios.get("http://localhost:8080/api/petSearch" + param)
@@ -72,7 +69,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     console.log("handle Autocomplete: searchQuery:", value);
     // get request - get suggestions and populate dropdown
     // var param = `?search=${value}`;
-    axios.get("http://localhost:8080/api/suggestions?search=" + value +"*")
+    axios.get("http://localhost:8080/api/suggestions?search=" + value )
     .then((result)=>{
       if(result.data.pets === undefined) {
         setAutocompleteDisplay(false);
@@ -117,7 +114,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
       }
       console.log('params ===>:',params);
       // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
-      axios.get("http://localhost:8080/api/petSearch?search=" + params)
+      axios.get("http://localhost:8080/api/suggestions?search=" + params)
       .then((result)=>{
           console.log('result', result.data.pets)
           setResult(result.data.pets);
@@ -131,7 +128,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
       <form id="searchForm">
         <div data-testid="search"  ref={wrapperRef} className="searchGroup">
           <input
-            type="text"
+            type="search"
             id="searchInput"
             aria-label="search-pets"
             autocomplete="off"
@@ -139,8 +136,9 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
             onClick={() => setDropdownDisplay(!dropdownDisplay)}
             value={searchQuery}
             onChange={e => handleAutocomplete(e.target.value)}
-            // onChange={e => setSearchQuery(e.target.value)}
           />
+
+
           {dropdownDisplay && (
             <div className="searchDropdownContainer">
               {defaultSearches
@@ -175,7 +173,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
             </div>
           )}
           <input
-              type="text"
+              type="search"
               id="zipcodeInput"
               aria-label="search-zip"
               placeholder="Enter zip"
@@ -183,8 +181,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
               onChange={e=>setZipcode(e.target.value)}/>
           <button
             id="searchButton"
-            className="btn btn-primary"
-            style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}}
+            className="btn btn-outline-secondary"
             onClick={handleSubmitClick}>Search</button>
         </div>
       </form>

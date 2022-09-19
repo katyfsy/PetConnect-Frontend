@@ -32,9 +32,10 @@ function Results({matches, setResult, searchQuery, zipcode, radius, setBreed, br
                             {matches === undefined ? (<div data-testid="no_matches">No matches</div>) :
                                 matches.map(match => {
                                     return(
-                                        <Col style = {{paddingRight: 0, paddingBottom: 10}}>
-                                            <PetCard data-testid={`t-${match.zip}${match.name}`} key={`${match.zip}${match.name}`}
-                                                name={match.name} type={match.type} gender={match.gender} age={match.age} breed={match.breed}/>
+                                        <Col style = {{paddingRight: 0, paddingBottom: 10}} key={`${match.petId}`}>
+                                            <PetCard data-testid={`t-${match.zip}${match.name}`} key={`${match.petId}${match.zip}${match.name}`}
+                                                name={match.name} type={match.type} gender={match.gender} age={match.age}
+                                                breed={match.breed} petId={match.petId} coverPhoto={match.coverPhoto} owner={match.owner}/>
                                         </Col>
                                     )
                                 })
