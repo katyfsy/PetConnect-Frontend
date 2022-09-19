@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import emailjs from '@emailjs/browser';
 import { EMAIL_ID } from "../config.js";
+import Swal from 'sweetalert2';
 
 const ResetPassword = () => {
   const [username, setUserName] = useState();
@@ -30,11 +31,21 @@ const ResetPassword = () => {
     doGetUser();
   };
 
+  const resetUserNotExistAlert = () => {
+    Swal.fire({
+      title: 'ERROR',
+      text: 'User does not exist.',
+    })
+  }
+
   const doGetUser = () => {
     axios.get(`${PSB_API_URL}/api/public/user/${username}`).then((res) => {
-        //build the reset URL route 
-        // setResetUrl(btoa(username + " " + EMAIL_ID.SECRET_KEY))
-        sendEmail(btoa(username + " " + EMAIL_ID.SECRET_KEY),res.data.email);
+        //build the reset URL route
+        if (res.status === 200) {
+          sendEmail(`http://localhost:3000/user/reset/${btoa(username + " " + EMAIL_ID.SECRET_KEY)}`, res.data.email);
+        } else if (res.status === 204) {
+          resetUserNotExistAlert();
+        }
     }).catch((error) => console.log(error))
   };
 
@@ -68,12 +79,12 @@ const ResetPassword = () => {
       <Navigationbar />
       <Container>
         <Row>
-          <h1>RESET YOUR PASSWORD</h1>
+          <h1 style={{paddingBottom: 50, paddingTop: 50}}>Trouble Logging In?</h1>
+          <div className="Auth-form-container">
           <Form className="Auth-form" onSubmit={handleSubmit}>
             <div className="Auth-form-content">
-              <h3 className="Auth-form-title">Reset Your Password</h3>
+            <div className="text-center">Enter your username and we'll send you a link to get back into your account.</div>
               <div className="form-group mt-3">
-                <label>Enter Username</label>
                 <input
                   type="text"
                   className="form-control mt-1"
@@ -91,6 +102,7 @@ const ResetPassword = () => {
               </div>
             </div>
           </Form>
+          </div>
         </Row>
         <Row></Row>
         <Row>
