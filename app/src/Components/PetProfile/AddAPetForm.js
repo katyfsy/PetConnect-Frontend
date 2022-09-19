@@ -28,8 +28,8 @@ function AddAPetForm() {
     owner: user.toString(),
     name: null,
     zip: null,
-    type: null,
-    sex: null,
+    type: "dog",
+    sex: "male",
     description: null,
   });
   console.log(requiredPetFields);
