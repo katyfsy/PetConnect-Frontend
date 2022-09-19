@@ -10,6 +10,8 @@ function AddPhotosPortal({
   openPortal,
   setOpenPortal,
   thisPet,
+  progress,
+  currentUpload,
 }) {
   const [coverPhoto, setCoverPhoto] = useState(0);
   const [toAddPhotos, setToAddPhotos] = useState([]);
@@ -42,12 +44,15 @@ function AddPhotosPortal({
     <div>
       <button onClick={() => setOpenPortal(false)}>Close</button>
       <Photos
+        adding={false}
         photos={toAddPhotos}
         coverPhoto={coverPhoto}
         handleAddPhotos={handleAddPhotos}
         handleRemovePhotos={handleRemovePhotos}
         handleCoverPhoto={handleCoverPhoto}
         showRadios={false}
+        progress={progress}
+        currentUpload={currentUpload}
         maxPhotos={
           MAX_NUMBER_OF_PHOTOS - thisPet.photos.length - addPhotos.length
         }

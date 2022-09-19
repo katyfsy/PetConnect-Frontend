@@ -97,7 +97,7 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
       }
-      alert("Photos uploaded successfully");
+      // alert("Photos uploaded successfully");
       await axios
         .post(
           `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${findCoverPhotoName(
@@ -106,7 +106,9 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
         )
         .then((res) => console.log(res))
         .then((res) => {
-          alert("PERSISTED");
+          // setTimeout(() => {
+          //   alert("Photos uploaded successfully");
+          // }, 1000);
         })
         .catch((err) => {
           console.log(err);

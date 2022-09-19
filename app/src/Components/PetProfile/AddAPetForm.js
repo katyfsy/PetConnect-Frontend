@@ -291,6 +291,7 @@ function AddAPetForm() {
                   maxPhotos={MAX_NUMBER_OF_PHOTOS}
                   progress={progress}
                   currentUpload={currentUpload}
+                  adding={true}
                 />
               </div>
 
