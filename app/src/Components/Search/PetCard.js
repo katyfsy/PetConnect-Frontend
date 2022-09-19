@@ -19,6 +19,10 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFa
 
   const [resultPageIsFav, setResultPageIsFav] = useState(isFavor);
 
+  useEffect(()=>{
+    setResultPageIsFav(isFavor);
+  },[isFavor])
+
 
   const handleCloseModal = () => setShowModal(false);
   const handleShow = () => {
