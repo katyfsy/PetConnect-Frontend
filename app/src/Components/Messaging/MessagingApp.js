@@ -109,6 +109,7 @@ const MessagingApp = () => {
 
   useEffect(() => {
     // remove the if once we retrieve from localhost (signup enabled)
+    console.log("IN THE USE EFFECT, FIX NOW")
     if (newConversationReceiverName.current) {
       axios
         .get(
