@@ -47,7 +47,7 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
   },[type])
 
   useEffect(() => {
-      var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
+    var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
     console.log(params);
     axios.get("http://localhost:8080/api/petSearch?search=*", {params})
     // axios.get("http://localhost:8080/api/petSearch", {params})
