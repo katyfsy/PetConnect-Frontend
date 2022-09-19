@@ -93,6 +93,12 @@ const MessagingApp = () => {
               ...userData,
               receiverPhoto: receiverPhotoRef.current,
             });
+          } else {
+            receiverPhotoRef.current = 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png';
+            setUserData({
+              ...userData,
+              receiverPhoto: receiverPhotoRef.current,
+            });
           }
         })
         .catch((err) => {
