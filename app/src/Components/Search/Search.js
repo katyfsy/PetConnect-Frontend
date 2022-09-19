@@ -4,14 +4,6 @@ import './Search.css';
 
 
 function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, setBreed, setType}){
-  // ======
-  // Working Default Dropdown (click outside will close dropdown)
-  // 1. Need to work on CSS to make sure the dropdown lies under search input bar
-  // 2. useEffect to update options when searchQuery changes (for later tickets: show suggested
-  //     search given what's typed)
-  // 3. Enhance: use Bootstrap list to create the suggested options
-  // ======
-
 
   const [dropdownDisplay, setDropdownDisplay] = useState(false);
   const [defaultSearches, setDefaultSearches] = useState(["All Cats", "All Dogs"]);
