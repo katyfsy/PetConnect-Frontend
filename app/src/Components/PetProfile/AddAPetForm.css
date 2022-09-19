@@ -17,11 +17,11 @@
     flex-direction: row;
     align-self: center;
     justify-content: space-between;
-    width: 300px;
+    width: 400px;
 }
 
 .form-fields-2-row {
-    width: 130px;
+    width: 180px;
     /* align-self: center; */
 }
 
@@ -31,13 +31,13 @@
 }
 
 .form-fields {
-    width: 300px;
+    width: 400px;
     align-self: center;
 
 }
 
 .photos-form-container {
-    width: 500px;
+    width: 400px;
     align-self: center;
 }
 
