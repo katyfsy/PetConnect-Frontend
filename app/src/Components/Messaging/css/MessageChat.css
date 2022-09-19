@@ -34,6 +34,7 @@
 .message-data{
   padding:5px;
   font-family: 'Nunito', sans-serif;
+  word-break: break-word;
 }
 
 .message-time{
