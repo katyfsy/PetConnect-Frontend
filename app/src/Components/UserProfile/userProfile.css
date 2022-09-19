@@ -68,6 +68,11 @@
     font-size: 30px;
     color: white;
   }
+  .i-changepw {
+    position: relative;
+    left: 37px;
+    top: -29px;
+  }
 
   .hheart {
     position: relative;
