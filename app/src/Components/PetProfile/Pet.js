@@ -9,6 +9,8 @@ import { RiGenderlessFill } from "react-icons/ri";
 import { ImPlus } from "react-icons/im";
 import { GrFlag, GrLocation } from "react-icons/gr";
 import Alert from "./AlertModalPetForms";
+import axios from "axios";
+
 import {
   GiHummingbird,
   GiHorseHead,
@@ -17,7 +19,7 @@ import {
   GiReptileTail,
 } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../UserProfile/psb-exports";
+import { getUser, PSB_API_URL } from "../UserProfile/psb-exports";
 import "./Pet.css";
 
 import { LightgalleryItem } from "react-lightgallery";
@@ -43,6 +45,43 @@ function Pet() {
   const navigate = useNavigate();
   console.log(petId);
 
+  const [form, setForm] = useState({
+    username: "",
+    businessName: "",
+    phone: "",
+    email: "",
+    website: "",
+    userType: "ORGANIZATION",
+    city: "",
+    state: "",
+    zipCode: "",
+    description: "",
+    userPhoto: "",
+  });
+
+  useEffect(() => {
+    const doGetUser = () => {
+      // route has to be changed later
+      axios
+        .get(`${PSB_API_URL}/api/public/users/orgs/${user}`)
+        .then((res) => {
+          let result = res.data;
+          for (var key in result) {
+            if (result[key] === null) {
+              result[key] = "";
+            }
+            if (result.userPhoto === "") {
+              result.userPhoto =
+                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+            }
+          }
+          setForm(result);
+        })
+        .catch((err) => console.log(err));
+    };
+    doGetUser();
+  }, []);
+  console.log(form);
   // Fetch Pet, with refetch to refetch new pet data upon finishing edit
   useEffect(() => {
     fetch(
@@ -317,7 +356,13 @@ function Pet() {
                 <p>Adopted: {thisPet.adopted ? "true" : "false"}</p>
               </Tab>
               <Tab eventKey="contact" title="Contact">
-                Contact
+                {Object.keys(form).map((key, index) => {
+                  return (
+                    <p key={index}>
+                      {key}: {form[key]}
+                    </p>
+                  );
+                })}
               </Tab>
             </Tabs>
           </Row>
