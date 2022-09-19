@@ -43,7 +43,7 @@ function Pet() {
   let user = getUser();
   let petId = useParams();
   const navigate = useNavigate();
-  console.log(petId);
+  console.log(thisPet);
 
   const [form, setForm] = useState({
     username: "",
@@ -60,26 +60,22 @@ function Pet() {
   });
 
   useEffect(() => {
-    const doGetUser = () => {
-      // route has to be changed later
-      axios
-        .get(`${PSB_API_URL}/api/public/users/orgs/${user}`)
-        .then((res) => {
-          let result = res.data;
-          for (var key in result) {
-            if (result[key] === null) {
-              result[key] = "";
-            }
-            if (result.userPhoto === "") {
-              result.userPhoto =
-                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-            }
+    axios
+      .get(`${PSB_API_URL}/api/public/users/orgs/${user}`)
+      .then((res) => {
+        let result = res.data;
+        for (var key in result) {
+          if (result[key] === null) {
+            result[key] = "";
           }
-          setForm(result);
-        })
-        .catch((err) => console.log(err));
-    };
-    doGetUser();
+          if (result.userPhoto === "") {
+            result.userPhoto =
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+          }
+        }
+        setForm(result);
+      })
+      .catch((err) => console.log(err));
   }, []);
   console.log(form);
   // Fetch Pet, with refetch to refetch new pet data upon finishing edit
@@ -341,6 +337,8 @@ function Pet() {
               <Tab eventKey="info" title="Aditional Info">
                 <p>Name: {thisPet.name}</p>
                 <p>Owner: {thisPet.owner}</p>
+                <p>City: {thisPet.city}</p>
+                <p>State: {thisPet.state}</p>
                 <p>Zip: {thisPet.zip}</p>
                 <p>Type: {thisPet.type}</p>
                 <p>Weight: {thisPet.weight}</p>
