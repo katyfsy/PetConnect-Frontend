@@ -8,3 +8,6 @@ build:
   script:
     - npm install
     - npm build
+  artifacts:
+      paths:
+        - build/
