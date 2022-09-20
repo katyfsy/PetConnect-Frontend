@@ -15,7 +15,7 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
   const [matches, setMatches] = useState(results)
 
   const [allBreeds, setAllBreeds] = useState(["Any"]);
-  const [allTypes, setAllTypes] = useState(["Any", "cat", "dog"]);
+  const [allTypes, setAllTypes] = useState(["Any", "cat", "dog", "other"]);
 
   const handleFilterClick = (e) => {
     var params = {zip: zipcode ? zipcode : null, type: type!=="Any" ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
@@ -31,12 +31,14 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
   useEffect(() => {
     const searchArray = searchQuery.split(' ');
     if (searchArray.includes('dog')) setType('dog');
-    if (searchArray.includes('cat')) setType('cat');
+    else if (searchArray.includes('cat')) setType('cat');
   },[searchQuery])
 
   useEffect(() => {
+    if (searchQuery === "" && zipcode === "") return;
     if (type === "Any") {
       var params = ""
+      //need to add param if type=other -- gets all non cat & dog breeds
     } else {
       params = "?type=" + type;
     }
@@ -47,8 +49,8 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
   },[type])
 
   useEffect(() => {
-      var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
-    // console.log(params);
+    if (searchQuery === "" && zipcode === "") return;
+    var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
     axios.get("http://localhost:8080/api/petSearch?search=*", {params})
     // axios.get("http://localhost:8080/api/petSearch", {params})
     .then((result) =>{
@@ -64,9 +66,7 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
 
     return (
       <>
-
       <div data-testid="adv-search" className="advSearchContainer">
-
       <div className="type filter">
           <h6 className="filterType">Type</h6>
           <select onChange={e=>setType(e.target.value)}>
@@ -118,7 +118,6 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
         <button
             id="applyFilterButton"
             className="btn btn-secondary"
-            style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}}
             onClick={handleFilterClick}>Apply Filters</button>
       </div>
       </>
