@@ -60,8 +60,8 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
   },[radius])
 
     let babyType;
-    if (searchQuery === 'dog') babyType = 'Puppy';
-    else if (searchQuery === 'cat') babyType = 'Kitten';
+    if (type === 'dog') babyType = 'Puppy';
+    else if (type === 'cat') babyType = 'Kitten';
     else babyType = 'Baby';
 
     return (
