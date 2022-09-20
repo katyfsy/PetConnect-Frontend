@@ -36,11 +36,6 @@
     color: rgb(34, 34, 34);
   }
 
-  i {
-    position: relative;
-    right: 0;
-    top: 10px;
-  }
 
   .i-edit {
     position: relative;
@@ -64,4 +59,24 @@
     position: relative;
     left: 435px;
     top: -30px;
+  }
+
+  .i-heart {
+    position: relative;
+    left: 106px;
+    top: 47px;
+    font-size: 30px;
+    color: white;
+  }
+  .i-changepw {
+    position: relative;
+    left: 37px;
+    top: -29px;
+  }
+
+  .hheart {
+    position: relative;
+    top: 0px;
+    color: black;
+    font-size: 20px;
   }
