@@ -10,6 +10,7 @@ import "./EditPet.css";
 function EditPet({ thisPet, setIsEdit, refetchPet }) {
   const [openPortal, setOpenPortal] = useState(false);
 
+  const [exisitingPhotos, setExistingPhotos] = useState(thisPet.photos);
   const [deletePhotos, setDeletePhotos] = useState([]);
   const [addPhotos, setAddPhotos] = useState([]);
 
@@ -27,7 +28,6 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
     reported: thisPet.reported,
     coverPhoto: thisPet.coverPhoto,
   });
-  2;
 
   console.log("these are state of attributes:", petAttributes);
   console.log("photo state", addPhotos);
@@ -154,13 +154,17 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
 
   // Functionality when pressing the delete button
   function handleDelete(e, id) {
+    console.log(id);
     if (e.target.value === petAttributes.coverPhoto) {
       alert("Must Select Different Cover Photo First Before Deletion");
     } else {
       if (typeof id !== "string") {
         console.log("in db");
         setDeletePhotos([...deletePhotos, id]);
-        document.getElementById(`${id}`).remove();
+        const photosWithOutDeleted = exisitingPhotos.filter(
+          (photo) => photo.photoId !== id
+        );
+        setExistingPhotos(photosWithOutDeleted);
       }
       console.log(thisPet.petId, id);
       if (typeof id == "string") {
@@ -171,7 +175,7 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
       }
     }
   }
-
+  console.log(thisPet.photos);
   function handlePatch() {
     if (petAttributes.coverPhoto.includes("blob")) {
       let newatt = { ...petAttributes };
@@ -289,9 +293,9 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
           onChange={handleOnChange}
         />
       </Form.Group>
-      <div className="preview-container">
+      <div className="photos-from-db preview-container">
         <PhotoPreviews
-          photos={thisPet.photos}
+          photos={exisitingPhotos}
           coverPhoto={petAttributes.coverPhoto}
           handleCoverPhoto={handleChangePreview}
           handleRemoveThumb={handleDelete}
@@ -300,6 +304,23 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
           showRadio={true}
           adding={false}
           edit={true}
+          preview={"photo_url"}
+          photoId={"photoId"}
+        />
+      </div>
+      <div className="photos-to-add preview-container">
+        <PhotoPreviews
+          photos={addPhotos}
+          coverPhoto={petAttributes.coverPhoto}
+          handleCoverPhoto={handleChangePreview}
+          handleRemoveThumb={handleDelete}
+          currentUpload={currentUpload}
+          progress={progress}
+          showRadio={true}
+          adding={true}
+          edit={true}
+          preview={"preview"}
+          photoId={"name"}
         />
       </div>
       {/* <div style={{ display: "flex", width: 50, padding: 30 }}>
@@ -366,8 +387,8 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
           );
         })}
         <div />
-        <Button onClick={() => setOpenPortal(true)}> Add Photos</Button>
       </div> */}
+      <Button onClick={() => setOpenPortal(true)}> Add Photos</Button>
       <AddPhotosPortal
         openPortal={openPortal}
         setOpenPortal={setOpenPortal}

@@ -467,6 +467,7 @@ function AddAPetForm() {
                   currentUpload={currentUpload}
                   adding={true}
                   edit={false}
+                  preview={"preview"}
                 />
               </Form.Group>
 

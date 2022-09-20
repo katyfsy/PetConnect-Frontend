@@ -53,6 +53,8 @@ function AddPhotosPortal({
         showRadios={false}
         progress={progress}
         currentUpload={currentUpload}
+        edit={false}
+        preview={"preview"}
         maxPhotos={
           MAX_NUMBER_OF_PHOTOS - thisPet.photos.length - addPhotos.length
         }

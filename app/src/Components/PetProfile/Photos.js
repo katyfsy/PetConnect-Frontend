@@ -26,6 +26,8 @@ const Photos = ({
   currentUpload,
   adding,
   edit,
+  preview,
+  photoId,
 }) => {
   const [showRadio, setShowRadio] = useState(showRadios);
 
@@ -264,7 +266,9 @@ const Photos = ({
             progress={progress}
             showRadio={showRadio}
             adding={adding}
-            edit={false}
+            edit={edit}
+            preview={preview}
+            photoId={photoId}
           />
         </div>
         <Alert

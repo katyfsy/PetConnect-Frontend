@@ -12,6 +12,8 @@ const PhotoPreviews = ({
   showRadio,
   adding,
   edit,
+  preview,
+  photoId,
 }) => {
   const printHandle = (e) => {
     console.log(e.target);
@@ -20,7 +22,7 @@ const PhotoPreviews = ({
   return photos.map((photo, index) => (
     <div className="photo-preview" key={index}>
       <div className="thumb-container">
-        {edit && coverPhoto === photo.photo_url ? (
+        {edit && coverPhoto === photo[preview] ? (
           <div className="thumb-cover-label">Cover Photo</div>
         ) : coverPhoto === index ? (
           <div className="thumb-cover-label">Cover Photo</div>
@@ -30,17 +32,15 @@ const PhotoPreviews = ({
         <div
           className="thumb"
           onClick={(e) => {
-            console.log(e.target.src === photo.photo_url);
-            console.log(photo.photo_url);
             handleCoverPhoto(edit ? e : index);
           }}
         >
           <div className="thumb-inner">
             <img
-              value={photo.photo_url}
+              value={photo[preview]}
               name="coverPhoto"
               className="thumb-photo"
-              src={edit ? photo.photo_url : photo.preview}
+              src={photo[preview]}
               alt="preview"
               // Revoke data uri after image is loaded
               // onLoad={() => { URL.revokeObjectURL(photo.preview) }}
@@ -50,9 +50,14 @@ const PhotoPreviews = ({
         <div className="thumb-caption">
           <Button
             className="thumb-remove-button"
+            value={photo[preview]}
             variant="outline-danger"
             size="sm"
-            onClick={() => handleRemoveThumb(index)}
+            onClick={(e) =>
+              !edit
+                ? handleRemoveThumb(index)
+                : handleRemoveThumb(e, photo[photoId])
+            }
           >
             Remove
           </Button>
@@ -61,13 +66,13 @@ const PhotoPreviews = ({
               <input
                 type="radio"
                 id={`photo_${index + 1}`}
-                value={edit ? photo.photo_url : index}
+                value={edit ? photo[preview] : index}
                 onChange={(e) => {
                   printHandle(e);
                   handleCoverPhoto(edit ? e : index);
                 }}
                 checked={
-                  edit ? coverPhoto === photo.photo_url : coverPhoto === index
+                  edit ? coverPhoto === photo[preview] : coverPhoto === index
                 }
                 name="coverPhoto"
               />
