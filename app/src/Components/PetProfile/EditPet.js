@@ -5,7 +5,8 @@ import AddPhotosPortal from "./AddPhotosPortal";
 import Image from "react-bootstrap/Image";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import PhotoPreviews from "./PhotoPreviews";
+import "./EditPet.css";
 function EditPet({ thisPet, setIsEdit, refetchPet }) {
   const [openPortal, setOpenPortal] = useState(false);
 
@@ -116,8 +117,23 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
     }
   };
 
+  function handleChangePreview(e) {
+    // console.log(e.target.src);
+    if (e.target.src) {
+      setPetAttributes({
+        ...petAttributes,
+        [e.target.name]: e.target.getAttribute("value"),
+      });
+    } else {
+      setPetAttributes({
+        ...petAttributes,
+        [e.target.name]: e.target.value,
+      });
+    }
+  }
+
   function handleOnChange(e) {
-    // console.log(e.target.type);
+    console.log(e);
     if (e.target.type == "number")
       setPetAttributes({
         ...petAttributes,
@@ -273,8 +289,20 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
           onChange={handleOnChange}
         />
       </Form.Group>
-
-      <div style={{ display: "flex", width: 50, padding: 30 }}>
+      <div className="preview-container">
+        <PhotoPreviews
+          photos={thisPet.photos}
+          coverPhoto={petAttributes.coverPhoto}
+          handleCoverPhoto={handleChangePreview}
+          handleRemoveThumb={handleDelete}
+          currentUpload={currentUpload}
+          progress={progress}
+          showRadio={true}
+          adding={false}
+          edit={true}
+        />
+      </div>
+      {/* <div style={{ display: "flex", width: 50, padding: 30 }}>
         {thisPet.photos.map((photo) => {
           return (
             <div id={photo.photoId}>
@@ -339,16 +367,16 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
         })}
         <div />
         <Button onClick={() => setOpenPortal(true)}> Add Photos</Button>
-        <AddPhotosPortal
-          openPortal={openPortal}
-          setOpenPortal={setOpenPortal}
-          thisPet={thisPet}
-          addPhotos={addPhotos}
-          setAddPhotos={setAddPhotos}
-          progress={progress}
-          currentUpload={currentUpload}
-        />
-      </div>
+      </div> */}
+      <AddPhotosPortal
+        openPortal={openPortal}
+        setOpenPortal={setOpenPortal}
+        thisPet={thisPet}
+        addPhotos={addPhotos}
+        setAddPhotos={setAddPhotos}
+        progress={progress}
+        currentUpload={currentUpload}
+      />
 
       <h1>Additional Details</h1>
 

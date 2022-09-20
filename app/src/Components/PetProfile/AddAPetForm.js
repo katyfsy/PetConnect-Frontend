@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Container } from "react-bootstrap";
-import { Formik, Field, ErrorMessage } from 'formik';
+import { Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 // import Modal from 'react-bootstrap/Modal';
 import Pet from "./Pet";
 import { useNavigate } from "react-router-dom";
 import "./AddAPetForm.css";
 import Photos from "./Photos";
-import Alert from "./AlertModalPetForms"
+import Alert from "./AlertModalPetForms";
 import axios from "axios";
 import { getUser } from "../UserProfile/psb-exports";
 
@@ -23,14 +23,14 @@ function AddAPetForm() {
   const [alertText, setAlertText] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
-  const [handleOnExited, setHandleOnExited] = useState(false)
+  const [handleOnExited, setHandleOnExited] = useState(false);
 
   // const [isSuccess, setIsSuccess] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentUpload, setCurrentUpload] = useState(0);
 
   let onExited = null;
-  let user = getUser();;
+  let user = getUser();
   console.log(user);
   const [requiredPetFields, setrequiredPetFields] = useState({
     owner: user.toString(),
@@ -142,19 +142,19 @@ function AddAPetForm() {
         )
         .then((res) => console.log(res))
         .then((res) => {
-          setShowAlert(true)
-          setAlertTitle("Congratulations")
-          setAlertText("Pet profile created successfully")
-          setAlertType("success")
-          setHandleOnExited(true)
+          setShowAlert(true);
+          setAlertTitle("Congratulations");
+          setAlertText("Pet profile created successfully");
+          setAlertType("success");
+          setHandleOnExited(true);
         })
         .catch((err) => console.log(err));
     } else {
-      setShowAlert(true)
-      setAlertTitle("Photo requirements not met")
-      setAlertText("Pet profiles require at least one photo")
-      setAlertType("error")
-      setHandleOnExited(false)
+      setShowAlert(true);
+      setAlertTitle("Photo requirements not met");
+      setAlertText("Pet profiles require at least one photo");
+      setAlertType("error");
+      setHandleOnExited(false);
     }
   };
 
@@ -171,13 +171,13 @@ function AddAPetForm() {
     //   setHandleOnExited(false)
     // } else {
 
-      // e.preventDefault();
+    // e.preventDefault();
 
     let petId = await createPet();
-      if (petId != null) {
-        setPetId(petId)
-        await handleUpload(petId);
-      }
+    if (petId != null) {
+      setPetId(petId);
+      await handleUpload(petId);
+    }
     // }
     // setValidated(true);
 
@@ -204,18 +204,23 @@ function AddAPetForm() {
     navigate(`/pet/${id}`, { replace: true });
   };
 
-
   const schema = Yup.object({
     // product: Yup.string().required("Please select a product").oneOf(products),
-    name: Yup.string().required('pet name is required'),
+    name: Yup.string().required("pet name is required"),
     city: Yup.string(),
     state: Yup.string(),
     zip: Yup.number()
-      .required('zipcode is required')
-      .test('len', 'Must be exactly 5 numbers', val => val && val.toString().length === 5 ),
-    type: Yup.string().required('type is required'),
-    sex: Yup.string().required('sex is required'),
-    description: Yup.string().min(20, 'minimum of 20 characters').required('description is required'),
+      .required("zipcode is required")
+      .test(
+        "len",
+        "Must be exactly 5 numbers",
+        (val) => val && val.toString().length === 5
+      ),
+    type: Yup.string().required("type is required"),
+    sex: Yup.string().required("sex is required"),
+    description: Yup.string()
+      .min(20, "minimum of 20 characters")
+      .required("description is required"),
     // photos: Yup.number().positive().required(),
   });
 
@@ -223,11 +228,9 @@ function AddAPetForm() {
   //   return photos.length;
   // }
 
-
   return (
     <>
       <Container className="addpet-form-container">
-
         <h3>Let's create the pet's profile</h3>
         <br />
         <Formik
@@ -245,29 +248,39 @@ function AddAPetForm() {
           }}
         >
           {({
-        handleSubmit,
-        handleChange,
-        handleBlur,
-        values,
-        touched,
-        isValid,
-        errors,
-      }) => (
-        <Form className="addpet-form" noValidate onSubmit={handleSubmit}>
-          <Form.Group className="mb-3 form-fields" controlId="ownerValidation">
-            <Form.Label>Owner</Form.Label>
-              {getUser() != "" ?
-              <Form.Control
-                name="owner"
-                defaultValue={getUser()}
-                disabled={true}
-                className="pet-owner-name"
-              /> : <></>}
-          </Form.Group>
+            handleSubmit,
+            handleChange,
+            handleBlur,
+            values,
+            touched,
+            isValid,
+            errors,
+          }) => (
+            <Form className="addpet-form" noValidate onSubmit={handleSubmit}>
+              <Form.Group
+                className="mb-3 form-fields"
+                controlId="ownerValidation"
+              >
+                <Form.Label>Owner</Form.Label>
+                {getUser() != "" ? (
+                  <Form.Control
+                    name="owner"
+                    defaultValue={getUser()}
+                    disabled={true}
+                    className="pet-owner-name"
+                  />
+                ) : (
+                  <></>
+                )}
+              </Form.Group>
 
-              <Form.Group className="mb-3 form-fields" controlId="nameValidation">
+              <Form.Group
+                className="mb-3 form-fields"
+                controlId="nameValidation"
+              >
                 <Form.Label>Name</Form.Label>
-                <Form.Control className="pet-name"
+                <Form.Control
+                  className="pet-name"
                   type="text"
                   name="name"
                   value={values.name}
@@ -279,14 +292,18 @@ function AddAPetForm() {
                   isInvalid={!!errors.name}
                 />
                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                <Form.Control.Feedback className='form-error' type="invalid">
+                <Form.Control.Feedback className="form-error" type="invalid">
                   {errors.name}
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group className="mb-3 form-fields" controlId="city-validation">
+              <Form.Group
+                className="mb-3 form-fields"
+                controlId="city-validation"
+              >
                 <Form.Label>City</Form.Label>
-                <Form.Control className="pet-city"
+                <Form.Control
+                  className="pet-city"
                   type="text"
                   name="city"
                   value={values.city}
@@ -295,13 +312,16 @@ function AddAPetForm() {
                   isInvalid={!!errors.city}
                 />
                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                <Form.Control.Feedback className='form-error' type="invalid">
+                <Form.Control.Feedback className="form-error" type="invalid">
                   {errors.city}
                 </Form.Control.Feedback>
               </Form.Group>
 
               <div className="addpet-form-section">
-                <Form.Group className="mb-3 form-fields-2-row" controlId="zipValidation">
+                <Form.Group
+                  className="mb-3 form-fields-2-row"
+                  controlId="zipValidation"
+                >
                   <Form.Label>State</Form.Label>
                   <Form.Control
                     type="text"
@@ -312,12 +332,15 @@ function AddAPetForm() {
                     isInvalid={!!errors.state}
                   />
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  <Form.Control.Feedback className='form-error' type="invalid">
+                  <Form.Control.Feedback className="form-error" type="invalid">
                     {errors.state}
                   </Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group className="mb-3 form-fields-2-row" controlId="zipValidation">
+                <Form.Group
+                  className="mb-3 form-fields-2-row"
+                  controlId="zipValidation"
+                >
                   <Form.Label>Zipcode</Form.Label>
                   <Form.Control
                     type="number"
@@ -326,22 +349,24 @@ function AddAPetForm() {
                       handleChange(e);
                       handleOnChange(e);
                     }}
-
                     placeholder="Zipcode"
                     isInvalid={!!errors.zip}
                   />
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  <Form.Control.Feedback className='form-error' type="invalid">
+                  <Form.Control.Feedback className="form-error" type="invalid">
                     {errors.zip}
                   </Form.Control.Feedback>
                 </Form.Group>
               </div>
 
               <div className="addpet-form-section">
-
-                <Form.Group className="mb-3 form-fields-2-row" controlId="typeValidation">
+                <Form.Group
+                  className="mb-3 form-fields-2-row"
+                  controlId="typeValidation"
+                >
                   <Form.Label>Type</Form.Label>
-                  <Form.Select className="pet-type"
+                  <Form.Select
+                    className="pet-type"
                     type="text"
                     name="type"
                     value={values.type}
@@ -361,14 +386,18 @@ function AddAPetForm() {
                     <option value="smallPet">Small Pet</option>
                     <option value="reptile">Reptile</option>
                   </Form.Select>
-                  <Form.Control.Feedback className='form-error' type="invalid">
+                  <Form.Control.Feedback className="form-error" type="invalid">
                     {errors.type}
                   </Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group className="mb-3 form-fields-2-row" controlId="sexValidation">
+                <Form.Group
+                  className="mb-3 form-fields-2-row"
+                  controlId="sexValidation"
+                >
                   <Form.Label>Sex</Form.Label>
-                  <Form.Select className="pet-sex"
+                  <Form.Select
+                    className="pet-sex"
                     type="text"
                     name="sex"
                     value={values.sex}
@@ -383,15 +412,19 @@ function AddAPetForm() {
                     <option value="female">Female</option>
                     <option value="unknown">Unknown</option>
                   </Form.Select>
-                  <Form.Control.Feedback className='form-error' type="invalid">
+                  <Form.Control.Feedback className="form-error" type="invalid">
                     {errors.sex}
                   </Form.Control.Feedback>
                 </Form.Group>
               </div>
 
-              <Form.Group className="mb-3 form-fields" controlId="descriptionValidation">
+              <Form.Group
+                className="mb-3 form-fields"
+                controlId="descriptionValidation"
+              >
                 <Form.Label>Description</Form.Label>
-                <Form.Control className="pet-description form-input"
+                <Form.Control
+                  className="pet-description form-input"
                   as="textarea"
                   name="description"
                   value={values.description}
@@ -402,12 +435,12 @@ function AddAPetForm() {
                   placeholder="Tell us a little more about your pet..."
                   isInvalid={!!errors.description}
                 />
-                <Form.Control.Feedback className='form-error' type="invalid">
+                <Form.Control.Feedback className="form-error" type="invalid">
                   {errors.description}
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group className="mb-3 photos-form-container" >
+              <Form.Group className="mb-3 photos-form-container">
                 <Form.Label>Photos</Form.Label>
                 {/* <Form.Control className="pet-photos-control"
                   type="number"
@@ -433,11 +466,12 @@ function AddAPetForm() {
                   progress={progress}
                   currentUpload={currentUpload}
                   adding={true}
+                  edit={false}
                 />
               </Form.Group>
 
-              <div className="mb-3 buttons-form-container" >
-                <Form.Group className="mb-3" >
+              <div className="mb-3 buttons-form-container">
+                <Form.Group className="mb-3">
                   <Button
                     variant="secondary"
                     type="submit"
@@ -447,7 +481,7 @@ function AddAPetForm() {
                   </Button>
                 </Form.Group>
 
-                <Form.Group className="mb-3" >
+                <Form.Group className="mb-3">
                   {isClicked ? null : (
                     <Button type="submit" className="add-pet-button">
                       Add Pet
@@ -467,7 +501,7 @@ function AddAPetForm() {
           title={alertTitle}
           type={alertType}
           onHide={() => setShowAlert(false)}
-          onExited={(handleOnExited) ? () => navigateToPetProfile(petId) : null}
+          onExited={handleOnExited ? () => navigateToPetProfile(petId) : null}
         />
       </Container>
     </>
@@ -624,7 +658,6 @@ function AddAPetForm() {
   //           </Form.Group>
   //         </div>
 
-
   //           {/* <Col sm={{ span: 10, offset: 2 }}>
   //             {isClicked ? null : (
   //               <Button type="submit" className="add-pet-button">
@@ -632,8 +665,6 @@ function AddAPetForm() {
   //               </Button>
   //             )}
   //           </Col> */}
-
-
 
   //         {/* <Row>
   //           <Col>
@@ -669,7 +700,6 @@ function AddAPetForm() {
   //     </Container>
   //   </>
   // );
-
 }
 
 export default AddAPetForm;
