@@ -112,7 +112,6 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
         params = '*' + "&zip=" + zipcode ;
       } else if (zipcode.length !== 0 && searchQuery.length !== 0){
         setDropdownDisplay(false);
-
         params = searchQuery + "&zip=" + zipcode ;
       }
       // console.log('params ===>:',params);

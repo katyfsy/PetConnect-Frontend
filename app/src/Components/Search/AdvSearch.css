@@ -1,6 +1,6 @@
 .advSearchContainer{
   display: grid;
-  grid-template-rows: 10% 10% 10% 10% 10%;
+  grid-template-rows: 10% 10% 10% 10% 10% 7%;
   grid-template-columns: 1fr;
   gap: 10px;
   margin: 10px;
@@ -58,6 +58,17 @@
   gap: 10px;
   background-color: #F4976C;
   border-color: #F4976C
+}
+
+#clearFilterButton{
+  grid-row-start: 6 / span 1;
+  margin: 10px;
+  gap: 10px;
+  background-color: #F4976C;
+  border-color: #F4976C;
+  width: 50%;
+  align-self: center;
+  align-items: center;
 }
 
 /* .optionContainer li:hover,
