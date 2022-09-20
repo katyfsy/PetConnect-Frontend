@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
+import { Card, ListGroup, Col } from "react-bootstrap";
 
-function PetCard({ id, owner, name, location, type, description }) {
+function PetCard({ id, owner, name, zip, type, description, coverPhoto }) {
   const navigate = useNavigate();
   // function  navigateToPetProfile(data.petId);
   const navigateToPetProfile = (id) => {
@@ -12,24 +13,28 @@ function PetCard({ id, owner, name, location, type, description }) {
   };
   return (
     <>
-      <div>
-        <h5>Pet Goes Image Here</h5>
-        {/* <img
-            src={image}
-            style={{ width: 200 }}
-          /> */}
-        <h5 onClick={handleOnclick}>
-          {" "}
-          <Link to={`/pet/${id}`}> Name: {name}</Link>
-        </h5>
-
-        <h6>Type: {type}</h6>
-        <p>Location: {location}</p>
-        <p>Description: {description}</p>
-        <p>Added by: {owner}</p>
-        <p>ID: {id}</p>
-      </div>
-      <hr />
+    <Col>
+      <Card style={{ width: "18rem" }}>
+        <Card.Img variant="top" src={coverPhoto} style={{ height: 200 }} />
+        <Card.Body>
+          <Card.Title>
+            <Card.Link href={`/pet/${id}`}> Name: {name}</Card.Link>
+          </Card.Title>
+          <Card.Text>{description}</Card.Text>
+        </Card.Body>
+        <ListGroup className="list-group-flush">
+          <ListGroup.Item>Type: {type}</ListGroup.Item>
+          <ListGroup.Item>Location: {zip}</ListGroup.Item>
+          <ListGroup.Item>
+            ID: {id} Owner: {owner}
+          </ListGroup.Item>
+        </ListGroup>
+        <Card.Body>
+          <Card.Link href={`/`}>Contact My Owner</Card.Link>
+        </Card.Body>
+      </Card>
+      </Col>
+      <br />
     </>
   );
 }
