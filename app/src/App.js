@@ -21,16 +21,15 @@ import UserFavorites from './Pages/UserFavorites'
 import { getBearerToken, getUser, clearStorage } from "./Components/UserProfile/psb-exports"
 
 function App() {
-
   const navigate = useNavigate();
 
   const loggedIn = getBearerToken();
 
   useEffect(() => {
     // clear local and session storage if token is expired
-    if(getBearerToken() !== "" && getBearerToken() !== null) {
+    if (getBearerToken() !== "" && getBearerToken() !== null) {
       const decodedToken = jwt_decode(getBearerToken());
-      if(Math.ceil(new Date().getTime()/1000) > decodedToken.exp) {
+      if (Math.ceil(new Date().getTime() / 1000) > decodedToken.exp) {
         clearStorage();
         navigate("/login");
       }
@@ -49,7 +48,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         {/* Pet Profile Routes */}
         <Route path="/pets" element={<Pets />} />
-        <Route path="/messages"   element={loggedIn ? <Messages/> : <Login />}/>
+        <Route path="/messages" element={loggedIn ? <Messages /> : <Login />} />
         <Route path="/addpet" element={<AddAPet />} />
         {/* <Route path="/pet" element={<Pet />} /> */}
         <Route path="/pet/:id" element={<PetProfile />} />
