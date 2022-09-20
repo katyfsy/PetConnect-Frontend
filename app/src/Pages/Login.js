@@ -2,6 +2,7 @@ import React from 'react';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import LoginCard from '../Components/UserProfile/LoginCard';
+import Footer from '../Components/Default/Footer'
 import { Container , Row } from 'react-bootstrap';
 
 
@@ -16,6 +17,9 @@ const Login = () => {
         <Row className="justify-content-md-center" style={{"paddingTop": "50px"}}>
           <LoginCard/>
         </Row>
+        <Row >
+        < Footer />
+      </Row>
       </Container>
     </>
   )

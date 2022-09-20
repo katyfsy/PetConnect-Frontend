@@ -127,6 +127,10 @@ const LoginCard = () => {
               Log In
             </Button>
           </div>
+
+          <div className="text-center mt-3">
+            Forgot password? <Link to="/user/reset">Reset</Link>
+          </div>
           <div className="text-center mt-3">
             Don't have an account? <Link to="/signup">Sign Up</Link>
           </div>

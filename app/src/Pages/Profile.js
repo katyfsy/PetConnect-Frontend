@@ -7,6 +7,7 @@ import Header from '../Components/Default/Header';
 import { Container,Button, Row, Col, Image } from 'react-bootstrap';
 import Reviews from '../Components/UserProfile/Reviews';
 import { getBearerToken, getUser, PSB_API_URL } from "../Components/UserProfile/psb-exports";
+import Swal from 'sweetalert2';
 
 function Profile() {
   const [form, setForm] = useState({
@@ -30,7 +31,7 @@ function Profile() {
 
   useEffect(() => {
     const doGetUser = () => {
-      axios.get(`${PSB_API_URL}/api/public/user/${params.username}`,
+      axios.get(`${PSB_API_URL}/api/public/users/orgs/${params.username}`,
       {headers: {
         'Authorization': getBearerToken()
       }})
@@ -50,22 +51,27 @@ function Profile() {
     doGetUser();
   }, [params.username]);
 
+  const loginAlert = () => {
+    Swal.fire({
+      title: 'ERROR',
+      text: 'Please login first to chat with the user.',
+    })
+  }
+
   const renderEditOrMessageButton = () => {
     if(getUser() === "" || getUser() === null) {
-      return <Button variant="primary" size="lg" href="/login" onClick={() => alert("Please login first to chat with the user.")}>
+      return <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} size="lg" onClick={() => loginAlert()}>
                Message me
              </Button>;
     } else {
-      return <Button variant="primary" size="lg" href="/messages">Message me</Button>
+      return <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} size="lg" href="/messages">Message me</Button>
     }
   }
 
   if(form.userType === "USER") {
     return (
-      <div>
-        <Container>
-          <Header/>
-        </Container>
+      <div className="profilePage">
+        <Header/>
         <Navigationbar/>
         <Container>
           <Row className="mb-3">
@@ -97,10 +103,8 @@ function Profile() {
     )
   } else {
     return (
-      <div>
-        <Container>
-          <Header/>
-        </Container>
+      <div className="profilePage">
+        <Header/>
         <Navigationbar/>
         <Container>
           <Row className="mb-3">
