@@ -123,7 +123,7 @@ const LoginCard = () => {
             </Form.Check>
           </div>
           <div className="d-grid gap-2 mt-4">
-            <Button variant="outline-dark" type="submit">
+            <Button variant="light" type="submit">
               Log In
             </Button>
           </div>

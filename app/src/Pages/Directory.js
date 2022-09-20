@@ -4,6 +4,7 @@ import Header from "../Components/Default/Header";
 import Footer from "../Components/Default/Footer";
 import { Container, Row, Table } from "react-bootstrap";
 import User from "../Components/UserProfile/User";
+import DirectoryItem from "../Components/UserProfile/DirectoryItem";
 import {
   getBearerToken,
   getUser,
@@ -20,33 +21,8 @@ function Directory() {
   useEffect(() => {
     getData();
   }, []);
-  console.log(data);
-  const rowItem = data.map((element) => {
-    let blankCityState = ""
-    if (element.city === null && element.state === null){
-      blankCityState = "";
-    } else {
-      blankCityState = element.city + ", " + element.state
-    }
-    return (
-      <tr>
-        <td>
-          <a href={`/profile/${element.username}`}>{element.businessName} </a>
-        </td>
-        <td>
-          <a href={`/petlist/${element.username}`}>
-            {" "}
-            <i class="bi bi-house-heart hheart"></i>
-          </a>
-        </td>
-        <td>
-          {blankCityState}
-        </td>
-        <td>{element.phone}</td>
-        <td>{element.email}</td>
-      </tr>
-    );
-  });
+
+
   return (
     <>
       <Container>
@@ -54,7 +30,7 @@ function Directory() {
       </Container>
       <Navigationbar />
       <Container>
-        <Row>
+        <Row className="justify-content-center">
           <h1>Directory</h1>
           <Table striped bordered hover>
             <thead>
@@ -66,7 +42,7 @@ function Directory() {
                 <th>Email</th>
               </tr>
             </thead>
-            <tbody>{rowItem}</tbody>
+            <tbody ><DirectoryItem data={data}/></tbody>
           </Table>
         </Row>
         <Row>
