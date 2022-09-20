@@ -54,10 +54,10 @@ const MessagingApp = () => {
     localStorage.setItem('notificationSound', 'true');
   }
 
+  let email = '';
+
   useEffect(() => {
-    console.log('OUTSIDE');
     if (!privateChats.get(userData.receiverName)) {
-      console.log('INSIDE');
       privateChatsRef.current.set(userData.receiverName, []);
       // setPrivateChats(new Map(privateChatsRef.current));
     }
@@ -77,6 +77,7 @@ const MessagingApp = () => {
       axios
         .get(`${PSB_API_URL}/api/public/user/${userData.username}`)
         .then((response) => {
+          console.log('response', response.data);
           if (response.data.userPhoto !== null) {
             senderPhotoRef.current = response.data.userPhoto;
             setUserData({ ...userData, senderPhoto: senderPhotoRef.current });
@@ -108,6 +109,8 @@ const MessagingApp = () => {
               receiverPhoto: receiverPhotoRef.current,
             });
           }
+          email = response.data.email;
+          console.log('email set to :', email);
         })
         .catch((err) => {
           console.log(err);
@@ -131,6 +134,8 @@ const MessagingApp = () => {
               receiverPhoto: receiverPhotoRef.current,
             });
           }
+          email = response.data.email;
+          console.log('email now set to :', email);
         })
         .catch((err) => {
           console.log(err);
@@ -229,6 +234,7 @@ const MessagingApp = () => {
         status: 'MESSAGE',
         senderPhoto: senderPhotoRef.current,
         receiverPhoto: receiverPhotoRef.current,
+        email: email
       };
       if (!privateChatsRef.current.get(chatMessage.receiverName)) {
         privateChatsRef.current.set(chatMessage.receiverName, []);
