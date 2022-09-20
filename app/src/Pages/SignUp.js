@@ -2,6 +2,7 @@ import React from 'react';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
 import SignUpCard from '../Components/UserProfile/SignUpCard';
+import Footer from '../Components/Default/Footer'
 import { Container , Row } from 'react-bootstrap';
 
 const SignUp = () => {
@@ -15,6 +16,9 @@ const SignUp = () => {
         <Row className="justify-content-md-center" style={{"paddingTop": "50px"}}>
           <SignUpCard/>
         </Row>
+        <Row >
+        < Footer />
+      </Row>
       </Container>
     </>
   )
