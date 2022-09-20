@@ -5,10 +5,12 @@ import AddPhotosPortal from "./AddPhotosPortal";
 import Image from "react-bootstrap/Image";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import PhotoPreviews from "./PhotoPreviews";
+import "./EditPet.css";
 function EditPet({ thisPet, setIsEdit, refetchPet }) {
   const [openPortal, setOpenPortal] = useState(false);
 
+  const [exisitingPhotos, setExistingPhotos] = useState(thisPet.photos);
   const [deletePhotos, setDeletePhotos] = useState([]);
   const [addPhotos, setAddPhotos] = useState([]);
 
@@ -26,7 +28,6 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
     reported: thisPet.reported,
     coverPhoto: thisPet.coverPhoto,
   });
-  2;
 
   console.log("these are state of attributes:", petAttributes);
   console.log("photo state", addPhotos);
@@ -116,8 +117,23 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
     }
   };
 
+  function handleChangePreview(e) {
+    // console.log(e.target.src);
+    if (e.target.src) {
+      setPetAttributes({
+        ...petAttributes,
+        [e.target.name]: e.target.getAttribute("value"),
+      });
+    } else {
+      setPetAttributes({
+        ...petAttributes,
+        [e.target.name]: e.target.value,
+      });
+    }
+  }
+
   function handleOnChange(e) {
-    // console.log(e.target.type);
+    console.log(e);
     if (e.target.type == "number")
       setPetAttributes({
         ...petAttributes,
@@ -138,13 +154,17 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
 
   // Functionality when pressing the delete button
   function handleDelete(e, id) {
+    console.log(id);
     if (e.target.value === petAttributes.coverPhoto) {
       alert("Must Select Different Cover Photo First Before Deletion");
     } else {
       if (typeof id !== "string") {
         console.log("in db");
         setDeletePhotos([...deletePhotos, id]);
-        document.getElementById(`${id}`).remove();
+        const photosWithOutDeleted = exisitingPhotos.filter(
+          (photo) => photo.photoId !== id
+        );
+        setExistingPhotos(photosWithOutDeleted);
       }
       console.log(thisPet.petId, id);
       if (typeof id == "string") {
@@ -155,7 +175,7 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
       }
     }
   }
-
+  console.log(thisPet.photos);
   function handlePatch() {
     if (petAttributes.coverPhoto.includes("blob")) {
       let newatt = { ...petAttributes };
@@ -273,8 +293,37 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
           onChange={handleOnChange}
         />
       </Form.Group>
-
-      <div style={{ display: "flex", width: 50, padding: 30 }}>
+      <div className="photos-from-db preview-container">
+        <PhotoPreviews
+          photos={exisitingPhotos}
+          coverPhoto={petAttributes.coverPhoto}
+          handleCoverPhoto={handleChangePreview}
+          handleRemoveThumb={handleDelete}
+          currentUpload={currentUpload}
+          progress={progress}
+          showRadio={true}
+          adding={false}
+          edit={true}
+          preview={"photo_url"}
+          photoId={"photoId"}
+        />
+      </div>
+      <div className="photos-to-add preview-container">
+        <PhotoPreviews
+          photos={addPhotos}
+          coverPhoto={petAttributes.coverPhoto}
+          handleCoverPhoto={handleChangePreview}
+          handleRemoveThumb={handleDelete}
+          currentUpload={currentUpload}
+          progress={progress}
+          showRadio={true}
+          adding={true}
+          edit={true}
+          preview={"preview"}
+          photoId={"name"}
+        />
+      </div>
+      {/* <div style={{ display: "flex", width: 50, padding: 30 }}>
         {thisPet.photos.map((photo) => {
           return (
             <div id={photo.photoId}>
@@ -338,17 +387,17 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
           );
         })}
         <div />
-        <Button onClick={() => setOpenPortal(true)}> Add Photos</Button>
-        <AddPhotosPortal
-          openPortal={openPortal}
-          setOpenPortal={setOpenPortal}
-          thisPet={thisPet}
-          addPhotos={addPhotos}
-          setAddPhotos={setAddPhotos}
-          progress={progress}
-          currentUpload={currentUpload}
-        />
-      </div>
+      </div> */}
+      <Button onClick={() => setOpenPortal(true)}> Add Photos</Button>
+      <AddPhotosPortal
+        openPortal={openPortal}
+        setOpenPortal={setOpenPortal}
+        thisPet={thisPet}
+        addPhotos={addPhotos}
+        setAddPhotos={setAddPhotos}
+        progress={progress}
+        currentUpload={currentUpload}
+      />
 
       <h1>Additional Details</h1>
 
