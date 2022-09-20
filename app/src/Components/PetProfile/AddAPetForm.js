@@ -158,10 +158,14 @@ function AddAPetForm() {
     }
   };
 
-  const handleOnSubmit = async (e) => {
-    const form = e.currentTarget;
+  const handleOnSubmit = async () => {
+    // const form = e.currentTarget;
 
-    // if (form.checkValidity() === false) {
+    // if (isValid === false ) {
+    //   console.log('isvalid exists')
+    // }
+
+    // if (form.checkValidity() === true) {
     //   e.preventDefault();
     //   e.stopPropagation();
     //   setShowAlert(true)
@@ -171,14 +175,14 @@ function AddAPetForm() {
     //   setHandleOnExited(false)
     // } else {
 
-      // e.preventDefault();
+    // e.preventDefault();
 
     let petId = await createPet();
       if (petId != null) {
         setPetId(petId)
         await handleUpload(petId);
       }
-    // }
+
     // setValidated(true);
 
     // if (photos.length == 0) {
@@ -232,6 +236,8 @@ function AddAPetForm() {
         <br />
         <Formik
           validationSchema={schema}
+          // validateOnMount
+          // setSubmitting={false}
           onSubmit={handleOnSubmit}
           initialValues={{
             name: "",
@@ -253,7 +259,20 @@ function AddAPetForm() {
         isValid,
         errors,
       }) => (
-        <Form className="addpet-form" noValidate onSubmit={handleSubmit}>
+        <Form className="addpet-form"
+            onSubmit={(e) => {
+              if (isValid === false) {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowAlert(true)
+                setAlertTitle("Incomplete form")
+                setAlertText("Fill out required fields")
+                setAlertType("error")
+                setHandleOnExited(false)
+              } else {
+                handleSubmit(e)
+              }
+            }}>
           <Form.Group className="mb-3 form-fields" controlId="ownerValidation">
             <Form.Label>Owner</Form.Label>
               {getUser() != "" ?
