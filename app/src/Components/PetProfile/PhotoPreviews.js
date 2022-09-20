@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { Button, ProgressBar } from "react-bootstrap";
+import "./PhotoPreviews.css"
 
 const PhotoPreviews = ({
   photos,
@@ -21,8 +22,8 @@ const PhotoPreviews = ({
     photos.map((photo, index) => (
 
         <div className="photo-preview" key={index}>
-          <div className="thumb-information">
-            {coverPhoto === index ? <div className="thumb-radio-button-label">Cover Photo</div> : <></>}
+          <div className="thumb-container">
+            {coverPhoto === index ? <div className="thumb-cover-label">Cover Photo</div> : <></>}
             <div className="thumb" onClick={() => handleCoverPhoto(index)}>
               <div className="thumb-inner">
                 <img
@@ -35,7 +36,7 @@ const PhotoPreviews = ({
               </div>
             </div>
             <div className="thumb-caption">
-              <Button className="remove-button" variant="outline-danger" size="sm" onClick={() => handleRemoveThumb(index)}>Remove</Button>
+              <Button className="thumb-remove-button" variant="outline-danger" size="sm" onClick={() => handleRemoveThumb(index)}>Remove</Button>
               {showRadio ? (
                 <div className="thumb-radio-button">
                   <input

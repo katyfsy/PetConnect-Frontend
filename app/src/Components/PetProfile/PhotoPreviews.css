@@ -1,30 +1,29 @@
-.preview-container {
-  display: flex;
-  flex-direction: row;
-  margin-top: 12px;
-  margin-bottom: 100px;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  gap: 15px 15px;
-}
-
-.thumb-information {
+.thumb-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+}
+
+.thumb-cover-label {
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 5px;
 }
 
 .thumb {
-  /* display: 'inline-flex', */
   display: flex;
   flex-direction: column;
   border-radius: 2px;
   border: 1px solid #eaeaea;
-  margin-bottom: 8;
-  margin-right: 8;
+  margin-bottom: 10px;
   width: 80px;
   height: 80px;
   padding: 4px;
   box-sizing: border-box;
+}
+
+.thumb:hover{
+  cursor: pointer;
 }
 
 .thumb:active{
@@ -45,31 +44,16 @@
   height: 100%;
 }
 
-.thumb-remove-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  color:rgb(40, 87, 196);
-  font-size: 14px;
-  /* text-align: start; */
-}
-
-.remove-button {
-  font-size: 8px !important;
-  padding: 3.2px !important;
-}
-
-.thumb-remove-button:hover {
-  color:rgb(171, 8, 8);
-  cursor: pointer;
-}
-
 .thumb-caption {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-top: 7px;
-  margin-bottom: 7px;
+  margin-bottom: 10px;
+}
+
+.thumb-remove-button {
+  font-size: 8px !important;
+  padding: 3.2px !important;
 }
 
 .thumb-radio-button {
@@ -81,19 +65,30 @@
   cursor: pointer;
 }
 
-.thumb-radio-button-label {
-  font-size: 10px;
-  font-weight: 700;
-  margin-bottom: 5px;
+.progress {
+  height: 8px !important;
 }
 
-.thumb-radio-button-label:hover {
+/* .thumb-remove-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color:rgb(40, 87, 196);
+  font-size: 14px;
+  text-align: start;
+} */
+
+/* .thumb-remove-button:hover {
+  color:rgb(171, 8, 8);
+  cursor: pointer;
+} */
+
+/* .thumb-radio-button-label:hover {
   color:rgb(40, 87, 196);
   font-weight: 700;
   cursor: pointer;
-}
+} */
 
-.progress {
-  height: 0.5rem !important;
-}
 
+
+/* @import '~bootstrap/dist/css/bootstrap.css'; */
