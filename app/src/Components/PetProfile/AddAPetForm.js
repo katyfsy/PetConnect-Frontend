@@ -331,6 +331,7 @@ function AddAPetForm() {
                     isInvalid={!!errors.zip}
                   />
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                  {/* <ErrorMessage className='form-error'>{errors.zip}</ErrorMessage> */}
                   <Form.Control.Feedback className='form-error' type="invalid">
                     {errors.zip}
                   </Form.Control.Feedback>
