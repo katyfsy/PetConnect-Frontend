@@ -41,10 +41,11 @@ function Navigationbar() {
   }
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar expand="lg" className="navBar" style={{paddingTop: 0, backgroundColor: "#8F9ED9", marginBottom: 10}}>
       <Container>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
+<<<<<<< HEAD
             {isLoggedIn() ? <Nav.Link href="/myprofile">MyProfile</Nav.Link> : null}
             <Nav.Link href="/pets">Pets</Nav.Link>
             <Nav.Link href="/messages">Messages</Nav.Link>
@@ -60,6 +61,12 @@ function Navigationbar() {
                 Separated link
               </NavDropdown.Item>
             </NavDropdown>
+=======
+            {isLoggedIn() ? <Nav.Link href="/myprofile" style={{color: "white"}}>MyProfile</Nav.Link> : null}
+            <Nav.Link href="/pets" style={{color: "white"}}>Pets</Nav.Link>
+            <Nav.Link href="/messages" style={{color: "white"}}>Messages</Nav.Link>
+            <Nav.Link href="/directory" style={{color: "white"}}>Directory</Nav.Link>
+>>>>>>> 2d2accbb204d047ae3c6f8fccd706edb569cb2e9
           </Nav>
         </Navbar.Collapse>
       </Container>
