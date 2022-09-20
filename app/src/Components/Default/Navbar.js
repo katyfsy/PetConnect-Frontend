@@ -41,25 +41,15 @@ function Navigationbar() {
   }
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar expand="lg" className="navBar" style={{paddingTop: 0, backgroundColor: "#8F9ED9", marginBottom: 10}}>
       <Container>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {isLoggedIn() ? <Nav.Link href="/myprofile">MyProfile</Nav.Link> : null}
-            <Nav.Link href="/pets">Pets</Nav.Link>
-            <Nav.Link href="/messages">Messages</Nav.Link>
+            {isLoggedIn() ? <Nav.Link href="/myprofile" style={{color: "white"}}>MyProfile</Nav.Link> : null}
+            <Nav.Link href="/pets" style={{color: "white"}}>Pets</Nav.Link>
+            <Nav.Link href="/messages" style={{color: "white"}}>Messages</Nav.Link>
             {notification ? <AiFillMessage size={30} color={'red'} /> : null}
-            <NavDropdown className="justify-content-end" title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
+            <Nav.Link href="/directory" style={{color: "white"}}>Directory</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

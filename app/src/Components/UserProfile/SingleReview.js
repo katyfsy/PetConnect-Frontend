@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, Image, Col, Row } from 'react-bootstrap';
+import { Button, Card, Image, Col, Row, Modal, Carousel } from 'react-bootstrap';
 import Rating from 'react-rating';
 import moment from 'moment';
 import axios from 'axios';
@@ -9,34 +9,43 @@ function SingleReview({ review, votedOnReviews }) {
 
   const [upvotes, setUpvotes] = useState(review.upvotes);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [time, setTime] =useState();
+  const [show, setShow] = useState(false);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    if(votedOnReviews.includes(review.reviewId)) {
+    if(votedOnReviews.includes(review.reviewId) || getBearerToken() === null) {
       setButtonDisabled(true);
     }
+    let stillUtc = moment.utc(review.timeStamp).toDate();
+    let local = moment(stillUtc).local().format('YYYY-MM-DD HH:mm:ss');
+    setTime(local);
   }, [review.reviewId, votedOnReviews])
 
   const handleUpvote = () => {
-    // let newVotedOnReviews = votedOnReviews.push(review.reviewId);
-    // axios.patch(`${PSB_API_URL}/api/reviews/upvote/${review.reviewId}`,
-    //   {headers: {
-    //   'Authorization': getBearerToken()
-    //   }})
-    //   .then(() => {
-    //     axios.patch(`${PSB_API_URL}/api/user/${review.writtenByUsername}`, {votedOnReviews: newVotedOnReviews},
-    //     {headers: {
-    //       'Authorization': getBearerToken()
-    //     }})
-    //   })
-    //   .then(() => setUpvotes(upvotes + 1))
-    //   .catch((err) => console.log(err));
+    axios.patch(`${PSB_API_URL}/api/reviews/upvote/${review.reviewId}`, {},
+      {headers: {
+      'Authorization': getBearerToken()
+      }})
+      .then(() => setUpvotes(upvotes + 1))
+      .catch((err) => console.log(err));
     setUpvotes(upvotes + 1);
     setButtonDisabled(true);
   }
 
+  const handleClose = () => setShow(false);
+  const handleShow = (e) => {
+    setShow(true);
+    setIndex(e);
+  };
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
+
   return (
+    <>
     <Card className="mb-5">
-      <Card.Header as="h5">
+      <Card.Header as="h5" style={{backgroundColor: "#8F9ED9"}}>
         <Row>
           <Col xs={3}>
             <div style={{paddingTop:10}}>
@@ -49,11 +58,11 @@ function SingleReview({ review, votedOnReviews }) {
             </div>
           </Col>
           <Col xs={6}>
-            <Card.Title align="start" style={{"paddingTop": "15px"}}>{review.reviewTitle}</Card.Title>
+            <Card.Title align="start" style={{"paddingTop": "15px",color: "white"}}>{review.reviewTitle}</Card.Title>
           </Col>
           <Col>
-          <Image src={review.userPhoto} roundedCircle width="40"/>
-            <Card.Text style={{fontSize: '15px'}}>
+          <Image src={review.userPhoto} roundedCircle width="40" height="40"/>
+            <Card.Text style={{fontSize: '15px', color: "white"}}>
               {review.firstName} {review.lastName}
             </Card.Text>
           </Col>
@@ -65,13 +74,13 @@ function SingleReview({ review, votedOnReviews }) {
         </Card.Text>
       </Card.Body>
       <Row style={{marginLeft: 20}}>
-        {review.reviewImages.map((reviewImage) => {
-          return <Image src={reviewImage} style={{width:100}} key={reviewImage}/>
+        {review.reviewImages.map((reviewImage, imageIndex) => {
+          return <Image src={reviewImage} style={{width:100}} key={reviewImage} onClick={(e) => handleShow(imageIndex)}/>
         })}
       </Row>
       <Row className="mt-3">
         <Col xs={9}>
-          <p style={{textAlign: "left", paddingLeft: "20px"}}>{moment(review.timeStamp).fromNow()}</p>
+          <p style={{textAlign: "left", paddingLeft: "20px"}}>{moment(time).fromNow()}</p>
         </Col>
         <Col xs={1}>
             <Button variant="warning" disabled={buttonDisabled} onClick={() => handleUpvote()}>☺</Button>
@@ -81,6 +90,23 @@ function SingleReview({ review, votedOnReviews }) {
         </Col>
       </Row>
     </Card>
+
+    <Modal show={show} onHide={handleClose} size="lg">
+      <Modal.Header closeButton style={{backgroundColor: "#8F9ED9"}}>
+        <Modal.Title style={{color: "white"}}>Review photos</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Carousel activeIndex={index} onSelect={handleSelect}>
+          {review.reviewImages.map((reviewImage) => {
+            return (
+              <Carousel.Item key={reviewImage}>
+                <Image width="800" src={reviewImage} key={reviewImage} alt="review photo" style={{objectFit: "cover", maxHeight: "100%"}}/>
+              </Carousel.Item>
+            )})}
+        </Carousel>
+      </Modal.Body>
+    </Modal>
+    </>
   );
 }
 
