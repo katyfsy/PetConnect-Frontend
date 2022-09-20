@@ -292,7 +292,7 @@ const MessagingApp = () => {
                 inputProps={{ 'aria-label': 'ant design' }}
                 onClick={() => updateMessageSound()}
               />
-              <Typography>Mute</Typography>
+              <Typography>Mute  </Typography>
             </Stack>
           </Col>
           {currentContact === '' ?
