@@ -17,6 +17,13 @@ import {
   getBearerToken,
 } from '../UserProfile/psb-exports';
 import { GrStatusPlaceholder } from 'react-icons/gr';
+import { styled } from '@mui/material/styles';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import AntSwitch from './mui/AntSwitch';
 
 var stompClient = null;
 const MessagingApp = () => {
@@ -278,15 +285,15 @@ const MessagingApp = () => {
               setNotificationList={setNotificationList}
               currentContact={currentContact}
             />
-            <button
-              className='input-button'
-              style={
-                messageSound === 'true' ? null : { backgroundColor: 'gray' }
-              }
-              onClick={() => updateMessageSound()}
-            >
-              {messageSound === 'true' ? 'Mute Messages' : 'Unmute messages'}
-            </button>
+            <Stack direction='row' spacing={2} alignItems='center' justifyContent='center'>
+              <Typography>Unmute</Typography>
+              <AntSwitch
+                checked={messageSound === 'true' ? false : true}
+                inputProps={{ 'aria-label': 'ant design' }}
+                onClick={() => updateMessageSound()}
+              />
+              <Typography>Mute</Typography>
+            </Stack>
           </Col>
           {currentContact !== '' && (
             <Col sm={8}>
