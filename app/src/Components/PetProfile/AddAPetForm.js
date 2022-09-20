@@ -29,6 +29,11 @@ function AddAPetForm() {
   const [progress, setProgress] = useState(0);
   const [currentUpload, setCurrentUpload] = useState(0);
 
+  const [nonRequiredPetFields, setNonRequiredPetFields] = useState({
+    state: null,
+    city: null,
+  });
+
   let onExited = null;
   let user = getUser();;
   console.log(user);
@@ -43,9 +48,9 @@ function AddAPetForm() {
   console.log(photos);
   const MAX_NUMBER_OF_PHOTOS = 5;
 
-  const handleOnChange = (e) => {
-    setrequiredPetFields({
-      ...requiredPetFields,
+  const handleOnChange = (e, form, setform) => {
+    setform({
+      ...form,
       [e.target.name]: e.target.value,
     });
   };
@@ -241,6 +246,8 @@ function AddAPetForm() {
     description: Yup.string().min(20, 'minimum of 20 characters').required('description is required'),
     // photos: Yup.number().positive().required(),
   });
+
+  console.log(nonRequiredPetFields)
 
   // const getNumberOfPhotos = () => {
   //   return photos.length;
