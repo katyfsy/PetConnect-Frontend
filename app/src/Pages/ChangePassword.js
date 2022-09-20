@@ -195,6 +195,11 @@ const ChangePassword = () => {
                 Back to <Link to="/login">Login</Link>
               </div>
             </div>
+            <div className="d-grid gap-2 mt-4">
+                    <Button variant="outline-dark" type="submit">
+                      Build Token
+                    </Button>
+                  </div>
           </Form>
         </Row>
         <Row></Row>

@@ -252,7 +252,7 @@ const SignUpCard = () => {
               type="email"
               required
               className="form-control mt-1"
-              placeholder="Email Address"
+              placeholder="Used for password recovery"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
