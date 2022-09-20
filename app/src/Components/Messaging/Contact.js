@@ -36,6 +36,10 @@ const Contact = ({
     ? (listItem = (
         <li
           className='member'
+          onClick={() => {
+            setCurrentContact(contact);
+            markAsRead(username, contact);
+          }}
           style={{
             backgroundColor: '#F4976C',
           }}
