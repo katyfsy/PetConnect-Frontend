@@ -516,6 +516,8 @@ function AddAPetForm() {
                   progress={progress}
                   currentUpload={currentUpload}
                   adding={true}
+                  edit={false}
+                  preview={"preview"}
                 />
               </Form.Group>
 
