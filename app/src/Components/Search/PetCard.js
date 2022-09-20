@@ -6,13 +6,22 @@ import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import { Link } from 'react-router-dom';
 import {getUser} from '../UserProfile/psb-exports';
+import FavButton from '../UserProfile/FavButton';
 
 
-function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner}) {
+function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFavor}) {
   const [showModal, setShowModal] = useState(false);
 
   const [showToast, setShowToast] = useState(false);
   const toggleShowToast = () => setShowToast(!showToast);
+
+  const [ToastText, setToastText] = useState("");
+
+  const [resultPageIsFav, setResultPageIsFav] = useState(isFavor);
+
+  useEffect(()=>{
+    setResultPageIsFav(isFavor);
+  },[isFavor])
 
 
   const handleCloseModal = () => setShowModal(false);
@@ -21,6 +30,11 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner}) {
       setShowModal(true)
     } else {
       //mark pet as favorite
+      if (resultPageIsFav === true) {
+        setToastText("removed from favorites");
+      } else {
+        setToastText("marked as favorite");
+      }
       toggleShowToast();
     }
   }
@@ -29,7 +43,7 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner}) {
     <>
       <Card style={{ width: '18rem' }}>
         <Link to={`/pet/${petId}`} style={{ textDecoration: 'none', color: 'black' }}>
-          <Card.Img src={coverPhoto} />
+          <Card.Img src={coverPhoto} style={{height: '15rem'}}/>
         </Link>
         <Card.Body>
           <Card.Title>{name}</Card.Title>
@@ -42,7 +56,10 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner}) {
           <Card.Text>
             Rescued by {owner}
           </Card.Text>
-          <Button variant="primary" onClick={handleShow}>Favorite</Button>
+          {/* <Button variant="primary" onClick={handleShow}>Favorite</Button> */}
+          <div onClick={handleShow}>
+            <FavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/>
+          </div>
         </Card.Body>
       </Card>
       <Modal show={showModal} onHide={handleCloseModal}>
@@ -63,12 +80,12 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner}) {
         </Link>
       </Modal.Footer>
     </Modal>
-    <ToastContainer className="p-3" position='top-end'>
+    <ToastContainer className="p-3" position='top-end' containerPosition='fixed'>
       <Toast show={showToast} onClose={toggleShowToast} delay={3000} autohide>
             <Toast.Header>
               <strong className="me-auto">PetConnect</strong>
             </Toast.Header>
-            <Toast.Body>{name} marked as favorite</Toast.Body>
+            <Toast.Body>{name} {ToastText}</Toast.Body>
       </Toast>
     </ToastContainer>
    </>
