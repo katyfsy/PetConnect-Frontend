@@ -120,13 +120,13 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
       return (
       <div>
         <h5>Share your thoughts with other adopters</h5>
-        <Button style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}} onClick={() => loginAlert()} >Write your review</Button>
+        <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} onClick={() => loginAlert()} >Write your review</Button>
       </div>
       )} else if (params.username !== getUser() && params.username !== undefined) {
         return (
           <div>
             <h5>Share your thoughts with other adopters</h5>
-            <Button style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}} onClick={handleShow} >Write your review</Button>
+            <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} onClick={handleShow} >Write your review</Button>
           </div>
       )}
   }
@@ -218,10 +218,10 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}} onClick={handleClose}>
+          <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} onClick={handleClose}>
             Cancel
           </Button>
-          <Button style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}} onClick={() => {handleClose(); handleReviewSubmit()}}>
+          <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} onClick={() => {handleClose(); handleReviewSubmit()}}>
             Submit
           </Button>
         </Modal.Footer>

@@ -60,20 +60,18 @@ function Profile() {
 
   const renderEditOrMessageButton = () => {
     if(getUser() === "" || getUser() === null) {
-      return <Button style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}} size="lg" onClick={() => loginAlert()}>
+      return <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} size="lg" onClick={() => loginAlert()}>
                Message me
              </Button>;
     } else {
-      return <Button style={{backgroundColor: "#F4976C", borderColor: "#F4976C"}} size="lg" href="/messages">Message me</Button>
+      return <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} size="lg" href="/messages">Message me</Button>
     }
   }
 
   if(form.userType === "USER") {
     return (
       <div className="profilePage">
-        {/* <Container> */}
-          <Header/>
-        {/* </Container> */}
+        <Header/>
         <Navigationbar/>
         <Container>
           <Row className="mb-3">
@@ -106,9 +104,7 @@ function Profile() {
   } else {
     return (
       <div className="profilePage">
-        {/* <Container> */}
-          <Header/>
-        {/* </Container> */}
+        <Header/>
         <Navigationbar/>
         <Container>
           <Row className="mb-3">

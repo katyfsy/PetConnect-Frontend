@@ -61,7 +61,7 @@ function SingleReview({ review, votedOnReviews }) {
             <Card.Title align="start" style={{"paddingTop": "15px",color: "white"}}>{review.reviewTitle}</Card.Title>
           </Col>
           <Col>
-          <Image src={review.userPhoto} roundedCircle width="40"/>
+          <Image src={review.userPhoto} roundedCircle width="40" height="40"/>
             <Card.Text style={{fontSize: '15px', color: "white"}}>
               {review.firstName} {review.lastName}
             </Card.Text>

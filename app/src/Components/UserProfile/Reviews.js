@@ -169,7 +169,7 @@ function Reviews({ orgUsername }) {
         <Col xs={8}>
         <div className="mb-2" align="left">
           <DropdownButton
-            variant="warning"
+            variant="light"
             key='up'
             id={'dropdown-button-drop-up'}
             drop='up'
@@ -179,7 +179,7 @@ function Reviews({ orgUsername }) {
             <Dropdown.Item onClick={() => sortMostHelpful()}>Most Helpful</Dropdown.Item>
           </DropdownButton>
         </div>
-          <div className="overflow-auto" style={{height: 500}}>
+          <div className="overflow-auto" style={{height: 550}}>
             {
               currentReviews.map((review) => {
                 return <SingleReview review={review} key={review.reviewId} votedOnReviews={votedOnReviews}/>

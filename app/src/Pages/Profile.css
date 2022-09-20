@@ -20,7 +20,7 @@ sup {
   position: absolute;
 }
 .profilePage {
-  background-color: #F1EEEA;
+  background-color: #FAFAFA;
 }
 .header {
   background-image: url("../Components/Default/HeaderPics/Pet-Banner.jpeg");
@@ -28,5 +28,5 @@ sup {
   background-repeat: no-repeat;
   height: 150px;
   background-position: center;
-  background-color: white;
+  background-color: #FAFAFA;
 }
