@@ -12,7 +12,6 @@ import {
 } from "../Components/UserProfile/psb-exports";
 import axios from "axios";
 import emailjs from '@emailjs/browser';
-import { EMAIL_ID } from "../config.js";
 import Swal from 'sweetalert2';
 
 const ResetPassword = () => {
@@ -43,7 +42,11 @@ const ResetPassword = () => {
     axios.get(`${PSB_API_URL}/api/public/user/${username}`).then((res) => {
         //build the reset URL route
         if (res.status === 200) {
-          sendEmail(`http://localhost:3000/user/reset/${btoa(username + " " + EMAIL_ID.SECRET_KEY)}`, res.data.email);
+          console.log(process.env.REACT_APP_SECRET_KEY);
+          console.log(process.env.REACT_APP_SERVICE_ID);
+          console.log(process.env.REACT_APP_TEMPLATE_ID);
+          console.log(process.env.REACT_APP_USER_ID);
+          sendEmail(`http://localhost:3000/user/reset/${btoa(username + " " + process.env.REACT_APP_SECRET_KEY)}`, res.data.email);
         } else if (res.status === 204) {
           resetUserNotExistAlert();
         }
@@ -57,10 +60,10 @@ const ResetPassword = () => {
     };
     emailjs
       .send(
-        EMAIL_ID.SERVICE_ID,
-        EMAIL_ID.TEMPLATE_ID,
+        process.env.REACT_APP_SERVICE_ID,
+        process.env.REACT_APP_TEMPLATE_ID,
         templateParams,
-        EMAIL_ID.USER_ID
+        process.env.REACT_APP_USER_ID
       )
       .then(
         function (response) {

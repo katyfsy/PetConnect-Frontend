@@ -14,7 +14,6 @@ import {
 } from "../Components/UserProfile/psb-exports";
 import axios from "axios";
 import emailjs from "@emailjs/browser";
-import { EMAIL_ID } from "../config.js";
 import { useParams } from "react-router-dom";
 
 const ChangePassword = () => {
