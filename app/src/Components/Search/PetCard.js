@@ -5,21 +5,36 @@ import Modal from 'react-bootstrap/Modal';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import { Link } from 'react-router-dom';
+import {getUser} from '../UserProfile/psb-exports';
+import FavButton from '../UserProfile/FavButton';
 
 
-function PetCard({name, type, gender, age, breed}) {
+function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFavor}) {
   const [showModal, setShowModal] = useState(false);
 
   const [showToast, setShowToast] = useState(false);
   const toggleShowToast = () => setShowToast(!showToast);
 
+  const [ToastText, setToastText] = useState("");
+
+  const [resultPageIsFav, setResultPageIsFav] = useState(isFavor);
+
+  useEffect(()=>{
+    setResultPageIsFav(isFavor);
+  },[isFavor])
+
 
   const handleCloseModal = () => setShowModal(false);
   const handleShow = () => {
-    if (localStorage.getItem("token") === null) {
+    if (getUser() === null) {
       setShowModal(true)
     } else {
       //mark pet as favorite
+      if (resultPageIsFav === true) {
+        setToastText("removed from favorites");
+      } else {
+        setToastText("marked as favorite");
+      }
       toggleShowToast();
     }
   }
@@ -27,8 +42,11 @@ function PetCard({name, type, gender, age, breed}) {
   return(
     <>
       <Card style={{ width: '18rem' }}>
-        <Link to="/pets" style={{ textDecoration: 'none', color: 'black' }}>
-          <Card.Img src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350/100px180" />
+        <div onClick={handleShow} style={{height: '0px'}}>
+          <FavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/>
+        </div>
+        <Link to={`/pet/${petId}`} style={{ textDecoration: 'none', color: 'black' }}>
+          <Card.Img src={coverPhoto} style={{height: '15rem'}}/>
         </Link>
         <Card.Body>
           <Card.Title>{name}</Card.Title>
@@ -39,9 +57,10 @@ function PetCard({name, type, gender, age, breed}) {
             {age} * {breed}
           </Card.Text>
           <Card.Text>
-            Rescued by Humane Society
+            Rescued by {owner}
           </Card.Text>
-          <Button variant="primary" onClick={handleShow}>Favorite</Button>
+          {/* <Button variant="primary" onClick={handleShow}>Favorite</Button> */}
+
         </Card.Body>
       </Card>
       <Modal show={showModal} onHide={handleCloseModal}>
@@ -62,12 +81,12 @@ function PetCard({name, type, gender, age, breed}) {
         </Link>
       </Modal.Footer>
     </Modal>
-    <ToastContainer className="p-3" position='top-end'>
+    <ToastContainer className="p-3" position='top-end' containerPosition='fixed'>
       <Toast show={showToast} onClose={toggleShowToast} delay={3000} autohide>
             <Toast.Header>
               <strong className="me-auto">PetConnect</strong>
             </Toast.Header>
-            <Toast.Body>{name} marked as favorite</Toast.Body>
+            <Toast.Body>{name} {ToastText}</Toast.Body>
       </Toast>
     </ToastContainer>
    </>

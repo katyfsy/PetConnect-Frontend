@@ -43,7 +43,7 @@ function Navigationbar() {
   return (
     <Navbar expand="lg" className="navBar" style={{paddingTop: 0, backgroundColor: "#8F9ED9", marginBottom: 10}}>
       <Container>
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Collapse style={{backgroundColor: "#8F9ED9"}} id="basic-navbar-nav">
           <Nav className="me-auto">
             {isLoggedIn() ? <Nav.Link href="/myprofile" style={{color: "white"}}>MyProfile</Nav.Link> : null}
             <Nav.Link href="/pets" style={{color: "white"}}>Pets</Nav.Link>

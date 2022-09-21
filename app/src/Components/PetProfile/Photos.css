@@ -66,6 +66,10 @@
   cursor: pointer;
 }
 
+
+/* pls avoid css of general tags */
+
+/* span {
 .dropzone-icon-active {
   font-size: 2rem;
   color: rgb(40, 87, 196);
@@ -80,7 +84,7 @@
 span {
   font-size: 2rem;
   color: #777;
-}
+} */
 
 .dropzone {
   padding-top: 50px;
