@@ -1,15 +1,18 @@
 import React, { useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
-import ProgressBar from 'react-bootstrap/ProgressBar';
-import Button from 'react-bootstrap/Button';
-import Alert from "./AlertModalPetForms"
-import PhotoPreviews from "./PhotoPreviews"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFolder, faFolderOpen, faCircleMinus } from '@fortawesome/free-solid-svg-icons'
+import ProgressBar from "react-bootstrap/ProgressBar";
+import Button from "react-bootstrap/Button";
+import Alert from "./AlertModalPetForms";
+import PhotoPreviews from "./PhotoPreviews";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFolder,
+  faFolderOpen,
+  faCircleMinus,
+} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "./Photos.css";
 import { useDropzone } from "react-dropzone";
-
 
 const Photos = ({
   photos,
@@ -22,6 +25,9 @@ const Photos = ({
   progress,
   currentUpload,
   adding,
+  edit,
+  preview,
+  photoId,
 }) => {
   const [showRadio, setShowRadio] = useState(showRadios);
 
@@ -30,34 +36,35 @@ const Photos = ({
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
 
-  const customValidation = useCallback((file) => {
-
-    if (maxPhotos - photos.length === 0) {
-      return {
-        code: "max-files-exceeded",
-        message: `Maximum of ${maxPhotos} photos exceeded`
-      };
-    } else {
-      for (let i = 0; i < photos.length; i++) {
-        if (file.name === photos[i].name) {
-          return {
-            code: "same-file-name",
-            message: `A photo with ${file.name} is already staged for upload`
-          };
+  const customValidation = useCallback(
+    (file) => {
+      if (maxPhotos - photos.length === 0) {
+        return {
+          code: "max-files-exceeded",
+          message: `Maximum of ${maxPhotos} photos exceeded`,
+        };
+      } else {
+        for (let i = 0; i < photos.length; i++) {
+          if (file.name === photos[i].name) {
+            return {
+              code: "same-file-name",
+              message: `A photo with ${file.name} is already staged for upload`,
+            };
+          }
         }
       }
-    }
-  }, [photos])
-
+    },
+    [photos]
+  );
 
   const onDropAccepted = useCallback(
     (acceptedFiles) => {
       console.log("these are the accepted photos", acceptedFiles);
       let newPhotos = acceptedFiles.map((photo) =>
-          Object.assign(photo, {
-            preview: URL.createObjectURL(photo),
-          })
-        );
+        Object.assign(photo, {
+          preview: URL.createObjectURL(photo),
+        })
+      );
       handleAddPhotos(newPhotos);
       console.log("latestPhotos(one behind): ", photos);
     },
@@ -66,30 +73,30 @@ const Photos = ({
 
   const onDropRejected = useCallback(
     (e) => {
-      let error = e[0].errors[0].code
-      let message = e[0].errors[0].message
-      console.log(e[0].errors)
+      let error = e[0].errors[0].code;
+      let message = e[0].errors[0].message;
+      console.log(e[0].errors);
       if (error === "too-many-files" || error === "max-files-exceeded") {
-        setShowAlert(true)
-        setAlertTitle("Maximum number of photos exceeded")
-        setAlertText(`Photo allowance per profile is ${maxPhotos}`)
-        setAlertType("error")
+        setShowAlert(true);
+        setAlertTitle("Maximum number of photos exceeded");
+        setAlertText(`Photo allowance per profile is ${maxPhotos}`);
+        setAlertType("error");
       } else if (error === "file-invalid-type") {
-        console.log(e)
-        setShowAlert(true)
-        setAlertTitle("File type not allowed")
-        setAlertText("Attempted to upload a file that is not an image")
-        setAlertType("error")
+        console.log(e);
+        setShowAlert(true);
+        setAlertTitle("File type not allowed");
+        setAlertText("Attempted to upload a file that is not an image");
+        setAlertType("error");
       } else if (error === "same-file-name") {
-        setShowAlert(true)
-        setAlertTitle("One or more photos were not staged")
-        setAlertText("Photos with the same name are ignored")
-        setAlertType("error")
+        setShowAlert(true);
+        setAlertTitle("One or more photos were not staged");
+        setAlertText("Photos with the same name are ignored");
+        setAlertType("error");
       } else {
-        setShowAlert(true)
-        setAlertTitle("Unable to process this request")
-        setAlertText("Unknown error")
-        setAlertType("error")
+        setShowAlert(true);
+        setAlertTitle("Unable to process this request");
+        setAlertText("Unknown error");
+        setAlertType("error");
       }
     },
     [photos]
@@ -133,7 +140,7 @@ const Photos = ({
       "image/jpeg": [".jpeg", ".jpg"],
       "image/png": [".png"],
       "image/webp": [".webp"],
-      "image/bmp": [".bmp"]
+      "image/bmp": [".bmp"],
     },
   });
 
@@ -224,28 +231,45 @@ const Photos = ({
 
   return (
     <>
-     {photos.length > 0 ? <div className="pu-status">{`${photos.length} / ${maxPhotos}`}</div> : <div className="pu-status-error">{'at least one photo required'}</div>}
+      {photos.length > 0 ? (
+        <div className="pu-status">{`${photos.length} / ${maxPhotos}`}</div>
+      ) : (
+        <div className="pu-status-error">{"at least one photo required"}</div>
+      )}
       <div className="photo-uploader-container">
         {/* <div className="pu-title">
           {`Upload up to ${maxPhotos} photos for this pet profile`}
         </div> */}
         <div {...getRootProps({ className: `dropzone ${additionalClass}` })}>
           <input {...getInputProps()} />
-          <FontAwesomeIcon className={isDragActive ? "dropzone-icon-active" : "dropzone-icon-inactive"} icon={isDragActive ? faFolderOpen : faFolder} />
+          <FontAwesomeIcon
+            className={
+              isDragActive ? "dropzone-icon-active" : "dropzone-icon-inactive"
+            }
+            icon={isDragActive ? faFolderOpen : faFolder}
+          />
           <p>Drag n' drop or select up to {maxPhotos}</p>
-          <Button variant={isDragActive ? "primary" : "secondary"} onClick={open}>Browse files...</Button>
+          <Button
+            variant={isDragActive ? "primary" : "secondary"}
+            onClick={open}
+          >
+            Browse files...
+          </Button>
         </div>
         <div className="preview-container">
-            <PhotoPreviews
-              photos={photos}
-              coverPhoto={coverPhoto}
-              handleCoverPhoto={handleCoverPhoto}
-              handleRemoveThumb={handleRemoveThumb}
-              currentUpload={currentUpload}
-              progress={progress}
-              showRadio={showRadio}
-              adding={adding}
-            />
+          <PhotoPreviews
+            photos={photos}
+            coverPhoto={coverPhoto}
+            handleCoverPhoto={handleCoverPhoto}
+            handleRemoveThumb={handleRemoveThumb}
+            currentUpload={currentUpload}
+            progress={progress}
+            showRadio={showRadio}
+            adding={adding}
+            edit={edit}
+            preview={preview}
+            photoId={photoId}
+          />
         </div>
         <Alert
           show={showAlert}
