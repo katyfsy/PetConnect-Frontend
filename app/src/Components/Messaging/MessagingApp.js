@@ -72,10 +72,10 @@ const MessagingApp = () => {
 
   useEffect(() => {
     if (userData.username) {
-      // let Sock = new SockJS(
-      //   'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
-      // );
-      let Sock = new SockJS('http://localhost:8080/ws');
+      let Sock = new SockJS(
+        'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
+      );
+      // let Sock = new SockJS('http://localhost:8080/ws');
       stompClient = over(Sock);
       stompClient.connect({}, onConnected, onError);
       getAllChats(userData.username);
@@ -163,11 +163,11 @@ const MessagingApp = () => {
   };
 
   const getAllChats = (username) => {
-    // axios
-    //   .get(
-        // `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`
-      // )
-      axios.get(`http://localhost:8080/messages/${username}`)
+    axios
+      .get(
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`
+      )
+      // axios.get(`http://localhost:8080/messages/${username}`)
       .then((response) => {
         setPrivateChats(new Map(Object.entries(response.data)));
         privateChatsRef.current = new Map(Object.entries(response.data));
@@ -178,11 +178,11 @@ const MessagingApp = () => {
   };
 
   const getAllNotifications = (username) => {
-    // axios
-    //   .get(
-        // `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`
-      // )
-      axios.get(`http://localhost:8080/messages/notifications/${username}`)
+    axios
+      .get(
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`
+      )
+      // axios.get(`http://localhost:8080/messages/notifications/${username}`)
       .then((response) => {
         setNotificationList(response.data);
       })
@@ -274,7 +274,11 @@ const MessagingApp = () => {
   };
 
   const updateReceiveEmails = () => {
-    axios.patch(`http://localhost:8080/messages/emailnotifications/${userData.username}/${!receiveEmails}`)
+    axios
+    .patch(
+      `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${userData.username}/${!receiveEmails}`
+      // `http://localhost:8080/messages/emailnotifications/${userData.username}/${!receiveEmails}`
+      )
     .then((response) => {
       if (receiveEmails) {
         setReceiveEmails(false)
