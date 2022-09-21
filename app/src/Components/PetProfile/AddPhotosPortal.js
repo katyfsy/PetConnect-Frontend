@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 import ReactDom from "react-dom";
 import Photos from "./Photos";
@@ -53,6 +52,8 @@ function AddPhotosPortal({
         showRadios={false}
         progress={progress}
         currentUpload={currentUpload}
+        edit={false}
+        preview={"preview"}
         maxPhotos={
           MAX_NUMBER_OF_PHOTOS - thisPet.photos.length - addPhotos.length
         }
