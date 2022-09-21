@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Image, Navbar } from 'react-bootstrap';
-import "../../Pages/Profile.css";
+import "./Footer.css";
 
 function Footer() {
   return (

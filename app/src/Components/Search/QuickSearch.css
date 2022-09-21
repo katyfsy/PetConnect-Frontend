@@ -1,6 +1,6 @@
 .quickSearchBtns{
-  top: 600px;
-  position: fixed;
+  /* top: 560px;
+  position: fixed; */
   z-index: -1;
   text-align: center;
 }
