@@ -28,6 +28,7 @@ import AntSwitch from './mui/AntSwitch';
 var stompClient = null;
 const MessagingApp = () => {
   const { state } = useLocation();
+
   const privateChatsRef = useRef(new Map());
   const senderPhotoRef = useRef(
     'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'
@@ -36,8 +37,8 @@ const MessagingApp = () => {
     'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'
   );
   const newConversationReceiverName = useRef(state ? state.receiverName : '');
-
-  let messageId = '';
+  const emailRef = useRef('');
+  const messageIdRef = useRef('');
 
   const [userData, setUserData] = useState({
     username: getUser(),
@@ -60,10 +61,7 @@ const MessagingApp = () => {
   if (localStorage.getItem('notificationSound') === null) {
     localStorage.setItem('notificationSound', 'true');
   }
-
   const [receiveEmails, setReceiveEmails] = useState(false);
-
-  let email = '';
 
   useEffect(() => {
     if (!privateChats.get(userData.receiverName)) {
@@ -73,7 +71,6 @@ const MessagingApp = () => {
   }, [state]);
 
   useEffect(() => {
-    console.log('HELLO FROM USERDATA.USERNAME USE EFFECT');
     if (userData.username) {
       // let Sock = new SockJS(
       //   'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
@@ -86,11 +83,19 @@ const MessagingApp = () => {
       axios
         .get(`${PSB_API_URL}/api/public/user/${userData.username}`)
         .then((response) => {
-          console.log('response', response.data);
           if (response.data.userPhoto !== null) {
             senderPhotoRef.current = response.data.userPhoto;
             setUserData({ ...userData, senderPhoto: senderPhotoRef.current });
           }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      axios
+        .get(`http://localhost:8080/messages/emailnotifications/${userData.username}`)
+        .then((response) => {
+          console.log(response.data);
+          setReceiveEmails(response.data);
         })
         .catch((err) => {
           console.log(err);
@@ -118,8 +123,7 @@ const MessagingApp = () => {
               receiverPhoto: receiverPhotoRef.current,
             });
           }
-          email = response.data.email;
-          console.log('email set to :', email);
+          emailRef.current = response.data.email;
         })
         .catch((err) => {
           console.log(err);
@@ -129,7 +133,6 @@ const MessagingApp = () => {
 
   useEffect(() => {
     // remove the if once we retrieve from localhost (signup enabled)
-    console.log('IN THE USE EFFECT, FIX NOW');
     if (newConversationReceiverName.current) {
       axios
         .get(
@@ -143,8 +146,7 @@ const MessagingApp = () => {
               receiverPhoto: receiverPhotoRef.current,
             });
           }
-          email = response.data.email;
-          console.log('email now set to :', email);
+          emailRef.current = response.data.email;
         })
         .catch((err) => {
           console.log(err);
@@ -211,7 +213,7 @@ const MessagingApp = () => {
     // getAllChats(userData.username);
     getAllNotifications(userData.username);
     let payloadData = JSON.parse(payload.body);
-    if (messageId !== payloadData.id) {
+    if (messageIdRef.current !== payloadData.id) {
       if (privateChatsRef.current.get(payloadData.senderName)) {
         privateChatsRef.current.get(payloadData.senderName).push(payloadData);
         setPrivateChats(new Map(privateChatsRef.current));
@@ -221,13 +223,8 @@ const MessagingApp = () => {
         privateChatsRef.current.set(payloadData.senderName, list);
         setPrivateChats(new Map(privateChatsRef.current));
       }
-      console.log(
-        'PRIVATE MESSAGE RECEIVED: ',
-        privateChats.get(payloadData.senderName)
-      );
-      console.log('PRIVATE MESSAGE ID: ', payloadData.id);
       playAudio();
-      messageId = payloadData.id;
+      messageIdRef.current = payloadData.id;
     } else {
       console.log('CAUGHT DUPLICATE BUG D:<');
     }
@@ -235,6 +232,7 @@ const MessagingApp = () => {
 
   const sendPrivateMessage = () => {
     if (stompClient) {
+      console.log('email from message', emailRef.current)
       let chatMessage = {
         senderName: userData.username,
         receiverName: currentContact ? currentContact : userData.receiverName,
@@ -243,7 +241,7 @@ const MessagingApp = () => {
         status: 'MESSAGE',
         senderPhoto: senderPhotoRef.current,
         receiverPhoto: receiverPhotoRef.current,
-        email: email
+        email: emailRef.current
       };
       if (!privateChatsRef.current.get(chatMessage.receiverName)) {
         privateChatsRef.current.set(chatMessage.receiverName, []);
@@ -276,11 +274,6 @@ const MessagingApp = () => {
   };
 
   const updateReceiveEmails = () => {
-    // if (receiveEmails) {
-    //   setReceiveEmails(false)
-    // } else {
-    //   setReceiveEmails(true)
-    // }
     axios.patch(`http://localhost:8080/messages/emailnotifications/${userData.username}/${!receiveEmails}`)
     .then((response) => {
       if (receiveEmails) {
