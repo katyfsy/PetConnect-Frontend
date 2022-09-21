@@ -47,6 +47,7 @@ function AddAPetForm() {
     zip: null,
     type: null,
     sex: null,
+    reproductiveStatus: null,
     description: null,
   });
   console.log(photos);
@@ -281,6 +282,7 @@ function AddAPetForm() {
             size: "",
             age: "",
             sex: "",
+            reproductiveStatus: "",
             description: "",
             // photos: "",
           }}
@@ -401,6 +403,7 @@ function AddAPetForm() {
                   <Form.Control
                     type="number"
                     name="zip"
+                    value={values.zip}
                     onChange={(e) => {
                       handleChange(e);
                       handleOnChange(
@@ -473,7 +476,6 @@ function AddAPetForm() {
               </div>
 
               <div className="addpet-form-section">
-
               <Form.Group className="mb-3 form-fields-3-row" controlId="size-validation">
                   <Form.Label>Size</Form.Label>
                   <Form.Select className="pet-size"
@@ -545,6 +547,35 @@ function AddAPetForm() {
                     {errors.age}
                   </Form.Control.Feedback>
                 </Form.Group>
+              </div>
+
+              <div className="addpet-form-section">
+                <Form.Group className="mb-3 form-fields-2-row" controlId="reproductiveStatus-validation">
+                  <Form.Label>Reproductive Status</Form.Label>
+                  <Form.Select className="pet-reproductiveStatus"
+                    type="text"
+                    name="reproductiveStatus"
+                    value={values.reproductiveStatus}
+                    onChange={(e) => {
+                      handleChange(e);
+                      handleOnChange(
+                        e,
+                        nonRequiredPetFields,
+                        setNonRequiredPetFields
+                      );
+                    }}
+                    isInvalid={errors.reproductiveStatus}
+                  >
+                    <option value="">Select status</option>
+                    <option value={true}>Yes</option>
+                    <option value={false}>No </option>
+                  </Form.Select>
+                  <Form.Control.Feedback className='form-error' type="invalid">
+                    {errors.reproductiveStatus}
+                  </Form.Control.Feedback>
+                </Form.Group>
+
+
               </div>
 
 
