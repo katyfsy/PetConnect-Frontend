@@ -42,6 +42,9 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFa
   return(
     <>
       <Card style={{ width: '18rem' }}>
+        <div onClick={handleShow} style={{height: '0px'}}>
+          <FavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/>
+        </div>
         <Link to={`/pet/${petId}`} style={{ textDecoration: 'none', color: 'black' }}>
           <Card.Img src={coverPhoto} style={{height: '15rem'}}/>
         </Link>
@@ -57,9 +60,7 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFa
             Rescued by {owner}
           </Card.Text>
           {/* <Button variant="primary" onClick={handleShow}>Favorite</Button> */}
-          <div onClick={handleShow}>
-            <FavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/>
-          </div>
+
         </Card.Body>
       </Card>
       <Modal show={showModal} onHide={handleCloseModal}>
