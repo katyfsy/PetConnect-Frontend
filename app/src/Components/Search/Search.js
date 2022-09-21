@@ -89,7 +89,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
   const handleSuggestionSearchClick = (value) => {
     // setDropdownDisplay(false);
     // setAutocompleteDisplay(false);
-    console.log('VALUE in clicking suggestion:', value);
+    // console.log('VALUE in clicking suggestion:', value);
     setBreed(value.breed);
     setType(value.type);
     var params = value.type + " " + value.breed;
@@ -188,7 +188,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
                 .map((value, i) => {
                   return (
                     <div
-                      onClick={()=>{console.lop("clicked on suggestion");handleSuggestionSearchClick(value)}}
+                      onClick={()=>{handleSuggestionSearchClick(value)}}
                       className="searchOption"
                       key={i}
                     >

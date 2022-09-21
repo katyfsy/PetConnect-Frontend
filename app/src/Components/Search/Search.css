@@ -7,7 +7,7 @@
   gap: 10px;
   grid-template-areas: ". bar1 bar2 sbtn ."
                       ".  dd    .    .  .";
-  margin-bottom:100px;
+  /* margin-bottom:100px; */
   padding-right: 100px;
 }
 
@@ -52,5 +52,5 @@
 }
 
 #searchForm {
-  /* margin-left: 100px; */
+  max-height: fit-content;
 }
