@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 import './Search.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 
@@ -68,6 +69,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
 
   const handleAutocomplete =  (value) => {
     setDropdownDisplay(false);
+    console.log('value passed to handleAutocomplete:', value);
     setSearchQuery(value);
     setAutocompleteDisplay(true);
 
@@ -85,8 +87,9 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
   }
 
   const handleSuggestionSearchClick = (value) => {
-    setDropdownDisplay(false);
-    setAutocompleteDisplay(false);
+    // setDropdownDisplay(false);
+    // setAutocompleteDisplay(false);
+    console.log('VALUE in clicking suggestion:', value);
     setBreed(value.breed);
     setType(value.type);
     var params = value.type + " " + value.breed;
@@ -127,26 +130,42 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
           })
         .catch(err=>console.log(err));
       }
-
     }
   };
 
   return (
-    <div>
-      <form id="searchForm">
-        <div data-testid="search"  ref={wrapperRef} className="searchGroup">
-          <input
-            type="search"
-            id="searchInput"
-            aria-label="search-pets"
-            autocomplete="off"
-            placeholder="Search pets"
-            onClick={() => setDropdownDisplay(!autocompleteDisplay)}
-            value={searchQuery}
-            onChange={e => handleAutocomplete(e.target.value)}
-          />
 
+      // <div className="searchGrid">
+      <form id="searchForm" >
+          <div data-testid="search"  ref={wrapperRef} className="searchGroup">
 
+            <input
+              type="search"
+              className="form-control"
+              id="searchInput"
+              aria-label="search-pets"
+              autocomplete="off"
+              placeholder="Search pets"
+              onClick={() => setDropdownDisplay(!autocompleteDisplay)}
+              value={searchQuery}
+              onChange={e => handleAutocomplete(e.target.value)}
+              />
+
+            <input
+                type="search"
+                className="form-control"
+                id="zipcodeInput"
+                aria-label="search-zip"
+                placeholder="Enter zip"
+                value={zipcode}
+                onChange={e=>setZipcode(e.target.value)}/>
+
+            <button
+              id="searchButton"
+              className="btn btn-outline-secondary"
+              onClick={handleSubmitClick}>Search
+            </button>
+          {/* </div> */}
           {dropdownDisplay && (
             <div className="searchDropdownContainer">
               {defaultSearches
@@ -169,7 +188,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
                 .map((value, i) => {
                   return (
                     <div
-                      onClick={()=>handleSuggestionSearchClick(value)}
+                      onClick={()=>{console.lop("clicked on suggestion");handleSuggestionSearchClick(value)}}
                       className="searchOption"
                       key={i}
                     >
@@ -180,20 +199,10 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
                 })}
             </div>
           )}
-          <input
-              type="search"
-              id="zipcodeInput"
-              aria-label="search-zip"
-              placeholder="Enter zip"
-              value={zipcode}
-              onChange={e=>setZipcode(e.target.value)}/>
-          <button
-            id="searchButton"
-            className="btn btn-outline-secondary"
-            onClick={handleSubmitClick}>Search</button>
-        </div>
+      </div>
       </form>
-    </div>
+      // </div>
+
   )
 }
 
