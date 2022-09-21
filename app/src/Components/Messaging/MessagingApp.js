@@ -92,7 +92,10 @@ const MessagingApp = () => {
           console.log(err);
         });
       axios
-        .get(`http://localhost:8080/messages/emailnotifications/${userData.username}`)
+        .get(
+          `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${userData.username}`
+          // `http://localhost:8080/messages/emailnotifications/${userData.username}`
+          )
         .then((response) => {
           console.log(response.data);
           setReceiveEmails(response.data);
