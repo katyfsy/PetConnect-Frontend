@@ -14,27 +14,30 @@ function Reviews({ orgUsername }) {
   const [votedOnReviews, setVotedOnReviews] =useState([]);
 
   useEffect(() => {
-    axios.get(`${PSB_API_URL}/api/user/${getUser()}`,
-    {headers: {
-      'Authorization': getBearerToken()
-    }})
-    .then((res) => {
-      if(res.data.votedOnReviews === undefined || res.data.votedOnReviews === null) {
-        setVotedOnReviews([]);
-      } else {
-      setVotedOnReviews(res.data.votedOnReviews)
-    }})
-    .then(() => {
-      axios.get(`${PSB_API_URL}/api/public/reviews/${orgUsername}`)
+    if (getUser() !== null) {
+      axios.get(`${PSB_API_URL}/api/user/${getUser()}`,
+      {headers: {
+        'Authorization': getBearerToken()
+      }})
+      .then((res) => {
+        if(res.data.votedOnReviews === undefined || res.data.votedOnReviews === null) {
+          setVotedOnReviews([]);
+        } else {
+        setVotedOnReviews(res.data.votedOnReviews)
+      }})
+      .catch((err) => console.log(err))
+    }
+
+    axios.get(`${PSB_API_URL}/api/public/reviews/${orgUsername}`)
     .then((res) => {
       setReviews(res.data.reviews);
-      setCurrentReviews(res.data.reviews);
+      // setCurrentReviews(res.data.reviews);
+      sortMostRecent(res.data.reviews);
       calculateAvgRating(res.data.reviews);
       calculateRatingPercent(res.data.reviews);
     })
     .catch((err) => console.log(err))
-    })
-    .catch((err) => console.log(err))
+
   },[orgUsername])
 
   function calculateAvgRating(reviews) {
@@ -124,7 +127,7 @@ function Reviews({ orgUsername }) {
     setCurrentReviews(reviewList);
   }
 
-  const sortMostRecent = () => {
+  const sortMostRecent = (reviews) => {
     let reviewList = [...reviews];
     reviewList.sort((a, b) => {
       let da = new Date(a.timeStamp);
@@ -138,13 +141,13 @@ function Reviews({ orgUsername }) {
     axios.get(`${PSB_API_URL}/api/public/reviews/${orgUsername}`)
     .then((res) => {
       setReviews(res.data.reviews);
-      setCurrentReviews(res.data.reviews);
+      // setCurrentReviews(res.data.reviews);
+      sortMostRecent(res.data.reviews);
       calculateAvgRating(res.data.reviews);
       calculateRatingPercent(res.data.reviews);
     })
     .catch((err) => console.log(err));
   }
-
 
   return (
     <Container style={{paddingTop: "70px"}}>
@@ -166,20 +169,20 @@ function Reviews({ orgUsername }) {
         <Col xs={8}>
         <div className="mb-2" align="left">
           <DropdownButton
+            variant="light"
             key='up'
             id={'dropdown-button-drop-up'}
             drop='up'
-            variant="secondary"
             title={'Sort'}
           >
-            <Dropdown.Item onClick={() => sortMostRecent()}>Most Recent</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortMostRecent(reviews)}>Most Recent</Dropdown.Item>
             <Dropdown.Item onClick={() => sortMostHelpful()}>Most Helpful</Dropdown.Item>
           </DropdownButton>
         </div>
-          <div className="overflow-auto" style={{height: 500}}>
+          <div className="overflow-auto" style={{height: 550}}>
             {
               currentReviews.map((review) => {
-                return <SingleReview review={review} key={review.firstName} votedOnReviews={votedOnReviews}/>
+                return <SingleReview review={review} key={review.reviewId} votedOnReviews={votedOnReviews}/>
               })
             }
           </div>

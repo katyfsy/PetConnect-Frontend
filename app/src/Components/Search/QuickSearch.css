@@ -1,27 +1,26 @@
 .quickSearchBtns{
-  padding-top:300px;
+  top: 600px;
   position: fixed;
+  z-index: -1;
+  text-align: center;
 }
 
-/* .quickSearchButtons{
-  display: grid;
-  grid-template-columns: 0.5fr 3fr 3fr 3fr 3fr 0.5fr;
-  gap: 10px;
-  grid-template-areas:
-    "left dog cat other org right";
+
+#allCatsBtn, #allDogsBtn, #otherPetsBtn, #orgsBtn{
+  height: 40px;
+  vertical-align: bottom;
+  background-color: #8F9ED9;
+  color: white;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 10px;;
 }
 
-.dogBtn {
-  grid-area: dog;
+.quickBtn:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
-.catBtn {
-  grid-area: cat;
+.quickBtnImg {
+  height:120px;
+  /* width: 100px; */
 }
-.otherBtn {
-  grid-area: other;
-}
-
-.orgBtn {
-  grid-area: org;
-} */

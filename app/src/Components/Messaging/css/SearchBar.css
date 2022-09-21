@@ -1,0 +1,9 @@
+.searchBar {
+  position: relative;
+  left: 2%;
+}
+
+.inputBar {
+  width: 90%;
+  border-radius: 5px;
+}

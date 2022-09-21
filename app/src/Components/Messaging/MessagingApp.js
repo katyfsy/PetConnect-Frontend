@@ -10,79 +10,140 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useLocation } from 'react-router-dom';
 import audio from './static/bark.wav';
-import { getUser } from "../UserProfile/psb-exports"
+import './css/MessagingApp.css';
+import {
+  getUser,
+  PSB_API_URL,
+  getBearerToken,
+} from '../UserProfile/psb-exports';
+import { GrStatusPlaceholder } from 'react-icons/gr';
+import { styled } from '@mui/material/styles';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import AntSwitch from './mui/AntSwitch';
 
 var stompClient = null;
-
 const MessagingApp = () => {
   const { state } = useLocation();
+  const privateChatsRef = useRef(new Map());
+  const senderPhotoRef = useRef(
+    'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'
+  );
+  const receiverPhotoRef = useRef(
+    'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png'
+  );
+  const newConversationReceiverName = useRef(state ? state.receiverName : '');
+
+  let messageId = '';
+
   const [userData, setUserData] = useState({
-    // uncomment once the signup is open up
-    // username: getUser(),
-    username: '',
+    username: getUser(),
     // check the state, if state !== null -> redirected from pet page
     receiverName: state ? state.receiverName : '',
     connected: false,
     message: '',
-    senderPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png',
-    receiverPhoto: 'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png',
+    senderPhoto: senderPhotoRef.current,
+    receiverPhoto: receiverPhotoRef.current,
   });
-
-  const privateChatsRef = useRef(new Map());
   const [privateChats, setPrivateChats] = useState(privateChatsRef.current);
-
-  const [currentContact, setCurrentContact] = useState('');
-
+  const [currentContact, setCurrentContact] = useState(
+    state ? state.receiverName : ''
+  );
   const [notificationList, setNotificationList] = useState([]);
 
+  const [messageSound, setMessageSound] = useState(
+    localStorage.getItem('notificationSound') || 'true'
+  );
+  if (localStorage.getItem('notificationSound') === null) {
+    localStorage.setItem('notificationSound', 'true');
+  }
+
   useEffect(() => {
-    // remove the if once we retrieve from localhost (signup enabled)
+    console.log('OUTSIDE');
+    if (!privateChats.get(userData.receiverName)) {
+      console.log('INSIDE');
+      privateChatsRef.current.set(userData.receiverName, []);
+      // setPrivateChats(new Map(privateChatsRef.current));
+    }
+  }, [state]);
+
+  useEffect(() => {
+    console.log('HELLO FROM USERDATA.USERNAME USE EFFECT');
     if (userData.username) {
+      let Sock = new SockJS(
+        'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
+      );
+      // let Sock = new SockJS('http://localhost:8080/ws');
+      stompClient = over(Sock);
+      stompClient.connect({}, onConnected, onError);
+      getAllChats(userData.username);
+      getAllNotifications(userData.username);
       axios
-        .get(
-          `http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/public/user/${userData.username}`
-        )
+        .get(`${PSB_API_URL}/api/public/user/${userData.username}`)
         .then((response) => {
-          setUserData({ ...userData, senderPhoto: response.data.userPhoto });
+          if (response.data.userPhoto !== null) {
+            senderPhotoRef.current = response.data.userPhoto;
+            setUserData({ ...userData, senderPhoto: senderPhotoRef.current });
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     }
-
   }, [userData.username]);
 
   useEffect(() => {
     // remove the if once we retrieve from localhost (signup enabled)
-    if (userData.receiverName) {
+    if (currentContact) {
       axios
-        .get(
-          `http://a6740867e357340d391ac68d12435ca6-2060668428.us-west-2.elb.amazonaws.com/api/public/user/${userData.receiverName}`
-        )
+        .get(`${PSB_API_URL}/api/public/user/${currentContact}`)
         .then((response) => {
-          setUserData({
-            ...userData,
-            receiverPhoto: response.data.userPhoto,
-          });
+          if (response.data.userPhoto !== null) {
+            receiverPhotoRef.current = response.data.userPhoto;
+            setUserData({
+              ...userData,
+              receiverPhoto: receiverPhotoRef.current,
+            });
+          } else {
+            receiverPhotoRef.current =
+              'https://cdn2.iconfinder.com/data/icons/veterinary-12/512/Veterinary_Icons-16-512.png';
+            setUserData({
+              ...userData,
+              receiverPhoto: receiverPhotoRef.current,
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     }
+  }, [currentContact]);
 
-  }, [userData.receiverName]);
-
-  const onLanding = (event) => {
-    event.preventDefault();
-    let Sock = new SockJS(
-      'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
-    );
-    // let Sock = new SockJS('http://localhost:8080/ws');
-    stompClient = over(Sock);
-    stompClient.connect({}, onConnected, onError);
-    getAllChats(userData.username);
-    getAllNotifications(userData.username);
-  };
+  useEffect(() => {
+    // remove the if once we retrieve from localhost (signup enabled)
+    console.log('IN THE USE EFFECT, FIX NOW');
+    if (newConversationReceiverName.current) {
+      axios
+        .get(
+          `${PSB_API_URL}/api/public/user/${newConversationReceiverName.current}`
+        )
+        .then((response) => {
+          if (response.data.userPhoto !== null) {
+            receiverPhotoRef.current = response.data.userPhoto;
+            setUserData({
+              ...userData,
+              receiverPhoto: receiverPhotoRef.current,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
@@ -143,33 +204,40 @@ const MessagingApp = () => {
     // getAllChats(userData.username);
     getAllNotifications(userData.username);
     let payloadData = JSON.parse(payload.body);
-
-    if (privateChatsRef.current.get(payloadData.senderName)) {
-      privateChatsRef.current.get(payloadData.senderName).push(payloadData);
-      setPrivateChats(new Map(privateChatsRef.current));
+    if (messageId !== payloadData.id) {
+      if (privateChatsRef.current.get(payloadData.senderName)) {
+        privateChatsRef.current.get(payloadData.senderName).push(payloadData);
+        setPrivateChats(new Map(privateChatsRef.current));
+      } else {
+        let list = [];
+        list.push(payloadData);
+        privateChatsRef.current.set(payloadData.senderName, list);
+        setPrivateChats(new Map(privateChatsRef.current));
+      }
+      console.log(
+        'PRIVATE MESSAGE RECEIVED: ',
+        privateChats.get(payloadData.senderName)
+      );
+      console.log('PRIVATE MESSAGE ID: ', payloadData.id);
+      playAudio();
+      messageId = payloadData.id;
     } else {
-      let list = [];
-      list.push(payloadData);
-      privateChatsRef.current.set(payloadData.senderName, list);
-      setPrivateChats(new Map(privateChatsRef.current));
+      console.log('CAUGHT DUPLICATE BUG D:<');
     }
-    playAudio();
   };
 
   const sendPrivateMessage = () => {
     if (stompClient) {
       let chatMessage = {
         senderName: userData.username,
-        receiverName: userData.receiverName
-          ? userData.receiverName
-          : currentContact,
+        receiverName: currentContact ? currentContact : userData.receiverName,
         message: userData.message,
         timestamp: Date().toString(),
         status: 'MESSAGE',
-        senderPhoto: userData.senderPhoto,
-        receiverPhoto: userData.receiverPhoto,
+        senderPhoto: senderPhotoRef.current,
+        receiverPhoto: receiverPhotoRef.current,
       };
-      if (!privateChats.get(chatMessage.receiverName)) {
+      if (!privateChatsRef.current.get(chatMessage.receiverName)) {
         privateChatsRef.current.set(chatMessage.receiverName, []);
       }
       privateChatsRef.current.get(chatMessage.receiverName).push(chatMessage);
@@ -180,8 +248,24 @@ const MessagingApp = () => {
   };
 
   const playAudio = () => {
-    new Audio(audio).play();
-  }
+    if (localStorage.getItem('notificationSound') === 'true') {
+      new Audio(audio).play();
+    }
+  };
+
+  const updateMessageSound = () => {
+    if (messageSound === 'true') {
+      setMessageSound('false');
+    } else {
+      setMessageSound('true');
+    }
+
+    if (localStorage.getItem('notificationSound') === 'true') {
+      localStorage.setItem('notificationSound', 'false');
+    } else {
+      localStorage.setItem('notificationSound', 'true');
+    }
+  };
 
   const onError = (err) => {
     console.log(err);
@@ -189,33 +273,6 @@ const MessagingApp = () => {
 
   return (
     <div style={{ fontFamily: '"Nunito", "sans-serif"' }}>
-      <div>
-        <span style={{ 'fontWeight': 'bold' }}>
-          Username:
-          <input
-            id='user-name'
-            name='username'
-            placeholder='Enter the user name'
-            value={userData.username}
-            onChange={handleName}
-          />
-          <button onClick={onLanding}>Connect</button>
-        </span>
-        <span style={{ 'fontWeight': 'bold' }}>
-          Receiver:
-          <input
-            id='receiver-name'
-            name='receiverName'
-            placeholder='Enter the receiver name'
-            value={
-              userData.receiverName ? userData.receiverName : currentContact
-            }
-            onChange={handleName}
-          />
-        </span>
-      </div>
-      <hr />
-
       <Container>
         <Row>
           <Col sm={4}>
@@ -228,23 +285,56 @@ const MessagingApp = () => {
               setNotificationList={setNotificationList}
               currentContact={currentContact}
             />
-          </Col>
-          <Col sm={8}>
-            <Container>
-              <MessageChat
-                privateChats={privateChats}
-                currentContact={currentContact}
-                username={userData.username}
+            <Stack direction='row' spacing={2} alignItems='center' justifyContent='center'>
+              <Typography>Unmute</Typography>
+              <AntSwitch
+                checked={messageSound === 'true' ? false : true}
+                inputProps={{ 'aria-label': 'ant design' }}
+                onClick={() => updateMessageSound()}
               />
-              <InputBar
-                setUserData={setUserData}
-                userData={userData}
-                handleSend={handleSend}
-                handleMessage={handleMessage}
-                currentContact={currentContact}
-              />
-            </Container>
+              <Typography>Mute  </Typography>
+            </Stack>
           </Col>
+          {currentContact === '' ?
+            (<Col sm={8}>
+              <Container className='chatBox'>
+                <div>Click an existing contact to the left<br/> or <br/>Message a new contact through the Pets page</div>
+              </Container>
+            </Col>)
+            : (<Col sm={8}>
+              <Container className='chatBox'>
+                <MessageChat
+                  privateChats={privateChats}
+                  currentContact={currentContact}
+                  username={userData.username}
+                  receiverName={
+                    currentContact === ''
+                      ? userData.receiverName
+                      : currentContact
+                  }
+                />
+                {currentContact ? (
+                  <InputBar
+                    setUserData={setUserData}
+                    userData={userData}
+                    handleSend={handleSend}
+                    handleMessage={handleMessage}
+                    currentContact={currentContact}
+                  />
+                ) : (
+                  userData.receiverName && (
+                    <InputBar
+                      setUserData={setUserData}
+                      userData={userData}
+                      handleSend={handleSend}
+                      handleMessage={handleMessage}
+                      currentContact={currentContact}
+                    />
+                  )
+                )}
+              </Container>
+            </Col>
+            )}
         </Row>
       </Container>
     </div>

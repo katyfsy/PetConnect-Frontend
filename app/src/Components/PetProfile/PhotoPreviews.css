@@ -1,0 +1,90 @@
+.thumb-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.thumb-cover-label {
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.thumb {
+  display: flex;
+  flex-direction: column;
+  border-radius: 2px;
+  border: 1px solid #eaeaea;
+  margin-bottom: 5px;
+  width: 80px;
+  height: 80px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.thumb:hover{
+  cursor: pointer;
+}
+
+.thumb:active{
+  border: 2px solid;
+  border-color: rgb(40, 87, 196);
+}
+
+.thumb-inner {
+  display: flex;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.thumb-photo {
+  display: block;
+  width: auto;
+  height: 100%;
+}
+
+.thumb-caption {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.thumb-remove-button {
+  font-size: 8px !important;
+  padding: 3.2px !important;
+}
+
+.thumb-radio-button input:hover {
+  cursor: pointer;
+}
+
+.progress {
+  height: 8px !important;
+}
+
+/* .thumb-remove-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color:rgb(40, 87, 196);
+  font-size: 14px;
+  text-align: start;
+} */
+
+/* .thumb-remove-button:hover {
+  color:rgb(171, 8, 8);
+  cursor: pointer;
+} */
+
+/* .thumb-radio-button-label:hover {
+  color:rgb(40, 87, 196);
+  font-weight: 700;
+  cursor: pointer;
+} */
+
+
+
+/* @import '~bootstrap/dist/css/bootstrap.css'; */

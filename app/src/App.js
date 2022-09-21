@@ -3,6 +3,7 @@ import SearchResults from "./Pages/SearchResults";
 import Home from "./Pages/Home";
 import Pets from "./Pages/Pets";
 import SignUp from "./Pages/SignUp";
+import Directory from "./Pages/Directory";
 import Login from "./Pages/Login";
 import Profile from "./Pages/Profile";
 import Messages from "./Pages/Messages";
@@ -13,19 +14,22 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import MyProfile from './Pages/MyProfile';
+import ResetPassword from './Pages/ResetPassword';
+import ChangePassword from './Pages/ChangePassword';
+import UserPetList from './Pages/UserPetList'
+import UserFavorites from './Pages/UserFavorites'
 import { getBearerToken, getUser, clearStorage } from "./Components/UserProfile/psb-exports"
 
 function App() {
-
   const navigate = useNavigate();
 
   const loggedIn = getBearerToken();
 
   useEffect(() => {
     // clear local and session storage if token is expired
-    if(getBearerToken() !== "" && getBearerToken() !== null) {
+    if (getBearerToken() !== "" && getBearerToken() !== null) {
       const decodedToken = jwt_decode(getBearerToken());
-      if(Math.ceil(new Date().getTime()/1000) > decodedToken.exp) {
+      if (Math.ceil(new Date().getTime() / 1000) > decodedToken.exp) {
         clearStorage();
         navigate("/login");
       }
@@ -44,10 +48,15 @@ function App() {
         <Route path="/login" element={<Login />} />
         {/* Pet Profile Routes */}
         <Route path="/pets" element={<Pets />} />
-        <Route path="/messages"   element={loggedIn ? <Messages/> : <Login />}/>
+        <Route path="/messages" element={loggedIn ? <Messages /> : <Login />} />
         <Route path="/addpet" element={<AddAPet />} />
         {/* <Route path="/pet" element={<Pet />} /> */}
         <Route path="/pet/:id" element={<PetProfile />} />
+        <Route path="/directory" element={<Directory />} />
+        <Route path="/petlist/:username" element={<UserPetList />} />
+        <Route path="/user/favorites" element={<UserFavorites />} />
+        <Route path="/user/reset" element={<ResetPassword />} />
+        <Route path="/user/reset/:key" element={<ChangePassword />} />
       </Routes>
     </div>
   );

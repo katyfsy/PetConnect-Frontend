@@ -29,20 +29,31 @@ function QuickSearch({setSearchQuery, setType, setResult}) {
 <div>
     <div className="container quickSearchBtns">
       <div className="row">
-        <div className="col-sm">
-          <button className="btn btn-primary catBtn" onClick={e => handleQuickSearchClick(e)} value="cat">All CATS</button>
+        {/* <div className="col"> </div> */}
+        <div className="col-md">
+          <button id="allDogsBtn"
+          className=" quickBtn btn btn-outline-secondary"
+          onClick={e => handleQuickSearchClick(e)}
+          value="dog">
+             <img className="quickBtnImg" src="https://images.pexels.com/photos/11927589/pexels-photo-11927589.jpeg?cs=srgb&dl=pexels-mithul-varshan-11927589.jpg&fm=jpg"/>
+            </button>
+
+
+
+
         </div>
-        <div className="col-sm">
-          <button className="btn btn-primary dogBtn" onClick={e => handleQuickSearchClick(e)} value="dog">All DOGS</button>
+        <div className="col-md">
+          <button id="allCatsBtn"  className=" quickBtn btn btn-outline-secondary" onClick={e => handleQuickSearchClick(e)} value="cat"><img className="quickBtnImg" src="https://images.pexels.com/photos/6638266/pexels-photo-6638266.jpeg?cs=srgb&dl=pexels-jan-kop%C5%99iva-6638266.jpg&fm=jpg" /></button>
         </div>
 
-        <div className="col-sm">
-          <button className="btn btn-primary otherBtn"  value="dog">Other pets</button>
+        <div className="col-md">
+          <button id="otherPetsBtn" className=" quickBtn  btn btn-outline-secondary"  value="any"><img className="quickBtnImg" src="https://images.pexels.com/photos/7408291/pexels-photo-7408291.jpeg?cs=srgb&dl=pexels-alexas-fotos-7408291.jpg&fm=jpg"/></button>
         </div>
 
-        <div className="col-sm">
-          <button className="btn btn-primary orgBtn"  value="org">Orgs</button>
+        <div className="col-md">
+          <button id="orgsBtn"  className=" quickBtn btn btn-outline-secondary"  value="org"><img className="quickBtnImg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Animal_Shelter_%288670%29_-_The_Noun_Project.svg/640px-Animal_Shelter_%288670%29_-_The_Noun_Project.svg.png"/></button>
         </div>
+        <div className="col"></div>
 
       </div>
     </div>

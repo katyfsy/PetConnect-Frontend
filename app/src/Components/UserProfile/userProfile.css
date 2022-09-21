@@ -7,7 +7,7 @@
     align-items: center;
     width: 100vw;
   }
-  
+
   .Auth-form {
     width: 420px;
     box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
@@ -16,12 +16,12 @@
     border-radius: 8px;
     background-color: white;
   }
-  
+
   .Auth-form-content {
     padding-left: 12%;
     padding-right: 12%;
   }
-  
+
   .Auth-form-title {
     text-align: center;
     margin-bottom: 1em;
@@ -29,18 +29,13 @@
     color: rgb(34, 34, 34);
     font-weight: 800;
   }
-  
+
   label {
     font-size: 14px;
     font-weight: 600;
     color: rgb(34, 34, 34);
   }
 
-  i {
-    position: relative;
-    right: 0;
-    top: 10px;
-  }
 
   .i-edit {
     position: relative;
@@ -64,4 +59,24 @@
     position: relative;
     left: 435px;
     top: -30px;
+  }
+
+  .i-heart {
+    position: relative;
+    left: 106px;
+    top: 19px;
+    font-size: 30px;
+    color: white;
+  }
+  .i-changepw {
+    position: relative;
+    left: 37px;
+    top: -29px;
+  }
+
+  .hheart {
+    position: relative;
+    top: 0px;
+    color: black;
+    font-size: 20px;
   }

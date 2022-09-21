@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 import './Search.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 
@@ -36,6 +37,15 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     navigate('/searchresults');
   }
 
+  const handleZipcodeCheck = () => {
+    const isNumberRegx =  /(^\d{5}$)/;
+    if (isNumberRegx.test(zipcode) === false) {
+      alert("Zipcode has to be five digits");
+    }else {
+      return true;
+    }
+  }
+
   const handleDefaultSearchClick = value => {
     setSearchQuery(value);
     if (value === "All Cats") {
@@ -49,7 +59,6 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     }
 
     // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
-
     axios.get("http://localhost:8080/api/petSearch" + param)
     .then((result)=>{
         setResult(result.data.pets);
@@ -60,12 +69,10 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
 
   const handleAutocomplete =  (value) => {
     setDropdownDisplay(false);
+    console.log('value passed to handleAutocomplete:', value);
     setSearchQuery(value);
     setAutocompleteDisplay(true);
 
-    // console.log("handle Autocomplete: searchQuery:", value);
-    // get request - get suggestions and populate dropdown
-    // var param = `?search=${value}`;
     axios.get("http://localhost:8080/api/suggestions?search=" + value )
     .then((result)=>{
       if(result.data.pets === undefined) {
@@ -74,27 +81,23 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
         setResult(result.data.pets);
       } else {
         setSuggestions(result.data.pets);
-        // console.log("results from suggestions search:", result.data.pets);
        }
       })
     .catch(err=>console.log(err));
   }
 
   const handleSuggestionSearchClick = (value) => {
-    setDropdownDisplay(false);
-    setAutocompleteDisplay(false);
-    // console.log('breed', value.breed);
-    // console.log('type', value.type);
+    // setDropdownDisplay(false);
+    // setAutocompleteDisplay(false);
+    // console.log('VALUE in clicking suggestion:', value);
     setBreed(value.breed);
     setType(value.type);
     var params = value.type + " " + value.breed;
     setSearchQuery(params);
-    // console.log("params chosen from suggestions ====", params);
     axios.get("http://localhost:8080/api/petSearch?search=" + params)
     .then((result)=>{
         setResult(result.data.pets);
         handleNavigationToResults();
-        // console.log(result.data.pets);
       })
     .catch(err=>console.log(err));
   }
@@ -103,45 +106,66 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
   const handleSubmitClick = (e) => {
     e.preventDefault();
     if (searchQuery.length === 0 && zipcode.length === 0) {
-      // setDropdownDisplay(!dropdownDisplay);
+      setDropdownDisplay(!dropdownDisplay);
+      var zipcodeValidated = true;
     } else {
       if (zipcode.length === 0 && searchQuery.length !== 0) {
         setDropdownDisplay(false);
         var params = searchQuery
+        var zipcodeValidated = true;
       } else if (zipcode.length !== 0 && searchQuery.length === 0){
         params = '*' + "&zip=" + zipcode ;
+        var zipcodeValidated = handleZipcodeCheck();
       } else if (zipcode.length !== 0 && searchQuery.length !== 0){
         setDropdownDisplay(false);
         params = searchQuery + "&zip=" + zipcode ;
+        var zipcodeValidated = handleZipcodeCheck();
       }
-      // console.log('params ===>:',params);
       // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
-      axios.get("http://localhost:8080/api/suggestions?search=" + params)
-      .then((result)=>{
-          // console.log('result', result.data.pets);
-          handleNavigationToResults();
-          setResult(result.data.pets);
-        })
-      .catch(err=>console.log(err));
+      if (zipcodeValidated) {
+        axios.get("http://localhost:8080/api/suggestions?search=" + params)
+        .then((result)=>{
+            handleNavigationToResults();
+            setResult(result.data.pets);
+          })
+        .catch(err=>console.log(err));
+      }
     }
   };
 
   return (
-    <div>
-      <form id="searchForm">
-        <div data-testid="search"  ref={wrapperRef} className="searchGroup">
-          <input
-            type="search"
-            id="searchInput"
-            aria-label="search-pets"
-            autocomplete="off"
-            placeholder="Search pets"
-            onClick={() => setDropdownDisplay(!autocompleteDisplay)}
-            value={searchQuery}
-            onChange={e => handleAutocomplete(e.target.value)}
-          />
 
+      // <div className="searchGrid">
+      <form id="searchForm" >
+          <div data-testid="search"  ref={wrapperRef} className="searchGroup">
 
+            <input
+              type="search"
+              className="form-control"
+              id="searchInput"
+              aria-label="search-pets"
+              autocomplete="off"
+              placeholder="Search pets"
+              onClick={() => setDropdownDisplay(!autocompleteDisplay)}
+              value={searchQuery}
+              onChange={e => handleAutocomplete(e.target.value)}
+              />
+
+            <input
+                type="search"
+                className="form-control"
+                id="zipcodeInput"
+                aria-label="search-zip"
+                placeholder="Enter zip"
+                value={zipcode}
+                onChange={e=>setZipcode(e.target.value)}/>
+
+            <button
+              id="searchButton"
+              className="btn btn-outline-secondary"
+              onClick={handleSubmitClick}>Search
+            </button>
+          {/* </div> */}
           {dropdownDisplay && (
             <div className="searchDropdownContainer">
               {defaultSearches
@@ -164,7 +188,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
                 .map((value, i) => {
                   return (
                     <div
-                      onClick={()=>handleSuggestionSearchClick(value)}
+                      onClick={()=>{handleSuggestionSearchClick(value)}}
                       className="searchOption"
                       key={i}
                     >
@@ -175,20 +199,10 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
                 })}
             </div>
           )}
-          <input
-              type="search"
-              id="zipcodeInput"
-              aria-label="search-zip"
-              placeholder="Enter zip"
-              value={zipcode}
-              onChange={e=>setZipcode(e.target.value)}/>
-          <button
-            id="searchButton"
-            className="btn btn-outline-secondary"
-            onClick={handleSubmitClick}>Search</button>
-        </div>
+      </div>
       </form>
-    </div>
+      // </div>
+
   )
 }
 
