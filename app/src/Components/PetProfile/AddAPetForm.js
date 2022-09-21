@@ -32,6 +32,10 @@ function AddAPetForm() {
   const [nonRequiredPetFields, setNonRequiredPetFields] = useState({
     state: null,
     city: null,
+    breed: null,
+    species: null,
+    size: null,
+    age: null,
   });
 
   let onExited = null;
@@ -234,25 +238,23 @@ function AddAPetForm() {
 
 
   const schema = Yup.object({
-    // product: Yup.string().required("Please select a product").oneOf(products),
     name: Yup.string().required('pet name is required'),
     city: Yup.string(),
-    state: Yup.string(),
+    state: Yup.string().min(2, 'minimum of 2 characters'),
     zip: Yup.number()
       .required('zipcode is required')
       .test('len', 'Must be exactly 5 numbers', val => val && val.toString().length === 5 ),
     type: Yup.string().required('type is required'),
+    breed: Yup.string(),
+    species: Yup.string(),
+    size: Yup.string(),
     sex: Yup.string().required('sex is required'),
+    age: Yup.string(),
     description: Yup.string().min(20, 'minimum of 20 characters').required('description is required'),
-    // photos: Yup.number().positive().required(),
   });
 
-  console.log(nonRequiredPetFields)
-
-  // const getNumberOfPhotos = () => {
-  //   return photos.length;
-  // }
-
+  console.log("NON REQUIRED: ", nonRequiredPetFields)
+  console.log("REQUIRED: ", requiredPetFields)
 
   return (
     <>
@@ -265,16 +267,34 @@ function AddAPetForm() {
           // validateOnMount
           // setSubmitting={false}
           onSubmit={handleOnSubmit}
+          // validateOnChange={false}
+          // validateOnBlur={true}
+          // setTouched={false}
           initialValues={{
             name: "",
             city: "",
             state: "",
             zip: "",
             type: "",
+            breed: "",
+            species: "",
+            size: "",
+            age: "",
             sex: "",
             description: "",
             // photos: "",
           }}
+          // validate
+          // errors={{
+          //   name: "",
+          //   city: "",
+          //   state: "",
+          //   zip: "",
+          //   type: "",
+          //   sex: "",
+          //   description: "",
+          //   // photos: "",
+          // }}
         >
           {({
         handleSubmit,
@@ -321,7 +341,7 @@ function AddAPetForm() {
                     handleOnChange(e, requiredPetFields, setrequiredPetFields);
                   }}
                   placeholder="Pet's name"
-                  isInvalid={!!errors.name}
+                  isInvalid={errors.name}
                 />
                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 <Form.Control.Feedback className='form-error' type="invalid">
@@ -344,7 +364,7 @@ function AddAPetForm() {
                     );
                   }}
                   placeholder="City"
-                  isInvalid={!!errors.city}
+                  isInvalid={errors.city}
                 />
                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 <Form.Control.Feedback className='form-error' type="invalid">
@@ -368,7 +388,7 @@ function AddAPetForm() {
                       );
                     }}
                     placeholder="State"
-                    isInvalid={!!errors.state}
+                    isInvalid={errors.state}
                   />
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                   <Form.Control.Feedback className='form-error' type="invalid">
@@ -391,10 +411,9 @@ function AddAPetForm() {
                     }}
 
                     placeholder="Zipcode"
-                    isInvalid={!!errors.zip}
+                    isInvalid={errors.zip}
                   />
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  {/* <ErrorMessage className='form-error'>{errors.zip}</ErrorMessage> */}
                   <Form.Control.Feedback className='form-error' type="invalid">
                     {errors.zip}
                   </Form.Control.Feedback>
@@ -402,8 +421,7 @@ function AddAPetForm() {
               </div>
 
               <div className="addpet-form-section">
-
-                <Form.Group className="mb-3 form-fields-2-row" controlId="typeValidation">
+                <Form.Group className="mb-3 form-fields-2-row" controlId="type-validation">
                   <Form.Label>Type</Form.Label>
                   <Form.Select className="pet-type"
                     type="text"
@@ -417,7 +435,7 @@ function AddAPetForm() {
                         setrequiredPetFields
                       );
                     }}
-                    isInvalid={!!errors.type}
+                    isInvalid={errors.type}
                   >
                     <option value="">Select type</option>
                     <option value="dog">Dog</option>
@@ -434,7 +452,53 @@ function AddAPetForm() {
                   </Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group className="mb-3 form-fields-2-row" controlId="sexValidation">
+                <Form.Group className="mb-3 form-fields-2-row" controlId="breed-species-validation">
+                  <Form.Label>{values.type === "dog" || values.type === "cat" ? "Breed":"Species"}</Form.Label>
+                  <Form.Control className="pet-breed-species form-input"
+                    type="text"
+                    name={values.type === "dog" || values.type === "cat" ? "breed":"species"}
+                    value={values.type === "dog" || values.type === "cat" ? values.breed : values.species}
+                    onChange={(e) => {
+                      handleChange(e);
+                      handleOnChange(e, nonRequiredPetFields, setNonRequiredPetFields);
+                    }}
+                    placeholder={values.type === "dog" || values.type === "cat" ? "Breed":"Species"}
+                    isInvalid={values.type === "dog" || values.type === "cat" ? errors.breed : errors.species}
+                    disabled={values.type === "" ? true:false}
+                  />
+                  <Form.Control.Feedback className='form-error' type="invalid">
+                    {values.type === "dog" || values.type === "cat" ? errors.breed : errors.species}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </div>
+
+              <div className="addpet-form-section">
+
+              <Form.Group className="mb-3 form-fields-3-row" controlId="size-validation">
+                  <Form.Label>Size</Form.Label>
+                  <Form.Select className="pet-size"
+                    type="number"
+                    name="size"
+                    value={values.size}
+                    onChange={(e) => {
+                      handleChange(e);
+                      handleOnChange(e, nonRequiredPetFields, setNonRequiredPetFields);
+                    }}
+                    disabled={values.type != "dog" ? true:false}
+                    isInvalid={errors.size}
+                  >
+                    <option value="">Select size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                  </Form.Select>
+                  <Form.Control.Feedback className='form-error' type="invalid">
+                    {errors.size}
+                  </Form.Control.Feedback>
+                </Form.Group>
+
+
+                <Form.Group className="mb-3 form-fields-3-row" controlId="sexValidation">
                   <Form.Label>Sex</Form.Label>
                   <Form.Select className="pet-sex"
                     type="text"
@@ -448,7 +512,7 @@ function AddAPetForm() {
                         setrequiredPetFields
                       );
                     }}
-                    isInvalid={!!errors.sex}
+                    isInvalid={errors.sex}
                   >
                     <option value="">Select sex</option>
                     <option value="male">Male</option>
@@ -459,7 +523,30 @@ function AddAPetForm() {
                     {errors.sex}
                   </Form.Control.Feedback>
                 </Form.Group>
+
+                <Form.Group className="mb-3 form-fields-3-row" controlId="age-validation">
+                  <Form.Label>Lifestage</Form.Label>
+                  <Form.Select className="pet-age"
+                    type="text"
+                    name="age"
+                    value={values.age}
+                    onChange={(e) => {
+                      handleChange(e);
+                      handleOnChange(e, nonRequiredPetFields, setNonRequiredPetFields);
+                    }}
+                    isInvalid={errors.age}
+                  >
+                    <option value="">Select lifestage</option>
+                    <option value="early">Early</option>
+                    <option value="mid">Mid</option>
+                    <option value="senior">Senior</option>
+                  </Form.Select>
+                  <Form.Control.Feedback className='form-error' type="invalid">
+                    {errors.age}
+                  </Form.Control.Feedback>
+                </Form.Group>
               </div>
+
 
               <Form.Group className="mb-3 form-fields" controlId="descriptionValidation">
                 <Form.Label>Description</Form.Label>
@@ -472,7 +559,7 @@ function AddAPetForm() {
                     handleOnChange(e, requiredPetFields, setrequiredPetFields);
                   }}
                   placeholder="Tell us a little more about your pet..."
-                  isInvalid={!!errors.description}
+                  isInvalid={errors.description}
                 />
                 <Form.Control.Feedback className='form-error' type="invalid">
                   {errors.description}
