@@ -8,4 +8,10 @@
   height: 210px;
   clear: both;
   background-color: #8F9ED9;
+  padding-top: 20px;
+
+}
+
+.footerImg{
+  height: 30px;
 }

@@ -30,21 +30,23 @@ function Home() {
     // </Container>
 
     // </>
-  <div>
+  <div className="homeStyle">
     <div className="row">
       < Header/>
     </div>
-    <div className="row">
+    <div id="navBar" className="row">
        <Navigationbar/>
     </div>
-    <div className="row">
-      <Search setResult={setResult} searchQuery={searchQuery} setSearchQuery={setSearchQuery} zipcode={zipcode} setZipcode={setZipcode} setBreed={setBreed} setType={setType}/>
-    </div>
-    <div className="row">
-      <QuickSearch setSearchQuery={setSearchQuery} setType={setType} setResult={setResult}/>
-    </div>
-    <div className="row">
-      <Footer />
+    <div>
+        <div className="row">
+          <Search setResult={setResult} searchQuery={searchQuery} setSearchQuery={setSearchQuery} zipcode={zipcode} setZipcode={setZipcode} setBreed={setBreed} setType={setType}/>
+        </div>
+        <div className="row">
+          <QuickSearch setSearchQuery={setSearchQuery} setType={setType} setResult={setResult}/>
+        </div>
+        <div className="row">
+          <Footer />
+        </div>
     </div>
   </div>
   )
