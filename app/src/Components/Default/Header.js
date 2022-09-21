@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip, Stack } from 'react-bootstrap';
 import axios from 'axios';
 import { getBearerToken, getUser, clearStorage, PSB_API_URL, getUserType } from "../UserProfile/psb-exports";
-import '../../Pages/Profile.css';
+import './Header.css';
 
 function Header() {
   const [userIcon, setUserIcon] = useState({

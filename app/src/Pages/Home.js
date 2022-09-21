@@ -15,21 +15,40 @@ function Home() {
 
 
     return(
-    <>
-     <Container style={{backgroundColor: "white"}}>
-       < Header/>
-     </Container>
-    < Navigationbar/>
-    <Container>
-      <Row>
-        <Search setResult={setResult} searchQuery={searchQuery} setSearchQuery={setSearchQuery} zipcode={zipcode} setZipcode={setZipcode} setBreed={setBreed} setType={setType}/>
-      </Row>
-      <Row>
-        <QuickSearch setSearchQuery={setSearchQuery} setType={setType} setResult={setResult}/>
-      </Row>
-    </Container>
-    <Footer />
-    </>
+    // <>
+    //  <Container style={{backgroundColor: "white"}}>
+    //    < Header/>
+    //  </Container>
+    // <
+    // <Container>
+    //   <Row>
+
+    //   </Row>
+    //   <Row>
+
+    //   </Row>
+    // </Container>
+
+    // </>
+  <div className="homeStyle">
+    <div className="row">
+      < Header/>
+    </div>
+    <div id="navBar" className="row">
+       <Navigationbar/>
+    </div>
+    <div>
+        <div className="row">
+          <Search setResult={setResult} searchQuery={searchQuery} setSearchQuery={setSearchQuery} zipcode={zipcode} setZipcode={setZipcode} setBreed={setBreed} setType={setType}/>
+        </div>
+        <div className="row">
+          <QuickSearch setSearchQuery={setSearchQuery} setType={setType} setResult={setResult}/>
+        </div>
+        <div className="row">
+          <Footer />
+        </div>
+    </div>
+  </div>
   )
 }
 
