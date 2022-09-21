@@ -29,7 +29,6 @@ function Navigationbar() {
           .get(
             `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`
           )
-          // axios.get(`http://localhost:8080/messages/notifications/${username}`)
           .then((response) => {
             setNotification(response.data.length ? true : false);
           })
@@ -43,7 +42,7 @@ function Navigationbar() {
   return (
     <Navbar expand="lg" className="navBar" style={{paddingTop: 0, backgroundColor: "#8F9ED9", marginBottom: 10}}>
       <Container>
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Collapse style={{backgroundColor: "#8F9ED9"}} id="basic-navbar-nav">
           <Nav className="me-auto">
             {isLoggedIn() ? <Nav.Link href="/myprofile" style={{color: "white"}}>MyProfile</Nav.Link> : null}
             <Nav.Link href="/pets" style={{color: "white"}}>Pets</Nav.Link>
