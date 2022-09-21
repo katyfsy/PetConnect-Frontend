@@ -70,7 +70,7 @@ function PetList() {
                 coverPhoto={petObj.coverPhoto}
               />
             ))
-          ) : myPetList.length == 0 ? (
+          ) : myPetList?.length === 0 ? (
             <div>You Have No Pets</div>
           ) : (
             myPetList.map((petObj) => (

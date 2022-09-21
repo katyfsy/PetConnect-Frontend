@@ -67,13 +67,9 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
       });
       return p[0].name;
     }
-
-    // some regex
-
     let x = petAttributes.coverPhoto.substring(
       petAttributes.coverPhoto.lastIndexOf("/") + 1
     );
-    console.log(x);
     return x;
   }
 

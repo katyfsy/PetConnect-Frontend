@@ -42,6 +42,7 @@ function EditPetForm() {
       .then((data) => {
         setThisPet(data);
         setPetPhotos(data.photos);
+        setPetId(data.petId);
       });
   }, []);
   const [editedPetFields, setEditedPetFields] = useState({
@@ -67,10 +68,17 @@ function EditPetForm() {
   const MAX_NUMBER_OF_PHOTOS = 5;
 
   const handleOnChange = (e, form, setform) => {
-    setform({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === "reproductiveStatus" && e.target.value === "") {
+      setform({
+        ...form,
+        [e.target.name]: null,
+      });
+    } else {
+      setform({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handleAddPhotos = (newPhotos) => {
@@ -83,24 +91,6 @@ function EditPetForm() {
 
   const handleCoverPhoto = (selection) => {
     setCoverPhoto(selection);
-  };
-
-  const createPet = () => {
-    let options = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    return axios
-      .post(
-        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets`,
-        JSON.stringify(editedPetFields),
-        options
-      )
-      .then((res) => {
-        return res.data.petId;
-      })
-      .catch((err) => console.log(err));
   };
 
   const getPresignedUrls = (files) => {
@@ -126,14 +116,27 @@ function EditPetForm() {
     return files;
   };
 
+  function findCoverPhotoName(listOfPhotos) {
+    if (petAttributes.coverPhoto.includes("blob")) {
+      let p = listOfPhotos.filter((photo) => {
+        console.log(
+          photo.preview,
+          petAttributes.coverPhoto,
+          photo.preview === petAttributes.coverPhoto
+        );
+        return photo.preview === petAttributes.coverPhoto;
+      });
+      return p[0].name;
+    }
+    let x = petAttributes.coverPhoto.substring(
+      petAttributes.coverPhoto.lastIndexOf("/") + 1
+    );
+    return x;
+  }
   const handleUpload = async (petId) => {
     let files = extractFileData(petId);
     console.log(files);
     let urls = await getPresignedUrls(files);
-    // let filesProgress = [];
-    // filesProgress.push(progress)
-    // setFilesProgress(filesProgress)
-    // setProgress(0)
 
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
@@ -199,51 +202,14 @@ function EditPetForm() {
         console.log(data);
       });
   }
-  const handleOnSubmit = async () => {
-    // const form = e.currentTarget;
-
-    // if (isValid === false ) {
-    //   console.log('isvalid exists')
-    // }
-
-    // if (form.checkValidity() === true) {
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    //   setShowAlert(true)
-    //   setAlertTitle("Incomplete form")
-    //   setAlertText("Fill out required fields")
-    //   setAlertType("error")
-    //   setHandleOnExited(false)
-    // } else {
-
-    // e.preventDefault();
-
-    let petId = await createPet();
-    if (petId != null) {
-      setPetId(petId);
-      await handlePatch(petId);
-      await handleUpload(petId);
+  const handleOnSubmit = async (e) => {
+    await handlePatch();
+    let successDeleting = await deleteDatabase(deletePhotos);
+    if (successDeleting) {
+      await handleUpload(addPhotos, thisPet.petId);
     }
-
-    // setValidated(true);
-
-    // if (photos.length == 0) {
-    //   setShowAlert(true)
-    //   setAlertTitle("")
-    //   setAlertText("Pet profiles require at least one photo")
-    //   setAlertType("error")
-    //   setValidated(false)
-    //   // alert("At least one photo is required to upload");
-    // } else {
-    //   let petId = await createPet();
-    //   if (petId != null) {
-    //     setPetId(petId)
-    //     await handleUpload(petId);
-    //   }
-    //   // setValidated(true);
-    // }
-    // setValidated(true);
   };
+
   console.log(thisPet);
   const navigateToPetProfile = (id) => {
     // 👇️ navigate to /
@@ -302,6 +268,7 @@ function EditPetForm() {
             age: thisPet.age,
             sex: thisPet.sex,
             description: thisPet.description,
+            reproductiveStatus: thisPet.reproductiveStatus,
             // photos: ,
           }}
           // validate
@@ -611,27 +578,27 @@ function EditPetForm() {
               </div>
 
               <div className="addpet-form-section">
-                <Form.Group className="mb-3 form-fields-2-row" controlId="reproductiveStatus-validation">
-                  <Form.Label>Reproductive Status</Form.Label>
-                  <Form.Select className="pet-reproductiveStatus"
+                <Form.Group
+                  className="mb-3 form-fields-2-row"
+                  controlId="reproductiveStatus-validation"
+                >
+                  <Form.Label>Spayed / Neutered</Form.Label>
+                  <Form.Select
+                    className="pet-reproductiveStatus"
                     type="text"
                     name="reproductiveStatus"
                     value={values.reproductiveStatus}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(
-                        e,
-                        nonRequiredPetFields,
-                        setNonRequiredPetFields
-                      );
+                      handleOnChange(e, editedPetFields, setEditedPetFields);
                     }}
                     isInvalid={errors.reproductiveStatus}
                   >
-                    <option value="">Select status</option>
+                    <option value="">Unknown</option>
                     <option value={true}>Yes</option>
                     <option value={false}>No </option>
                   </Form.Select>
-                  <Form.Control.Feedback className='form-error' type="invalid">
+                  <Form.Control.Feedback className="form-error" type="invalid">
                     {errors.reproductiveStatus}
                   </Form.Control.Feedback>
                 </Form.Group>
