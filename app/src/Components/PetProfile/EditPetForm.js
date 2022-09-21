@@ -10,6 +10,8 @@ import Photos from "./Photos";
 import Alert from "./AlertModalPetForms";
 import axios from "axios";
 import { getUser } from "../UserProfile/psb-exports";
+import AddPhotosPortal from "./AddPhotosPortal";
+import PhotoPreviews from "./PhotoPreviews";
 
 function EditPetForm() {
   const [petId, setPetId] = useState(null);
@@ -25,6 +27,10 @@ function EditPetForm() {
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
   const [handleOnExited, setHandleOnExited] = useState(false);
+  const [openPortal, setOpenPortal] = useState(false);
+  const [exisitingPhotos, setExistingPhotos] = useState(null);
+  const [deletePhotos, setDeletePhotos] = useState([]);
+  const [addPhotos, setAddPhotos] = useState([]);
 
   // const [isSuccess, setIsSuccess] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -43,6 +49,10 @@ function EditPetForm() {
         setThisPet(data);
         setPetPhotos(data.photos);
         setPetId(data.petId);
+        setExistingPhotos(data.photos);
+        // set;
+        setEditedPetFields({ ...editedPetFields, coverPhoto: data.coverPhoto });
+        // setCoverPhoto(data.coverPhoto);
       });
   }, []);
   const [editedPetFields, setEditedPetFields] = useState({
@@ -67,6 +77,28 @@ function EditPetForm() {
   console.log(photos);
   const MAX_NUMBER_OF_PHOTOS = 5;
 
+  function handleChangePreview(e) {
+    // if img is clicked
+    // console.log(e.target.name);
+    // console.log(e.target.querySelector("img").getAttribute("value"));
+    if (e.target.src) {
+      setEditedPetFields({
+        ...editedPetFields,
+        [e.target.name]: e.target.getAttribute("value"),
+      });
+    } else if (e.target.querySelector("img").getAttribute("value")) {
+      setEditedPetFields({
+        ...editedPetFields,
+        coverPhoto: e.target.querySelector("img").getAttribute("value"),
+      });
+    } else {
+      // setEditedPetFields({
+      //   ...editedPetFields,
+      //   [e.target.name]: e.target.value,
+      // });
+      console.log("yo no se");
+    }
+  }
   const handleOnChange = (e, form, setform) => {
     if (e.target.name === "reproductiveStatus" && e.target.value === "") {
       setform({
@@ -117,19 +149,19 @@ function EditPetForm() {
   };
 
   function findCoverPhotoName(listOfPhotos) {
-    if (petAttributes.coverPhoto.includes("blob")) {
+    if (editedPetFields.coverPhoto.includes("blob")) {
       let p = listOfPhotos.filter((photo) => {
         console.log(
           photo.preview,
-          petAttributes.coverPhoto,
-          photo.preview === petAttributes.coverPhoto
+          editedPetFields.coverPhoto,
+          photo.preview === editedPetFields.coverPhoto
         );
-        return photo.preview === petAttributes.coverPhoto;
+        return photo.preview === editedPetFields.coverPhoto;
       });
       return p[0].name;
     }
-    let x = petAttributes.coverPhoto.substring(
-      petAttributes.coverPhoto.lastIndexOf("/") + 1
+    let x = editedPetFields.coverPhoto.substring(
+      editedPetFields.coverPhoto.lastIndexOf("/") + 1
     );
     return x;
   }
@@ -210,6 +242,29 @@ function EditPetForm() {
     }
   };
 
+  function handleDelete(e, id) {
+    console.log(id);
+    if (e.target.value === editedPetFields.coverPhoto) {
+      alert("Must Select Different Cover Photo First Before Deletion");
+    } else {
+      if (typeof id !== "string") {
+        console.log("in db");
+        setDeletePhotos([...deletePhotos, id]);
+        const photosWithOutDeleted = exisitingPhotos.filter(
+          (photo) => photo.photoId !== id
+        );
+        setExistingPhotos(photosWithOutDeleted);
+      }
+      console.log(thisPet.petId, id);
+      if (typeof id == "string") {
+        const photosWithOutDeleted = addPhotos.filter(
+          (photo) => photo.name !== id
+        );
+        setAddPhotos(photosWithOutDeleted);
+      }
+    }
+  }
+
   console.log(thisPet);
   const navigateToPetProfile = (id) => {
     // 👇️ navigate to /
@@ -238,8 +293,7 @@ function EditPetForm() {
       .required("description is required"),
   });
 
-  console.log("NON REQUIRED: ");
-  console.log("REQUIRED: ", editedPetFields);
+  console.log("Pet fields: ", editedPetFields);
   if (thisPet === null) {
     return <div></div>;
   }
@@ -625,8 +679,32 @@ function EditPetForm() {
                   {errors.description}
                 </Form.Control.Feedback>
               </Form.Group>
-
-              <Form.Group className="mb-3 photos-form-container">
+              <div className="photos-from-db preview-container">
+                <PhotoPreviews
+                  photos={exisitingPhotos}
+                  coverPhoto={editedPetFields.coverPhoto}
+                  handleCoverPhoto={handleChangePreview}
+                  handleRemoveThumb={handleDelete}
+                  currentUpload={currentUpload}
+                  progress={progress}
+                  showRadio={true}
+                  adding={false}
+                  edit={true}
+                  preview={"photo_url"}
+                  photoId={"photoId"}
+                />
+              </div>
+              <Button onClick={() => setOpenPortal(true)}> Add Photos</Button>
+              <AddPhotosPortal
+                openPortal={openPortal}
+                setOpenPortal={setOpenPortal}
+                thisPet={thisPet}
+                addPhotos={addPhotos}
+                setAddPhotos={setAddPhotos}
+                progress={progress}
+                currentUpload={currentUpload}
+              />
+              {/* <Form.Group className="mb-3 photos-form-container">
                 <Form.Label>Photos</Form.Label>
                 <Photos
                   photos={photos}
@@ -642,7 +720,7 @@ function EditPetForm() {
                   edit={false}
                   preview={"preview"}
                 />
-              </Form.Group>
+              </Form.Group> */}
 
               <div className="mb-3 buttons-form-container">
                 <Form.Group className="mb-3">
