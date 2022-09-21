@@ -610,6 +610,33 @@ function EditPetForm() {
                 </Form.Group>
               </div>
 
+              <div className="addpet-form-section">
+                <Form.Group className="mb-3 form-fields-2-row" controlId="reproductiveStatus-validation">
+                  <Form.Label>Reproductive Status</Form.Label>
+                  <Form.Select className="pet-reproductiveStatus"
+                    type="text"
+                    name="reproductiveStatus"
+                    value={values.reproductiveStatus}
+                    onChange={(e) => {
+                      handleChange(e);
+                      handleOnChange(
+                        e,
+                        nonRequiredPetFields,
+                        setNonRequiredPetFields
+                      );
+                    }}
+                    isInvalid={errors.reproductiveStatus}
+                  >
+                    <option value="">Select status</option>
+                    <option value={true}>Yes</option>
+                    <option value={false}>No </option>
+                  </Form.Select>
+                  <Form.Control.Feedback className='form-error' type="invalid">
+                    {errors.reproductiveStatus}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </div>
+
               <Form.Group
                 className="mb-3 form-fields"
                 controlId="descriptionValidation"
