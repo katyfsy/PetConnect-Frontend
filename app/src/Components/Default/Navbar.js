@@ -41,7 +41,7 @@ function Navigationbar() {
   }
 
   return (
-    <Navbar expand="lg" className="navBar" style={{paddingTop: 0, backgroundColor: "#8F9ED9", marginBottom: 10}}>
+    <Navbar className="navBar" style={{paddingTop: 0, backgroundColor: "#8F9ED9", marginBottom: 10}}>
       <Container>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
