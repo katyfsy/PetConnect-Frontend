@@ -14,7 +14,7 @@ function Footer() {
           <Col style={{color: "white"}}>
           <h3>Developer</h3>
           <p>Benis Tambe, Carlos Morales, Edward Pak, Enriqueta De Leon, </p>
-          <p>Ginwoo Pak, Ivy Wong, Katy Feng, Kun Chen, Lucus Bonner, </p>
+          <p>Ginwoo Pak, Ivy Wong, Katy Feng, Kun Chen, Lucas Bonner, </p>
           <p>Luis Escobar, Marilene Soares da Costa, Meredith White,</p>
           <p>Rick Kunz, Trevor Leung, Varun Srinivasan, Vincent Le, Yu Zhang</p>
           </Col>
