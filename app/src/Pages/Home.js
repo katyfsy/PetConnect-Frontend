@@ -20,19 +20,15 @@ function Home() {
        < Header/>
      </Container>
     < Navigationbar/>
-    <Container >
+    <Container>
       <Row>
-        {/* <h1>hello from home</h1> */}
         <Search setResult={setResult} searchQuery={searchQuery} setSearchQuery={setSearchQuery} zipcode={zipcode} setZipcode={setZipcode} setBreed={setBreed} setType={setType}/>
-        {/* <User /> */}
       </Row>
       <Row>
         <QuickSearch setSearchQuery={setSearchQuery} setType={setType} setResult={setResult}/>
       </Row>
-      <Row >
-        < Footer />
-      </Row>
     </Container>
+    <Footer />
     </>
   )
 }
