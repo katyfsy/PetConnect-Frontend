@@ -88,7 +88,7 @@ function Header() {
         <Container>
           <Stack>
             <a href="/">
-              <Image src={require("./HeaderPics/logo.png")} style={{width:100, float: "left"}} />
+              <Image src={require("./HeaderPics/logo_purple_blue_orange.png")} style={{width:100, float: "left"}} />
             </a>
             <a href="/">
               <Image src={require("./HeaderPics/Pet-connect.png")} style={{width:150, float: "left"}} />

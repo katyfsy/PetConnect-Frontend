@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import './QuickSearch.css';
+import '../Default/HeaderPics/Dogs.png';
 
 
 function QuickSearch({setSearchQuery, setType, setResult}) {
@@ -35,10 +36,8 @@ function QuickSearch({setSearchQuery, setType, setResult}) {
           className=" quickBtn btn btn-outline-secondary"
           onClick={e => handleQuickSearchClick(e)}
           value="dog">
-             <img className="quickBtnImg" src="https://images.pexels.com/photos/11927589/pexels-photo-11927589.jpeg?cs=srgb&dl=pexels-mithul-varshan-11927589.jpg&fm=jpg"/>
+             <img className="quickBtnImg" src="./../Default/HeaderPics/Dogs.png"/>
             </button>
-
-
 
 
         </div>
