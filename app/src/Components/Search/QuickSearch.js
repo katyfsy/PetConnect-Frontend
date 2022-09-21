@@ -39,7 +39,6 @@ function QuickSearch({setSearchQuery, setType, setResult}) {
              <img className="quickBtnImg" src="./../Default/HeaderPics/Dogs.png"/>
             </button>
 
-
         </div>
         <div className="col-md">
           <button id="allCatsBtn"  className=" quickBtn btn btn-outline-secondary" onClick={e => handleQuickSearchClick(e)} value="cat"><img className="quickBtnImg" src="https://images.pexels.com/photos/6638266/pexels-photo-6638266.jpeg?cs=srgb&dl=pexels-jan-kop%C5%99iva-6638266.jpg&fm=jpg" /></button>
