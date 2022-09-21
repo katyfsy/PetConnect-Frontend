@@ -1,7 +1,12 @@
 .input-bar {
   position: relative;
-  left: 2%;
-  padding-bottom: 5%;
+  padding-bottom: 3%;
+}
+
+.input-bar-elements {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .input-message {
   width: 83%;
@@ -10,11 +15,12 @@
 
 .input-button {
   border-radius: 5px;
-  background-color: #FBE8A6;
+  background-color: #303C6C;
+  color: white;
 }
 
 .input-button:hover {
-  background: grey;
-  color:#fff;
+  background: #F4976C;
+  color: black;
   cursor: pointer;
 }

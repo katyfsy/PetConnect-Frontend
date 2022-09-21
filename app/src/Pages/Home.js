@@ -16,7 +16,7 @@ function Home() {
 
     return(
     <>
-     <Container>
+     <Container style={{backgroundColor: "white"}}>
        < Header/>
      </Container>
     < Navigationbar/>

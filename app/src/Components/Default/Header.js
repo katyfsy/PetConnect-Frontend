@@ -1,11 +1,9 @@
 import '../../Pages/Profile.css'
 import React, { useState, useEffect } from 'react';
-import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip, Stack } from 'react-bootstrap';
 import axios from 'axios';
-// import getUser from '../UserProfile/DummyData';
-import { getBearerToken, getUser, clearStorage, PSB_API_URL, getUserType } from "../UserProfile/psb-exports"
-
-
+import { getBearerToken, getUser, clearStorage, PSB_API_URL, getUserType } from "../UserProfile/psb-exports";
+import '../../Pages/Profile.css';
 
 function Header() {
   const [userIcon, setUserIcon] = useState({
@@ -47,10 +45,6 @@ function Header() {
       if(getBearerToken() !== null & getBearerToken() !== "") {
         doGetUser();
       }
-    //local data fetch for development
-    // const result = getUser();
-    // setUserIcon(result);
-    // setUserName(localStorage.getItem('username'));
   },[])
 
   const renderNotification = () => {
@@ -87,12 +81,19 @@ function Header() {
                 )}
             }
 
-
   if(username === "" || username === null) {
     return (
+    <div className="header">
       <Navbar>
         <Container>
-          <Navbar.Brand href="/" style={{height: "96px", paddingTop: "33px"}}>PET CONNECT</Navbar.Brand>
+          <Stack>
+            <a href="/">
+              <Image src={require("./HeaderPics/logo.png")} style={{width:100, float: "left"}} />
+            </a>
+            <a href="/">
+              <Image src={require("./HeaderPics/Pet-connect.png")} style={{width:150, float: "left"}} />
+            </a>
+          </Stack>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
               <Button href='/login' variant="light">Login</Button>
@@ -100,35 +101,45 @@ function Header() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+    </div>
     );
   } else {
     return (
-      <Navbar>
-        <Container>
-          <Navbar.Brand href="/">PET CONNECT</Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse align="right" className="justify-content-end" expand="lg">
-            <NavDropdown align="end" className="w-25 p-3" title={
-                      <div>
-                        <Image src={userIcon.userPhoto} roundedCircle width="40" height="40"/>
-                          {renderNotification()}
-                      </div>} id="basic-nav-dropdown">
-                  <NavDropdown.Item disabled>@{userIcon.username}</NavDropdown.Item>
-                  <NavDropdown.Item href="/profile/edit">
-                    Edit profile {renderNotificationOnEdit()}
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
-                    Another action
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="/" onClick={clearStorage}>
-                    Sign out
-                  </NavDropdown.Item>
-                </NavDropdown>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <div className="header">
+        <Navbar>
+          <Container>
+            <Stack>
+              <a href="/">
+                <Image src={require("./HeaderPics/logo.png")} style={{width:100, float: "left"}} />
+              </a>
+              <a href="/">
+                <Image src={require("./HeaderPics/Pet-connect.png")} style={{width:150, float: "left"}} />
+              </a>
+            </Stack>
+            <Navbar.Toggle />
+            <Navbar.Collapse align="right" className="justify-content-end" expand="lg">
+              <NavDropdown align="end" className="w-25 p-3" title={
+                        <div>
+                          <Image src={userIcon.userPhoto} roundedCircle width="40" height="40"/>
+                            {renderNotification()}
+                        </div>} id="basic-nav-dropdown">
+                    <NavDropdown.Item disabled>@{userIcon.username}</NavDropdown.Item>
+                    <NavDropdown.Item href="/profile/edit">
+                      Edit profile {renderNotificationOnEdit()}
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/user/favorites">
+                      Favorites
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/" onClick={clearStorage}>
+                      Sign out
+                    </NavDropdown.Item>
+                  </NavDropdown>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      </div>
     );
   }
 }

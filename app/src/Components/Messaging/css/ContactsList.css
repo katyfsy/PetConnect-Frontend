@@ -7,9 +7,11 @@
 .contact-list {
   width: 60%;
   max-height: 25em;
+  min-width: 200px;
   overflow-y: auto;
   border: 1px solid;
   border-radius: 5px;
+  background-color: rgb(254, 249, 242);
 }
 
 .list {

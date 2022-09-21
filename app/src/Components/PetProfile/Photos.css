@@ -1,10 +1,11 @@
 .photo-uploader-container {
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 20px;
+  /* display: flex;
+  flex-direction: column; */
   /*background: lightslategrey;*/
   max-width: 600px;
   margin: auto;
-  padding: 30px;
+  /* padding: 30px; */
 }
 
 .pu-title {
@@ -16,11 +17,19 @@
 
 .pu-status {
   text-align: end;
-  margin-top: 0;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 0.5rem;
   font-size: 12px;
   font-weight: 700;
   color: black;
+}
+
+.pu-status-error {
+  text-align: end;
+  margin-top: 5px;
+  margin-bottom: 0.5rem;
+  font-size: 10px;
+  color: #dc3545;
 }
 
 .pu-browse-button {
@@ -57,22 +66,33 @@
   cursor: pointer;
 }
 
-<<<<<<< HEAD
+
 /* pls avoid css of general tags */
-=======
->>>>>>> 7ccb83cdce3fc0e6cb8694cd59b55afb492096ac
+
 /* span {
+.dropzone-icon-active {
+  font-size: 2rem;
+  color: rgb(40, 87, 196);
+}
+
+.dropzone-icon-inactive {
+  font-size: 2rem;
+  color: rgb(108, 117, 125);
+  margin-bottom: 10px;
+}
+
+span {
   font-size: 2rem;
   color: #777;
 } */
 
 .dropzone {
+  padding-top: 50px;
+  padding-bottom: 30px;
   text-align: center;
-  padding: 20px;
   border: 2px dashed #eeeeee;
   background-color: #fafafa;
   color: #bdbdbd;
-  margin-bottom: 8px;
 }
 
 .accept {
@@ -90,74 +110,9 @@
 .preview-container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  align-items: flex-end;
   flex-wrap: wrap;
   gap: 15px 15px;
-  margin-top: 16;
-}
-
-.thumb {
-  /* display: 'inline-flex', */
-  display: flex;
-  flex-direction: column;
-  border-radius: 2px;
-  border: 1px solid #eaeaea;
-  margin-bottom: 8;
-  margin-right: 8;
-  width: 100px;
-  height: 100px;
-  padding: 4px;
-  box-sizing: border-box;
-}
-
-.thumb-inner {
-  display: flex;
-  min-width: 0;
-  overflow: hidden;
-}
-
-.thumb-photo {
-  display: block;
-  width: auto;
-  height: 100%;
-}
-
-.thumb-radio-button {
-  display: flex;
-  justify-items: flex-start;
-  align-items: center;
-  /* margin-right: 2;
-  width: 100;
-  height: 100;
-  padding: 4; */
-  font-size: 12px;
-}
-
-.thumb-radio-button input:hover {
-  cursor: pointer;
-}
-
-.thumb-radio-button label {
-  font-size: 10px;
-  margin-left: 3px;
-}
-
-.thumb-radio-button label:hover {
-  color:rgb(40, 87, 196);
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.thumb-remove-button {
-  margin-top: 7px;
-  margin-left: 3px;
-  margin-bottom: 7px;
-  font-size: 10px;
-  text-align: start;
-}
-
-.thumb-remove-button:hover {
-  color:rgb(40, 87, 196);
-  font-weight: 700;
-  cursor: pointer;
 }
