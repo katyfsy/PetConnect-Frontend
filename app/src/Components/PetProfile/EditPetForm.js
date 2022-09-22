@@ -13,15 +13,10 @@ import { getUser } from "../UserProfile/psb-exports";
 import AddPhotosPortal from "./AddPhotosPortal";
 import PhotoPreviews from "./PhotoPreviews";
 
-function EditPetForm() {
-  const [petId, setPetId] = useState(237);
-  const [thisPet, setThisPet] = useState(null);
-  const [validated, setValidated] = useState(false);
+function EditPetForm({ thisPet }) {
+  const [petId, setPetId] = useState(null);
   const navigate = useNavigate();
-  const [photos, setPhotos] = useState([]);
-  const [coverPhoto, setCoverPhoto] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
-  const [petPhotos, setPetPhotos] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
@@ -31,14 +26,13 @@ function EditPetForm() {
   const [exisitingPhotos, setExistingPhotos] = useState(null);
   const [deletePhotos, setDeletePhotos] = useState([]);
   const [addPhotos, setAddPhotos] = useState([]);
-
-  // const [isSuccess, setIsSuccess] = useState(false);
+  const [editedPetFields, setEditedPetFields] = useState({});
   const [progress, setProgress] = useState(0);
   const [currentUpload, setCurrentUpload] = useState(0);
 
   useEffect(() => {
     fetch(
-      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/237`
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/240`
     )
       .then((res) => res.json())
       .catch((err) => {
@@ -47,40 +41,13 @@ function EditPetForm() {
       })
       .then((data) => {
         setThisPet(data);
-        setPetPhotos(data.photos);
         setPetId(data.petId);
         setExistingPhotos(data.photos);
-        // set;
         setEditedPetFields({ ...editedPetFields, coverPhoto: data.coverPhoto });
-        // setCoverPhoto(data.coverPhoto);
       });
   }, []);
-  const [editedPetFields, setEditedPetFields] = useState({
-    name: null,
-    location: null,
-    type: null,
-    description: null,
-    age: null,
-    reproductiveStatus: null,
-    coverPhoto: null,
-    state: null,
-    city: null,
-    breed: null,
-    species: null,
-    size: null,
-    zip: null,
-  });
-
-  let onExited = null;
-  let user = getUser();
-  console.log(user);
-  console.log(photos);
-  const MAX_NUMBER_OF_PHOTOS = 5;
 
   function handleChangePreview(e) {
-    // if img is clicked
-    console.log(e.target.value);
-    // console.log(e.target.querySelector("img").getAttribute("value"));
     if (e.target.type == "radio") {
       setEditedPetFields({
         ...editedPetFields,
@@ -97,22 +64,17 @@ function EditPetForm() {
         coverPhoto: e.target.querySelector("img").getAttribute("value"),
       });
     } else {
-      // setEditedPetFields({
-      //   ...editedPetFields,
-      //   [e.target.name]: e.target.value,
-      // });
       console.log("yo no se");
     }
   }
 
   function deleteDatabase(photosToDelete) {
-    if (photosToDelete.length == 0) {
+    if (photosToDelete.length === 0) {
       return true;
     }
-    console.log(photosToDelete);
     photosToDelete.forEach((photo) => {
       fetch(
-        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${petId}?photoId=${photo}`,
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${thisPet.petId}?photoId=${photo}`,
         { method: "DELETE" }
       )
         .then((res) => res.json())
@@ -140,18 +102,6 @@ function EditPetForm() {
     }
   };
 
-  const handleAddPhotos = (newPhotos) => {
-    setPhotos([...photos, ...newPhotos]);
-  };
-
-  const handleRemovePhotos = (photos) => {
-    setPhotos(photos);
-  };
-
-  const handleCoverPhoto = (selection) => {
-    setCoverPhoto(selection);
-  };
-
   const getPresignedUrls = (files) => {
     return axios
       .post(
@@ -163,7 +113,7 @@ function EditPetForm() {
       });
   };
 
-  const extractFileData = (petId) => {
+  const extractFileData = (photos, petId) => {
     let files = [];
     for (let i = 0; i < photos.length; i++) {
       let fileData = {};
@@ -172,6 +122,7 @@ function EditPetForm() {
       fileData.filetype = photos[i].type;
       files.push(fileData);
     }
+    console.log("files from within extract function", files);
     return files;
   };
 
@@ -185,17 +136,29 @@ function EditPetForm() {
         );
         return photo.preview === editedPetFields.coverPhoto;
       });
+      console.log(
+        "name of cover photo being sent to endpoint after urls upload if new photo",
+        p[0].name
+      );
       return p[0].name;
     }
     let x = editedPetFields.coverPhoto.substring(
       editedPetFields.coverPhoto.lastIndexOf("/") + 1
     );
+    console.log(
+      "name of cover photo being sent to endpoint after urls upload if photo in db",
+      x
+    );
     return x;
   }
+  console.log("these photos are in our to be added state", addPhotos);
   const handleUpload = async (photos, petId) => {
+    console.log("petId from within handle upload", petId);
+    console.log("photos being passed from onSubmit", photos);
     let files = extractFileData(photos, petId);
-    console.log("handle upload photos", photos);
+    console.log("files from within extract function", files);
     let urls = await getPresignedUrls(files);
+    console.log("files from within extract function", urls);
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
         setCurrentUpload(i);
@@ -208,6 +171,7 @@ function EditPetForm() {
             setProgress(progress);
           },
         };
+        console.log(urls[i], photos[i], options);
         await axios
           .put(urls[i], photos[i], options)
           .then((res) => console.log(res))
@@ -222,21 +186,13 @@ function EditPetForm() {
         )
         .then((res) => console.log(res))
         .then((res) => {
-          setShowAlert(true);
-          setAlertTitle("Congratulations");
-          setAlertText("Pet profile editied successfully");
-          setAlertType("success");
-          setHandleOnExited(true);
+          // setTimeout(() => {
+          //   alert("Photos uploaded successfully");
+          // }, 1000);
         })
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      setShowAlert(true);
-      setAlertTitle("Photo requirements not met");
-      setAlertText("Pet profiles require at least one photo");
-      setAlertType("error");
-      setHandleOnExited(false);
     }
   };
   // const handleUpload = async (petId) => {
@@ -289,7 +245,7 @@ function EditPetForm() {
   //     setHandleOnExited(false);
   //   }
   // };
-  function handlePatch(petId) {
+  function handlePatch() {
     fetch(
       `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${petId}`,
       {
@@ -309,7 +265,7 @@ function EditPetForm() {
       });
   }
   const handleOnSubmit = async (e) => {
-    await handlePatch(petId);
+    await handlePatch();
     let successDeleting = await deleteDatabase(deletePhotos);
     if (successDeleting) {
       await handleUpload(addPhotos, petId);
@@ -339,7 +295,7 @@ function EditPetForm() {
     }
   }
 
-  console.log(thisPet);
+  console.log("pet information", thisPet);
   const navigateToPetProfile = (id) => {
     // 👇️ navigate to /
     navigate(`/pet/${id}`, { replace: true });

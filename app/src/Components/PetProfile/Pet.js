@@ -10,7 +10,6 @@ import { ImPlus } from "react-icons/im";
 import { GrFlag, GrLocation } from "react-icons/gr";
 import Alert from "./AlertModalPetForms";
 import axios from "axios";
-
 import {
   GiHummingbird,
   GiHorseHead,
@@ -286,7 +285,12 @@ function Pet() {
                   <Button
                     variant="primary"
                     size="md"
-                    onClick={() => setIsEdit(!isEdit)}
+                    onClick={() =>
+                      navigate(`/editpet/${petId.id}`, {
+                        replace: true,
+                        state: { thisPet: thisPet },
+                      })
+                    }
                   >
                     {!isEdit ? "Edit Details" : "Cancel Edit"}
                   </Button>
