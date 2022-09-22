@@ -7,6 +7,7 @@ import { getUser } from "../UserProfile/psb-exports"
 import axios from 'axios'
 import { AiFillMessage } from 'react-icons/ai';
 import { useLocation } from "react-router-dom";
+import "./Navbar.css";
 
 function Navigationbar() {
 
@@ -29,7 +30,6 @@ function Navigationbar() {
           .get(
             `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`
           )
-          // axios.get(`http://localhost:8080/messages/notifications/${username}`)
           .then((response) => {
             setNotification(response.data.length ? true : false);
           })
@@ -39,12 +39,13 @@ function Navigationbar() {
       return () => clearInterval(id);
     }, []);
   }
-
+// expand="lg"
+//style={{paddingTop: 0, backgroundColor: "#8F9ED9", marginBottom: 10}
   return (
-    <Navbar className="navBar" style={{paddingTop: 0, backgroundColor: "#8F9ED9", marginBottom: 10}}>
-      <Container>
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+    <Navbar  className="navBar">
+      {/* <Container> */}
+        <Navbar.Collapse style={{backgroundColor: "#8F9ED9"}} id="basic-navbar-nav">
+          <Nav id="customNav" className="me-auto">
             {isLoggedIn() ? <Nav.Link href="/myprofile" style={{color: "white"}}>MyProfile</Nav.Link> : null}
             <Nav.Link href="/pets" style={{color: "white"}}>Pets</Nav.Link>
             <Nav.Link href="/messages" style={{color: "white"}}>Messages</Nav.Link>
@@ -52,7 +53,7 @@ function Navigationbar() {
             <Nav.Link href="/directory" style={{color: "white"}}>Directory</Nav.Link>
           </Nav>
         </Navbar.Collapse>
-      </Container>
+      {/* </Container> */}
     </Navbar>
   );
 }

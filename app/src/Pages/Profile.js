@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
+import Footer from '../Components/Default/Footer';
 import { Container,Button, Row, Col, Image } from 'react-bootstrap';
 import Reviews from '../Components/UserProfile/Reviews';
 import { getBearerToken, getUser, PSB_API_URL } from "../Components/UserProfile/psb-exports";
@@ -100,6 +101,7 @@ function Profile() {
           </Row>
           <hr className="mt-5 mb-3"/>
         </Container>
+        <Footer />
       </div>
     )
   } else {
@@ -162,6 +164,7 @@ function Profile() {
               <Reviews orgUsername={params.username}/>
           </Row>
         </Container>
+        <Footer />
       </div>
     )
   }

@@ -44,7 +44,7 @@ function PetList() {
       >
         {isClicked ? "Show All Pets" : "Show My Pets"}
       </button>
-      <h1>List of All Pets</h1>
+      <h1>{isClicked ? "Show All Pets" : "Show My Pets"}</h1>
       <Row xs={1} md={2} className="g-4">
         <div
           style={{
