@@ -301,7 +301,7 @@ function Pet() {
                     onClick={handleOnDelete}> Delete Pet </Button>
                 </Col>
                 <Col className="vaccine-btn-ctr">
-                < AddVaccineModal owner={user} petId={petId}
+                < AddVaccineModal owner={user} petId={thisPet.petId}
                                   petName={thisPet.name}/>
                 </Col>
               </>

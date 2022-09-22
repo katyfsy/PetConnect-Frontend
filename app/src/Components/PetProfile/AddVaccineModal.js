@@ -21,10 +21,10 @@ const AddVaccineModal = (props) => {
     console.log("Vaccine Fields: ", vaccineFields);
     fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/addVaccine?petId=${props.petId}&vaccineName=${vaccineFields.name}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(vaccineFields),
+      // headers: {
+      //   "Content-Type": "application/json",
+      // },
+      // body: JSON.stringify(vaccineFields),
     })
       .then((response) => response.json())
       .catch((err) => {
