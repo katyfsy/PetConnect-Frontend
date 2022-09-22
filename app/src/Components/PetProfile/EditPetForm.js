@@ -1,53 +1,62 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Container } from "react-bootstrap";
-import { Formik, Field, ErrorMessage } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
-// import Modal from 'react-bootstrap/Modal';
 import Pet from "./Pet";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./EditPetForm.css";
-import Photos from "./Photos";
 import Alert from "./AlertModalPetForms";
 import axios from "axios";
 import { getUser } from "../UserProfile/psb-exports";
 import AddPhotosPortal from "./AddPhotosPortal";
 import PhotoPreviews from "./PhotoPreviews";
 
-function EditPetForm({ thisPet }) {
-  const [petId, setPetId] = useState(null);
+function EditPetForm() {
   const navigate = useNavigate();
-  const [isClicked, setIsClicked] = useState(false);
+  const navigateToPetProfile = (id) => {
+    // 👇️ navigate to /
+    navigate(`/pet/${id}`, { replace: true });
+  };
+
+  // Pet State from Pet Profile page
+  const { state } = useLocation();
+
+  // Alert States
   const [showAlert, setShowAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
   const [handleOnExited, setHandleOnExited] = useState(false);
+
+  // Portal and Photo states
   const [openPortal, setOpenPortal] = useState(false);
-  const [exisitingPhotos, setExistingPhotos] = useState(null);
-  const [deletePhotos, setDeletePhotos] = useState([]);
-  const [addPhotos, setAddPhotos] = useState([]);
-  const [editedPetFields, setEditedPetFields] = useState({});
   const [progress, setProgress] = useState(0);
   const [currentUpload, setCurrentUpload] = useState(0);
+  const [exisitingPhotos, setExistingPhotos] = useState(state.thisPet.photos);
+  const [deletePhotos, setDeletePhotos] = useState([]);
+  const [addPhotos, setAddPhotos] = useState([]);
 
-  useEffect(() => {
-    fetch(
-      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/240`
-    )
-      .then((res) => res.json())
-      .catch((err) => {
-        console.error("errrrrrr");
-        console.error(err);
-      })
-      .then((data) => {
-        setThisPet(data);
-        setPetId(data.petId);
-        setExistingPhotos(data.photos);
-        setEditedPetFields({ ...editedPetFields, coverPhoto: data.coverPhoto });
+  // Pet Fields that change state
+  const [editedPetFields, setEditedPetFields] = useState({
+    coverPhoto: state.thisPet.coverPhoto,
+  });
+
+  const handlePetFieldsChange = (e, form, setform) => {
+    if (e.target.name === "reproductiveStatus" && e.target.value === "") {
+      setform({
+        ...form,
+        [e.target.name]: null,
       });
-  }, []);
+    } else {
+      setform({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
 
-  function handleChangePreview(e) {
+  // Functionalities for Photo selection & deletion
+  function handleChangeCoverPhoto(e) {
     if (e.target.type == "radio") {
       setEditedPetFields({
         ...editedPetFields,
@@ -68,13 +77,38 @@ function EditPetForm({ thisPet }) {
     }
   }
 
-  function deleteDatabase(photosToDelete) {
+  function handleDeletedPhotosFromUI(e, id) {
+    if (e.target.value === editedPetFields.coverPhoto) {
+      setShowAlert(true);
+      setAlertTitle("Must Select Different Cover Photo First Before Deletion");
+      setAlertText("Pet profiles require at least one photo");
+      setAlertType("error");
+      setHandleOnExited(false);
+    } else {
+      if (typeof id !== "string") {
+        console.log("in db");
+        setDeletePhotos([...deletePhotos, id]);
+        const photosWithOutDeleted = exisitingPhotos.filter(
+          (photo) => photo.photoId !== id
+        );
+        setExistingPhotos(photosWithOutDeleted);
+      }
+      if (typeof id == "string") {
+        const photosWithOutDeleted = addPhotos.filter(
+          (photo) => photo.name !== id
+        );
+        setAddPhotos(photosWithOutDeleted);
+      }
+    }
+  }
+
+  function deletePhotosFromDB(photosToDelete) {
     if (photosToDelete.length === 0) {
       return true;
     }
     photosToDelete.forEach((photo) => {
       fetch(
-        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${thisPet.petId}?photoId=${photo}`,
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${state.thisPet.petId}?photoId=${photo}`,
         { method: "DELETE" }
       )
         .then((res) => res.json())
@@ -88,20 +122,36 @@ function EditPetForm({ thisPet }) {
     });
     return true;
   }
-  const handleOnChange = (e, form, setform) => {
-    if (e.target.name === "reproductiveStatus" && e.target.value === "") {
-      setform({
-        ...form,
-        [e.target.name]: null,
+
+  // Functionality to Patch pet details in backend
+  function handlePatch() {
+    fetch(
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${state.thisPet.petId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editedPetFields),
+      }
+    )
+      .then((r) => r.json())
+      .catch((err) => {
+        console.log(err);
+      })
+      .then((data) => {
+        console.log(data);
       });
-    } else {
-      setform({
-        ...form,
-        [e.target.name]: e.target.value,
-      });
+  }
+  const handleOnSubmit = async (e) => {
+    await handlePatch();
+    let successDeleting = await deletePhotosFromDB(deletePhotos);
+    if (successDeleting) {
+      await handleUpload(addPhotos, state.thisPet.petId);
     }
   };
 
+  // Functionality to upload photos
   const getPresignedUrls = (files) => {
     return axios
       .post(
@@ -122,43 +172,32 @@ function EditPetForm({ thisPet }) {
       fileData.filetype = photos[i].type;
       files.push(fileData);
     }
-    console.log("files from within extract function", files);
     return files;
   };
 
   function findCoverPhotoName(listOfPhotos) {
     if (editedPetFields.coverPhoto.includes("blob")) {
       let p = listOfPhotos.filter((photo) => {
-        console.log(
-          photo.preview,
-          editedPetFields.coverPhoto,
-          photo.preview === editedPetFields.coverPhoto
-        );
         return photo.preview === editedPetFields.coverPhoto;
       });
-      console.log(
-        "name of cover photo being sent to endpoint after urls upload if new photo",
-        p[0].name
-      );
       return p[0].name;
     }
     let x = editedPetFields.coverPhoto.substring(
       editedPetFields.coverPhoto.lastIndexOf("/") + 1
     );
-    console.log(
-      "name of cover photo being sent to endpoint after urls upload if photo in db",
-      x
-    );
     return x;
   }
-  console.log("these photos are in our to be added state", addPhotos);
+
   const handleUpload = async (photos, petId) => {
-    console.log("petId from within handle upload", petId);
-    console.log("photos being passed from onSubmit", photos);
+    if (photos.length === 0) {
+      setShowAlert(true);
+      setAlertTitle("Congratulations");
+      setAlertText("Pet profile edited successfully");
+      setAlertType("success");
+      setHandleOnExited(true);
+    }
     let files = extractFileData(photos, petId);
-    console.log("files from within extract function", files);
     let urls = await getPresignedUrls(files);
-    console.log("files from within extract function", urls);
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
         setCurrentUpload(i);
@@ -171,134 +210,29 @@ function EditPetForm({ thisPet }) {
             setProgress(progress);
           },
         };
-        console.log(urls[i], photos[i], options);
         await axios
           .put(urls[i], photos[i], options)
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
       }
-      // alert("Photos uploaded successfully");
       await axios
         .post(
-          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${findCoverPhotoName(
-            photos
-          )}`
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${
+            state.thisPet.petId
+          }&coverPhoto=${findCoverPhotoName(photos)}`
         )
         .then((res) => console.log(res))
         .then((res) => {
-          // setTimeout(() => {
-          //   alert("Photos uploaded successfully");
-          // }, 1000);
+          setShowAlert(true);
+          setAlertTitle("Congratulations");
+          setAlertText("Pet profile edited successfully");
+          setAlertType("success");
+          setHandleOnExited(true);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  };
-  // const handleUpload = async (petId) => {
-  //   let files = extractFileData(petId);
-  //   console.log(files);
-  //   let urls = await getPresignedUrls(files);
-
-  //   if (photos.length > 0) {
-  //     for (let i = 0; i < photos.length; i++) {
-  //       setCurrentUpload(i);
-  //       let options = {
-  //         headers: {
-  //           "Content-Type": photos[i].type,
-  //         },
-  //         onUploadProgress: (progressEvent) => {
-  //           const progress = (progressEvent.loaded / progressEvent.total) * 100;
-  //           setProgress(progress);
-  //         },
-  //         // onDownloadProgress: (progressEvent) => {
-  //         //   const progress = 50 + (progresssEvent.loaded / progressEvent.total) * 100;
-  //         //   console.log("THIS IS THE PROGRESSS: ", progress);
-  //         //   setProgress(progress);
-  //         // }
-  //       };
-
-  //       await axios
-  //         .put(urls[i], photos[i], options)
-  //         .then((res) => console.log(res))
-  //         .catch((err) => console.log(err));
-  //     }
-  //     // alert("Photos uploaded successfully");
-  //     await axios
-  //       .post(
-  //         `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[coverPhoto].name}`
-  //       )
-  //       .then((res) => console.log(res))
-  //       .then((res) => {
-  //         setShowAlert(true);
-  //         setAlertTitle("Congratulations");
-  //         setAlertText("Pet profile created successfully");
-  //         setAlertType("success");
-  //         setHandleOnExited(true);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   } else {
-  //     setShowAlert(true);
-  //     setAlertTitle("Photo requirements not met");
-  //     setAlertText("Pet profiles require at least one photo");
-  //     setAlertType("error");
-  //     setHandleOnExited(false);
-  //   }
-  // };
-  function handlePatch() {
-    fetch(
-      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${petId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(editedPetFields),
-      }
-    )
-      .then((r) => r.json())
-      .catch((err) => {
-        console.log(err);
-      })
-      .then((data) => {
-        console.log(data);
-      });
-  }
-  const handleOnSubmit = async (e) => {
-    await handlePatch();
-    let successDeleting = await deleteDatabase(deletePhotos);
-    if (successDeleting) {
-      await handleUpload(addPhotos, petId);
-    }
-  };
-
-  function handleDelete(e, id) {
-    console.log(id);
-    if (e.target.value === editedPetFields.coverPhoto) {
-      alert("Must Select Different Cover Photo First Before Deletion");
-    } else {
-      if (typeof id !== "string") {
-        console.log("in db");
-        setDeletePhotos([...deletePhotos, id]);
-        const photosWithOutDeleted = exisitingPhotos.filter(
-          (photo) => photo.photoId !== id
-        );
-        setExistingPhotos(photosWithOutDeleted);
-      }
-      console.log(thisPet.petId, id);
-      if (typeof id == "string") {
-        const photosWithOutDeleted = addPhotos.filter(
-          (photo) => photo.name !== id
-        );
-        setAddPhotos(photosWithOutDeleted);
-      }
-    }
-  }
-
-  console.log("pet information", thisPet);
-  const navigateToPetProfile = (id) => {
-    // 👇️ navigate to /
-    navigate(`/pet/${id}`, { replace: true });
   };
 
   const schema = Yup.object({
@@ -324,58 +258,33 @@ function EditPetForm({ thisPet }) {
   });
 
   console.log("Pet fields: ", editedPetFields);
-  if (thisPet === null) {
+  if (state.thisPet === null) {
     return <div></div>;
   }
   return (
     <>
       <Container className="editpet-form-container">
-        <h3>Let's create the pet's profile</h3>
+        <h3>Let's edit the pet's profile</h3>
         <br />
         <Formik
           validationSchema={schema}
-          // validateOnMount
-          // setSubmitting={false}
           onSubmit={handleOnSubmit}
-          // validateOnChange={false}
-          // validateOnBlur={true}
-          // setTouched={false}
           initialValues={{
-            name: thisPet.name,
-            city: thisPet.city,
-            state: thisPet.state,
-            zip: thisPet.zip,
-            type: thisPet.type,
-            breed: thisPet.breed,
-            species: thisPet.species,
-            size: thisPet.size,
-            age: thisPet.age,
-            sex: thisPet.sex,
-            description: thisPet.description,
-            reproductiveStatus: thisPet.reproductiveStatus,
-            // photos: ,
+            name: state.thisPet.name,
+            city: state.thisPet.city,
+            state: state.thisPet.state,
+            zip: state.thisPet.zip,
+            type: state.thisPet.type,
+            breed: state.thisPet.breed,
+            species: state.thisPet.species,
+            size: state.thisPet.size,
+            age: state.thisPet.age,
+            sex: state.thisPet.sex,
+            description: state.thisPet.description,
+            reproductiveStatus: state.thisPet.reproductiveStatus,
           }}
-          // validate
-          // errors={{
-          //   name: "",
-          //   city: "",
-          //   state: "",
-          //   zip: "",
-          //   type: "",
-          //   sex: "",
-          //   description: "",
-          //   // photos: "",
-          // }}
         >
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            values,
-            touched,
-            isValid,
-            errors,
-          }) => (
+          {({ handleSubmit, handleChange, values, isValid, errors }) => (
             <Form
               className="addpet-form"
               onSubmit={(e) => {
@@ -418,11 +327,15 @@ function EditPetForm({ thisPet }) {
                   className="pet-name"
                   type="text"
                   name="name"
-                  //   defaultValue={thisPet.name}
+                  //   defaultValue={state.thisPet.name}
                   value={values.name}
                   onChange={(e) => {
                     handleChange(e);
-                    handleOnChange(e, editedPetFields, setEditedPetFields);
+                    handlePetFieldsChange(
+                      e,
+                      editedPetFields,
+                      setEditedPetFields
+                    );
                   }}
                   placeholder="Pet's name"
                   isInvalid={errors.name}
@@ -445,7 +358,11 @@ function EditPetForm({ thisPet }) {
                   value={values.city}
                   onChange={(e) => {
                     handleChange(e);
-                    handleOnChange(e, editedPetFields, setEditedPetFields);
+                    handlePetFieldsChange(
+                      e,
+                      editedPetFields,
+                      setEditedPetFields
+                    );
                   }}
                   placeholder="City"
                   isInvalid={errors.city}
@@ -468,7 +385,11 @@ function EditPetForm({ thisPet }) {
                     value={values.state}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(e, editedPetFields, setEditedPetFields);
+                      handlePetFieldsChange(
+                        e,
+                        editedPetFields,
+                        setEditedPetFields
+                      );
                     }}
                     placeholder="State"
                     isInvalid={errors.state}
@@ -490,7 +411,11 @@ function EditPetForm({ thisPet }) {
                     name="zip"
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(e, editedPetFields, setEditedPetFields);
+                      handlePetFieldsChange(
+                        e,
+                        editedPetFields,
+                        setEditedPetFields
+                      );
                     }}
                     placeholder="Zipcode"
                     isInvalid={errors.zip}
@@ -515,7 +440,11 @@ function EditPetForm({ thisPet }) {
                     value={values.type}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(e, editedPetFields, setEditedPetFields);
+                      handlePetFieldsChange(
+                        e,
+                        editedPetFields,
+                        setEditedPetFields
+                      );
                     }}
                     isInvalid={errors.type}
                   >
@@ -558,7 +487,11 @@ function EditPetForm({ thisPet }) {
                     }
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(e, editedPetFields, setEditedPetFields);
+                      handlePetFieldsChange(
+                        e,
+                        editedPetFields,
+                        setEditedPetFields
+                      );
                     }}
                     placeholder={
                       values.type === "dog" || values.type === "cat"
@@ -593,7 +526,11 @@ function EditPetForm({ thisPet }) {
                     value={values.size}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(e, editedPetFields, setEditedPetFields);
+                      handlePetFieldsChange(
+                        e,
+                        editedPetFields,
+                        setEditedPetFields
+                      );
                     }}
                     disabled={values.type != "dog" ? true : false}
                     isInvalid={errors.size}
@@ -620,7 +557,11 @@ function EditPetForm({ thisPet }) {
                     value={values.sex}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(e, editedPetFields, setEditedPetFields);
+                      handlePetFieldsChange(
+                        e,
+                        editedPetFields,
+                        setEditedPetFields
+                      );
                     }}
                     isInvalid={errors.sex}
                   >
@@ -646,7 +587,11 @@ function EditPetForm({ thisPet }) {
                     value={values.age}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(e, editedPetFields, setEditedPetFields);
+                      handlePetFieldsChange(
+                        e,
+                        editedPetFields,
+                        setEditedPetFields
+                      );
                     }}
                     isInvalid={errors.age}
                   >
@@ -674,7 +619,11 @@ function EditPetForm({ thisPet }) {
                     value={values.reproductiveStatus}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(e, editedPetFields, setEditedPetFields);
+                      handlePetFieldsChange(
+                        e,
+                        editedPetFields,
+                        setEditedPetFields
+                      );
                     }}
                     isInvalid={errors.reproductiveStatus}
                   >
@@ -700,7 +649,11 @@ function EditPetForm({ thisPet }) {
                   value={values.description}
                   onChange={(e) => {
                     handleChange(e);
-                    handleOnChange(e, editedPetFields, setEditedPetFields);
+                    handlePetFieldsChange(
+                      e,
+                      editedPetFields,
+                      setEditedPetFields
+                    );
                   }}
                   placeholder="Tell us a little more about your pet..."
                   isInvalid={errors.description}
@@ -719,8 +672,8 @@ function EditPetForm({ thisPet }) {
                   <PhotoPreviews
                     photos={exisitingPhotos}
                     coverPhoto={editedPetFields.coverPhoto}
-                    handleCoverPhoto={handleChangePreview}
-                    handleRemoveThumb={handleDelete}
+                    handleCoverPhoto={handleChangeCoverPhoto}
+                    handleRemoveThumb={handleDeletedPhotosFromUI}
                     currentUpload={currentUpload}
                     progress={progress}
                     showRadio={true}
@@ -732,8 +685,8 @@ function EditPetForm({ thisPet }) {
                   <PhotoPreviews
                     photos={addPhotos}
                     coverPhoto={editedPetFields.coverPhoto}
-                    handleCoverPhoto={handleChangePreview}
-                    handleRemoveThumb={handleDelete}
+                    handleCoverPhoto={handleChangeCoverPhoto}
+                    handleRemoveThumb={handleDeletedPhotosFromUI}
                     currentUpload={currentUpload}
                     progress={progress}
                     showRadio={true}
@@ -758,24 +711,21 @@ function EditPetForm({ thisPet }) {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  {isClicked ? null : (
-                    <Button type="submit" className="add-pet-button">
-                      Add Pet
-                    </Button>
-                  )}
+                  <Button type="submit" className="add-pet-button">
+                    Edit Pet
+                  </Button>
                 </Form.Group>
               </div>
             </Form>
           )}
         </Formik>
         <br />
-        {isClicked ? <Pet editedPetFields={editedPetFields} /> : null}
 
         <AddPhotosPortal
           style={{ zIndex: "4" }}
           openPortal={openPortal}
           setOpenPortal={setOpenPortal}
-          thisPet={thisPet}
+          thisPet={state.thisPet}
           addPhotos={addPhotos}
           setAddPhotos={setAddPhotos}
           progress={progress}
@@ -788,7 +738,11 @@ function EditPetForm({ thisPet }) {
           title={alertTitle}
           type={alertType}
           onHide={() => setShowAlert(false)}
-          onExited={handleOnExited ? () => navigateToPetProfile(petId) : null}
+          onExited={
+            handleOnExited
+              ? () => navigateToPetProfile(state.thisPet.petId)
+              : null
+          }
         />
       </Container>
     </>

@@ -292,7 +292,7 @@ function Pet() {
                     variant="primary"
                     size="md"
                     onClick={() =>
-                      navigate(`/editpet/${petId.id}`, {
+                      navigate(`/editpet`, {
                         replace: true,
                         state: { thisPet: thisPet },
                       })
