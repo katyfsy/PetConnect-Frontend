@@ -9,16 +9,21 @@ import Profile from "./Pages/Profile";
 import Messages from "./Pages/Messages";
 import EditProfile from "./Pages/EditProfile";
 import AddAPet from "./Pages/AddAPet";
+import EditAPet from "./Pages/EditAPet";
 import PetProfile from "./Pages/PetProfile";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
-import MyProfile from './Pages/MyProfile';
-import ResetPassword from './Pages/ResetPassword';
-import ChangePassword from './Pages/ChangePassword';
-import UserPetList from './Pages/UserPetList'
-import UserFavorites from './Pages/UserFavorites'
-import { getBearerToken, getUser, clearStorage } from "./Components/UserProfile/psb-exports"
+import MyProfile from "./Pages/MyProfile";
+import ResetPassword from "./Pages/ResetPassword";
+import ChangePassword from "./Pages/ChangePassword";
+import UserPetList from "./Pages/UserPetList";
+import UserFavorites from "./Pages/UserFavorites";
+import {
+  getBearerToken,
+  getUser,
+  clearStorage,
+} from "./Components/UserProfile/psb-exports";
 
 function App() {
   const navigate = useNavigate();
@@ -50,6 +55,7 @@ function App() {
         <Route path="/pets" element={<Pets />} />
         <Route path="/messages" element={loggedIn ? <Messages /> : <Login />} />
         <Route path="/addpet" element={<AddAPet />} />
+        <Route path="/editPet" element={<EditAPet />} />
         {/* <Route path="/pet" element={<Pet />} /> */}
         <Route path="/pet/:id" element={<PetProfile />} />
         <Route path="/directory" element={<Directory />} />

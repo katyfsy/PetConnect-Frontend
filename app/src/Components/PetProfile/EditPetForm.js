@@ -5,57 +5,101 @@ import * as Yup from "yup";
 // import Modal from 'react-bootstrap/Modal';
 import Pet from "./Pet";
 import { useNavigate } from "react-router-dom";
-import "./AddAPetForm.css";
+import "./EditPetForm.css";
 import Photos from "./Photos";
 import Alert from "./AlertModalPetForms";
 import axios from "axios";
 import { getUser } from "../UserProfile/psb-exports";
+import AddPhotosPortal from "./AddPhotosPortal";
+import PhotoPreviews from "./PhotoPreviews";
 
-function AddAPetForm() {
+function EditPetForm() {
   const [petId, setPetId] = useState(null);
+  const [thisPet, setThisPet] = useState(null);
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
   const [photos, setPhotos] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
-
+  const [petPhotos, setPetPhotos] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
   const [handleOnExited, setHandleOnExited] = useState(false);
+  const [openPortal, setOpenPortal] = useState(false);
+  const [exisitingPhotos, setExistingPhotos] = useState(null);
+  const [deletePhotos, setDeletePhotos] = useState([]);
+  const [addPhotos, setAddPhotos] = useState([]);
 
   // const [isSuccess, setIsSuccess] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentUpload, setCurrentUpload] = useState(0);
 
-  const [nonRequiredPetFields, setNonRequiredPetFields] = useState({
+  useEffect(() => {
+    fetch(
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/231`
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        console.error("errrrrrr");
+        console.error(err);
+      })
+      .then((data) => {
+        setThisPet(data);
+        setPetPhotos(data.photos);
+        setPetId(data.petId);
+        setExistingPhotos(data.photos);
+        // set;
+        setEditedPetFields({ ...editedPetFields, coverPhoto: data.coverPhoto });
+        // setCoverPhoto(data.coverPhoto);
+      });
+  }, []);
+  const [editedPetFields, setEditedPetFields] = useState({
+    name: null,
+    location: null,
+    type: null,
+    description: null,
+    age: null,
+    reproductiveStatus: null,
+    coverPhoto: null,
     state: null,
     city: null,
     breed: null,
     species: null,
     size: null,
-    age: null,
-    reproductiveStatus: null,
+    zip: null,
   });
 
   let onExited = null;
   let user = getUser();
   console.log(user);
-  const [requiredPetFields, setrequiredPetFields] = useState({
-    owner: user.toString(),
-    name: null,
-    zip: null,
-    type: null,
-    sex: null,
-
-    description: null,
-  });
   console.log(photos);
   const MAX_NUMBER_OF_PHOTOS = 5;
 
+  function handleChangePreview(e) {
+    // if img is clicked
+    // console.log(e.target.name);
+    // console.log(e.target.querySelector("img").getAttribute("value"));
+    if (e.target.src) {
+      setEditedPetFields({
+        ...editedPetFields,
+        [e.target.name]: e.target.getAttribute("value"),
+      });
+    } else if (e.target.querySelector("img").getAttribute("value")) {
+      setEditedPetFields({
+        ...editedPetFields,
+        coverPhoto: e.target.querySelector("img").getAttribute("value"),
+      });
+    } else {
+      // setEditedPetFields({
+      //   ...editedPetFields,
+      //   [e.target.name]: e.target.value,
+      // });
+      console.log("yo no se");
+    }
+  }
   const handleOnChange = (e, form, setform) => {
-    console.log(form);
     if (e.target.name === "reproductiveStatus" && e.target.value === "") {
       setform({
         ...form,
@@ -81,24 +125,6 @@ function AddAPetForm() {
     setCoverPhoto(selection);
   };
 
-  const createPet = () => {
-    let options = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    return axios
-      .post(
-        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets`,
-        JSON.stringify(requiredPetFields),
-        options
-      )
-      .then((res) => {
-        return res.data.petId;
-      })
-      .catch((err) => console.log(err));
-  };
-
   const getPresignedUrls = (files) => {
     return axios
       .post(
@@ -122,14 +148,27 @@ function AddAPetForm() {
     return files;
   };
 
+  function findCoverPhotoName(listOfPhotos) {
+    if (editedPetFields.coverPhoto.includes("blob")) {
+      let p = listOfPhotos.filter((photo) => {
+        console.log(
+          photo.preview,
+          editedPetFields.coverPhoto,
+          photo.preview === editedPetFields.coverPhoto
+        );
+        return photo.preview === editedPetFields.coverPhoto;
+      });
+      return p[0].name;
+    }
+    let x = editedPetFields.coverPhoto.substring(
+      editedPetFields.coverPhoto.lastIndexOf("/") + 1
+    );
+    return x;
+  }
   const handleUpload = async (petId) => {
     let files = extractFileData(petId);
     console.log(files);
     let urls = await getPresignedUrls(files);
-    // let filesProgress = [];
-    // filesProgress.push(progress)
-    // setFilesProgress(filesProgress)
-    // setProgress(0)
 
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
@@ -184,7 +223,7 @@ function AddAPetForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(nonRequiredPetFields),
+        body: JSON.stringify(editedPetFields),
       }
     )
       .then((r) => r.json())
@@ -195,52 +234,38 @@ function AddAPetForm() {
         console.log(data);
       });
   }
-  const handleOnSubmit = async () => {
-    // const form = e.currentTarget;
-
-    // if (isValid === false ) {
-    //   console.log('isvalid exists')
-    // }
-
-    // if (form.checkValidity() === true) {
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    //   setShowAlert(true)
-    //   setAlertTitle("Incomplete form")
-    //   setAlertText("Fill out required fields")
-    //   setAlertType("error")
-    //   setHandleOnExited(false)
-    // } else {
-
-    // e.preventDefault();
-
-    let petId = await createPet();
-    if (petId != null) {
-      setPetId(petId);
-      await handlePatch(petId);
-      await handleUpload(petId);
+  const handleOnSubmit = async (e) => {
+    await handlePatch();
+    let successDeleting = await deleteDatabase(deletePhotos);
+    if (successDeleting) {
+      await handleUpload(addPhotos, thisPet.petId);
     }
-
-    // setValidated(true);
-
-    // if (photos.length == 0) {
-    //   setShowAlert(true)
-    //   setAlertTitle("")
-    //   setAlertText("Pet profiles require at least one photo")
-    //   setAlertType("error")
-    //   setValidated(false)
-    //   // alert("At least one photo is required to upload");
-    // } else {
-    //   let petId = await createPet();
-    //   if (petId != null) {
-    //     setPetId(petId)
-    //     await handleUpload(petId);
-    //   }
-    //   // setValidated(true);
-    // }
-    // setValidated(true);
   };
 
+  function handleDelete(e, id) {
+    console.log(id);
+    if (e.target.value === editedPetFields.coverPhoto) {
+      alert("Must Select Different Cover Photo First Before Deletion");
+    } else {
+      if (typeof id !== "string") {
+        console.log("in db");
+        setDeletePhotos([...deletePhotos, id]);
+        const photosWithOutDeleted = exisitingPhotos.filter(
+          (photo) => photo.photoId !== id
+        );
+        setExistingPhotos(photosWithOutDeleted);
+      }
+      console.log(thisPet.petId, id);
+      if (typeof id == "string") {
+        const photosWithOutDeleted = addPhotos.filter(
+          (photo) => photo.name !== id
+        );
+        setAddPhotos(photosWithOutDeleted);
+      }
+    }
+  }
+
+  console.log(thisPet);
   const navigateToPetProfile = (id) => {
     // 👇️ navigate to /
     navigate(`/pet/${id}`, { replace: true });
@@ -268,12 +293,13 @@ function AddAPetForm() {
       .required("description is required"),
   });
 
-  console.log("NON REQUIRED: ", nonRequiredPetFields);
-  console.log("REQUIRED: ", requiredPetFields);
-
+  console.log("Pet fields: ", editedPetFields);
+  if (thisPet === null) {
+    return <div></div>;
+  }
   return (
     <>
-      <Container className="addpet-form-container">
+      <Container className="editpet-form-container">
         <h3>Let's create the pet's profile</h3>
         <br />
         <Formik
@@ -285,19 +311,19 @@ function AddAPetForm() {
           // validateOnBlur={true}
           // setTouched={false}
           initialValues={{
-            name: "",
-            city: "",
-            state: "",
-            zip: "",
-            type: "",
-            breed: "",
-            species: "",
-            size: "",
-            age: "",
-            sex: "",
-            reproductiveStatus: "",
-            description: "",
-            // photos: "",
+            name: thisPet.name,
+            city: thisPet.city,
+            state: thisPet.state,
+            zip: thisPet.zip,
+            type: thisPet.type,
+            breed: thisPet.breed,
+            species: thisPet.species,
+            size: thisPet.size,
+            age: thisPet.age,
+            sex: thisPet.sex,
+            description: thisPet.description,
+            reproductiveStatus: thisPet.reproductiveStatus,
+            // photos: ,
           }}
           // validate
           // errors={{
@@ -362,10 +388,11 @@ function AddAPetForm() {
                   className="pet-name"
                   type="text"
                   name="name"
+                  //   defaultValue={thisPet.name}
                   value={values.name}
                   onChange={(e) => {
                     handleChange(e);
-                    handleOnChange(e, requiredPetFields, setrequiredPetFields);
+                    handleOnChange(e, editedPetFields, setEditedPetFields);
                   }}
                   placeholder="Pet's name"
                   isInvalid={errors.name}
@@ -388,11 +415,7 @@ function AddAPetForm() {
                   value={values.city}
                   onChange={(e) => {
                     handleChange(e);
-                    handleOnChange(
-                      e,
-                      nonRequiredPetFields,
-                      setNonRequiredPetFields
-                    );
+                    handleOnChange(e, editedPetFields, setEditedPetFields);
                   }}
                   placeholder="City"
                   isInvalid={errors.city}
@@ -415,11 +438,7 @@ function AddAPetForm() {
                     value={values.state}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(
-                        e,
-                        nonRequiredPetFields,
-                        setNonRequiredPetFields
-                      );
+                      handleOnChange(e, editedPetFields, setEditedPetFields);
                     }}
                     placeholder="State"
                     isInvalid={errors.state}
@@ -437,15 +456,11 @@ function AddAPetForm() {
                   <Form.Label>Zipcode</Form.Label>
                   <Form.Control
                     type="number"
-                    name="zip"
                     value={values.zip}
+                    name="zip"
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(
-                        e,
-                        requiredPetFields,
-                        setrequiredPetFields
-                      );
+                      handleOnChange(e, editedPetFields, setEditedPetFields);
                     }}
                     placeholder="Zipcode"
                     isInvalid={errors.zip}
@@ -470,11 +485,7 @@ function AddAPetForm() {
                     value={values.type}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(
-                        e,
-                        requiredPetFields,
-                        setrequiredPetFields
-                      );
+                      handleOnChange(e, editedPetFields, setEditedPetFields);
                     }}
                     isInvalid={errors.type}
                   >
@@ -517,11 +528,7 @@ function AddAPetForm() {
                     }
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(
-                        e,
-                        nonRequiredPetFields,
-                        setNonRequiredPetFields
-                      );
+                      handleOnChange(e, editedPetFields, setEditedPetFields);
                     }}
                     placeholder={
                       values.type === "dog" || values.type === "cat"
@@ -556,11 +563,7 @@ function AddAPetForm() {
                     value={values.size}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(
-                        e,
-                        nonRequiredPetFields,
-                        setNonRequiredPetFields
-                      );
+                      handleOnChange(e, editedPetFields, setEditedPetFields);
                     }}
                     disabled={values.type != "dog" ? true : false}
                     isInvalid={errors.size}
@@ -587,11 +590,7 @@ function AddAPetForm() {
                     value={values.sex}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(
-                        e,
-                        requiredPetFields,
-                        setrequiredPetFields
-                      );
+                      handleOnChange(e, editedPetFields, setEditedPetFields);
                     }}
                     isInvalid={errors.sex}
                   >
@@ -617,11 +616,7 @@ function AddAPetForm() {
                     value={values.age}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(
-                        e,
-                        nonRequiredPetFields,
-                        setNonRequiredPetFields
-                      );
+                      handleOnChange(e, editedPetFields, setEditedPetFields);
                     }}
                     isInvalid={errors.age}
                   >
@@ -649,11 +644,7 @@ function AddAPetForm() {
                     value={values.reproductiveStatus}
                     onChange={(e) => {
                       handleChange(e);
-                      handleOnChange(
-                        e,
-                        nonRequiredPetFields,
-                        setNonRequiredPetFields
-                      );
+                      handleOnChange(e, editedPetFields, setEditedPetFields);
                     }}
                     isInvalid={errors.reproductiveStatus}
                   >
@@ -679,7 +670,7 @@ function AddAPetForm() {
                   value={values.description}
                   onChange={(e) => {
                     handleChange(e);
-                    handleOnChange(e, requiredPetFields, setrequiredPetFields);
+                    handleOnChange(e, editedPetFields, setEditedPetFields);
                   }}
                   placeholder="Tell us a little more about your pet..."
                   isInvalid={errors.description}
@@ -689,22 +680,26 @@ function AddAPetForm() {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group className="mb-3 photos-form-container">
-                <Form.Label>Photos</Form.Label>
-                <Photos
-                  photos={photos}
-                  coverPhoto={coverPhoto}
-                  handleAddPhotos={handleAddPhotos}
-                  handleRemovePhotos={handleRemovePhotos}
-                  handleCoverPhoto={handleCoverPhoto}
-                  showRadios={true}
-                  maxPhotos={MAX_NUMBER_OF_PHOTOS}
-                  progress={progress}
-                  currentUpload={currentUpload}
-                  adding={true}
-                  edit={false}
-                  preview={"preview"}
-                />
+              <Form.Group className="mb-3 edit-photos-form-container">
+                <Form.Label>Current photos</Form.Label>
+
+                <Button onClick={() => setOpenPortal(true)}> Add photos</Button>
+
+                <div className="existing-preview-container">
+                  <PhotoPreviews
+                    photos={exisitingPhotos}
+                    coverPhoto={editedPetFields.coverPhoto}
+                    handleCoverPhoto={handleChangePreview}
+                    handleRemoveThumb={handleDelete}
+                    currentUpload={currentUpload}
+                    progress={progress}
+                    showRadio={true}
+                    adding={false}
+                    edit={true}
+                    preview={"photo_url"}
+                    photoId={"photoId"}
+                  />
+                </div>
               </Form.Group>
 
               <div className="mb-3 buttons-form-container">
@@ -730,7 +725,17 @@ function AddAPetForm() {
           )}
         </Formik>
         <br />
-        {isClicked ? <Pet requiredPetFields={requiredPetFields} /> : null}
+        {isClicked ? <Pet editedPetFields={editedPetFields} /> : null}
+
+        <AddPhotosPortal style={{zIndex: '4'}}
+          openPortal={openPortal}
+          setOpenPortal={setOpenPortal}
+          thisPet={thisPet}
+          addPhotos={addPhotos}
+          setAddPhotos={setAddPhotos}
+          progress={progress}
+          currentUpload={currentUpload}
+        />
 
         <Alert
           show={showAlert}
@@ -745,4 +750,4 @@ function AddAPetForm() {
   );
 }
 
-export default AddAPetForm;
+export default EditPetForm;

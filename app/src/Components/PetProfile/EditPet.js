@@ -7,7 +7,7 @@ import Image from "react-bootstrap/Image";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PhotoPreviews from "./PhotoPreviews";
-import "./EditPet.css";
+
 function EditPet({ thisPet, setIsEdit, refetchPet }) {
   const [openPortal, setOpenPortal] = useState(false);
 
@@ -68,13 +68,9 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
       });
       return p[0].name;
     }
-
-    // some regex
-
     let x = petAttributes.coverPhoto.substring(
       petAttributes.coverPhoto.lastIndexOf("/") + 1
     );
-    console.log(x);
     return x;
   }
 
