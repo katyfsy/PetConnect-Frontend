@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import AddPhotosPortal from "./AddPhotosPortal";
+import EditVaccinesList from "./EditVaccinesList.js";
 import Image from "react-bootstrap/Image";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PhotoPreviews from "./PhotoPreviews";
-import "./EditPet.css";
+
 function EditPet({ thisPet, setIsEdit, refetchPet }) {
   const [openPortal, setOpenPortal] = useState(false);
 
@@ -67,13 +68,9 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
       });
       return p[0].name;
     }
-
-    // some regex
-
     let x = petAttributes.coverPhoto.substring(
       petAttributes.coverPhoto.lastIndexOf("/") + 1
     );
-    console.log(x);
     return x;
   }
 
@@ -398,6 +395,9 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
         progress={progress}
         currentUpload={currentUpload}
       />
+
+      <h1> Vaccine Records </h1>
+      <EditVaccinesList pet={thisPet}/><br/><br/>
 
       <h1>Additional Details</h1>
 

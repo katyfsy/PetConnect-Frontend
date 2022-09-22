@@ -4,7 +4,7 @@ import axios from "axios";
 import { getUser, PSB_API_URL } from "./psb-exports";
 import { useNavigate } from "react-router-dom";
 
-function User() {
+function User({owner}) {
   const [form, setForm] = useState({
     username: "",
     businessName: "",
@@ -23,7 +23,7 @@ function User() {
     const doGetUser = () => {
       // route has to be changed later
       axios
-        .get(`${PSB_API_URL}/api/public/users/orgs/test2`)
+        .get(`${PSB_API_URL}/api/public/users/orgs/${owner}`)
         .then((res) => {
           let result = res.data;
           for (var key in result) {

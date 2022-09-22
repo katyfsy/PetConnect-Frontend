@@ -32,6 +32,7 @@ const PhotoPreviews = ({
         <div
           className="thumb"
           onClick={(e) => {
+            // console.log(e);
             handleCoverPhoto(edit ? e : index);
           }}
         >
@@ -97,7 +98,7 @@ const PhotoPreviews = ({
 
 PhotoPreviews.propTypes = {
   photos: PropTypes.array.isRequired,
-  coverPhoto: PropTypes.number.isRequired,
+  // coverPhoto: PropTypes.number.isRequired,
   handleCoverPhoto: PropTypes.func.isRequired,
   handleRemoveThumb: PropTypes.func.isRequired,
   currentUpload: PropTypes.number.isRequired,

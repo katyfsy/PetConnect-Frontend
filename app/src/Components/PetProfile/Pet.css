@@ -1,3 +1,8 @@
 .react_lightgallery_item {
     display: inline-block;
 }
+
+.contact-card-tab {
+    display: flex;
+    justify-content: center;
+}

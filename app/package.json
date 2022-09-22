@@ -34,7 +34,7 @@
     "react-paginate": "^8.1.3",
     "react-rating": "^2.0.5",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "react-select": "^5.4.0",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
