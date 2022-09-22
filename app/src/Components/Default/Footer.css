@@ -4,6 +4,10 @@
   color: white;
   padding-top: 10px;
   margin-top: 100px;
+  /* position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%; */
 }
 .footerImg{
   height: 30px;
