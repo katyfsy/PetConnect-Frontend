@@ -9,6 +9,7 @@ import {
   DropdownButton,
   Dropdown,
   Col,
+  Form,
 } from "react-bootstrap";
 import User from "../Components/UserProfile/User";
 import DirectoryItem from "../Components/UserProfile/DirectoryItem";
@@ -58,7 +59,7 @@ function Directory() {
         <td>
           <a href={`/petlist/${element.username}`}>
             {" "}
-            <i class="bi bi-house-heart hheart"></i>
+            <i className="bi bi-house-heart hheart"></i>
           </a>
         </td>
         <td>{blankCityState}</td>
@@ -102,16 +103,30 @@ function Directory() {
                 />
               </div>
             </Col>
-            <Col className="pagination justify-content-right">
-            <div>
-              <DropdownButton
-                id="dropdown-basic-button"
-                title="Dropdown button"
-              >
-                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-              </DropdownButton>
+            <Col xs={2}>
+              <h6 className="i-per-page">Items Per Page</h6>
+            </Col>
+            <Col xs={1}>
+              <div>
+                <Form.Group
+                  title="Filter Per Page"
+                  className="page-size"
+                  variant="outline-dark"
+                  style={{ borderColor: "#8F9ED9" }}
+                >
+                  <Form.Control
+                    as="select"
+                    value={itemsPerPage}
+    
+                    onChange={(e) => {
+                      setItemsPerPage(e.target.value);
+                    }}
+                  >
+                    <option value="5" style={{ "text-align-last": "center"}}>5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                  </Form.Control>
+                </Form.Group>
               </div>
             </Col>
           </Row>
@@ -126,7 +141,6 @@ function Directory() {
               </tr>
             </thead>
             <tbody>{rowItem}</tbody>
-            {/* <tbody ><DirectoryItem data={data}/></tbody> */}
           </Table>
         </Row>
         <Row>
