@@ -17,27 +17,27 @@
     flex-direction: row;
     align-self: center;
     justify-content: space-between;
-    width: 400px;
+    width: 500px;
 }
 
 .form-fields-2-row {
-    width: 180px;
+    width: 230px;
     /* align-self: center; */
 }
 
 .form-fields-3-row {
-    width: 120px;
+    width: 140px;
     align-self: start;
 }
 
 .form-fields {
-    width: 400px;
+    width: 500px;
     align-self: center;
 
 }
 
 .photos-form-container {
-    width: 400px;
+    width: 500px;
     align-self: center;
 }
 
@@ -46,7 +46,7 @@
     flex-direction: row;
     align-self: center;
     justify-content: space-around;
-    width: 400px;
+    width: 500px;
 }
 
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import EditPet from "./EditPet";
+import VaccineList from "./VaccineList.js";
+import AddVaccineModal from "./AddVaccineModal.js";
 import { Button, Row, Col, Image, Tab, Tabs } from "react-bootstrap";
 import { FaRegHeart, FaHeart, FaCat, FaFish } from "react-icons/fa";
 import { MdPets } from "react-icons/md";
@@ -10,6 +12,7 @@ import { ImPlus } from "react-icons/im";
 import { GrFlag, GrLocation } from "react-icons/gr";
 import Alert from "./AlertModalPetForms";
 import axios from "axios";
+import User from "../UserProfile/User.js";
 
 import {
   GiHummingbird,
@@ -258,6 +261,7 @@ function Pet() {
                 {!liked ? (
                   <Col>
                     <FaRegHeart size={42} onClick={() => handleLike()} />
+                    <p>{calculateLike}</p>
                   </Col>
                 ) : (
                   <Col>
@@ -266,9 +270,10 @@ function Pet() {
                       size={42}
                       onClick={() => handleRemoveLike()}
                     />
+                    <p>{calculateLike}</p>
                   </Col>
                 )}
-                {calculateLike}
+
                 <Col>
                   <Button
                     variant="primary"
@@ -294,8 +299,16 @@ function Pet() {
                 <Col>
                   <br />
                   <Button variant="primary" size="md" onClick={handleOnDelete}>
-                    Delete Pet
+                    {" "}
+                    Delete Pet{" "}
                   </Button>
+                </Col>
+                <Col className="vaccine-btn-ctr">
+                  <AddVaccineModal
+                    owner={user}
+                    petId={thisPet.petId}
+                    petName={thisPet.name}
+                  />
                 </Col>
               </>
             )}
@@ -334,7 +347,7 @@ function Pet() {
               <Tab eventKey="description" title="Description">
                 <p>{thisPet.description}</p>
               </Tab>
-              <Tab eventKey="info" title="Aditional Info">
+              <Tab eventKey="info" title="Additional Info">
                 <p>Name: {thisPet.name}</p>
                 <p>Owner: {thisPet.owner}</p>
                 <p>City: {thisPet.city}</p>
@@ -353,14 +366,21 @@ function Pet() {
                 <p>Reported: {thisPet.reported ? "true" : "false"}</p>
                 <p>Adopted: {thisPet.adopted ? "true" : "false"}</p>
               </Tab>
+              <Tab eventKey="vaccines" title="Vaccine History">
+                <VaccineList pet={thisPet} />
+              </Tab>
               <Tab eventKey="contact" title="Contact">
-                {Object.keys(form).map((key, index) => {
+                <div className="contact-card-tab">
+                  <User owner={thisPet.owner} />
+                </div>
+
+                {/* {Object.keys(form).map((key, index) => {
                   return (
                     <p key={index}>
                       {key}: {form[key]}
                     </p>
                   );
-                })}
+                })} */}
               </Tab>
             </Tabs>
           </Row>
@@ -377,6 +397,16 @@ function Pet() {
           />
         )}
       </Row>
+
+      {user !== thisPet.owner ? null : (
+        <>
+          <br />
+          <Button variant="danger" size="md" onClick={handleOnDelete}>
+            Delete Pet
+          </Button>
+        </>
+      )}
+
       <Alert
         show={showAlert}
         text={alertText}

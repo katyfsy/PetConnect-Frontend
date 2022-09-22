@@ -10,17 +10,16 @@ import { useLocation } from "react-router-dom";
 import "./Navbar.css";
 
 function Navigationbar() {
-
   const isLoggedIn = () => {
     if (getUser() === "" || getUser() === null) {
       return false;
     } else {
       return true;
     }
-  }
+  };
 
-  const username = getUser()
-  const [notification, setNotification] = useState(false)
+  const username = getUser();
+  const [notification, setNotification] = useState(false);
   const location = useLocation();
 
   if (username && location.pathname !== '/messages') {
