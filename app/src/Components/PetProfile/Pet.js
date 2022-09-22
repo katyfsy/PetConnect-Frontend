@@ -10,6 +10,9 @@ import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
 import { RiGenderlessFill } from "react-icons/ri";
 import { ImPlus } from "react-icons/im";
 import { GrFlag, GrLocation } from "react-icons/gr";
+import Alert from "./AlertModalPetForms";
+import axios from "axios";
+
 import {
   GiHummingbird,
   GiHorseHead,
@@ -18,7 +21,7 @@ import {
   GiReptileTail,
 } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../UserProfile/psb-exports";
+import { getUser, PSB_API_URL } from "../UserProfile/psb-exports";
 import "./Pet.css";
 
 import { LightgalleryItem } from "react-lightgallery";
@@ -32,11 +35,51 @@ function Pet() {
   const [petPhotos, setPetPhotos] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [fetchPet, refetchPet] = useState(false);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertText, setAlertText] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const [handleOnExited, setHandleOnExited] = useState(false);
+
   let user = getUser();
   let petId = useParams();
   const navigate = useNavigate();
-  console.log(petId);
+  console.log(thisPet);
 
+  const [form, setForm] = useState({
+    username: "",
+    businessName: "",
+    phone: "",
+    email: "",
+    website: "",
+    userType: "ORGANIZATION",
+    city: "",
+    state: "",
+    zipCode: "",
+    description: "",
+    userPhoto: "",
+  });
+
+  useEffect(() => {
+    axios
+      .get(`${PSB_API_URL}/api/public/users/orgs/${user}`)
+      .then((res) => {
+        let result = res.data;
+        for (var key in result) {
+          if (result[key] === null) {
+            result[key] = "";
+          }
+          if (result.userPhoto === "") {
+            result.userPhoto =
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+          }
+        }
+        setForm(result);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  console.log(form);
   // Fetch Pet, with refetch to refetch new pet data upon finishing edit
   useEffect(() => {
     fetch(
@@ -53,7 +96,7 @@ function Pet() {
         setThisPet(data);
         setPetPhotos(data.photos);
       });
-  }, [isEdit]);
+  }, [isEdit, fetchPet]);
 
   function handleOnDelete() {
     fetch(
@@ -65,7 +108,12 @@ function Pet() {
         console.error(err);
       })
       .then((data) => {
-        console.log(data);
+        console.log("deleteddd");
+        setShowAlert(true);
+        setAlertTitle("Congratulations");
+        setAlertText("Pet Profile successfully Deleted");
+        setAlertType("success");
+        setHandleOnExited(true);
       });
   }
   function handleLike() {
@@ -124,6 +172,7 @@ function Pet() {
       })
       .then((data) => {
         updateReportStatus(data.reported);
+        refetchPet(Math.random());
         console.log(data);
       });
     setReportedHere(!reportedHere);
@@ -295,6 +344,8 @@ function Pet() {
               <Tab eventKey="info" title="Aditional Info">
                 <p>Name: {thisPet.name}</p>
                 <p>Owner: {thisPet.owner}</p>
+                <p>City: {thisPet.city}</p>
+                <p>State: {thisPet.state}</p>
                 <p>Zip: {thisPet.zip}</p>
                 <p>Type: {thisPet.type}</p>
                 <p>Weight: {thisPet.weight}</p>
@@ -313,7 +364,13 @@ function Pet() {
                 <VaccineList pet={thisPet}/>
               </Tab>
               <Tab eventKey="contact" title="Contact">
-                Contact
+                {Object.keys(form).map((key, index) => {
+                  return (
+                    <p key={index}>
+                      {key}: {form[key]}
+                    </p>
+                  );
+                })}
               </Tab>
             </Tabs>
           </Row>
@@ -330,6 +387,15 @@ function Pet() {
           />
         )}
       </Row>
+      <Alert
+        show={showAlert}
+        text={alertText}
+        title={alertTitle}
+        type={alertType}
+        onHide={() => setShowAlert(false)}
+        onExited={handleOnExited ? () => navigate("/pets") : null}
+        // handleOnExited('/pets')
+      />
       <br />
     </>
   );

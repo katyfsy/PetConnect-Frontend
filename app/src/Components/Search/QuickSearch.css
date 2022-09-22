@@ -1,0 +1,26 @@
+.quickSearchBtns{
+  /* top: 560px;
+  position: fixed; */
+  z-index: -1;
+  text-align: center;
+}
+
+
+#allCatsBtn, #allDogsBtn, #otherPetsBtn, #orgsBtn{
+  height: 40px;
+  vertical-align: bottom;
+  background-color: #8F9ED9;
+  color: white;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 10px;;
+}
+
+.quickBtn:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.quickBtnImg {
+  height:120px;
+  /* width: 100px; */
+}
