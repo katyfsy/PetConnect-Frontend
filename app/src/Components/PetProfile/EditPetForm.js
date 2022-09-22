@@ -79,8 +79,14 @@ function EditPetForm() {
 
   function handleChangePreview(e) {
     // if img is clicked
-    // console.log(e.target.name);
+    console.log(e.target.value);
     // console.log(e.target.querySelector("img").getAttribute("value"));
+    if (e.target.type == "radio") {
+      setEditedPetFields({
+        ...editedPetFields,
+        [e.target.name]: e.target.getAttribute("value"),
+      });
+    }
     if (e.target.src) {
       setEditedPetFields({
         ...editedPetFields,
@@ -98,6 +104,27 @@ function EditPetForm() {
       // });
       console.log("yo no se");
     }
+  }
+
+  function deleteDatabase(photosToDelete) {
+    if (photosToDelete.length == 0) {
+      return true;
+    }
+    photosToDelete.forEach((photo) => {
+      fetch(
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${thisPet.petId}?photoId=${photo}`,
+        { method: "DELETE" }
+      )
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error(err);
+          return false;
+        })
+        .then((data) => {
+          console.log(data);
+        });
+    });
+    return true;
   }
   const handleOnChange = (e, form, setform) => {
     if (e.target.name === "reproductiveStatus" && e.target.value === "") {
@@ -165,11 +192,10 @@ function EditPetForm() {
     );
     return x;
   }
-  const handleUpload = async (petId) => {
-    let files = extractFileData(petId);
+  const handleUpload = async (photos, petId) => {
+    let files = extractFileData(photos, petId);
     console.log(files);
     let urls = await getPresignedUrls(files);
-
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
         setCurrentUpload(i);
@@ -181,13 +207,7 @@ function EditPetForm() {
             const progress = (progressEvent.loaded / progressEvent.total) * 100;
             setProgress(progress);
           },
-          // onDownloadProgress: (progressEvent) => {
-          //   const progress = 50 + (progresssEvent.loaded / progressEvent.total) * 100;
-          //   console.log("THIS IS THE PROGRESSS: ", progress);
-          //   setProgress(progress);
-          // }
         };
-
         await axios
           .put(urls[i], photos[i], options)
           .then((res) => console.log(res))
@@ -196,7 +216,9 @@ function EditPetForm() {
       // alert("Photos uploaded successfully");
       await axios
         .post(
-          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[coverPhoto].name}`
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${findCoverPhotoName(
+            photos
+          )}`
         )
         .then((res) => console.log(res))
         .then((res) => {
@@ -206,7 +228,9 @@ function EditPetForm() {
           setAlertType("success");
           setHandleOnExited(true);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       setShowAlert(true);
       setAlertTitle("Photo requirements not met");
@@ -215,6 +239,56 @@ function EditPetForm() {
       setHandleOnExited(false);
     }
   };
+  // const handleUpload = async (petId) => {
+  //   let files = extractFileData(petId);
+  //   console.log(files);
+  //   let urls = await getPresignedUrls(files);
+
+  //   if (photos.length > 0) {
+  //     for (let i = 0; i < photos.length; i++) {
+  //       setCurrentUpload(i);
+  //       let options = {
+  //         headers: {
+  //           "Content-Type": photos[i].type,
+  //         },
+  //         onUploadProgress: (progressEvent) => {
+  //           const progress = (progressEvent.loaded / progressEvent.total) * 100;
+  //           setProgress(progress);
+  //         },
+  //         // onDownloadProgress: (progressEvent) => {
+  //         //   const progress = 50 + (progresssEvent.loaded / progressEvent.total) * 100;
+  //         //   console.log("THIS IS THE PROGRESSS: ", progress);
+  //         //   setProgress(progress);
+  //         // }
+  //       };
+
+  //       await axios
+  //         .put(urls[i], photos[i], options)
+  //         .then((res) => console.log(res))
+  //         .catch((err) => console.log(err));
+  //     }
+  //     // alert("Photos uploaded successfully");
+  //     await axios
+  //       .post(
+  //         `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[coverPhoto].name}`
+  //       )
+  //       .then((res) => console.log(res))
+  //       .then((res) => {
+  //         setShowAlert(true);
+  //         setAlertTitle("Congratulations");
+  //         setAlertText("Pet profile created successfully");
+  //         setAlertType("success");
+  //         setHandleOnExited(true);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   } else {
+  //     setShowAlert(true);
+  //     setAlertTitle("Photo requirements not met");
+  //     setAlertText("Pet profiles require at least one photo");
+  //     setAlertType("error");
+  //     setHandleOnExited(false);
+  //   }
+  // };
   function handlePatch(petId) {
     fetch(
       `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${petId}`,
@@ -235,7 +309,7 @@ function EditPetForm() {
       });
   }
   const handleOnSubmit = async (e) => {
-    await handlePatch();
+    await handlePatch(petId);
     let successDeleting = await deleteDatabase(deletePhotos);
     if (successDeleting) {
       await handleUpload(addPhotos, thisPet.petId);
@@ -699,7 +773,21 @@ function EditPetForm() {
                     preview={"photo_url"}
                     photoId={"photoId"}
                   />
+                  <PhotoPreviews
+                    photos={addPhotos}
+                    coverPhoto={editedPetFields.coverPhoto}
+                    handleCoverPhoto={handleChangePreview}
+                    handleRemoveThumb={handleDelete}
+                    currentUpload={currentUpload}
+                    progress={progress}
+                    showRadio={true}
+                    adding={true}
+                    edit={true}
+                    preview={"preview"}
+                    photoId={"name"}
+                  />
                 </div>
+                <div className="photos-to-add preview-container"></div>
               </Form.Group>
 
               <div className="mb-3 buttons-form-container">
@@ -727,7 +815,8 @@ function EditPetForm() {
         <br />
         {isClicked ? <Pet editedPetFields={editedPetFields} /> : null}
 
-        <AddPhotosPortal style={{zIndex: '4'}}
+        <AddPhotosPortal
+          style={{ zIndex: "4" }}
           openPortal={openPortal}
           setOpenPortal={setOpenPortal}
           thisPet={thisPet}
