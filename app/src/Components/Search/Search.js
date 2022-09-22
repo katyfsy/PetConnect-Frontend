@@ -124,6 +124,12 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
       }
       // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
       if (zipcodeValidated) {
+        //   axios.get("http://localhost:8080/api/suggestions?search=" + params)
+        //   .then((result)=>{
+        //       handleNavigationToResults();
+        //       setResult(result.data.pets);
+        //     })
+        //   .catch(err=>console.log(err));
         axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/suggestions?search=" + params)
         .then((result)=>{
             handleNavigationToResults();

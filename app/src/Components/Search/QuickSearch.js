@@ -12,17 +12,26 @@ function QuickSearch({setSearchQuery, setType, setResult}) {
     navigate('/searchresults');
   }
 
-  const handleQuickSearchClick = e => {
-    var param="?search=" + e.target.value + "&type=" + e.target.value;
-    setType(e.target.value);
-    setSearchQuery(e.target.value);
+  const handleNavigationToDirectory = () => {
+    navigate('/directory');
+  }
 
-    axios.get("http://localhost:8080/api/petSearch" + param)
-    .then((result)=>{
-        setResult(result.data.pets);
-        handleNavigationToResults();
-      })
-    .catch(err=>console.log(err));
+  const handleQuickSearchClick = e => {
+    if (e.target.alt !== "other") {
+      var param="?search=" + e.target.alt + "&type=" + e.target.alt;
+      var url = "http://vmware-elastic.galvanizelabs.net:8080/api/petSearch" + param;
+      setSearchQuery(e.target.alt);
+    } else {
+      var param="?type=" + e.target.alt;
+      var url = "http://vmware-elastic.galvanizelabs.net:8080/api/advSearch" + param;
+    }
+    setType(e.target.alt);
+    axios.get(url)
+      .then((result)=>{
+          setResult(result.data.pets);
+          handleNavigationToResults();
+        })
+      .catch(err=>console.log(err));
   };
 
   return(
@@ -35,20 +44,20 @@ function QuickSearch({setSearchQuery, setType, setResult}) {
           className=" quickBtn btn"
           onClick={e => handleQuickSearchClick(e)}
           value="dog">
-             <img className="quickBtnImg" src="/Pics/Dogs.png"/>
+             <img className="quickBtnImg" src="/Pics/Dogs.png" alt="dog"/>
             </button>
 
         </div>
         <div className="col-md">
-          <button id="allCatsBtn"  className=" quickBtn btn " onClick={e => handleQuickSearchClick(e)} value="cat"><img className="quickBtnImg" src="/Pics/Cats.png" /></button>
+          <button id="allCatsBtn"  className=" quickBtn btn "  onClick={e => handleQuickSearchClick(e)} value="cat"><img className="quickBtnImg" src="/Pics/Cats.png" alt="cat"/></button>
         </div>
 
         <div className="col-md">
-          <button id="otherPetsBtn" className=" quickBtn  btn "  value="any"><img className="quickBtnImg" src="/Pics/otherPets.png"/></button>
+          <button id="otherPetsBtn" className=" quickBtn  btn "  value="other" onClick={e => handleQuickSearchClick(e)}><img className="quickBtnImg" src="/Pics/otherPets.png" alt="other"/></button>
         </div>
 
         <div className="col-md">
-          <button id="orgsBtn"  className=" quickBtn btn "  value="org"><img className="quickBtnImg" src="/Pics/Shelters.png"/></button>
+          <button id="orgsBtn"  className=" quickBtn btn "  value="org" onClick={()=>handleNavigationToDirectory()}><img className="quickBtnImg" src="/Pics/Shelters.png"/></button>
         </div>
         <div className="col"></div>
 
