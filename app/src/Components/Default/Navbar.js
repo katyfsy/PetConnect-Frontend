@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { getUser } from "../UserProfile/psb-exports"
+import { getUser, getBearerToken } from "../UserProfile/psb-exports"
 import axios from 'axios'
 import { AiFillMessage } from 'react-icons/ai';
 import { useLocation } from "react-router-dom";
@@ -28,8 +28,9 @@ function Navigationbar() {
       const id = setInterval(() =>
         axios
           .get(
-            `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`
-          )
+            `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`, {
+              headers: { Authorization: getBearerToken() }
+            })
           .then((response) => {
             setNotification(response.data.length ? true : false);
           })

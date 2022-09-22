@@ -89,7 +89,6 @@ const MessagingApp = () => {
   }, [userData.username]);
 
   useEffect(() => {
-    // remove the if once we retrieve from localhost (signup enabled)
     if (currentContact) {
       axios
         .get(`${PSB_API_URL}/api/public/user/${currentContact}`)
@@ -117,7 +116,6 @@ const MessagingApp = () => {
   }, [currentContact]);
 
   useEffect(() => {
-    // remove the if once we retrieve from localhost (signup enabled)
     if (newConversationReceiverName.current) {
       axios
         .get(
@@ -139,8 +137,8 @@ const MessagingApp = () => {
     }
     if (userData.username) {
       let Sock = new SockJS(
-        //   'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
-          'http://localhost:8080/ws'
+          'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
+          // 'http://localhost:8080/ws'
         )
         stompClient = over(Sock);
         stompClient.debug = () => {};
@@ -150,17 +148,19 @@ const MessagingApp = () => {
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
-    stompClient.subscribe(
-      '/user/' + userData.username + '/private',
-      onPrivateMessageReceived
-    );
+    if (stompClient.status === 'CONNECTED') {
+      stompClient.subscribe(
+        '/user/' + userData.username + '/private',
+        onPrivateMessageReceived
+      );
+    }
   };
 
   const getAllChats = (username) => {
     axios
       .get(
-        // `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`, {
-        `http://localhost:8080/messages/${username}`, {
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`, {
+        // `http://localhost:8080/messages/${username}`, {
           headers: { Authorization: getBearerToken() }
         })
       .then((response) => {
@@ -175,8 +175,8 @@ const MessagingApp = () => {
   const getAllNotifications = (username) => {
     axios
       .get(
-        // `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`, {
-        `http://localhost:8080/messages/notifications/${username}`, {
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`, {
+        // `http://localhost:8080/messages/notifications/${username}`, {
           headers: { Authorization: getBearerToken() }
         })
       .then((response) => {
@@ -190,8 +190,8 @@ const MessagingApp = () => {
   const getEmailNotificationsStatus = (username) => {
     axios
       .get(
-        // `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${userData.username}`, {
-        `http://localhost:8080/messages/emailnotifications/${userData.username}`, {
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${username}`, {
+        // `http://localhost:8080/messages/emailnotifications/${userData.username}`, {
           headers: { Authorization: getBearerToken() }
         })
       .then((response) => {
@@ -285,8 +285,8 @@ const MessagingApp = () => {
   const updateReceiveEmails = () => {
     axios
     .patch(
-      // `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${userData.username}/${!receiveEmails}`
-      `http://localhost:8080/messages/emailnotifications/${userData.username}/${!receiveEmails}`, {}, {
+      `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${userData.username}/${!receiveEmails}`, {}, {
+      // `http://localhost:8080/messages/emailnotifications/${userData.username}/${!receiveEmails}`, {}, {
         headers: { Authorization: getBearerToken() }
       })
     .then((response) => {
