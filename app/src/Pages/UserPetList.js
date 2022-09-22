@@ -80,10 +80,8 @@ function UserPetList() {
           <h1>{username}'s Pet List</h1>
           {PetCard}
         </Row>
-        <Row>
-          <Footer />
-        </Row>
       </Container>
+      <Footer />
     </>
   );
 }

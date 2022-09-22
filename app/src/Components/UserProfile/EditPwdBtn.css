@@ -1,0 +1,9 @@
+#edit-password-button {
+  background-color: #8F9ED9;
+  border-color: #8F9ED9;
+  margin-bottom: 1em;
+}
+#edit-password-button:hover {
+  background-color: #F4976C;
+  border-color: #F4976C;
+}

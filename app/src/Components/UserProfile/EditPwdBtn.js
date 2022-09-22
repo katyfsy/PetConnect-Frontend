@@ -3,6 +3,7 @@ import { Button, Modal, Row, Col, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getBearerToken, getUser, clearStorage } from "./psb-exports";
+import "./EditPwdBtn.css";
 
 
 const EditPwdBtn = () => {
@@ -66,14 +67,14 @@ const EditPwdBtn = () => {
 
   return (
     <>
-      <Button variant="outline-dark" onClick={handleShow}>
+      <Button id="edit-password-button" onClick={handleShow}>
         Edit Password
       </Button>
 
       <Modal show={show}>
         <Form onSubmit={handleSubmit}>
-          <Modal.Header closeButton onClick={handleClose}>
-            <Modal.Title>Edit Password</Modal.Title>
+          <Modal.Header closeButton onClick={handleClose} style={{backgroundColor: "#8F9ED9"}}>
+            <Modal.Title style={{color: "white"}}>Edit Password</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div></div>
@@ -138,10 +139,10 @@ const EditPwdBtn = () => {
             </Row>
           </Modal.Body>
           <Modal.Footer className="mt-1">
-            <Button type="submit" variant="outline-dark">
+            <Button type="submit" id="edit-password-button">
               Save New Password
             </Button>
-            <Button variant="outline-dark" onClick={handleClose}>
+            <Button id="edit-password-button" onClick={handleClose}>
               Cancel
             </Button>
           </Modal.Footer>
