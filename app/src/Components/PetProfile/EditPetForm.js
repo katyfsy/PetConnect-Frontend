@@ -14,7 +14,7 @@ import AddPhotosPortal from "./AddPhotosPortal";
 import PhotoPreviews from "./PhotoPreviews";
 
 function EditPetForm() {
-  const [petId, setPetId] = useState(null);
+  const [petId, setPetId] = useState(237);
   const [thisPet, setThisPet] = useState(null);
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ function EditPetForm() {
 
   useEffect(() => {
     fetch(
-      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/231`
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/237`
     )
       .then((res) => res.json())
       .catch((err) => {
@@ -84,10 +84,9 @@ function EditPetForm() {
     if (e.target.type == "radio") {
       setEditedPetFields({
         ...editedPetFields,
-        [e.target.name]: e.target.getAttribute("value"),
+        [e.target.name]: e.target.value,
       });
-    }
-    if (e.target.src) {
+    } else if (e.target.src) {
       setEditedPetFields({
         ...editedPetFields,
         [e.target.name]: e.target.getAttribute("value"),
@@ -110,9 +109,10 @@ function EditPetForm() {
     if (photosToDelete.length == 0) {
       return true;
     }
+    console.log(photosToDelete);
     photosToDelete.forEach((photo) => {
       fetch(
-        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${thisPet.petId}?photoId=${photo}`,
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${petId}?photoId=${photo}`,
         { method: "DELETE" }
       )
         .then((res) => res.json())
@@ -194,7 +194,7 @@ function EditPetForm() {
   }
   const handleUpload = async (photos, petId) => {
     let files = extractFileData(photos, petId);
-    console.log(files);
+    console.log("handle upload photos", photos);
     let urls = await getPresignedUrls(files);
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
@@ -224,7 +224,7 @@ function EditPetForm() {
         .then((res) => {
           setShowAlert(true);
           setAlertTitle("Congratulations");
-          setAlertText("Pet profile created successfully");
+          setAlertText("Pet profile editied successfully");
           setAlertType("success");
           setHandleOnExited(true);
         })
@@ -312,7 +312,7 @@ function EditPetForm() {
     await handlePatch(petId);
     let successDeleting = await deleteDatabase(deletePhotos);
     if (successDeleting) {
-      await handleUpload(addPhotos, thisPet.petId);
+      await handleUpload(addPhotos, petId);
     }
   };
 
