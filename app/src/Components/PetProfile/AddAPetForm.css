@@ -22,6 +22,7 @@
 
 .form-fields-2-row {
     width: 240px;
+    /* text-align: start; */
     /* align-self: center; */
 }
 
@@ -69,7 +70,7 @@
 }
 
 .add-pet-button {
-    background: #F4976C;
+    background: #8F9ED9;
     color: white;
     padding: 8px 16px;
     width: 120px;
@@ -78,7 +79,7 @@
 }
 
 .add-pet-button:hover {
-    background: #ec8555;
+    background: #7387d7;
 }
 
 .cancel-pet-button {
@@ -95,14 +96,13 @@
 }
 
 .vaccination-pet-button {
-    background: #6c757d;
-    color: white;
-    padding: 8px 16px;
-    width: 120px;
-    border-radius: 5px;
-    border: none;
+    font-size: 14px !important;
+    width: 240px !important;
+    text-align: start !important;
+    /* color: #8F9ED9 !important;
+    padding: 0px !important; */
 }
 
 .vaccination-pet-button:hover {
-    background: #565e64
+    /* color: #7387d7 !important; */
 }
