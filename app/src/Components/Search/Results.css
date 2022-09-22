@@ -9,6 +9,7 @@
     'left right';
   grid-template-columns: 4fr 10fr;
   margin-top: 20px;
+  background-color: #FAFAFA;
 }
 
 .advancedSearchCol {
@@ -18,7 +19,7 @@
 
 .searchResultsCol {
     grid-area: right;
-    border: solid blue;
+    /* border: solid blue; */
 }
 
 #noMatchAlert {
