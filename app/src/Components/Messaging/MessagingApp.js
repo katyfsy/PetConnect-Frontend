@@ -148,12 +148,12 @@ const MessagingApp = () => {
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
-    if (stompClient.status === 'CONNECTED') {
+    // if (stompClient.status === 'CONNECTED') {
       stompClient.subscribe(
         '/user/' + userData.username + '/private',
         onPrivateMessageReceived
       );
-    }
+    // }
   };
 
   const getAllChats = (username) => {
