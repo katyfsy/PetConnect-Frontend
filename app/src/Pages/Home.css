@@ -4,3 +4,9 @@
 #row-footer {
   width: 100%;
 }
+.flex-wrapper-home {
+  display: flex;
+  min-height: 60vh;
+  flex-direction: column;
+  justify-content: flex-start;
+}

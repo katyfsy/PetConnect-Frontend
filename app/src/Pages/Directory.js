@@ -71,82 +71,84 @@ function Directory() {
   });
 
   return (
-    <div class="flex-wrapper">
-      <Container>
-        <Header />
-      </Container>
-      <Navigationbar />
-      <Container>
-        <Row className="justify-content-center">
-          <h1>Directory</h1>
-          <Row>
-            <Col>
-              <div className="pagination justify-content-left">
-                <ReactPaginate
-                  breakLabel="..."
-                  nextLabel=">>"
-                  onPageChange={handlePageClick}
-                  pageRangeDisplayed={5}
-                  pageCount={pageCount}
-                  previousLabel="<<"
-                  renderOnZeroPageCount={null}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  containerClassName={"pagination"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  activeClassName={"active"}
-                  className="pagination justify-content-left"
-                />
-              </div>
-            </Col>
-            <Col xs={2}>
-              <h6 className="i-per-page">Items Per Page</h6>
-            </Col>
-            <Col xs={1}>
-              <div>
-                <Form.Group
-                  title="Filter Per Page"
-                  className="page-size"
-                  variant="outline-dark"
-                  style={{ borderColor: "#8F9ED9" }}
-                >
-                  <Form.Control
-                    as="select"
-                    value={itemsPerPage}
-    
-                    onChange={(e) => {
-                      setItemsPerPage(e.target.value);
-                    }}
+    <>
+      <div className="flex-wrapper">
+        <Container>
+          <Header />
+        </Container>
+        <Navigationbar />
+        <Container>
+          <Row className="justify-content-center">
+            <h1>Directory</h1>
+            <Row>
+              <Col>
+                <div className="pagination justify-content-left">
+                  <ReactPaginate
+                    breakLabel="..."
+                    nextLabel=">>"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={5}
+                    pageCount={pageCount}
+                    previousLabel="<<"
+                    renderOnZeroPageCount={null}
+                    breakClassName={"page-item"}
+                    breakLinkClassName={"page-link"}
+                    containerClassName={"pagination"}
+                    pageClassName={"page-item"}
+                    pageLinkClassName={"page-link"}
+                    previousClassName={"page-item"}
+                    previousLinkClassName={"page-link"}
+                    nextClassName={"page-item"}
+                    nextLinkClassName={"page-link"}
+                    activeClassName={"active"}
+                    className="pagination justify-content-left"
+                  />
+                </div>
+              </Col>
+              <Col xs={2}>
+                <h6 className="i-per-page">Items Per Page</h6>
+              </Col>
+              <Col xs={1}>
+                <div>
+                  <Form.Group
+                    title="Filter Per Page"
+                    className="page-size"
+                    variant="outline-dark"
+                    style={{ borderColor: "#8F9ED9" }}
                   >
-                    <option value="5" style={{ "text-align-last": "center"}}>5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                  </Form.Control>
-                </Form.Group>
-              </div>
-            </Col>
+                    <Form.Control
+                      as="select"
+                      value={itemsPerPage}
+
+                      onChange={(e) => {
+                        setItemsPerPage(e.target.value);
+                      }}
+                    >
+                      <option value="5" style={{ "text-align-last": "center"}}>5</option>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                    </Form.Control>
+                  </Form.Group>
+                </div>
+              </Col>
+            </Row>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Organization Name</th>
+                  <th>Pet List</th>
+                  <th>City, State</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>{rowItem}</tbody>
+            </Table>
           </Row>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Organization Name</th>
-                <th>Pet List</th>
-                <th>City, State</th>
-                <th>Phone</th>
-                <th>Email</th>
-              </tr>
-            </thead>
-            <tbody>{rowItem}</tbody>
-          </Table>
-        </Row>
-      </Container>
+        </Container>
+      </div>
       <Footer />
-    </div>
+    </>
   );
 }
 

@@ -149,7 +149,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           <p id="star-filter" onClick={() => filterFiveStars()}>5 Star ({ratingCount[4]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar variant="warning" now={ratingPercentage[4]} label={`${ratingPercentage[4]}%`} />
+          <ProgressBar id="progress-bar" variant="warning" now={ratingPercentage[4]} label={`${ratingPercentage[4]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
@@ -157,7 +157,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           <p id="star-filter" onClick={() => filterFourStars()}>4 Star ({ratingCount[3]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar variant="warning" now={ratingPercentage[3]} label={`${ratingPercentage[3]}%`} />
+          <ProgressBar id="progress-bar" variant="warning" now={ratingPercentage[3]} label={`${ratingPercentage[3]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
@@ -165,7 +165,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           <p id="star-filter" onClick={() => filterThreeStars()}>3 Star  ({ratingCount[2]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar variant="warning" now={ratingPercentage[2]} label={`${ratingPercentage[2]}%`} />
+          <ProgressBar id="progress-bar" variant="warning" now={ratingPercentage[2]} label={`${ratingPercentage[2]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
@@ -173,7 +173,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           <p id="star-filter" onClick={() => filterTwoStars()}>2 Star ({ratingCount[1]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar variant="warning" now={ratingPercentage[1]} label={`${ratingPercentage[1]}%`} />
+          <ProgressBar id="progress-bar" variant="warning" now={ratingPercentage[1]} label={`${ratingPercentage[1]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
@@ -181,7 +181,7 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           <p id="star-filter" onClick={() => filterOneStars()}>1 Star  ({ratingCount[0]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar variant="warning" now={ratingPercentage[0]} label={`${ratingPercentage[0]}%`} />
+          <ProgressBar id="progress-bar" variant="warning" now={ratingPercentage[0]} label={`${ratingPercentage[0]}%`} />
         </Col>
       </Row>
       <Row style={{paddingTop: "30px"}}>
