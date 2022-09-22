@@ -5,7 +5,7 @@ import * as Yup from "yup";
 // import Modal from 'react-bootstrap/Modal';
 import Pet from "./Pet";
 import { useNavigate } from "react-router-dom";
-import "./AddAPetForm.css";
+import "./EditPetForm.css";
 import Photos from "./Photos";
 import Alert from "./AlertModalPetForms";
 import axios from "axios";
@@ -299,7 +299,7 @@ function EditPetForm() {
   }
   return (
     <>
-      <Container className="addpet-form-container">
+      <Container className="editpet-form-container">
         <h3>Let's create the pet's profile</h3>
         <br />
         <Formik
@@ -679,48 +679,28 @@ function EditPetForm() {
                   {errors.description}
                 </Form.Control.Feedback>
               </Form.Group>
-              <div className="photos-from-db preview-container">
-                <PhotoPreviews
-                  photos={exisitingPhotos}
-                  coverPhoto={editedPetFields.coverPhoto}
-                  handleCoverPhoto={handleChangePreview}
-                  handleRemoveThumb={handleDelete}
-                  currentUpload={currentUpload}
-                  progress={progress}
-                  showRadio={true}
-                  adding={false}
-                  edit={true}
-                  preview={"photo_url"}
-                  photoId={"photoId"}
-                />
-              </div>
-              <Button onClick={() => setOpenPortal(true)}> Add Photos</Button>
-              <AddPhotosPortal
-                openPortal={openPortal}
-                setOpenPortal={setOpenPortal}
-                thisPet={thisPet}
-                addPhotos={addPhotos}
-                setAddPhotos={setAddPhotos}
-                progress={progress}
-                currentUpload={currentUpload}
-              />
-              {/* <Form.Group className="mb-3 photos-form-container">
-                <Form.Label>Photos</Form.Label>
-                <Photos
-                  photos={photos}
-                  coverPhoto={coverPhoto}
-                  handleAddPhotos={handleAddPhotos}
-                  handleRemovePhotos={handleRemovePhotos}
-                  handleCoverPhoto={handleCoverPhoto}
-                  showRadios={true}
-                  maxPhotos={MAX_NUMBER_OF_PHOTOS}
-                  progress={progress}
-                  currentUpload={currentUpload}
-                  adding={true}
-                  edit={false}
-                  preview={"preview"}
-                />
-              </Form.Group> */}
+
+              <Form.Group className="mb-3 edit-photos-form-container">
+                <Form.Label>Current photos</Form.Label>
+
+                <Button onClick={() => setOpenPortal(true)}> Add photos</Button>
+
+                <div className="existing-preview-container">
+                  <PhotoPreviews
+                    photos={exisitingPhotos}
+                    coverPhoto={editedPetFields.coverPhoto}
+                    handleCoverPhoto={handleChangePreview}
+                    handleRemoveThumb={handleDelete}
+                    currentUpload={currentUpload}
+                    progress={progress}
+                    showRadio={true}
+                    adding={false}
+                    edit={true}
+                    preview={"photo_url"}
+                    photoId={"photoId"}
+                  />
+                </div>
+              </Form.Group>
 
               <div className="mb-3 buttons-form-container">
                 <Form.Group className="mb-3">
@@ -746,6 +726,16 @@ function EditPetForm() {
         </Formik>
         <br />
         {isClicked ? <Pet editedPetFields={editedPetFields} /> : null}
+
+        <AddPhotosPortal style={{zIndex: '4'}}
+          openPortal={openPortal}
+          setOpenPortal={setOpenPortal}
+          thisPet={thisPet}
+          addPhotos={addPhotos}
+          setAddPhotos={setAddPhotos}
+          progress={progress}
+          currentUpload={currentUpload}
+        />
 
         <Alert
           show={showAlert}

@@ -6,7 +6,7 @@ import Image from "react-bootstrap/Image";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PhotoPreviews from "./PhotoPreviews";
-import "./EditPet.css";
+
 function EditPet({ thisPet, setIsEdit, refetchPet }) {
   const [openPortal, setOpenPortal] = useState(false);
 
