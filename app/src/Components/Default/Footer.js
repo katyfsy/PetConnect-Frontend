@@ -10,17 +10,41 @@ function Footer() {
           <Col>
           <h3 style={{color: "white"}}>Sponsored by</h3>
             <Image className="footerImg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Vmware.svg/1280px-Vmware.svg.png" />
-            <h4>Ascent Technical Program</h4>
+            <h5 id="ascent">Ascent Technical Program</h5>
           </Col>
           <Col>
-          <p> Team name</p>
-          <p>Benis Tambe, Carlos Morales, Edward Pak, Enriqueta De Leon, </p></Col>
+            <h4>Pet Shop Boys</h4>
+            <Image src={require("./HeaderPics/psb-logo.png")} id="psb-image"/>
+            <p>Kun Chen</p>
+            <p>Lucas Bonner</p>
+            <p>Varun Srinivasan</p>
+            <p>Vincent Le</p>
+          </Col>
+            <Col>
+              <h4>Pet Detectives</h4>
+              <Image src={require("./HeaderPics/pd-logo.png")} id="pd-image"/>
+              <p>Katy Feng</p>
+              <p>Marilene Soares da Costa</p>
+              <p>Meredith White</p>
+              <p>Trevor Leung</p>
+          </Col>
           <Col>
-          <p>Ginwoo Pak, Ivy Wong, Katy Feng, Kun Chen, Lucas Bonner, </p></Col>
+            <h4>Pet Posse</h4>
+            <Image src={require("./HeaderPics/pp-logo.png")} id="pp-image"/>
+            <p>Benis Tambe</p>
+            <p>Carlos Morales</p>
+            <p>Edward Pak</p>
+            <p>Enriqueta De Leon</p>
+            <p>Luis Escobar</p>
+          </Col>
           <Col>
-          <p>Luis Escobar, Marilene Soares da Costa, Meredith White,</p></Col>
-          <Col>
-          <p>Rick Kunz, Trevor Leung, Varun Srinivasan, Vincent Le, Yu Zhang</p></Col>
+            <h4>Pet Meets Family</h4>
+            <Image src={require("./HeaderPics/PMF-logo.png")} id="pmf-image"/>
+            <p>Ginwoo Pak</p>
+            <p>Ivy Wong</p>
+            <p>Rick Kunz</p>
+            <p>Yu Zhang</p>
+          </Col>
           </Row>
         </Container>
     </div>

@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { getBearerToken, getUser, PSB_API_URL } from "./psb-exports";
 import UploadMultiPics from './UploadMultiPics';
 import Swal from 'sweetalert2';
+import './ReviewSummary.css';
 
 function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveStars, orgUsername,
                          filterFourStars, filterThreeStars, filterTwoStars, filterOneStars, updateReviews}) {
@@ -120,13 +121,13 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
       return (
       <div>
         <h5>Share your thoughts with other adopters</h5>
-        <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} onClick={() => loginAlert()} >Write your review</Button>
+        <Button id="write-review-button" onClick={() => loginAlert()} >Write your review</Button>
       </div>
       )} else if (params.username !== getUser() && params.username !== undefined) {
         return (
           <div>
             <h5>Share your thoughts with other adopters</h5>
-            <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} onClick={handleShow} >Write your review</Button>
+            <Button id="write-review-button" onClick={handleShow} >Write your review</Button>
           </div>
       )}
   }
@@ -138,49 +139,49 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
       </Row>
       <Row className="mb-3">
         <Rating initialRating={avgRating}
-          emptySymbol={<img src="http://dreyescat.github.io/react-rating/assets/images/star-empty.png" className="icon" alt="empty-star"/>}
-          fullSymbol={<img src="http://dreyescat.github.io/react-rating/assets/images/star-full.png" className="icon" alt="full-star"/>}
+          emptySymbol={<img src={require("../Default/HeaderPics/star-empty.png")} className="icon" alt="empty-star"/>}
+          fullSymbol={<img src={require("../Default/HeaderPics/star-full.png")} className="icon" alt="full-star"/>}
           readonly
         />
       </Row>
       <Row className="mb-3">
         <Col sm={4}>
-          <p onClick={() => filterFiveStars()}>5 Star ({ratingCount[4]})</p>
+          <p id="star-filter" onClick={() => filterFiveStars()}>5 Star ({ratingCount[4]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar variant="warning" now={ratingPercentage[4]} label={`${ratingPercentage[4]}%`} />
+          <ProgressBar id="progress-bar" variant="warning" now={ratingPercentage[4]} label={`${ratingPercentage[4]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
         <Col sm={4}>
-          <p onClick={() => filterFourStars()}>4 Star ({ratingCount[3]})</p>
+          <p id="star-filter" onClick={() => filterFourStars()}>4 Star ({ratingCount[3]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar variant="warning" now={ratingPercentage[3]} label={`${ratingPercentage[3]}%`} />
+          <ProgressBar id="progress-bar" variant="warning" now={ratingPercentage[3]} label={`${ratingPercentage[3]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
         <Col sm={4}>
-          <p onClick={() => filterThreeStars()}>3 Star  ({ratingCount[2]})</p>
+          <p id="star-filter" onClick={() => filterThreeStars()}>3 Star  ({ratingCount[2]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar variant="warning" now={ratingPercentage[2]} label={`${ratingPercentage[2]}%`} />
+          <ProgressBar id="progress-bar" variant="warning" now={ratingPercentage[2]} label={`${ratingPercentage[2]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
         <Col sm={4}>
-          <p onClick={() => filterTwoStars()}>2 Star ({ratingCount[1]})</p>
+          <p id="star-filter" onClick={() => filterTwoStars()}>2 Star ({ratingCount[1]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar variant="warning" now={ratingPercentage[1]} label={`${ratingPercentage[1]}%`} />
+          <ProgressBar id="progress-bar" variant="warning" now={ratingPercentage[1]} label={`${ratingPercentage[1]}%`} />
         </Col>
       </Row>
       <Row className="mb-3">
         <Col sm={4}>
-          <p onClick={() => filterOneStars()}>1 Star  ({ratingCount[0]})</p>
+          <p id="star-filter" onClick={() => filterOneStars()}>1 Star  ({ratingCount[0]})</p>
         </Col>
         <Col sm={8}>
-          <ProgressBar variant="warning" now={ratingPercentage[0]} label={`${ratingPercentage[0]}%`} />
+          <ProgressBar id="progress-bar" variant="warning" now={ratingPercentage[0]} label={`${ratingPercentage[0]}%`} />
         </Col>
       </Row>
       <Row style={{paddingTop: "30px"}}>
@@ -194,8 +195,8 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           <h5>Rate your experience</h5>
           <Rating
             initialRating={star}
-            emptySymbol={<img src="http://dreyescat.github.io/react-rating/assets/images/star-empty.png" className="icon" alt="empty-star"/>}
-            fullSymbol={<img src="http://dreyescat.github.io/react-rating/assets/images/star-full.png" className="icon" alt="full-star"/>}
+            emptySymbol={<img src={require("../Default/HeaderPics/star-empty.png")} className="icon" alt="empty-star"/>}
+            fullSymbol={<img src={require("../Default/HeaderPics/star-full.png")} className="icon" alt="full-star"/>}
             onChange={handleStar}
           />
           <Form style={{paddingTop: "30px"}}>
@@ -218,10 +219,10 @@ function ReviewSummary({ avgRating, ratingPercentage, ratingCount, filterFiveSta
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} onClick={handleClose}>
+          <Button id="write-review-button" onClick={handleClose}>
             Cancel
           </Button>
-          <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} onClick={() => {handleClose(); handleReviewSubmit()}}>
+          <Button id="write-review-button" onClick={() => {handleClose(); handleReviewSubmit()}}>
             Submit
           </Button>
         </Modal.Footer>

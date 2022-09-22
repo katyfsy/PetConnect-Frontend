@@ -1,17 +1,34 @@
-
 .footer {
-  /* position: relative; */
-  margin-top: 150px;
-  margin-bottom: 0;
-  padding-bottom: 0;
-  /* negative value of footer height */
-  height: 210px;
-  clear: both;
   background-color: #8F9ED9;
-  padding-top: 20px;
-
+  width: 100%;
+  color: white;
+  padding-top: 10px;
+  margin-top: 100px;
+  /* position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%; */
 }
-
 .footerImg{
   height: 30px;
+}
+#psb-image{
+  width: 150px;
+  margin-bottom: 10px;
+}
+#pd-image{
+  width: 100px;
+  margin-bottom: 10px;
+}
+#pp-image{
+  width: 100px;
+  margin-bottom: 10px;
+  background-color: white;
+}
+#pmf-image{
+  width: 180px;
+  margin-bottom: 10px;
+}
+#ascent {
+  padding-top: 1em;
 }

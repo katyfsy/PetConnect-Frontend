@@ -25,7 +25,7 @@ function SearchResults() {
 
   return (
     <>
-      <Container>
+      <Container className="searchResults">
         <Header/>
       </Container>
       <Navigationbar/>

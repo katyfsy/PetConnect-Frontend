@@ -180,8 +180,7 @@ function Reviews({ orgUsername }) {
           </DropdownButton>
         </div>
           <div className="overflow-auto" style={{height: 550}}>
-            {
-              currentReviews.map((review) => {
+            {currentReviews.map((review) => {
                 return <SingleReview review={review} key={review.reviewId} votedOnReviews={votedOnReviews}/>
               })
             }

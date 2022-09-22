@@ -17,10 +17,8 @@ const Login = () => {
         <Row className="justify-content-md-center" style={{"paddingTop": "50px"}}>
           <LoginCard/>
         </Row>
-        <Row >
-        < Footer />
-      </Row>
       </Container>
+      < Footer />
     </>
   )
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
-import Footer from '../Components/Default/Footer'
+import Footer from '../Components/Default/Footer';
 import { Container , Row } from 'react-bootstrap';
 import User from '../Components/UserProfile/User';
 import Search from '../Components/Search/Search';

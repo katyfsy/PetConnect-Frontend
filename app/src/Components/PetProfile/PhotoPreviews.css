@@ -22,11 +22,11 @@
   box-sizing: border-box;
 }
 
-.thumb:hover{
+.thumb:hover {
   cursor: pointer;
 }
 
-.thumb:active{
+.thumb:active {
   border: 2px solid;
   border-color: rgb(40, 87, 196);
 }
@@ -84,7 +84,5 @@
   font-weight: 700;
   cursor: pointer;
 } */
-
-
 
 /* @import '~bootstrap/dist/css/bootstrap.css'; */
