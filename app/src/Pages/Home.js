@@ -38,17 +38,15 @@ function Home() {
     <div id="navBar" className="row">
        <Navigationbar/>
     </div>
-    <div>
+    <div className="flex-wrapper-home">
         <div className="row">
           <Search setResult={setResult} searchQuery={searchQuery} setSearchQuery={setSearchQuery} zipcode={zipcode} setZipcode={setZipcode} setBreed={setBreed} setType={setType}/>
         </div>
         <div className="row">
           <QuickSearch setSearchQuery={setSearchQuery} setType={setType} setResult={setResult}/>
         </div>
-        <div className="row">
-          <Footer />
-        </div>
     </div>
+    <Footer />
   </div>
   )
 }
