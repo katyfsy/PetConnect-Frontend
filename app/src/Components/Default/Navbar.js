@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from "react";
-import Nav from "react-bootstrap/Nav";
-import Container from "react-bootstrap/Container";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { getUser } from "../UserProfile/psb-exports";
-import axios from "axios";
-import { AiFillMessage } from "react-icons/ai";
-=======
 import React, { useState, useEffect } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
@@ -16,7 +6,6 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { getUser, getBearerToken } from "../UserProfile/psb-exports"
 import axios from 'axios'
 import { AiFillMessage } from 'react-icons/ai';
->>>>>>> main
 import { useLocation } from "react-router-dom";
 import "./Navbar.css";
 
