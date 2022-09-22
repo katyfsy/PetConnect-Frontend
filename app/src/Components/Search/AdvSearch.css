@@ -1,6 +1,6 @@
 .advSearchContainer{
   display: grid;
-  grid-template-rows: 10% 10% 10% 10% 10%;
+  grid-template-rows: 10% 10% 10% 10% 7% 7%;
   grid-template-columns: 1fr;
   gap: 10px;
   margin: 10px;
@@ -56,9 +56,35 @@
   grid-row-start: 5 / span 1;
   margin: 10px;
   gap: 10px;
-  background-color: #F4976C;
-  border-color: #F4976C
+  background-color: #8F9ED9;
+  color: white;
+  border: 1px solid #8F9ED9;
+  border-radius: 20px;
+  height: 50px;
 }
+
+#applyFilterButton:hover{
+  background-color: #8F9ED9;
+  color: white;
+  font-weight: bolder;
+}
+
+#applyFilterButton:active{
+  box-shadow: 0 5px rgb(104, 102, 102);
+  transform: translateY(4px);
+}
+
+#clearFilterButton{
+  grid-row-start: 6 / span 1;
+  margin: 10px;
+  gap: 10px;
+  background-color: #8F9ED9;
+  border-color: #8F9ED9;
+  /* width: 50%; */
+  /* align-self: center; */
+  justify-content: center;
+}
+
 
 /* .optionContainer li:hover,
 .optionContainer .highlight {

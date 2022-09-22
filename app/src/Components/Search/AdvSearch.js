@@ -18,14 +18,18 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
   const [allTypes, setAllTypes] = useState(["Any", "cat", "dog", "other"]);
 
   const handleFilterClick = (e) => {
-    var params = {zip: zipcode ? zipcode : null, type: type!=="Any" ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
+    var params = {search: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null, type: type!=="Any" ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
     // console.log(params);
-    axios.get("http://localhost:8080/api/petSearch?search=*", {params})
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/advSearchh", {params})
     // axios.get("http://localhost:8080/api/petSearch", {params})
     .then((result) =>{
       setResult(result.data.pets)
     })
     .catch(err=>console.log(err))
+  }
+
+  const clearFilterClick = (e) => {
+    console.log('clicked')
   }
 
   useEffect(() => {
@@ -35,14 +39,12 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
   },[searchQuery])
 
   useEffect(() => {
-    if (searchQuery === "" && zipcode === "") return;
     if (type === "Any") {
-      var params = ""
-      //need to add param if type=other -- gets all non cat & dog breeds
+      var params = "?type=any"
     } else {
       params = "?type=" + type;
     }
-    axios.get("http://localhost:8080/api/breeds" + params)
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/breeds" + params)
     .then(result => {
       setAllBreeds(["Any", ...result.data])})
     .catch(err => console.log(err))
@@ -50,8 +52,8 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
 
   useEffect(() => {
     if (searchQuery === "" && zipcode === "") return;
-    var params = {zip: zipcode ? zipcode : null, type: type ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
-    axios.get("http://localhost:8080/api/petSearch?search=*", {params})
+    var params = {search: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null, type: type!=="Any" ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/advSearch", {params})
     // axios.get("http://localhost:8080/api/petSearch", {params})
     .then((result) =>{
       setResult(result.data.pets)
@@ -119,6 +121,11 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
             id="applyFilterButton"
             className="btn btn-secondary"
             onClick={handleFilterClick}>Apply Filters</button>
+        {/* <span
+        id="clearFilterButton"
+        className="badge text-bg-secondary"
+        onClick={clearFilterClick}>
+        Clear Filters</span> */}
       </div>
       </>
   )
