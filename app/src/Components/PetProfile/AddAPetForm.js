@@ -644,7 +644,7 @@ function AddAPetForm() {
                   controlId="vaccinationHistory-validation"
                 >
                   <Form.Label>Vaccination history</Form.Label>
-                  <Button variant="link">Add a vaccination record</Button>
+                  <Button className="vaccination-pet-button" variant="outline-secondary">Add a vaccination record...</Button>
                 </Form.Group>
 
                 <Form.Group

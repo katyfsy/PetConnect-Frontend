@@ -250,7 +250,7 @@ const Photos = ({
           />
           <p>Drag n' drop or select up to {maxPhotos}</p>
           <Button
-            variant={isDragActive ? "primary" : "secondary"}
+            bsPrefix={isDragActive ? "pu-browse-button-active" : "pu-browse-button-inactive"}
             onClick={open}
           >
             Browse files...
