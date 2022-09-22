@@ -14,26 +14,20 @@ function QuickSearch({setSearchQuery, setType, setResult}) {
 
   const handleQuickSearchClick = e => {
     if (e.target.alt !== "other") {
-      // console.log(e.target.alt);
       var param="?search=" + e.target.alt + "&type=" + e.target.alt;
       var url = "http://vmware-elastic.galvanizelabs.net:8080/api/petSearch" + param;
-      // setType(e.target.alt);
       setSearchQuery(e.target.alt);
     } else {
       var param="?type=" + e.target.alt;
       var url = "http://vmware-elastic.galvanizelabs.net:8080/api/advSearch" + param;
-      // setType(e.target.alt);
-      // setSearchQuery(e.target.alt);
     }
     setType(e.target.alt);
     axios.get(url)
-      // axios.get("http://localhost:8080/api/petSearch" + param)
       .then((result)=>{
           setResult(result.data.pets);
           handleNavigationToResults();
         })
       .catch(err=>console.log(err));
-
   };
 
   return(
