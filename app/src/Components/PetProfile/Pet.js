@@ -10,6 +10,8 @@ import { ImPlus } from "react-icons/im";
 import { GrFlag, GrLocation } from "react-icons/gr";
 import Alert from "./AlertModalPetForms";
 import axios from "axios";
+import User from "../UserProfile/User.js";
+
 
 import {
   GiHummingbird,
@@ -258,6 +260,9 @@ function Pet() {
                 {!liked ? (
                   <Col>
                     <FaRegHeart size={42} onClick={() => handleLike()} />
+                    <p>
+                      {calculateLike}
+                    </p>
                   </Col>
                 ) : (
                   <Col>
@@ -266,9 +271,13 @@ function Pet() {
                       size={42}
                       onClick={() => handleRemoveLike()}
                     />
+                    <p>
+                      {calculateLike}
+                    </p>
+
                   </Col>
                 )}
-                {calculateLike}
+
                 <Col>
                   <Button
                     variant="primary"
@@ -293,9 +302,7 @@ function Pet() {
                 </Col>
                 <Col>
                   <br />
-                  <Button variant="primary" size="md" onClick={handleOnDelete}>
-                    Delete Pet
-                  </Button>
+
                 </Col>
               </>
             )}
@@ -334,7 +341,7 @@ function Pet() {
               <Tab eventKey="description" title="Description">
                 <p>{thisPet.description}</p>
               </Tab>
-              <Tab eventKey="info" title="Aditional Info">
+              <Tab eventKey="info" title="Additional Info">
                 <p>Name: {thisPet.name}</p>
                 <p>Owner: {thisPet.owner}</p>
                 <p>City: {thisPet.city}</p>
@@ -353,18 +360,23 @@ function Pet() {
                 <p>Reported: {thisPet.reported ? "true" : "false"}</p>
                 <p>Adopted: {thisPet.adopted ? "true" : "false"}</p>
               </Tab>
-              <Tab eventKey="contact" title="Contact">
-                {Object.keys(form).map((key, index) => {
+              <Tab eventKey="contact" title="Contact" >
+                <div className="contact-card-tab">
+                  <User owner={thisPet.owner}/>
+                </div>
+
+                {/* {Object.keys(form).map((key, index) => {
                   return (
                     <p key={index}>
                       {key}: {form[key]}
                     </p>
                   );
-                })}
+                })} */}
               </Tab>
             </Tabs>
           </Row>
         </Col>
+
 
         <br />
         <br />
@@ -377,6 +389,19 @@ function Pet() {
           />
         )}
       </Row>
+
+      {user !== thisPet.owner ? (
+        null
+      ) : (
+        <>
+          <br />
+          <Button variant="danger" size="md" onClick={handleOnDelete}>
+            Delete Pet
+          </Button>
+
+        </>
+      )}
+
       <Alert
         show={showAlert}
         text={alertText}
