@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Container } from "react-bootstrap";
+import { FloatingLabel, Button, Form, Container } from "react-bootstrap";
 import { Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 // import Modal from 'react-bootstrap/Modal';
@@ -274,7 +274,7 @@ function AddAPetForm() {
   return (
     <>
       <Container className="addpet-form-container">
-        <h3>Let's create the pet's profile</h3>
+        <h3>Tell us more about your pet</h3>
         <br />
         <Formik
           validationSchema={schema}
@@ -343,10 +343,10 @@ function AddAPetForm() {
                 <Form.Label>Owner</Form.Label>
                 {getUser() != "" ? (
                   <Form.Control
+                    className="pet-owner-name form-input"
                     name="owner"
                     defaultValue={getUser()}
                     disabled={true}
-                    className="pet-owner-name"
                   />
                 ) : (
                   <></>
@@ -359,7 +359,7 @@ function AddAPetForm() {
               >
                 <Form.Label>Name</Form.Label>
                 <Form.Control
-                  className="pet-name"
+                  className="pet-name form-input"
                   type="text"
                   name="name"
                   value={values.name}
@@ -382,7 +382,7 @@ function AddAPetForm() {
               >
                 <Form.Label>City</Form.Label>
                 <Form.Control
-                  className="pet-city"
+                  className="pet-city form-input"
                   type="text"
                   name="city"
                   value={values.city}
@@ -410,6 +410,7 @@ function AddAPetForm() {
                 >
                   <Form.Label>State</Form.Label>
                   <Form.Control
+                    className="pet-state form-input"
                     type="text"
                     name="state"
                     value={values.state}
@@ -436,6 +437,7 @@ function AddAPetForm() {
                 >
                   <Form.Label>Zipcode</Form.Label>
                   <Form.Control
+                    className="pet-zip form-input"
                     type="number"
                     name="zip"
                     value={values.zip}
@@ -457,14 +459,14 @@ function AddAPetForm() {
                 </Form.Group>
               </div>
 
-              <div className="addpet-form-section">
+              <div className="addpet-form-section form-input">
                 <Form.Group
                   className="mb-3 form-fields-2-row"
                   controlId="type-validation"
                 >
                   <Form.Label>Type</Form.Label>
                   <Form.Select
-                    className="pet-type"
+                    className="pet-type form-input"
                     type="text"
                     name="type"
                     value={values.type}
@@ -550,7 +552,7 @@ function AddAPetForm() {
                 >
                   <Form.Label>Size</Form.Label>
                   <Form.Select
-                    className="pet-size"
+                    className="pet-size form-input"
                     type="number"
                     name="size"
                     value={values.size}
@@ -581,7 +583,7 @@ function AddAPetForm() {
                 >
                   <Form.Label>Sex</Form.Label>
                   <Form.Select
-                    className="pet-sex"
+                    className="pet-sex form-input"
                     type="text"
                     name="sex"
                     value={values.sex}
@@ -611,7 +613,7 @@ function AddAPetForm() {
                 >
                   <Form.Label>Lifestage</Form.Label>
                   <Form.Select
-                    className="pet-age"
+                    className="pet-age form-input"
                     type="text"
                     name="age"
                     value={values.age}
@@ -639,11 +641,19 @@ function AddAPetForm() {
               <div className="addpet-form-section">
                 <Form.Group
                   className="mb-3 form-fields-2-row"
+                  controlId="vaccinationHistory-validation"
+                >
+                  <Form.Label>Vaccination history</Form.Label>
+                  <Button variant="link">Add a vaccination record</Button>
+                </Form.Group>
+
+                <Form.Group
+                  className="mb-3 form-fields-2-row"
                   controlId="reproductiveStatus-validation"
                 >
-                  <Form.Label>Spayed / Neutered</Form.Label>
+                  <Form.Label>Spayed/Neutered</Form.Label>
                   <Form.Select
-                    className="pet-reproductiveStatus"
+                    className="pet-reproductiveStatus form-input"
                     type="text"
                     name="reproductiveStatus"
                     value={values.reproductiveStatus}
@@ -710,17 +720,18 @@ function AddAPetForm() {
               <div className="mb-3 buttons-form-container">
                 <Form.Group className="mb-3">
                   <Button
+                    bsPrefix="cancel-pet-button"
                     variant="secondary"
                     type="submit"
                     onClick={() => navigate(-1)}
                   >
-                    {"<"} Go Back
+                    Cancel
                   </Button>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   {isClicked ? null : (
-                    <Button type="submit" className="add-pet-button">
+                    <Button bsPrefix="add-pet-button" type="submit">
                       Add Pet
                     </Button>
                   )}
