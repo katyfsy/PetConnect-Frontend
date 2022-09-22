@@ -1,0 +1,20 @@
+#write-review-button {
+  background-color: #8F9ED9;
+  border-color: #8F9ED9;
+}
+#write-review-button:hover {
+  background-color: #F4976C;
+  border-color: #F4976C;
+}
+#star-filter {
+  color: black;
+}
+#star-filter:hover {
+  color: #F4976C;
+}
+/* #progress {
+  font-size: medium;
+  height: 50px;
+  color: red
+} */
+.progress {height: 100px;}

@@ -12,17 +12,26 @@ function QuickSearch({setSearchQuery, setType, setResult}) {
     navigate('/searchresults');
   }
 
-  const handleQuickSearchClick = e => {
-    var param="?search=" + e.target.value + "&type=" + e.target.value;
-    setType(e.target.value);
-    setSearchQuery(e.target.value);
+  const handleNavigationToDirectory = () => {
+    navigate('/directory');
+  }
 
-    axios.get("http://localhost:8080/api/petSearch" + param)
-    .then((result)=>{
-        setResult(result.data.pets);
-        handleNavigationToResults();
-      })
-    .catch(err=>console.log(err));
+  const handleQuickSearchClick = e => {
+    if (e.target.alt !== "other") {
+      var param="?search=" + e.target.alt + "&type=" + e.target.alt;
+      var url = "http://vmware-elastic.galvanizelabs.net:8080/api/petSearch" + param;
+      setSearchQuery(e.target.alt);
+    } else {
+      var param="?type=" + e.target.alt;
+      var url = "http://vmware-elastic.galvanizelabs.net:8080/api/advSearch" + param;
+    }
+    setType(e.target.alt);
+    axios.get(url)
+      .then((result)=>{
+          setResult(result.data.pets);
+          handleNavigationToResults();
+        })
+      .catch(err=>console.log(err));
   };
 
   return(
@@ -32,26 +41,23 @@ function QuickSearch({setSearchQuery, setType, setResult}) {
         {/* <div className="col"> </div> */}
         <div className="col-md">
           <button id="allDogsBtn"
-          className=" quickBtn btn btn-outline-secondary"
+          className=" quickBtn btn"
           onClick={e => handleQuickSearchClick(e)}
           value="dog">
-             <img className="quickBtnImg" src="https://images.pexels.com/photos/11927589/pexels-photo-11927589.jpeg?cs=srgb&dl=pexels-mithul-varshan-11927589.jpg&fm=jpg"/>
+             <img className="quickBtnImg" src="/Pics/Dogs.png" alt="dog"/>
             </button>
 
-
-
-
         </div>
         <div className="col-md">
-          <button id="allCatsBtn"  className=" quickBtn btn btn-outline-secondary" onClick={e => handleQuickSearchClick(e)} value="cat"><img className="quickBtnImg" src="https://images.pexels.com/photos/6638266/pexels-photo-6638266.jpeg?cs=srgb&dl=pexels-jan-kop%C5%99iva-6638266.jpg&fm=jpg" /></button>
+          <button id="allCatsBtn"  className=" quickBtn btn "  onClick={e => handleQuickSearchClick(e)} value="cat"><img className="quickBtnImg" src="/Pics/Cats.png" alt="cat"/></button>
         </div>
 
         <div className="col-md">
-          <button id="otherPetsBtn" className=" quickBtn  btn btn-outline-secondary"  value="any"><img className="quickBtnImg" src="https://images.pexels.com/photos/7408291/pexels-photo-7408291.jpeg?cs=srgb&dl=pexels-alexas-fotos-7408291.jpg&fm=jpg"/></button>
+          <button id="otherPetsBtn" className=" quickBtn  btn "  value="other" onClick={e => handleQuickSearchClick(e)}><img className="quickBtnImg" src="/Pics/otherPets.png" alt="other"/></button>
         </div>
 
         <div className="col-md">
-          <button id="orgsBtn"  className=" quickBtn btn btn-outline-secondary"  value="org"><img className="quickBtnImg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Animal_Shelter_%288670%29_-_The_Noun_Project.svg/640px-Animal_Shelter_%288670%29_-_The_Noun_Project.svg.png"/></button>
+          <button id="orgsBtn"  className=" quickBtn btn "  value="org" onClick={()=>handleNavigationToDirectory()}><img className="quickBtnImg" src="/Pics/Shelters.png"/></button>
         </div>
         <div className="col"></div>
 

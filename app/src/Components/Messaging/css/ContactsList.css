@@ -1,15 +1,16 @@
 .list-title {
   font-weight: bold;
   color: white;
-  background-color: #303C6C;
+  background-color: #8F9ED9;
   height: 30px;
+  padding: 2px 0;
 }
 .contact-list {
-  width: 60%;
+  width: 70%;
   max-height: 25em;
   min-width: 200px;
   overflow-y: auto;
-  border: 1px solid;
+  border: 1px solid #8F9ED9;
   border-radius: 5px;
   background-color: rgb(254, 249, 242);
 }

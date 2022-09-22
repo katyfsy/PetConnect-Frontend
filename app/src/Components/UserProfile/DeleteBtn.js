@@ -79,8 +79,8 @@ const DeleteBtn = () => {
       </Button>
       <Modal show={show}>
         <Form onSubmit={handleSubmit}>
-          <Modal.Header closeButton onClick={handleClose}>
-            <Modal.Title>Delete Account</Modal.Title>
+          <Modal.Header closeButton onClick={handleClose} style={{backgroundColor: "#DC3545"}}>
+            <Modal.Title style={{color: "white"}}>Delete Account</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div>Enter Username and Password to delete account.</div>

@@ -1,6 +1,6 @@
 import './Profile.css';
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Navigationbar from '../Components/Default/Navbar';
 import Header from '../Components/Default/Header';
@@ -29,6 +29,7 @@ function Profile() {
   });
 
   const params = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const doGetUser = () => {
@@ -61,11 +62,11 @@ function Profile() {
 
   const renderEditOrMessageButton = () => {
     if(getUser() === "" || getUser() === null) {
-      return <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} size="lg" onClick={() => loginAlert()}>
+      return <Button id="profile-button" size="lg" onClick={() => loginAlert()}>
                Message me
              </Button>;
     } else {
-      return <Button style={{backgroundColor: "#8F9ED9", borderColor: "#8F9ED9"}} size="lg" href="/messages">Message me</Button>
+      return <Button id="profile-button" size="lg" onClick={() => navigate('/messages', {state: {receiverName: params.username}})}>Message me</Button>
     }
   }
 

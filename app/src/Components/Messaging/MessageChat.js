@@ -102,7 +102,7 @@ const MessageChat = ({
               {chats.get(currentContact) &&
                 [...chats.get(currentContact)].map((message, index) => {
                   return (
-                    <div className='chat-messages'>
+                    <div key={index} className='chat-messages'>
                       {formatDayMonth(message.timestamp).toString() ===
                       date.toString() ? null : (
                         <div>

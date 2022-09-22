@@ -46,7 +46,7 @@
 
 .message.self {
   justify-content: end;
-  background-color: aliceblue;
+  background-color: rgba(143, 158, 217, 0.45);
   align-self: flex-end;
   text-align: right;
   min-width: 20px;

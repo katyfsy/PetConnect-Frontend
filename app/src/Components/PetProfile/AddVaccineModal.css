@@ -1,0 +1,22 @@
+.vaccine-form-ctr {
+  position: flex;
+  flex-direction: column;
+}
+
+.vaccine-form-field {
+  position: column;
+}
+
+.vaccine-form-error {
+  color: red;
+  font-style: italic;
+  font-size: small;
+}
+
+.vaccine-form {
+  width: 100%;
+}
+
+.vaccine-form-title {
+  align-self: center;
+}

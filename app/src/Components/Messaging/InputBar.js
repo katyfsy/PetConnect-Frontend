@@ -28,7 +28,8 @@ const InputBar = ({
   return (
     <div>
       <div className='input-bar'>
-        <form className='input-bar-elements'
+        <form
+          className='input-bar-elements'
           onSubmit={(event) => {
             handleSend(event);
           }}
