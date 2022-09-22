@@ -1,6 +1,4 @@
-.topBar{
-    background-color: yellow;
-}
+
 
 .main {
   display: grid;
@@ -18,7 +16,6 @@
 
 .searchResultsCol {
     grid-area: right;
-    border: solid blue;
 }
 
 #noMatchAlert {

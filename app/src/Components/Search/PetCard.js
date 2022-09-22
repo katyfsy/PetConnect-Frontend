@@ -41,27 +41,37 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFa
 
   return(
     <>
-      <Card style={{ width: '18rem' }}>
-        <div onClick={handleShow} style={{height: '0px'}}>
-          <FavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/>
+      <Card >
+        <div className="row" >
+          <div onClick={handleShow} >
+            <FavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/>
+          </div>
+          <Link to={`/pet/${petId}`} >
+            <Card.Img  id="petCardPhotoRow" src={coverPhoto} />
+          </Link>
         </div>
-        <Link to={`/pet/${petId}`} style={{ textDecoration: 'none', color: 'black' }}>
-          <Card.Img src={coverPhoto} style={{height: '15rem'}}/>
-        </Link>
-        <Card.Body>
-          <Card.Title>{name}</Card.Title>
-          <Card.Text>
-            {gender}
-          </Card.Text>
-          <Card.Text>
-            {age} * {breed}
-          </Card.Text>
-          <Card.Text>
-            Rescued by {owner}
-          </Card.Text>
-          {/* <Button variant="primary" onClick={handleShow}>Favorite</Button> */}
+        <div className="row">
+          <Card.Body>
+            <div className="row">
+              <Card.Title>{name}</Card.Title>
+              </div>
+              <div className="row">
+              <Card.Text>
+                {gender}
+              </Card.Text>
+              <Card.Text>
+                {age} * {breed}
+              </Card.Text>
+            </div>
+            <div className="row">
+              <Card.Text>
+                Rescued by {owner}
+              </Card.Text>
+            </div>
+            {/* <Button variant="primary" onClick={handleShow}>Favorite</Button> */}
 
-        </Card.Body>
+          </Card.Body>
+        </div>
       </Card>
       <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header closeButton>
