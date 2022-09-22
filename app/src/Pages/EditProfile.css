@@ -16,3 +16,6 @@ label {
   color: red;
   margin-left:2px
 }
+#edit-button {
+  background-color: black;
+}

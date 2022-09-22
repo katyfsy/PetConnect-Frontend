@@ -10,6 +10,7 @@ import {
   PSB_API_URL,
 } from "../Components/UserProfile/psb-exports";
 import axios from "axios";
+import '../Components/Default/DefaultComponents.css'
 
 function Directory() {
   const [data, setData] = useState([]);
@@ -48,7 +49,7 @@ function Directory() {
     );
   });
   return (
-    <>
+    <div class="flex-wrapper">
       <Container>
         <Header />
       </Container>
@@ -69,11 +70,9 @@ function Directory() {
             <tbody>{rowItem}</tbody>
           </Table>
         </Row>
-        <Row>
-          <Footer />
-        </Row>
       </Container>
-    </>
+      <Footer />
+    </div>
   );
 }
 

@@ -7,7 +7,8 @@ import { Container, Row, Button, Form, Col, Image } from 'react-bootstrap';
 import axios from 'axios';
 import DeleteBtn from '../Components/UserProfile/DeleteBtn';
 import EditPwdBtn from '../Components/UserProfile/EditPwdBtn';
-import { getBearerToken, getUser, PSB_API_URL } from "../Components/UserProfile/psb-exports"
+import { getBearerToken, getUser, PSB_API_URL } from "../Components/UserProfile/psb-exports";
+import Footer from '../Components/Default/Footer';
 
 function EditProfile() {
 
@@ -260,8 +261,8 @@ function EditProfile() {
          </Form>
          <div align="end"><EditPwdBtn /></div>
          <div align="end"><DeleteBtn /></div>
-
       </Container>
+      <Footer />
     </div>
   )
 } else {
@@ -411,6 +412,7 @@ function EditProfile() {
         <div align="end"><DeleteBtn /></div>
         <div align="end"><EditPwdBtn /></div>
       </Container>
+      <Footer />
     </div>
     )
   }
