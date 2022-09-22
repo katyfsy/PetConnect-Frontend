@@ -29,7 +29,10 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
   }
 
   const clearFilterClick = (e) => {
-    console.log('clicked')
+    setGender("")
+    setAge("Any")
+    setBreed("Any")
+    setType(["Any"])
   }
 
   useEffect(() => {
@@ -120,12 +123,13 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
         <button
             id="applyFilterButton"
             className="btn btn-secondary"
-            onClick={handleFilterClick}>Apply Filters</button>
-        {/* <span
-        id="clearFilterButton"
-        className="badge text-bg-secondary"
-        onClick={clearFilterClick}>
-        Clear Filters</span> */}
+            onClick={handleFilterClick}>Apply Filters
+        </button>
+        <button
+            id="applyFilterButton"
+            className="btn btn-secondary"
+            onClick={clearFilterClick}>Clear Filters
+        </button>
       </div>
       </>
   )
