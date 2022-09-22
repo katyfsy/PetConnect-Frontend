@@ -8,7 +8,7 @@ import './Messages.css';
 
 function Messages() {
   return (
-    <>
+    <div className='messagingPage'>
     <Container>
       <Header/>
     </Container>
@@ -18,7 +18,7 @@ function Messages() {
         <MessagingApp/>
       </Row>
     </Container>
-  </>
+  </div>
   )
 }
 

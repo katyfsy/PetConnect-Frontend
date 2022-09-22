@@ -13,12 +13,12 @@
   justify-content: flex-end;
   gap: 15px;
   border-radius: 0px;
-  color: #303C6C;
+  color: #4D4751;
 }
 
 .member:hover{
   background: #FBE8A6;
-  color:#303C6C;
+  color:#4D4751;
   cursor: pointer;
 }
 
