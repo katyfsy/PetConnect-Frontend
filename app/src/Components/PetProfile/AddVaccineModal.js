@@ -23,8 +23,6 @@ const AddVaccineModal = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Request-Method": POST,
-        "Access-Control-Request-Headers": X-PINGOTHER
       },
       body: JSON.stringify(vaccineFields),
     })

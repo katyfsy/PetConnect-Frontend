@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import EditPet from "./EditPet";
+import VaccineList from "./VaccineList.js";
 import AddVaccineModal from "./AddVaccineModal.js";
 import { Button, Row, Col, Image, Tab, Tabs } from "react-bootstrap";
 import { FaRegHeart, FaHeart, FaCat, FaFish } from "react-icons/fa";
@@ -35,15 +36,6 @@ function Pet() {
   let petId = useParams();
   const navigate = useNavigate();
   console.log(petId);
-
-  // /* ADD VACCINE STATE */
-  // const [vaccineFormIsShown, setVaccineFormIsShown] = useState(false);
-
-  // /* SHOW VACCINE FORM METHOD */
-  // const handleAddVaccineRecordClick  = () => setVaccineFormIsShown(true);
-
-  // /* HIDE VACCINE FORM METHOD */
-  // const handleSubmitVaccineRecord = () => setVaccineFormIsShown(false);
 
   // Fetch Pet, with refetch to refetch new pet data upon finishing edit
   useEffect(() => {
@@ -254,7 +246,10 @@ function Pet() {
                 </Col>
                 <Col>
                   <br/>
-                  <Button variant="primary" size="md" onClick={handleOnDelete}> Delete Pet </Button>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={handleOnDelete}> Delete Pet </Button>
                 </Col>
                 <Col className="vaccine-btn-ctr">
                 < AddVaccineModal owner={user} petId={petId}
@@ -313,6 +308,9 @@ function Pet() {
                 <p>Likes: {thisPet.favoriteCount}</p>
                 <p>Reported: {thisPet.reported ? "true" : "false"}</p>
                 <p>Adopted: {thisPet.adopted ? "true" : "false"}</p>
+              </Tab>
+              <Tab eventKey="vaccines" title="Vaccine History">
+                <VaccineList pet={thisPet}/>
               </Tab>
               <Tab eventKey="contact" title="Contact">
                 Contact
