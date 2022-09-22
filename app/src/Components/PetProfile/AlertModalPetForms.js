@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,6 +8,7 @@ import "./AlertModalPetForms.css";
 
 
 const Alert = (props) => {
+  const [vaccineFormIsShown, setVaccineFormIsShown] = useState(false);
   return (
     <Modal
       {...props}

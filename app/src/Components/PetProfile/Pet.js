@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import EditPet from "./EditPet";
+import AddVaccineModal from "./AddVaccineModal.js";
 import { Button, Row, Col, Image, Tab, Tabs } from "react-bootstrap";
 import { FaRegHeart, FaHeart, FaCat, FaFish } from "react-icons/fa";
 import { MdPets } from "react-icons/md";
@@ -34,6 +35,15 @@ function Pet() {
   let petId = useParams();
   const navigate = useNavigate();
   console.log(petId);
+
+  // /* ADD VACCINE STATE */
+  // const [vaccineFormIsShown, setVaccineFormIsShown] = useState(false);
+
+  // /* SHOW VACCINE FORM METHOD */
+  // const handleAddVaccineRecordClick  = () => setVaccineFormIsShown(true);
+
+  // /* HIDE VACCINE FORM METHOD */
+  // const handleSubmitVaccineRecord = () => setVaccineFormIsShown(false);
 
   // Fetch Pet, with refetch to refetch new pet data upon finishing edit
   useEffect(() => {
@@ -243,10 +253,12 @@ function Pet() {
                   </Button>
                 </Col>
                 <Col>
-                  <br />
-                  <Button variant="primary" size="md" onClick={handleOnDelete}>
-                    Delete Pet
-                  </Button>
+                  <br/>
+                  <Button variant="primary" size="md" onClick={handleOnDelete}> Delete Pet </Button>
+                </Col>
+                <Col className="vaccine-btn-ctr">
+                < AddVaccineModal owner={user} petId={petId}
+                                  petName={thisPet.name}/>
                 </Col>
               </>
             )}
