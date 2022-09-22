@@ -3,6 +3,7 @@ import { Button, Modal, Row, Col, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getBearerToken, getUser, clearStorage } from "./psb-exports";
+import "./EditPwdBtn.css";
 
 
 const EditPwdBtn = () => {
@@ -66,7 +67,7 @@ const EditPwdBtn = () => {
 
   return (
     <>
-      <Button variant="outline-dark" onClick={handleShow}>
+      <Button id="edit-password-button" onClick={handleShow}>
         Edit Password
       </Button>
 

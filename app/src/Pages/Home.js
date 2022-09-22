@@ -7,6 +7,7 @@ import User from '../Components/UserProfile/User';
 import Search from '../Components/Search/Search';
 import QuickSearch from '../Components/Search/QuickSearch';
 import useStore from '../useStore';
+import './Home.css';
 
 
 function Home() {
