@@ -190,7 +190,7 @@ const MessagingApp = () => {
   const getEmailNotificationsStatus = (username) => {
     axios
       .get(
-        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${userData.username}`, {
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${username}`, {
         // `http://localhost:8080/messages/emailnotifications/${userData.username}`, {
           headers: { Authorization: getBearerToken() }
         })

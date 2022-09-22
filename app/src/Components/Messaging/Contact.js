@@ -3,6 +3,8 @@ import axios from 'axios';
 import './css/Contact.css';
 // import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { MdOutlineMarkEmailUnread } from 'react-icons/md';
+import { getBearerToken } from "../UserProfile/psb-exports"
+
 
 const Contact = ({
   contact,
@@ -16,8 +18,9 @@ const Contact = ({
   const markAsRead = (username, contact) => {
     axios
       .patch(
-        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${contact}/${username}`
-      )
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${contact}/${username}`, {}, {
+          headers: { Authorization: getBearerToken() }
+        })
       // axios.patch(`http://localhost:8080/messages/notifications/${contact}/${username}`)
       .then((response) => {
         setNotificationList(
