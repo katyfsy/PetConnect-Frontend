@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import AddPhotosPortal from "./AddPhotosPortal";
+import EditVaccinesList from "./EditVaccinesList.js";
 import Image from "react-bootstrap/Image";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -398,6 +399,9 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
         progress={progress}
         currentUpload={currentUpload}
       />
+
+      <h1> Vaccine Records </h1>
+      <EditVaccinesList pet={thisPet}/><br/><br/>
 
       <h1>Additional Details</h1>
 
