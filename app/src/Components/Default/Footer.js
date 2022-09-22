@@ -30,6 +30,7 @@ function Footer() {
           </Col>
           <Col>
             <h4>Pet Posse</h4>
+            <Image src={require("./HeaderPics/pp-logo.png")} id="pp-image"/>
             <p>Benis Tambe</p>
             <p>Carlos Morales</p>
             <p>Edward Pak</p>
@@ -38,6 +39,7 @@ function Footer() {
           </Col>
           <Col>
             <h4>Pet Meets Family</h4>
+            <Image src={require("./HeaderPics/PMF-logo.png")} id="pmf-image"/>
             <p>Ginwoo Pak</p>
             <p>Ivy Wong</p>
             <p>Rick Kunz</p>
