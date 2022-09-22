@@ -7,6 +7,7 @@ import { Container,Button, Row, Col, Image } from 'react-bootstrap';
 import Reviews from '../Components/UserProfile/Reviews';
 // import getUser from '../Components/UserProfile/DummyData';
 import { getBearerToken, getUser, PSB_API_URL } from "../Components/UserProfile/psb-exports";
+import Footer from '../Components/Default/Footer';
 
 function MyProfile() {
   const [form, setForm] = useState({
@@ -65,7 +66,7 @@ function MyProfile() {
             <Col>
               <Image src={form.userPhoto} roundedCircle className="profile-photo"/>
               <div>
-                <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
+                <Button id="profile-button" size="lg" href="/profile/edit">Edit</Button>
               </div>
             </Col>
             <Col>
@@ -85,6 +86,7 @@ function MyProfile() {
             </Col>
           </Row>
         </Container>
+        <Footer />
       </div>
     )
   } else {
@@ -99,7 +101,7 @@ function MyProfile() {
             <Col>
               <Image src={form.userPhoto} roundedCircle className="profile-photo"/>
               <div>
-                <Button variant="primary" size="lg" href="/profile/edit">Edit</Button>
+                <Button id="profile-button" size="lg" href="/profile/edit">Edit</Button>
               </div>
             </Col>
             <Col>
@@ -149,6 +151,7 @@ function MyProfile() {
               <Reviews />
           </Row>
         </Container>
+        <Footer />
       </div>
     )
   }

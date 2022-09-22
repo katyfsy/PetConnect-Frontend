@@ -7,7 +7,8 @@ import { Container, Row, Button, Form, Col, Image } from 'react-bootstrap';
 import axios from 'axios';
 import DeleteBtn from '../Components/UserProfile/DeleteBtn';
 import EditPwdBtn from '../Components/UserProfile/EditPwdBtn';
-import { getBearerToken, getUser, PSB_API_URL } from "../Components/UserProfile/psb-exports"
+import { getBearerToken, getUser, PSB_API_URL } from "../Components/UserProfile/psb-exports";
+import Footer from '../Components/Default/Footer';
 
 function EditProfile() {
 
@@ -132,7 +133,7 @@ function EditProfile() {
           <Image src={userPhoto} roundedCircle className="profile-photo"/>
           <div className="upload-button">
             <input ref={inputRef} onChange={handleUploadToS3} className="d-none" type="file" accept="image/*"/>
-            <Button variant="primary" size="sm" onClick={handleUploadButton}>Upload your picture</Button>
+            <Button id="edit-button" size="sm" onClick={handleUploadButton}>Upload your picture</Button>
           </div>
           <Form className="container mt-3 mb-3" noValidate validated={validated} onSubmit={submitButton}>
             <Row className="mb-3">
@@ -250,18 +251,18 @@ function EditProfile() {
               <Form.Label>Description</Form.Label>
               <Form.Control as="textarea" rows={3} name="description" value={form.description} onChange={handleChange}/>
             </Form.Group>
-            <Button variant="primary" type="submit" href="/myprofile">
+            <Button id="edit-button" type="submit" href="/myprofile">
               Cancel
             </Button>
             {" "}
-            <Button variant="primary" type="submit">
+            <Button id="edit-button" type="submit">
               Submit
             </Button>
          </Form>
          <div align="end"><EditPwdBtn /></div>
          <div align="end"><DeleteBtn /></div>
-
       </Container>
+      <Footer />
     </div>
   )
 } else {
@@ -276,7 +277,7 @@ function EditProfile() {
         <Image src={userPhoto} roundedCircle className="profile-photo"/>
         <div className="upload-button">
           <input ref={inputRef} onChange={handleUploadToS3} className="d-none" type="file" />
-          <Button variant="primary" size="sm" onClick={handleUploadButton}>Upload your picture</Button>
+          <Button id="edit-button" size="sm" onClick={handleUploadButton}>Upload your picture</Button>
         </div>
         <Form className="container mt-3 mb-3" noValidate validated={validated} onSubmit={submitButton}>
           <Row className="mb-3">
@@ -400,17 +401,18 @@ function EditProfile() {
             <Form.Label>Description</Form.Label>
             <Form.Control as="textarea" rows={3} name="description" value={form.description} onChange={handleChange}/>
           </Form.Group>
-          <Button variant="primary" type="submit" href="/myprofile">
+          <Button id="edit-button" type="submit" href="/myprofile">
             Cancel
           </Button>
           {" "}
-          <Button variant="primary" type="submit">
+          <Button id="edit-button" type="submit">
             Submit
           </Button>
         </Form>
         <div align="end"><DeleteBtn /></div>
         <div align="end"><EditPwdBtn /></div>
       </Container>
+      <Footer />
     </div>
     )
   }

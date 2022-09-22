@@ -39,12 +39,10 @@ function Navigationbar() {
       return () => clearInterval(id);
     }, []);
   }
-// expand="lg"
-//style={{paddingTop: 0, backgroundColor: "#8F9ED9", marginBottom: 10}
   return (
-    <Navbar  className="navBar">
-      {/* <Container> */}
-        <Navbar.Collapse style={{backgroundColor: "#8F9ED9"}} id="basic-navbar-nav">
+    <Navbar  className="navBar" id="nav-bar">
+      <Container>
+        <Navbar.Collapse id="basic-navbar-nav">
           <Nav id="customNav" className="me-auto">
             {isLoggedIn() ? <Nav.Link href="/myprofile" style={{color: "white"}}>MyProfile</Nav.Link> : null}
             <Nav.Link href="/pets" style={{color: "white"}}>Pets</Nav.Link>
@@ -53,7 +51,7 @@ function Navigationbar() {
             <Nav.Link href="/directory" style={{color: "white"}}>Directory</Nav.Link>
           </Nav>
         </Navbar.Collapse>
-      {/* </Container> */}
+      </Container>
     </Navbar>
   );
 }

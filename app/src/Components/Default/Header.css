@@ -1,8 +1,13 @@
 .header {
-  /* background-image: url("../Components/Default/HeaderPics/Pet-Banner.jpeg"); */
-  background-size: 700px 150px;
-  background-repeat: no-repeat;
-  height: 150px;
-  background-position: center;
+  height: 120px;
   background-color: #FAFAFA;
+  width: 100%;
+}
+#pet-logo {
+  width: 100px;
+  float: left;
+}
+#pet-connect {
+  width: 150px;
+  float: left;
 }
