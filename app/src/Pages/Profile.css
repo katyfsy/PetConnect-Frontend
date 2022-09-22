@@ -30,3 +30,18 @@ sup {
   background-color: #F4976C;
   border-color: #F4976C;
 }
+
+.page-size{
+  position: relative;
+  left: 40px;
+  text-align-last:center;
+  width: 50px;
+  
+}
+
+.i-per-page{
+  position: relative;
+  left: 90px;
+  top: 10px;
+  text-align-last:center;
+}
