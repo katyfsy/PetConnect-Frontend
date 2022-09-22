@@ -14,7 +14,7 @@ function Messages() {
     </Container>
     <Navigationbar/>
     <Container>
-      <Row className="justify-content-md-center" style={{"padding-top": "50px"}}>
+      <Row className="justify-content-md-center" style={{"paddingTop": "50px"}}>
         <MessagingApp/>
       </Row>
     </Container>
