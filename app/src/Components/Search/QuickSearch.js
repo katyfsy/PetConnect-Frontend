@@ -12,6 +12,10 @@ function QuickSearch({setSearchQuery, setType, setResult}) {
     navigate('/searchresults');
   }
 
+  const handleNavigationToDirectory = () => {
+    navigate('/directory');
+  }
+
   const handleQuickSearchClick = e => {
     if (e.target.alt !== "other") {
       var param="?search=" + e.target.alt + "&type=" + e.target.alt;
@@ -53,7 +57,7 @@ function QuickSearch({setSearchQuery, setType, setResult}) {
         </div>
 
         <div className="col-md">
-          <button id="orgsBtn"  className=" quickBtn btn "  value="org"><img className="quickBtnImg" src="/Pics/Shelters.png"/></button>
+          <button id="orgsBtn"  className=" quickBtn btn "  value="org" onClick={()=>handleNavigationToDirectory()}><img className="quickBtnImg" src="/Pics/Shelters.png"/></button>
         </div>
         <div className="col"></div>
 
