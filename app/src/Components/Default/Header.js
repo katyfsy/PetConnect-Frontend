@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Button, Image, NavDropdown, Badge, OverlayTrigger, Tooltip, Stack } from 'react-bootstrap';
 import axios from 'axios';
 import { getBearerToken, getUser, clearStorage, PSB_API_URL, getUserType } from "../UserProfile/psb-exports";
-import '../../Pages/Profile.css';
+import './Header.css';
 
 function Header() {
   const [userIcon, setUserIcon] = useState({
@@ -88,7 +88,7 @@ function Header() {
         <Container>
           <Stack>
             <a href="/">
-              <Image src={require("./HeaderPics/logo.png")} style={{width:100, float: "left"}} />
+              <Image src={require("./HeaderPics/logo_purple_blue_orange.png")} style={{width:100, float: "left"}} />
             </a>
             <a href="/">
               <Image src={require("./HeaderPics/Pet-connect.png")} style={{width:150, float: "left"}} />

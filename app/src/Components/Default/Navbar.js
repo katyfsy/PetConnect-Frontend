@@ -7,6 +7,7 @@ import { getUser } from "../UserProfile/psb-exports"
 import axios from 'axios'
 import { AiFillMessage } from 'react-icons/ai';
 import { useLocation } from "react-router-dom";
+import "./Navbar.css";
 
 function Navigationbar() {
 
@@ -38,12 +39,13 @@ function Navigationbar() {
       return () => clearInterval(id);
     }, []);
   }
-
+// expand="lg"
+//style={{paddingTop: 0, backgroundColor: "#8F9ED9", marginBottom: 10}
   return (
-    <Navbar expand="lg" className="navBar" style={{paddingTop: 0, backgroundColor: "#8F9ED9", marginBottom: 10}}>
-      <Container>
+    <Navbar  className="navBar">
+      {/* <Container> */}
         <Navbar.Collapse style={{backgroundColor: "#8F9ED9"}} id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav id="customNav" className="me-auto">
             {isLoggedIn() ? <Nav.Link href="/myprofile" style={{color: "white"}}>MyProfile</Nav.Link> : null}
             <Nav.Link href="/pets" style={{color: "white"}}>Pets</Nav.Link>
             <Nav.Link href="/messages" style={{color: "white"}}>Messages</Nav.Link>
@@ -51,7 +53,7 @@ function Navigationbar() {
             <Nav.Link href="/directory" style={{color: "white"}}>Directory</Nav.Link>
           </Nav>
         </Navbar.Collapse>
-      </Container>
+      {/* </Container> */}
     </Navbar>
   );
 }
