@@ -13,15 +13,14 @@ function Home() {
        < Header/>
      </Container>
     < Navigationbar/>
-    <Container >
+    <Container>
       <Row>
         <h1>hello from home</h1>
+        {console.log(process.env.REACT_APP_KEY)}
         <User />
       </Row>
-      <Row >
-        < Footer />
-      </Row>
     </Container>
+    <Footer />
     </>
   )
 }

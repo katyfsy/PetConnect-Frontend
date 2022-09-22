@@ -28,5 +28,15 @@ sup {
   background-repeat: no-repeat;
   height: 150px;
   background-position: center;
-  background-color: #F8F9FA;
+  background-color: #FAFAFA;
+}
+.footer {
+  position: relative;
+  margin-top: 150px;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  /* negative value of footer height */
+  height: 210px;
+  clear: both;
+  background-color: #8F9ED9;
 }

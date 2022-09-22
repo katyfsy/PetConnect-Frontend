@@ -82,11 +82,11 @@ function Directory() {
               <div className="pagination justify-content-left">
                 <ReactPaginate
                   breakLabel="..."
-                  nextLabel="NEXT"
+                  nextLabel=">>"
                   onPageChange={handlePageClick}
                   pageRangeDisplayed={5}
                   pageCount={pageCount}
-                  previousLabel="PREV"
+                  previousLabel="<<"
                   renderOnZeroPageCount={null}
                   breakClassName={"page-item"}
                   breakLinkClassName={"page-link"}

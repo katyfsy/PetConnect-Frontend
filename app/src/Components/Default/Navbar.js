@@ -29,7 +29,6 @@ function Navigationbar() {
           .get(
             `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`
           )
-          // axios.get(`http://localhost:8080/messages/notifications/${username}`)
           .then((response) => {
             setNotification(response.data.length ? true : false);
           })
