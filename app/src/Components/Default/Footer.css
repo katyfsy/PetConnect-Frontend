@@ -1,0 +1,17 @@
+
+.footer {
+  /* position: relative; */
+  margin-top: 150px;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  /* negative value of footer height */
+  height: 210px;
+  clear: both;
+  background-color: #8F9ED9;
+  padding-top: 20px;
+
+}
+
+.footerImg{
+  height: 30px;
+}
