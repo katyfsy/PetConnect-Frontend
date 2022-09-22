@@ -10,7 +10,7 @@ function Footer() {
           <Col>
           <h3 style={{color: "white"}}>Sponsored by</h3>
             <Image className="footerImg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Vmware.svg/1280px-Vmware.svg.png" />
-            <h4>Ascent Technical Program</h4>
+            <h5 id="ascent">Ascent Technical Program</h5>
           </Col>
           <Col>
             <h4>Pet Shop Boys</h4>

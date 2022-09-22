@@ -88,10 +88,10 @@ function Header() {
         <Container>
           <Stack>
             <a href="/">
-              <Image src={require("./HeaderPics/logo.png")} style={{width:100, float: "left"}} />
+              <Image src={require("./HeaderPics/logo.png")} id="pet-logo" />
             </a>
             <a href="/">
-              <Image src={require("./HeaderPics/Pet-connect.png")} style={{width:150, float: "left"}} />
+              <Image src={require("./HeaderPics/Pet-connect.png")}  id="pet-connect" />
             </a>
           </Stack>
           <Navbar.Toggle />
@@ -110,17 +110,17 @@ function Header() {
           <Container>
             <Stack>
               <a href="/">
-                <Image src={require("./HeaderPics/logo.png")} style={{width:100, float: "left"}} />
+                <Image src={require("./HeaderPics/logo.png")} id="pet-logo" />
               </a>
               <a href="/">
-                <Image src={require("./HeaderPics/Pet-connect.png")} style={{width:150, float: "left"}} />
+                <Image src={require("./HeaderPics/Pet-connect.png")} id="pet-connect" />
               </a>
             </Stack>
             <Navbar.Toggle />
-            <Navbar.Collapse align="right" className="justify-content-end" expand="lg">
+            <Navbar.Collapse align="right" className="justify-content-end">
               <NavDropdown align="end" className="w-25 p-3" title={
                         <div>
-                          <Image src={userIcon.userPhoto} roundedCircle width="40" height="40"/>
+                          <Image src={userIcon.userPhoto} roundedCircle width="50" height="50"/>
                             {renderNotification()}
                         </div>} id="basic-nav-dropdown">
                     <NavDropdown.Item disabled>@{userIcon.username}</NavDropdown.Item>
@@ -130,7 +130,6 @@ function Header() {
                     <NavDropdown.Item href="/user/favorites">
                       Favorites
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="/" onClick={clearStorage}>
                       Sign out

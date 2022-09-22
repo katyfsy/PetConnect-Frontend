@@ -40,7 +40,8 @@ function Navigationbar() {
     }, []);
   }
   return (
-    <Navbar  className="navBar">
+    <Navbar  className="navBar" id="nav-bar">
+      <Container>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav id="customNav" className="me-auto">
             {isLoggedIn() ? <Nav.Link href="/myprofile" style={{color: "white"}}>MyProfile</Nav.Link> : null}
@@ -50,6 +51,7 @@ function Navigationbar() {
             <Nav.Link href="/directory" style={{color: "white"}}>Directory</Nav.Link>
           </Nav>
         </Navbar.Collapse>
+      </Container>
     </Navbar>
   );
 }

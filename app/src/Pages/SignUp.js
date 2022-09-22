@@ -16,10 +16,8 @@ const SignUp = () => {
         <Row className="justify-content-md-center" style={{"paddingTop": "50px"}}>
           <SignUpCard/>
         </Row>
-        <Row >
-        < Footer />
-      </Row>
       </Container>
+      < Footer />
     </>
   )
 }

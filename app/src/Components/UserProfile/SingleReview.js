@@ -51,8 +51,8 @@ function SingleReview({ review, votedOnReviews }) {
             <div style={{paddingTop:10}}>
               <Rating
                 initialRating={review.reviewScore}
-                emptySymbol={<img src="http://dreyescat.github.io/react-rating/assets/images/star-empty.png" className="icon" alt="empty-star"/>}
-                fullSymbol={<img src="http://dreyescat.github.io/react-rating/assets/images/star-full.png" className="icon" alt="full-star"/>}
+                emptySymbol={<img src={require("../Default/HeaderPics/star-empty.png")} className="icon" alt="empty-star"/>}
+                fullSymbol={<img src={require("../Default/HeaderPics/star-full.png")} className="icon" alt="full-star"/>}
                 readonly
               />
             </div>
