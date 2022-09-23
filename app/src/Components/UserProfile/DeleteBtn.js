@@ -3,6 +3,7 @@ import { Button, Modal, Row, Col, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getBearerToken, PSB_API_URL, clearStorage } from "./psb-exports";
+import Swal from 'sweetalert2';
 
 const DeleteBtn = () => {
   const [show, setShow] = useState(false);
@@ -39,9 +40,18 @@ const DeleteBtn = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Error deleting API");
+        errorDeleteApi();
       });
   };
+
+  const errorDeleteApi= () => {
+    Swal.fire({
+      position: 'center',
+      title: 'Error: Can"t connect to identity service',
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
 
   const deleteAccountService = () => {
     const date = new Date().toLocaleDateString("FR-CA");
@@ -64,13 +74,34 @@ const DeleteBtn = () => {
       })
       .then(() => deleteAccountAPI())
       .then(() => clearStorage())
-      .then(() => alert("Account Deleted!"))
+      .then(() => accountDeleteSuccess())
       .then(() => navigate("/", { replace: true }))
       .catch((error) => {
         console.log(error);
-        alert("Password or Username Incorrect!");
+        serviceDeleteFail();
       });
   };
+
+
+  const serviceDeleteFail= () => {
+    Swal.fire({
+      position: 'center',
+      title: 'Failed to delete account from identity service',
+      showConfirmButton: true,
+      timer: 1500,
+    })
+  }
+
+  
+
+  const accountDeleteSuccess= () => {
+    Swal.fire({
+      position: 'center',
+      title: 'Account Deleted!',
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
 
   return (
     <>
