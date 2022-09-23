@@ -30,7 +30,6 @@ const ContactsList = ({
       return name[0];
     });
 
-  // let currentList = [...privateChats.keys()].sort().map((contact) => {
   let currentList = contactsSortedByRecentMessage.map((contact) => {
     if (
       contact &&
