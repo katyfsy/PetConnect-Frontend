@@ -45,7 +45,7 @@ function Navigationbar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav id="customNav" className="me-auto">
             {isLoggedIn() ? <Nav.Link href="/myprofile" style={{color: "white"}}>MyProfile</Nav.Link> : null}
-            <Nav.Link href="/pets" style={{color: "white"}}>Pets</Nav.Link>
+            {isLoggedIn() ? <Nav.Link href={`/petlist/${getUser()}`} style={{color: "white"}}>My Pets</Nav.Link> : null}
             <Nav.Link href="/messages" style={{color: "white"}}>Messages</Nav.Link>
             {notification ? <AiFillMessage size={30} color={'red'} /> : null}
             <Nav.Link href="/directory" style={{color: "white"}}>Directory</Nav.Link>

@@ -82,7 +82,6 @@ function UserFavorites() {
 
         <Card.Body>
           <Card.Title>{element.name}</Card.Title>
-          <Card.Text>{element.description}</Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroup.Item>Adopted: {adopted}</ListGroup.Item>
