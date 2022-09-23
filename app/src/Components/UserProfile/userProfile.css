@@ -64,9 +64,9 @@
   .i-heart {
     position: relative;
     left: 106px;
-    top: 19px;
+    top: 50px;
     font-size: 30px;
-    color: white;
+    /* color: white; */
   }
   .i-changepw {
     position: relative;
@@ -86,7 +86,7 @@
       background-color: rgb(255, 255, 255);
       color: #000000;
   }
-  
+
   .pagination > li > a:focus,
   .pagination > li > a:hover,
   .pagination > li > span:focus,
@@ -96,20 +96,38 @@
       background-color: rgb(255, 255, 255);
       border-color: rgb(0, 0, 0);
   }
-  
+
   .pagination > .active > a
   {
       color: white;
       background-color: #8F9ED9 !Important;
       border: solid 1px #8F9ED9 !Important;
   }
-  
-  
+
+
   .pagination > .active > a:hover
   {
       background-color: #bdc5e5 !Important;
       border: solid 1px #000000;
   }
+
+  #edit-button {
+    position: relative;
+    left: 377px;
+  }
+
+  #edit-password-button {
+    position: relative;
+    left: 240px;
+    top: 5px;
+  }
+
+  #delete-button {
+    position: relative;
+    right: 13px;
+    bottom: -5px;
+  }
+
 
 
 

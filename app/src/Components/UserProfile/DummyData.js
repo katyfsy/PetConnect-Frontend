@@ -91,6 +91,12 @@ const orgReviews = [
   reviewImages: []
   },
 ]
+const EMAIL_JS ={
+  REACT_APP_SECRET_KEY: 'supersecretpsb123',
+  REACT_APP_TEMPLATE_ID: 'template_cuioiov',
+  REACT_APP_SERVICE_ID: 'service_r0k2eyh',
+  REACT_APP_USER_ID: 'KowJ5SR4XG510Yyyk'
+}
 
 export default getUser;
-export {photoURL, orgReviews};
+export {photoURL, orgReviews, EMAIL_JS};

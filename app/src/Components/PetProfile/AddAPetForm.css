@@ -21,12 +21,13 @@
 }
 
 .form-fields-2-row {
-    width: 230px;
+    width: 240px;
+    /* text-align: start; */
     /* align-self: center; */
 }
 
 .form-fields-3-row {
-    width: 140px;
+    width: 150px;
     align-self: start;
 }
 
@@ -64,6 +65,44 @@
     font-size: 10px !important;
 }
 
-form-input {
-    font-size: 8px !important;
+.form-input {
+    font-size: 14px !important;
+}
+
+.add-pet-button {
+    background: #8F9ED9;
+    color: white;
+    padding: 8px 16px;
+    width: 140px;
+    border-radius: 5px;
+    border: none;
+}
+
+.add-pet-button:hover {
+    background: #7387d7;
+}
+
+.cancel-pet-button {
+    background: #6c757d;
+    color: white;
+    padding: 8px 16px;
+    width: 140px;
+    border-radius: 5px;
+    border: none;
+}
+
+.cancel-pet-button:hover {
+    background: #565e64
+}
+
+.vaccination-pet-button {
+    font-size: 14px !important;
+    width: 240px !important;
+    text-align: start !important;
+    /* color: #8F9ED9 !important;
+    padding: 0px !important; */
+}
+
+.vaccination-pet-button:hover {
+    /* color: #7387d7 !important; */
 }

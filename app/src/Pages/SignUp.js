@@ -13,7 +13,7 @@ const SignUp = () => {
       </Container>
       <Navigationbar/>
       <Container>
-        <Row className="justify-content-md-center" style={{"paddingTop": "50px"}}>
+        <Row className="justify-content-md-center" style={{"paddingTop": "20px"}}>
           <SignUpCard/>
         </Row>
       </Container>

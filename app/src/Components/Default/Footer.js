@@ -7,41 +7,54 @@ function Footer() {
     <div className="footer">
         <Container>
           <Row>
-          <Col>
-          <h3 style={{color: "white"}}>Sponsored by</h3>
+          <Col className="firstCol">
+          <h3 className="footerTitle">Sponsored by</h3>
             <Image className="footerImg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Vmware.svg/1280px-Vmware.svg.png" />
             <h5 id="ascent">Ascent Technical Program</h5>
           </Col>
-          <Col>
-            <h4>Pet Shop Boys</h4>
-            <Image src={require("./HeaderPics/psb-logo.png")} id="psb-image"/>
-            <p>Kun Chen</p>
-            <p>Lucas Bonner</p>
-            <p>Varun Srinivasan</p>
-            <p>Vincent Le</p>
+
+          <Col className="teamCol">
+            {/* <h4>Pet Shop Boys</h4> */}
+            <Image src={require("./HeaderPics/psb-logo_ps.png")} id="psb-image"/>
+            <ul className="teamMembers">
+              <li>Kun Chen</li>
+              <li>Lucas Bonner</li>
+              <li>Varun Srinivasan</li>
+              <li>Vincent Le</li>
+            </ul>
           </Col>
-            <Col>
-              <h4>Pet Detectives</h4>
+            <Col  className="teamCol">
+              {/* <h4>Pet Detectives</h4> */}
               <Image src={require("./HeaderPics/pd-logo.png")} id="pd-image"/>
-              <p>Katy Feng</p>
-              <p>Marilene Soares da Costa</p>
-              <p>Meredith White</p>
-              <p>Trevor Leung</p>
+              <ul className="teamMembers">
+              <li>Katy Feng</li>
+              <li>Marilene Soares da Costa</li>
+              <li>Meredith White</li>
+              <li>Trevor Leung</li>
+            </ul>
+
           </Col>
-          <Col>
-            <h4>Pet Posse</h4>
-            <p>Benis Tambe</p>
-            <p>Carlos Morales</p>
-            <p>Edward Pak</p>
-            <p>Enriqueta De Leon</p>
-            <p>Luis Escobar</p>
+          <Col  className="teamCol">
+            {/* <h4>Pet Posse</h4> */}
+            <Image src={require("./HeaderPics/pp-logo_ps.png")} id="pp-image"/>
+            <ul className="teamMembers">
+              <li>Benis Tambe</li>
+              <li>Carlos Morales</li>
+              <li>Edward Pak</li>
+              <li>Enriqueta De Leon</li>
+              <li>Luis Escobar</li>
+            </ul>
+
           </Col>
-          <Col>
-            <h4>Pet Meets Family</h4>
-            <p>Ginwoo Pak</p>
-            <p>Ivy Wong</p>
-            <p>Rick Kunz</p>
-            <p>Yu Zhang</p>
+          <Col  className="teamCol">
+            {/* <h4>Pet Meets Family</h4> */}
+            <Image src={require("./HeaderPics/PMF-logo_ps.png")} id="pmf-image"/>
+            <ul className="teamMembers">
+              <li>Ginwoo Pak</li>
+              <li>Ivy Wong</li>
+              <li>Rick Kunz</li>
+              <li>Yu Zhang</li>
+            </ul>
           </Col>
           </Row>
         </Container>

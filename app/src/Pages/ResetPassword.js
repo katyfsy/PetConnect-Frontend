@@ -13,6 +13,8 @@ import {
 import axios from "axios";
 import emailjs from '@emailjs/browser';
 import Swal from 'sweetalert2';
+import './ResetPassword.css';
+import { EMAIL_JS } from '../Components/UserProfile/DummyData';
 
 const ResetPassword = () => {
   const [username, setUserName] = useState();
@@ -42,11 +44,8 @@ const ResetPassword = () => {
     axios.get(`${PSB_API_URL}/api/public/user/${username}`).then((res) => {
         //build the reset URL route
         if (res.status === 200) {
-          console.log(process.env.REACT_APP_SECRET_KEY);
-          console.log(process.env.REACT_APP_SERVICE_ID);
-          console.log(process.env.REACT_APP_TEMPLATE_ID);
-          console.log(process.env.REACT_APP_USER_ID);
-          sendEmail(`http://localhost:3000/user/reset/${btoa(username + " " + process.env.REACT_APP_SECRET_KEY)}`, res.data.email);
+          // sendEmail(`http://localhost:3000/user/reset/${btoa(username + " " + process.env.REACT_APP_SECRET_KEY)}`, res.data.email);
+          sendEmail(`http://a05c559e9f4dd47e6a449abdb704ff66-132472868.us-west-2.elb.amazonaws.com/user/reset/${btoa(username + " " + EMAIL_JS.REACT_APP_SECRET_KEY)}`, res.data.email);
         } else if (res.status === 204) {
           resetUserNotExistAlert();
         }
@@ -60,10 +59,14 @@ const ResetPassword = () => {
     };
     emailjs
       .send(
-        process.env.REACT_APP_SERVICE_ID,
-        process.env.REACT_APP_TEMPLATE_ID,
+        // process.env.REACT_APP_SERVICE_ID,
+        // process.env.REACT_APP_TEMPLATE_ID,
+        // templateParams,
+        // process.env.REACT_APP_USER_ID
+        EMAIL_JS.REACT_APP_SERVICE_ID,
+        EMAIL_JS.REACT_APP_TEMPLATE_ID,
         templateParams,
-        process.env.REACT_APP_USER_ID
+        EMAIL_JS.REACT_APP_USER_ID
       )
       .then(
         function (response) {
@@ -83,8 +86,9 @@ const ResetPassword = () => {
       </Container>
       <Navigationbar />
       <Container>
-        <Row>
-          <h1 style={{paddingBottom: 50, paddingTop: 50}}>Trouble Logging In?</h1>
+      <div className="flex-wrapper-reset-page">
+        <Row style={{paddingBottom: 50}}>
+          <h1 style={{paddingBottom: 15}}>Trouble Logging In?</h1>
           <div className="Auth-form-container">
           <Form className="Auth-form" onSubmit={handleSubmit}>
             <div className="Auth-form-content">
@@ -98,22 +102,20 @@ const ResetPassword = () => {
                 />
               </div>
               <div className="d-grid gap-2 mt-4">
-                <Button variant="outline-dark" type="submit">
+                <Button id="reset-password-button" type="submit">
                   Submit
                 </Button>
               </div>
               <div className="text-center mt-3">
-                Back to <Link to="/login">Login</Link>
+                Back to <Link style={{color: "#8F9ED9"}} to="/login">Login</Link>
               </div>
             </div>
           </Form>
           </div>
-        </Row>
-        <Row></Row>
-        <Row>
-          <Footer />
-        </Row>
+        </Row >
+        </div>
       </Container>
+      <Footer />
     </>
   );
 };

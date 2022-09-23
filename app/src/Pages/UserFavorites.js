@@ -12,6 +12,7 @@ import {
 } from "../Components/UserProfile/psb-exports";
 import axios from "axios";
 import FavButton from "../Components/UserProfile/FavButton";
+import "./Profile.css";
 
 function UserFavorites() {
   const [data, setData] = useState([]);
@@ -75,7 +76,7 @@ function UserFavorites() {
       isFavor = false;
     }
     return (
-      <Card style={{ width: "18rem" }}>
+      <Card style={{ width: "18rem", marginLeft: '2rem', marginBottom: '2rem' }}>
         <FavButton petId={element.petId} isFavor={isFavor} deleteFavor={(e) => deleteFavor(e)}/>
         <a href={`/pet/${element.petId}`}><Card.Img variant="top" src={element.coverPhoto} style={{height: 200}} onClick={() => handleClick()}/></a>
 
@@ -99,15 +100,15 @@ function UserFavorites() {
         <Header />
       </Container>
       <Navigationbar />
-      <Container>
-        <Row>
-          <h1>{getUser()} Favorite Pets</h1>
-        </Row>
-        <Row>{PetCard}</Row>
-        <Row>
-          <Footer />
-        </Row>
-      </Container>
+      <div className="flex-wrapper-favList">
+        <Container>
+          <Row>
+            <h1 style={{marginBottom: '2rem'}}>{getUser()} Favorite Pets</h1>
+          </Row>
+          <Row>{PetCard}</Row>
+        </Container>
+      </div>
+      <Footer />
     </>
   );
 }
