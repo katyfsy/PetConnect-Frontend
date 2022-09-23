@@ -10,17 +10,19 @@ import './AdvSearch.css';
 
 function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, setBreed, type, setType}) {
 
+  let babyType = "baby";
   const [gender, setGender] = useState("")
   const [age, setAge] = useState("")
   const [matches, setMatches] = useState(results)
-
+  const [allAges, setAllAges] = useState(["Any", "baby", "young", "adult", "senior"])
+  const [allGenders, setAllGenders] = useState(["Any", "male", "female"])
   const [allBreeds, setAllBreeds] = useState(["Any"]);
   const [allTypes, setAllTypes] = useState(["Any", "cat", "dog", "other"]);
 
   const handleFilterClick = (e) => {
     var params = {search: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null, type: type!=="Any" ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
     // console.log(params);
-    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/advSearchh", {params})
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/advSearch", {params})
     // axios.get("http://localhost:8080/api/petSearch", {params})
     .then((result) =>{
       setResult(result.data.pets)
@@ -29,23 +31,42 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
   }
 
   const clearFilterClick = (e) => {
-    console.log('clicked')
+    setGender("")
+    setAge("Any")
+    setBreed("Any")
+    setType(["Any"])
+    var params = {search: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null, radius : zipcode ? radius : null}
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/suggestions", {params})
   }
 
   useEffect(() => {
     const searchArray = searchQuery.split(' ');
-    if (searchArray.includes('dog')) setType('dog');
-    else if (searchArray.includes('cat')) setType('cat');
+    console.log('searchArray', searchArray)
+    console.log('existing type', type)
+    if (searchArray.includes('dog')) {
+      setType('dog');
+      console.log('type', type)
+      setAllAges(["Any", "puppy", "young", "adult", "senior"])
+    } else if (searchArray.includes('cat')) {
+      setType('cat');
+      console.log('type', type)
+      setAllAges(["Any", "kitten", "young", "adult", "senior"])
+    }
   },[searchQuery])
 
   useEffect(() => {
     if (type === "Any") {
       var params = "?type=any"
+      setAllAges(["Any", "baby", "young", "adult", "senior"])
     } else {
+      if (type === "dog") setAllAges(["Any", "puppy", "young", "adult", "senior"])
+      if (type === "cat") setAllAges(["Any", "kitten", "young", "adult", "senior"])
+      if (type === "other") setAllAges(["Any", "baby", "young", "adult", "senior"])
       params = "?type=" + type;
     }
     axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/breeds" + params)
     .then(result => {
+      console.log('breeds', result.data)
       setAllBreeds(["Any", ...result.data])})
     .catch(err => console.log(err))
   },[type])
@@ -60,11 +81,6 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
     })
     .catch(err=>console.log(err))
   },[radius])
-
-    let babyType;
-    if (type === 'dog') babyType = 'Puppy';
-    else if (type === 'cat') babyType = 'Kitten';
-    else babyType = 'Baby';
 
     return (
       <>
@@ -102,30 +118,40 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
         <div className="age filter">
           <h6 className="filterType">Age</h6>
           <select onChange={e=>setAge(e.target.value)}>
-            <option value="">Any</option>
-            <option value={babyType}>{babyType}</option>
-            <option value="young">Young</option>
-            <option value="adult">Adult</option>
-            <option value="senior">Senior</option>
+            {allAges.map(ageOption => {
+              if(age === ageOption) {
+                return <option value={ageOption} selected>{ageOption}</option>
+              } else {
+                return <option value={ageOption}>{ageOption}</option>
+              }
+            })}
           </select>
         </div>
         <div className="gender filter">
           <h6 className="filterType">Gender</h6>
           <select onChange={(e)=>setGender(e.target.value)}>
-            <option value="">Any</option>
+            {allGenders.map(genderOption => {
+              if(gender === genderOption) {
+                return <option value={genderOption} selected>{genderOption}</option>
+              } else {
+                return <option value={genderOption}>{genderOption}</option>
+              }
+            })}
+            {/* <option value="">Any</option>
             <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="female">Female</option> */}
           </select>
         </div>
         <button
             id="applyFilterButton"
             className="btn btn-secondary"
-            onClick={handleFilterClick}>Apply Filters</button>
-        {/* <span
-        id="clearFilterButton"
-        className="badge text-bg-secondary"
-        onClick={clearFilterClick}>
-        Clear Filters</span> */}
+            onClick={handleFilterClick}>Apply Filters
+        </button>
+        <button
+            id="applyFilterButton"
+            className="btn btn-secondary"
+            onClick={clearFilterClick}>Clear Filters
+        </button>
       </div>
       </>
   )

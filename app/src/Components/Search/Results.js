@@ -38,6 +38,8 @@ function Results({matches, setResult, searchQuery, zipcode, radius, setBreed, br
 
     }, []);
 
+
+    // inline css for Col pet card style = {{paddingRight: 0, paddingBottom: 10}}
     return(
     <div data-testid="results">
 
@@ -47,7 +49,7 @@ function Results({matches, setResult, searchQuery, zipcode, radius, setBreed, br
             </div>
             <div className="main">
                 <div className="advancedSearchCol">
-                    <AdvSearch setResult={setResult} results={matches} searchQuery={searchQuery} zipcode={zipcode} radius={radius} setType={setType} type={type} setBreed={setBreed} breed={breed} type={type} setType={setType}/>
+                    <AdvSearch setResult={setResult} results={matches} searchQuery={searchQuery} zipcode={zipcode} radius={radius} setType={setType} type={type} setBreed={setBreed} breed={breed}/>
                     {/* <p> column left: advanced search (dropdowns)</p> */}
                 </div>
                 <div className="searchResultsCol">
@@ -59,7 +61,7 @@ function Results({matches, setResult, searchQuery, zipcode, radius, setBreed, br
                                 :
                                 matches.map(match => {
                                     return(
-                                        <Col style = {{paddingRight: 0, paddingBottom: 10}} key={`${match.petId}`}>
+                                        <Col  key={`${match.petId}`}>
                                             <PetCard data-testid={`t-${match.zip}${match.name}`} key={`${match.petId}${match.zip}${match.name}`}
                                                 name={match.name} type={match.type} gender={match.gender} age={match.age}
                                                 breed={match.breed} petId={match.petId} coverPhoto={match.coverPhoto} owner={match.owner} isFavor={favoritePets.includes(match.petId)}/>
