@@ -13,22 +13,34 @@
   height: 30px;
 }
 #psb-image{
-  width: 150px;
+  /* width: 150px; */
+  height: 100px;
   margin-bottom: 10px;
 }
 #pd-image{
-  width: 100px;
+  /* width: 100px; */
+  height: 100px;
   margin-bottom: 10px;
 }
 #pp-image{
-  width: 100px;
+  /* width: 100px; */
+  height: 100px;
   margin-bottom: 10px;
-  background-color: white;
+  /* background-color: white; */
 }
 #pmf-image{
-  width: 180px;
+  /* width: 180px; */
+  height: 100px;
   margin-bottom: 10px;
 }
 #ascent {
   padding-top: 1em;
+}
+
+.footerTitle {
+  color: white;
+}
+
+.firstCol{
+  border-right: white solid 1px;
 }
