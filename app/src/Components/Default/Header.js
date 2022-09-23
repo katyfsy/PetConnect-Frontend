@@ -118,7 +118,7 @@ function Header() {
             <Navbar.Collapse align="right" className="justify-content-end">
               <NavDropdown align="end" className="w-25 p-3" title={
                         <div>
-                          <Image src={userIcon.userPhoto} roundedCircle width="50" height="50"/>
+                          <Image src={userIcon.userPhoto} roundedCircle width="40" height="40" />
                             {renderNotification()}
                         </div>} id="basic-nav-dropdown">
                     <NavDropdown.Item disabled>@{userIcon.username}</NavDropdown.Item>
