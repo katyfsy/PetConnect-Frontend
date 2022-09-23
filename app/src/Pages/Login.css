@@ -1,0 +1,6 @@
+.flex-wrapper-login-page {
+  display: flex;
+  min-height: 50vh;
+  flex-direction: column;
+  justify-content: flex-start;
+}

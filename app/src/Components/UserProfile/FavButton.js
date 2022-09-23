@@ -17,7 +17,7 @@ function FavButton ({ petId, isFavor, deleteFavor, setResultPageIsFav }) {
 
   const handleAddFavorites = () => {
     if (getUser() === null) {
-      alert("login!!!!")
+      userNotLoggedIn()
     } else {
       axios.patch(`${PSB_API_URL}/api/user/${getUser()}/favorites`,
       {petId: petId},
@@ -31,6 +31,16 @@ function FavButton ({ petId, isFavor, deleteFavor, setResultPageIsFav }) {
       })
       .catch((err) => console.log(err));
     }
+  }
+
+
+  const userNotLoggedIn= () => {
+    Swal.fire({
+      position: 'center',
+      title: 'Please log in to favorite a pet!',
+      showConfirmButton: false,
+      timer: 1500,
+    })
   }
 
   const handleDeleteFavorites = () => {

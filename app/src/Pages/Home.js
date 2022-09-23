@@ -23,7 +23,7 @@ function Home() {
         <div id="navBar" className="row">
           <Navigationbar/>
         </div>
-        <div>
+        <div className="flex-wrapper-home">
           <div className="row">
             <Slides />
           </div>
@@ -33,12 +33,13 @@ function Home() {
           <div className="row">
             <QuickSearch setSearchQuery={setSearchQuery} setType={setType} setResult={setResult}/>
           </div>
-          <div className="row">
-            <Footer />
-          </div>
+        </div>
+        <div>
+          <Footer />
         </div>
       </div>
   )
 }
+
 
 export default Home;

@@ -20,8 +20,6 @@ const EditPwdBtn = () => {
   const [passwordShown, setPasswordShown] = useState(false);
 
   const togglePassword = () => {
-    // When the handler is invoked
-    // inverse the boolean state of passwordShown
     setPasswordShown(!passwordShown);
   };
 
@@ -67,14 +65,14 @@ const EditPwdBtn = () => {
 
   return (
     <>
-      <Button id="edit-password-button" onClick={handleShow}>
+      <Button id="edit-password-button" size="sm" onClick={handleShow}>
         Edit Password
       </Button>
 
       <Modal show={show}>
         <Form onSubmit={handleSubmit}>
           <Modal.Header closeButton onClick={handleClose} style={{backgroundColor: "#8F9ED9"}}>
-            <Modal.Title style={{color: "white"}}>Edit Password</Modal.Title>
+            <Modal.Title style={{color: "white"}}>Change Password</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div></div>
@@ -139,10 +137,10 @@ const EditPwdBtn = () => {
             </Row>
           </Modal.Body>
           <Modal.Footer className="mt-1">
-            <Button type="submit" id="edit-password-button">
+            <Button id="edit-password-confirm-button" type="submit" >
               Save New Password
             </Button>
-            <Button id="edit-password-button" onClick={handleClose}>
+            <Button id="edit-password-confirm-button" onClick={handleClose}>
               Cancel
             </Button>
           </Modal.Footer>
