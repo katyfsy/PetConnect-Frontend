@@ -47,6 +47,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
   }
 
   const handleDefaultSearchClick = value => {
+    setDropdownDisplay(false);
     setSearchQuery(value);
     if (value === "All Cats") {
       var param = "?search=cat&type=cat";
@@ -61,6 +62,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
     // http://vmware-elastic.galvanizelabs.net:8080/api/petSearch
     axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/petSearch" + param)
+    // axios.get("http://locahost:8080/api/petSearch" + param)
     .then((result)=>{
         setResult(result.data.pets);
         handleNavigationToResults();
@@ -75,6 +77,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     setAutocompleteDisplay(true);
 
     axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/suggestions?search=" + value )
+    // axios.get("http://localhost:8080/api/suggestions?search=" + value )
     .then((result)=>{
       if(result.data.pets === undefined) {
         setAutocompleteDisplay(false);
@@ -88,7 +91,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
   }
 
   const handleSuggestionSearchClick = (value) => {
-    // setDropdownDisplay(false);
+    setDropdownDisplay(false);
     // setAutocompleteDisplay(false);
     // console.log('VALUE in clicking suggestion:', value);
     setBreed(value.breed);
@@ -96,6 +99,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
     var params = value.type + " " + value.breed;
     setSearchQuery(params);
     axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/petSearch?search=" + params)
+    // axios.get("http://localhost:8080/api/petSearch?search=" + params)
     .then((result)=>{
         setResult(result.data.pets);
         handleNavigationToResults();
@@ -106,6 +110,7 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
 
   const handleSubmitClick = (e) => {
     e.preventDefault();
+    var url = "http://vmware-elastic.galvanizelabs.net:8080/api/suggestions?search=";
     if (searchQuery.length === 0 && zipcode.length === 0) {
       setDropdownDisplay(!dropdownDisplay);
       var zipcodeValidated = true;
@@ -115,8 +120,10 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
         var params = searchQuery
         var zipcodeValidated = true;
       } else if (zipcode.length !== 0 && searchQuery.length === 0){
+        setDropdownDisplay(false);
         params = '*' + "&zip=" + zipcode ;
         var zipcodeValidated = handleZipcodeCheck();
+        url = "http://vmware-elastic.galvanizelabs.net:8080/api/petSearch?search="
       } else if (zipcode.length !== 0 && searchQuery.length !== 0){
         setDropdownDisplay(false);
         params = searchQuery + "&zip=" + zipcode ;
@@ -124,13 +131,8 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
       }
       // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
       if (zipcodeValidated) {
-        //   axios.get("http://localhost:8080/api/suggestions?search=" + params)
-        //   .then((result)=>{
-        //       handleNavigationToResults();
-        //       setResult(result.data.pets);
-        //     })
-        //   .catch(err=>console.log(err));
-        axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/suggestions?search=" + params)
+        axios.get(url + params)
+        // axios.get("http://localhost:8080/api/suggestions?search=" + params)
         .then((result)=>{
             handleNavigationToResults();
             setResult(result.data.pets);

@@ -9,6 +9,7 @@ import SearchTopBar from '../Components/Search/SearchTopBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import useStore from '../useStore';
+import Footer from '../Components/Default/Footer';
 
 function SearchResults() {
   // const [result, setResult] = useState([]);
@@ -37,6 +38,9 @@ function SearchResults() {
             <div data-testid="results_inPage"> <Results zipcode={zipcode} searchQuery={searchQuery} setResult={setResult} matches={result} radius={radius} type={type} setType={setType} breed={breed} setBreed={setBreed}/> </div>
           </div>
         </Row>
+      </Container>
+      <Container>
+        <Footer />
       </Container>
     </>
   )

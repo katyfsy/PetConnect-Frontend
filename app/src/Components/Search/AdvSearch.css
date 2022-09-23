@@ -60,7 +60,7 @@
   color: white;
   border: 1px solid #8F9ED9;
   border-radius: 20px;
-  height: 50px;
+  height: 40px;
 }
 
 #applyFilterButton:hover{
@@ -70,7 +70,7 @@
 }
 
 #applyFilterButton:active{
-  box-shadow: 0 5px rgb(104, 102, 102);
+  /* box-shadow: 0 5px rgb(104, 102, 102); */
   transform: translateY(4px);
 }
 
@@ -83,6 +83,8 @@
   /* width: 50%; */
   /* align-self: center; */
   justify-content: center;
+  border-radius: 20px;
+  background-color: #8F9ED9;
 }
 
 

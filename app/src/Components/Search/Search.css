@@ -34,7 +34,7 @@
 }
 
 #searchButton:hover {
-  /* box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19); */
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
   font-weight: bolder;
 }
 
@@ -51,7 +51,6 @@
   padding-left: 1em;
   height:150px;
   overflow: hidden;
-
 }
 
 .boldText {

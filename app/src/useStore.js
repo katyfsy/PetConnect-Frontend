@@ -17,7 +17,7 @@ const useStore = create((set)=>({
   breed: "",
   setBreed: (breed) => set(()=>({breed})),
 
-  type: "",
+  type: "Any",
   setType: (type) => set(()=>({type})),
 
 
