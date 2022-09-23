@@ -106,19 +106,17 @@ function Header() {
       <div className="header">
         <Navbar>
           <Container>
-            <Stack>
-              <a href="/">
-                <Image src={require("./HeaderPics/logo_purple_blue_orange.png")} id="pet-logo" />
-              </a>
-              <a href="/">
-                <Image src={require("./HeaderPics/Pet-connect.png")} id="pet-connect" />
-              </a>
-            </Stack>
+            <a href="/">
+              <Image src={require("./HeaderPics/logo_purple_blue_orange.png")} id="pet-logo" />
+            </a>
+            <a href="/">
+              <Image src={require("./HeaderPics/Pet-connect.png")} id="pet-connect" />
+            </a>
             <Navbar.Toggle />
             <Navbar.Collapse align="right" className="justify-content-end">
               <NavDropdown align="end" className="w-25 p-3" title={
                         <div>
-                          <Image src={userIcon.userPhoto} roundedCircle width="40" height="40" />
+                          <Image src={userIcon.userPhoto} roundedCircle width="45" height="45" />
                             {renderNotification()}
                         </div>} id="basic-nav-dropdown">
                     <NavDropdown.Item disabled>@{userIcon.username}</NavDropdown.Item>
