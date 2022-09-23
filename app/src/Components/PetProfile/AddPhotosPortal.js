@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 
+import { Button } from "react-bootstrap";
+
 import ReactDom from "react-dom";
 import Photos from "./Photos";
-import "./AddPhotosPortal.css"
+import "./AddPhotosPortal.css";
 
 function AddPhotosPortal({
   addPhotos,
@@ -12,6 +14,7 @@ function AddPhotosPortal({
   thisPet,
   progress,
   currentUpload,
+  exisitingPhotos,
 }) {
   const [coverPhoto, setCoverPhoto] = useState(0);
   const [toAddPhotos, setToAddPhotos] = useState([]);
@@ -42,8 +45,7 @@ function AddPhotosPortal({
   if (!openPortal) return null;
   return ReactDom.createPortal(
     <div className="add-photos-portal-bg">
-      <div className="add-photos-portal-container" >
-        <button onClick={() => setOpenPortal(false)}>Close</button>
+      <div className="add-photos-portal-container">
         <Photos
           adding={false}
           photos={toAddPhotos}
@@ -57,12 +59,21 @@ function AddPhotosPortal({
           edit={false}
           preview={"preview"}
           maxPhotos={
-            MAX_NUMBER_OF_PHOTOS - thisPet.photos.length - addPhotos.length
+            MAX_NUMBER_OF_PHOTOS - exisitingPhotos.length - addPhotos.length
           }
         />
-        <button onClick={handleOnSubmit}>Upload Photos</button>
+        <div className="portal-button-container">
+          <Button
+            bsPrefix="cancel-pet-button"
+            onClick={() => setOpenPortal(false)}
+          >
+            Cancel
+          </Button>
+          <Button bsPrefix="add-pet-button" onClick={handleOnSubmit}>
+            Select
+          </Button>
+        </div>
       </div>
-
     </div>,
     document.getElementById("portal")
   );

@@ -28,7 +28,7 @@
 
 .thumb:active {
   border: 2px solid;
-  border-color: rgb(40, 87, 196);
+  border-color: #7387d7;
 }
 
 .thumb-inner {
@@ -57,7 +57,12 @@
   padding: 3.2px !important;
 }
 
+.thumb-radio-button {
+  /* accent-color: #8F9ED9 !important; */
+}
+
 .thumb-radio-button input:hover {
+  /* color: #7387d7; */
   cursor: pointer;
 }
 
