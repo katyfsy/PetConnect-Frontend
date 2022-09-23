@@ -20,3 +20,16 @@
   gap: 15px 15px;
   width: 500px;
 }
+
+.edit-pet-button {
+  background: #8F9ED9;
+  color: white;
+  padding: 8px 16px;
+  width: 140px;
+  border-radius: 5px;
+  border: none;
+}
+
+.edit-pet-button:hover {
+  background: #7387d7;
+}

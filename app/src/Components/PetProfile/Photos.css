@@ -32,24 +32,36 @@
   color: #dc3545;
 }
 
-.pu-browse-button {
-  background-color: rgb(64, 64, 64);
+.pu-browse-button-inactive {
+  background: #6c757d;
+  color: white;
+  padding: 8px 16px;
+  width: 120px;
+  border-radius: 5px;
   border: none;
-  color: #ffffff;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
   font-size: 14px;
-  padding: 10px;
-  margin: 10px;
 }
 
-.pu-browse-button:hover {
-  background-color: #777;
-  cursor: pointer;
+.pu-browse-button-inactive:hover {
+  background: #565e64
 }
 
-.pu-upload-button {
+
+.pu-browse-button-active {
+  background: #8F9ED9;
+  color: white;
+  padding: 8px 16px;
+  width: 120px;
+  border-radius: 5px;
+  border: none;
+  font-size: 14px;
+}
+
+.pu-browse-button-active:hover {
+  background: #7387d7;
+}
+
+/* .pu-upload-button {
   background-color: rgb(64, 64, 64);
   border: none;
   color: #ffffff;
@@ -64,7 +76,7 @@
 .pu-upload-button:hover {
   background-color: #777;
   cursor: pointer;
-}
+} */
 
 
 /* pls avoid css of general tags */
@@ -96,7 +108,7 @@ span {
 }
 
 .accept {
-  border-color: rgb(40, 87, 196) !important;
+  border-color: #7387d7 !important;
 }
 
 .reject {
