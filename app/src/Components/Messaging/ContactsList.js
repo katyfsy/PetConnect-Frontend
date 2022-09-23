@@ -12,10 +12,16 @@ const ContactsList = ({
 }) => {
   let contactsSortedByRecentMessage = [...privateChats]
     .sort(([k, v], [k2, v2]) => {
-      if (new Date(v[v.length - 1].timestamp) > new Date(v2[v2.length - 1].timestamp)) {
+      if (
+        new Date(v[v.length - 1].timestamp) >
+        new Date(v2[v2.length - 1].timestamp)
+      ) {
         return -1;
       }
-      if (new Date(v[v.length - 1].timestamp) < new Date(v2[v2.length - 1].timestamp)) {
+      if (
+        new Date(v[v.length - 1].timestamp) <
+        new Date(v2[v2.length - 1].timestamp)
+      ) {
         return 1;
       }
       return 0;
@@ -26,8 +32,12 @@ const ContactsList = ({
 
   // let currentList = [...privateChats.keys()].sort().map((contact) => {
   let currentList = contactsSortedByRecentMessage.map((contact) => {
-    if (contact && privateChats.get(contact)[privateChats.get(contact).length - 1]) {
-      let recentChat = privateChats.get(contact)[privateChats.get(contact).length - 1];
+    if (
+      contact &&
+      privateChats.get(contact)[privateChats.get(contact).length - 1]
+    ) {
+      let recentChat =
+        privateChats.get(contact)[privateChats.get(contact).length - 1];
       let photo =
         username === recentChat['senderName']
           ? recentChat['receiverPhoto']
@@ -47,8 +57,6 @@ const ContactsList = ({
     }
   });
 
-  // console.log('currentList of contacts:', currentList);
-
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       {privateChats.keys().length === 0 ? (
@@ -57,7 +65,6 @@ const ContactsList = ({
         <div className='contact-list'>
           <div className='list-title'>Contact List</div>
           <ul className='list'>{currentList}</ul>
-          {/* {console.log('currentList of contacts from return:', currentList)} */}
         </div>
       )}
     </div>
