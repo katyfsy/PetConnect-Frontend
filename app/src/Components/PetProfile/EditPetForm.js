@@ -598,8 +598,8 @@ function EditPetForm() {
                     isInvalid={errors.age}
                   >
                     <option value="">Select lifestage</option>
-                    <option value="early">Early</option>
-                    <option value="mid">Mid</option>
+                    <option value="young">Young</option>
+                    <option value="adult">Adult</option>
                     <option value="senior">Senior</option>
                   </Form.Select>
                   <Form.Control.Feedback className="form-error" type="invalid">
