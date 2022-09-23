@@ -312,7 +312,6 @@ function EditPetForm() {
                     name="owner"
                     defaultValue={getUser()}
                     disabled={true}
-
                   />
                 ) : (
                   <></>
@@ -615,7 +614,12 @@ function EditPetForm() {
                   controlId="vaccination-history-validation"
                 >
                   <Form.Label>Vaccination history</Form.Label>
-                  <Button className="vaccination-pet-button" variant="outline-secondary">Add a vaccination record...</Button>
+                  <Button
+                    className="vaccination-pet-button"
+                    variant="outline-secondary"
+                  >
+                    Add a vaccination record...
+                  </Button>
                 </Form.Group>
 
                 <Form.Group
@@ -677,7 +681,14 @@ function EditPetForm() {
               <Form.Group className="mb-3 edit-photos-form-container">
                 <Form.Label>Current photos</Form.Label>
 
-                <Button variant="outline-secondary" className="add-photo-button" onClick={() => setOpenPortal(true)}> Add photos</Button>
+                <Button
+                  variant="outline-secondary"
+                  className="add-photo-button"
+                  onClick={() => setOpenPortal(true)}
+                >
+                  {" "}
+                  Add photos
+                </Button>
 
                 <div className="existing-preview-container">
                   <PhotoPreviews
@@ -712,7 +723,8 @@ function EditPetForm() {
 
               <div className="mb-3 buttons-form-container">
                 <Form.Group className="mb-3">
-                  <Button bsPrefix="cancel-pet-button"
+                  <Button
+                    bsPrefix="cancel-pet-button"
                     variant="secondary"
                     type="submit"
                     onClick={() => navigate(-1)}
@@ -722,8 +734,7 @@ function EditPetForm() {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Button bsPrefix="edit-pet-button"
-                  type="submit" >
+                  <Button bsPrefix="edit-pet-button" type="submit">
                     Save Changes
                   </Button>
                 </Form.Group>
@@ -742,6 +753,7 @@ function EditPetForm() {
           setAddPhotos={setAddPhotos}
           progress={progress}
           currentUpload={currentUpload}
+          exisitingPhotos={exisitingPhotos}
         />
 
         <Alert

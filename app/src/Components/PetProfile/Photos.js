@@ -228,11 +228,13 @@ const Photos = ({
   //     ) : null}
   //   </div>
   // ));
-
+  console.log(photos.length);
   return (
     <>
       {photos.length > 0 ? (
         <div className="pu-status">{`${photos.length} / ${maxPhotos}`}</div>
+      ) : maxPhotos !== 5 ? (
+        <div></div>
       ) : (
         <div className="pu-status-error">{"at least one photo required"}</div>
       )}
@@ -250,7 +252,11 @@ const Photos = ({
           />
           <p>Drag n' drop or select up to {maxPhotos}</p>
           <Button
-            bsPrefix={isDragActive ? "pu-browse-button-active" : "pu-browse-button-inactive"}
+            bsPrefix={
+              isDragActive
+                ? "pu-browse-button-active"
+                : "pu-browse-button-inactive"
+            }
             onClick={open}
           >
             Browse...
