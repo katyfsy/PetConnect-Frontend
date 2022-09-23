@@ -264,7 +264,7 @@ function EditPetForm() {
   return (
     <>
       <Container className="editpet-form-container">
-        <h3>Let's edit the pet's profile</h3>
+        <h3>{`Edit ${state.thisPet.name}'s profile`}</h3>
         <br />
         <Formik
           validationSchema={schema}
@@ -303,15 +303,16 @@ function EditPetForm() {
             >
               <Form.Group
                 className="mb-3 form-fields"
-                controlId="ownerValidation"
+                controlId="owner-validation"
               >
                 <Form.Label>Owner</Form.Label>
                 {getUser() != "" ? (
                   <Form.Control
+                    className="pet-owner-name form-input"
                     name="owner"
                     defaultValue={getUser()}
                     disabled={true}
-                    className="pet-owner-name"
+
                   />
                 ) : (
                   <></>
@@ -320,11 +321,11 @@ function EditPetForm() {
 
               <Form.Group
                 className="mb-3 form-fields"
-                controlId="nameValidation"
+                controlId="name-validation"
               >
                 <Form.Label>Name</Form.Label>
                 <Form.Control
-                  className="pet-name"
+                  className="pet-name form-input"
                   type="text"
                   name="name"
                   //   defaultValue={state.thisPet.name}
@@ -352,7 +353,7 @@ function EditPetForm() {
               >
                 <Form.Label>City</Form.Label>
                 <Form.Control
-                  className="pet-city"
+                  className="pet-city form-input"
                   type="text"
                   name="city"
                   value={values.city}
@@ -376,10 +377,11 @@ function EditPetForm() {
               <div className="addpet-form-section">
                 <Form.Group
                   className="mb-3 form-fields-2-row"
-                  controlId="zipValidation"
+                  controlId="zip-validation"
                 >
                   <Form.Label>State</Form.Label>
                   <Form.Control
+                    className="pet-state form-input"
                     type="text"
                     name="state"
                     value={values.state}
@@ -402,10 +404,11 @@ function EditPetForm() {
 
                 <Form.Group
                   className="mb-3 form-fields-2-row"
-                  controlId="zipValidation"
+                  controlId="zip-validation"
                 >
                   <Form.Label>Zipcode</Form.Label>
                   <Form.Control
+                    className="pet-zip form-input"
                     type="number"
                     value={values.zip}
                     name="zip"
@@ -434,7 +437,7 @@ function EditPetForm() {
                 >
                   <Form.Label>Type</Form.Label>
                   <Form.Select
-                    className="pet-type"
+                    className="pet-type form-input"
                     type="text"
                     name="type"
                     value={values.type}
@@ -520,7 +523,7 @@ function EditPetForm() {
                 >
                   <Form.Label>Size</Form.Label>
                   <Form.Select
-                    className="pet-size"
+                    className="pet-size form-input"
                     type="number"
                     name="size"
                     value={values.size}
@@ -551,7 +554,7 @@ function EditPetForm() {
                 >
                   <Form.Label>Sex</Form.Label>
                   <Form.Select
-                    className="pet-sex"
+                    className="pet-sex form-input"
                     type="text"
                     name="sex"
                     value={values.sex}
@@ -581,7 +584,7 @@ function EditPetForm() {
                 >
                   <Form.Label>Lifestage</Form.Label>
                   <Form.Select
-                    className="pet-age"
+                    className="pet-age form-input"
                     type="text"
                     name="age"
                     value={values.age}
@@ -609,11 +612,19 @@ function EditPetForm() {
               <div className="addpet-form-section">
                 <Form.Group
                   className="mb-3 form-fields-2-row"
-                  controlId="reproductiveStatus-validation"
+                  controlId="vaccination-history-validation"
                 >
-                  <Form.Label>Spayed / Neutered</Form.Label>
+                  <Form.Label>Vaccination history</Form.Label>
+                  <Button className="vaccination-pet-button" variant="outline-secondary">Add a vaccination record...</Button>
+                </Form.Group>
+
+                <Form.Group
+                  className="mb-3 form-fields-2-row"
+                  controlId="reproductive-status-validation"
+                >
+                  <Form.Label>Spayed/Neutered</Form.Label>
                   <Form.Select
-                    className="pet-reproductiveStatus"
+                    className="pet-reproductive-status form-input"
                     type="text"
                     name="reproductiveStatus"
                     value={values.reproductiveStatus}
@@ -639,7 +650,7 @@ function EditPetForm() {
 
               <Form.Group
                 className="mb-3 form-fields"
-                controlId="descriptionValidation"
+                controlId="description-validation"
               >
                 <Form.Label>Description</Form.Label>
                 <Form.Control
@@ -666,7 +677,7 @@ function EditPetForm() {
               <Form.Group className="mb-3 edit-photos-form-container">
                 <Form.Label>Current photos</Form.Label>
 
-                <Button onClick={() => setOpenPortal(true)}> Add photos</Button>
+                <Button variant="outline-secondary" className="add-photo-button" onClick={() => setOpenPortal(true)}> Add photos</Button>
 
                 <div className="existing-preview-container">
                   <PhotoPreviews
@@ -701,18 +712,19 @@ function EditPetForm() {
 
               <div className="mb-3 buttons-form-container">
                 <Form.Group className="mb-3">
-                  <Button
+                  <Button bsPrefix="cancel-pet-button"
                     variant="secondary"
                     type="submit"
                     onClick={() => navigate(-1)}
                   >
-                    {"<"} Go Back
+                    Cancel
                   </Button>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Button type="submit" className="add-pet-button">
-                    Edit Pet
+                  <Button bsPrefix="edit-pet-button"
+                  type="submit" >
+                    Save Changes
                   </Button>
                 </Form.Group>
               </div>

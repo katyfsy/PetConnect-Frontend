@@ -253,7 +253,7 @@ const Photos = ({
             bsPrefix={isDragActive ? "pu-browse-button-active" : "pu-browse-button-inactive"}
             onClick={open}
           >
-            Browse files...
+            Browse...
           </Button>
         </div>
         <div className="preview-container">

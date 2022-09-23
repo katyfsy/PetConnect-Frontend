@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { Button } from "react-bootstrap";
+
 import ReactDom from "react-dom";
 import Photos from "./Photos";
 import "./AddPhotosPortal.css"
@@ -43,7 +45,6 @@ function AddPhotosPortal({
   return ReactDom.createPortal(
     <div className="add-photos-portal-bg">
       <div className="add-photos-portal-container" >
-        <button onClick={() => setOpenPortal(false)}>Close</button>
         <Photos
           adding={false}
           photos={toAddPhotos}
@@ -60,9 +61,11 @@ function AddPhotosPortal({
             MAX_NUMBER_OF_PHOTOS - thisPet.photos.length - addPhotos.length
           }
         />
-        <button onClick={handleOnSubmit}>Upload Photos</button>
+        <div className="portal-button-container">
+          <Button bsPrefix="cancel-pet-button" onClick={() => setOpenPortal(false)}>Cancel</Button>
+          <Button bsPrefix="add-pet-button" onClick={handleOnSubmit}>Select</Button>
+        </div>
       </div>
-
     </div>,
     document.getElementById("portal")
   );
