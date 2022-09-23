@@ -3,6 +3,7 @@ import Picker from 'emoji-picker-react';
 import { BsEmojiSmileFill } from 'react-icons/bs';
 import './css/InputBar.css';
 import Modal from 'react-bootstrap/Modal';
+import TextField from '@mui/material/TextField';
 
 const InputBar = ({
   handleSend,
@@ -34,7 +35,12 @@ const InputBar = ({
             handleSend(event);
           }}
         >
-          <input
+          <TextField
+            hiddenLabel
+            fullWidth
+            id='standard-basic'
+            label=''
+            variant='standard'
             value={message}
             type='text'
             className='input-message'
@@ -42,7 +48,7 @@ const InputBar = ({
             onChange={(event) => handleMessage(event)}
           />
           <BsEmojiSmileFill
-            style={{ color: '#f5b942' }}
+            style={{ color: '#f5b942', marginTop: '6px', marginRight: '5px' }}
             onClick={handleEmojiPickerhideShow}
           />
           {showEmojiPicker && (

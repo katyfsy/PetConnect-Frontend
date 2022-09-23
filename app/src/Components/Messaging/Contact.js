@@ -44,7 +44,7 @@ const Contact = ({
             markAsRead(username, contact);
           }}
           style={{
-            backgroundColor: '#F4976C',
+            backgroundColor: '#FF9966',
           }}
         >
           <div className='left'>

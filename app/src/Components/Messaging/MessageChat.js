@@ -20,6 +20,7 @@ const MessageChat = ({
   useEffect(() => {
     searchRef.current = '';
     setFilteredMessages(new Map());
+    document.querySelector('.chat-content').scrollTop = document.querySelector('.chat-content').scrollHeight;
   }, [currentContact]);
 
   const formatDayMonth = (string) => {

@@ -3,3 +3,14 @@
   border-radius: 5px;
   background-color: rgb(254, 249, 242);
 }
+
+.messagingApp {
+  margin-bottom: 20px;
+}
+
+.initialChatBox {
+  border: 3px solid #8F9ED9;
+  border-radius: 5px;
+  background-color: rgb(254, 249, 242);
+  margin-bottom: 50vh;
+}
