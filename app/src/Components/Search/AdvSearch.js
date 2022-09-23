@@ -22,7 +22,7 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
   const handleFilterClick = (e) => {
     var params = {search: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null, type: type!=="Any" ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
     // console.log(params);
-    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/advSearchh", {params})
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/advSearch", {params})
     // axios.get("http://localhost:8080/api/petSearch", {params})
     .then((result) =>{
       setResult(result.data.pets)
@@ -35,15 +35,21 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
     setAge("Any")
     setBreed("Any")
     setType(["Any"])
+    var params = {search: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null, radius : zipcode ? radius : null}
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/suggestions", {params})
   }
 
   useEffect(() => {
     const searchArray = searchQuery.split(' ');
+    console.log('searchArray', searchArray)
+    console.log('existing type', type)
     if (searchArray.includes('dog')) {
       setType('dog');
+      console.log('type', type)
       setAllAges(["Any", "puppy", "young", "adult", "senior"])
     } else if (searchArray.includes('cat')) {
       setType('cat');
+      console.log('type', type)
       setAllAges(["Any", "kitten", "young", "adult", "senior"])
     }
   },[searchQuery])
@@ -60,6 +66,7 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
     }
     axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/breeds" + params)
     .then(result => {
+      console.log('breeds', result.data)
       setAllBreeds(["Any", ...result.data])})
     .catch(err => console.log(err))
   },[type])

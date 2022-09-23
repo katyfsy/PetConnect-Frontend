@@ -49,7 +49,7 @@ function Results({matches, setResult, searchQuery, zipcode, radius, setBreed, br
             </div>
             <div className="main">
                 <div className="advancedSearchCol">
-                    <AdvSearch setResult={setResult} results={matches} searchQuery={searchQuery} zipcode={zipcode} radius={radius} setType={setType} type={type} setBreed={setBreed} breed={breed} type={type} setType={setType}/>
+                    <AdvSearch setResult={setResult} results={matches} searchQuery={searchQuery} zipcode={zipcode} radius={radius} setType={setType} type={type} setBreed={setBreed} breed={breed}/>
                     {/* <p> column left: advanced search (dropdowns)</p> */}
                 </div>
                 <div className="searchResultsCol">

@@ -66,41 +66,6 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFa
           </Card.Body>
       </Card>
 
-{/* card duplicate */}
-{/*}
-      <div className="petCard">
-        <div className="row" >
-          <div onClick={handleShow} >
-            <FavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/>
-          </div>
-          <a href={`/pet/${petId}`} >
-            <img className="petCardPhoto" src={coverPhoto} /> </a>
-        </div>
-
-        <div className="row">
-          <Card.Body>
-            <div className="row">
-              <Card.Title>{name}</Card.Title>
-              </div>
-              <div className="row">
-              <Card.Text>
-                {gender}
-              </Card.Text>
-              <Card.Text>
-                {age} * {breed}
-              </Card.Text>
-            </div>
-            <div className="row">
-              <Card.Text>
-                Rescued by {owner}
-              </Card.Text>
-            </div>
-
-          </Card.Body>
-        </div>
-      </div>
-  {}
-
 {/* modals */}
       <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header closeButton>
