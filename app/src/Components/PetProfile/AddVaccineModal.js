@@ -52,7 +52,11 @@ const AddVaccineModal = (props) => {
     //   .then((data) => {
     //     console.log(data);
     //   });
-    props.handleAddVacineToList(props.vaccine);
+    if (props.edit) {
+      props.handleEditVacineInList(props.vaccine);
+    } else {
+      props.handleAddVacineToList(props.vaccine);
+    }
     handleHide();
   };
 
@@ -68,13 +72,13 @@ const AddVaccineModal = (props) => {
       {/* <Button variant="primary" onClick={handleShow}>
         Add Vaccine Record
       </Button> */}
-      <Button
+      {/* <Button
         onClick={handleShow}
         className="vaccination-pet-button"
         variant="outline-secondary"
       >
         Add a vaccination record...
-      </Button>
+      </Button> */}
       <Modal
         show={props.showVaccineForm}
         onHide={handleHide}

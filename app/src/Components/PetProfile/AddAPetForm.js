@@ -218,6 +218,7 @@ function AddAPetForm() {
     let petId = await createPet();
     if (petId != null) {
       setPetId(petId);
+      await addVaccinesToPet(petId, vaccineList);
       await handlePatch(petId);
       await handleUpload(petId);
     }
@@ -269,12 +270,13 @@ function AddAPetForm() {
       .required("description is required"),
   });
 
-  console.log("NON REQUIRED: ", nonRequiredPetFields);
-  console.log("REQUIRED: ", requiredPetFields);
+  // console.log("NON REQUIRED: ", nonRequiredPetFields);
+  // console.log("REQUIRED: ", requiredPetFields);
   const emptyFields = {
     name: null,
     date: null,
     notes: null,
+    key: Math.random(),
   };
   const [vaccineFields, setVaccineFields] = useState(emptyFields);
   const [vaccineList, setVaccineList] = useState([]);
@@ -282,31 +284,51 @@ function AddAPetForm() {
   console.log("vaccine List :", vaccineList);
   console.log("vaccine Fields :", vaccineFields);
   function handleAddVacineToList(vaccine) {
-    console.log(vaccine);
     setVaccineList([...vaccineList, vaccine]);
-    console.log("adding");
+
     setVaccineFields(emptyFields);
   }
-  function addVaccinesToPet(petId, listOfVaccines) {
-    listOfVaccines.forEach((vaccine) => {
-      fetch(
-        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/addVaccine?petId=${petId}&vaccineName=${vaccine.name}`,
-        {
-          method: "POST",
-          // headers: {
-          //   "Content-Type": "application/json",
-          // },
-          // body: JSON.stringify(vaccineFields),
-        }
-      )
-        .then((response) => response.json())
-        .catch((err) => {
-          console.log(err);
-        })
-        .then((data) => {
-          console.log(data);
-        });
+  function handleEditVacineInList(editedVaccine) {
+    let updatedVaccineList = vaccineList.map((vaccine) => {
+      if (vaccine.key == editedVaccine.key) {
+        return editedVaccine;
+      }
+      return vaccine;
     });
+    console.log("im being edited");
+    setVaccineList(updatedVaccineList);
+
+    setVaccineFields(emptyFields);
+  }
+
+  const handleShow = () => setShowVaccineForm(true);
+  function addVaccinesToPet(petId, listOfVaccines) {
+    if (listOfVaccines.length === 0) {
+      return true;
+    } else {
+      const listOfVaccinesWithoutKey = listOfVaccines.forEach((vaccine) => {
+        delete vaccine["key"];
+      });
+      listOfVaccinesWithoutKey.forEach((vaccine) => {
+        fetch(
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/addVaccine?petId=${petId}&vaccineName=${vaccine.name}`,
+          {
+            method: "POST",
+            // headers: {
+            //   "Content-Type": "application/json",
+            // },
+            // body: JSON.stringify(vaccineFields),
+          }
+        )
+          .then((response) => response.json())
+          .catch((err) => {
+            console.log(err);
+          })
+          .then((data) => {
+            console.log(data);
+          });
+      });
+    }
   }
   const handleVaccineOnChange = (e) => {
     setVaccineFields({
@@ -695,20 +717,28 @@ function AddAPetForm() {
                   >
                     Add a vaccination record...
                   </Button> */}
+                  <Button
+                    onClick={handleShow}
+                    className="vaccination-pet-button"
+                    variant="outline-secondary"
+                  >
+                    Add a vaccination record...
+                  </Button>
                   <AddVaccineModal
                     setShowVaccineForm={setShowVaccineForm}
                     showVaccineForm={showVaccineForm}
                     vaccine={vaccineFields}
                     handleAddVacineToList={handleAddVacineToList}
                     setVaccineFields={setVaccineFields}
+                    edit={false}
                   />
                   <FieldArray>
                     <EditVaccinesList
                       className="edit-vaccines-list"
                       handleVaccineOnChange={handleVaccineOnChange}
                       vaccineList={vaccineList}
-                      edit={false}
                       petName={"Your pet"}
+                      handleEditVacineInList={handleEditVacineInList}
                     />
                   </FieldArray>
                   <br />

@@ -8,11 +8,12 @@ const EditVaccinesList = (props) => {
     name: null,
     date: null,
     notes: null,
+    key: Math.random(),
   });
 
   const handleShow = () => setShowEditVaccine(true);
   const handleHide = () => setShowEditVaccine(false);
-  console.log(showEditVaccine);
+  console.log(vaccineFields);
   const handleVaccineClick = (vaccine) => {
     console.log("VACCINE: ", vaccine);
     setVaccineFields(vaccine);
@@ -48,14 +49,17 @@ const EditVaccinesList = (props) => {
 
   return (
     <div>
-      <ListGroup>{vaccineItems}</ListGroup>
       <AddVaccineModal
         vaccine={vaccineFields}
         pet={props.pet}
         edit={true}
-        showEditVaccine={showEditVaccine}
-        setShowEditVaccine={setShowEditVaccine}
+        showVaccineForm={showEditVaccine}
+        setShowVaccineForm={setShowEditVaccine}
+        vaccineList={props.vaccineList}
+        handleEditVacineInList={props.handleEditVacineInList}
+        setVaccineFields={setVaccineFields}
       />
+      <ListGroup>{vaccineItems}</ListGroup>
     </div>
   );
 };
