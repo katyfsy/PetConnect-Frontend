@@ -213,8 +213,8 @@ function Pet() {
     <>
       <br />
 
-      <Row className="mb-3">
-        <Col>
+      <div className="profile-page-container">
+        <div className="profile-page-left-container">
           <Image
             src={thisPet.coverPhoto}
             roundedCircle
@@ -222,7 +222,22 @@ function Pet() {
           />
 
           <br />
-          {petPhotos.map((petPhoto) => (
+          <div className="profile-page-photo-container">
+            {petPhotos.map((petPhoto) => (
+              <div
+                className="profile-page-photo-preview"
+                key={petPhoto.photoId}
+                src={petPhoto.photo_url}
+              >
+                <img src={petPhoto.photo_url} width={"200"} height={"200"} />
+              </div>
+            ))}
+          </div>
+
+
+
+
+          {/* {petPhotos.map((petPhoto) => (
             <LightgalleryItem
               key={petPhoto.photoId}
               src={petPhoto.photo_url}
@@ -230,171 +245,181 @@ function Pet() {
             >
               <img src={petPhoto.photo_url} width={"200"} height={"200"} />
             </LightgalleryItem>
-          ))}
-        </Col>
-        <Col>
-          <Row className="mb-3" id="pet-info-header">
-            <Col>
-              <Row>
-                <h1 className="pet-name">{thisPet.name}</h1>
-                <p className="pet-location">
-                  <GrLocation size={28} /> {thisPet.zip}
-                </p>
-              </Row>
-            </Col>
-            {user !== thisPet.owner ? (
-              <>
-                <Col>
-                  <Button
-                    variant="primary"
-                    size="md"
-                    onClick={() =>
-                      navigate("/messages", {
-                        state: { receiverName: thisPet.owner },
-                      })
-                    }
-                  >
-                    Contact Owner
-                  </Button>
-                </Col>
+          ))} */}
+        </div>
 
-                {!liked ? (
-                  <Col>
-                    <FaRegHeart size={42} onClick={() => handleLike()} />
-                    <p>{calculateLike}</p>
-                  </Col>
+        <div className="profile-page-right-container">
+          <Row className="mb-3">
+            <Col>
+
+            </Col>
+            <Col>
+              <Row className="mb-3" id="pet-info-header">
+                <Col>
+                  <Row>
+                    <h1 className="pet-name">{thisPet.name}</h1>
+                    <p className="pet-location">
+                      <GrLocation size={28} /> {thisPet.zip}
+                    </p>
+                  </Row>
+                </Col>
+                {user !== thisPet.owner ? (
+                  <>
+                    <Col>
+                      <Button
+                        variant="primary"
+                        size="md"
+                        onClick={() =>
+                          navigate("/messages", {
+                            state: { receiverName: thisPet.owner },
+                          })
+                        }
+                      >
+                        Contact Owner
+                      </Button>
+                    </Col>
+
+                    {!liked ? (
+                      <Col>
+                        <FaRegHeart size={42} onClick={() => handleLike()} />
+                        <p>{calculateLike}</p>
+                      </Col>
+                    ) : (
+                      <Col>
+                        <FaHeart
+                          color="red"
+                          size={42}
+                          onClick={() => handleRemoveLike()}
+                        />
+                        <p>{calculateLike}</p>
+                      </Col>
+                    )}
+
+                    <Col>
+                      <Button
+                        variant="primary"
+                        size="md"
+                        onClick={() => handleReporting()}
+                      >
+                        <GrFlag /> Report Pet
+                      </Button>
+                    </Col>
+                    {reportedHere}
+                  </>
                 ) : (
-                  <Col>
-                    <FaHeart
-                      color="red"
-                      size={42}
-                      onClick={() => handleRemoveLike()}
-                    />
-                    <p>{calculateLike}</p>
-                  </Col>
+                  <>
+                    <Col>
+                      <Button
+                        variant="primary"
+                        size="md"
+                        onClick={() =>
+                          navigate(`/editpet`, {
+                            replace: true,
+                            state: { thisPet: thisPet },
+                          })
+                        }
+                      >
+                        {!isEdit ? "Edit Details" : "Cancel Edit"}
+                      </Button>
+                    </Col>
+                    <Col className="vaccine-btn-ctr">
+                      <AddVaccineModal
+                        owner={user}
+                        petId={thisPet.petId}
+                        petName={thisPet.name}
+                      />
+                    </Col>
+                  </>
                 )}
-
+              </Row>
+              <Row className="mb-3" id="user-name">
                 <Col>
-                  <Button
-                    variant="primary"
-                    size="md"
-                    onClick={() => handleReporting()}
-                  >
-                    <GrFlag /> Report Pet
-                  </Button>
+                  {getPetIcon(thisPet.type)} {thisPet.type}{" "}
+                  {thisPet.sex == "male" ? (
+                    <>
+                      <BsGenderMale size={28} /> {thisPet.sex}
+                    </>
+                  ) : thisPet.sex == "female" ? (
+                    <>
+                      <BsGenderFemale size={28} /> {thisPet.sex}
+                    </>
+                  ) : (
+                    <>
+                      <RiGenderlessFill size={28} /> Gender Unknown
+                    </>
+                  )}
                 </Col>
-                {reportedHere}
-              </>
-            ) : (
-              <>
-                <Col>
-                  <Button
-                    variant="primary"
-                    size="md"
-                    onClick={() =>
-                      navigate(`/editpet`, {
-                        replace: true,
-                        state: { thisPet: thisPet },
-                      })
-                    }
-                  >
-                    {!isEdit ? "Edit Details" : "Cancel Edit"}
-                  </Button>
-                </Col>
-                <Col className="vaccine-btn-ctr">
-                  <AddVaccineModal
-                    owner={user}
-                    petId={thisPet.petId}
-                    petName={thisPet.name}
-                  />
-                </Col>
-              </>
-            )}
-          </Row>
-          <Row className="mb-3" id="user-name">
-            <Col>
-              {getPetIcon(thisPet.type)} {thisPet.type}{" "}
-              {thisPet.sex == "male" ? (
-                <>
-                  <BsGenderMale size={28} /> {thisPet.sex}
-                </>
-              ) : thisPet.sex == "female" ? (
-                <>
-                  <BsGenderFemale size={28} /> {thisPet.sex}
-                </>
-              ) : (
-                <>
-                  <RiGenderlessFill size={28} /> Gender Unknown
-                </>
-              )}
-            </Col>
-            {/* <Col>
+                {/* <Col>
               {" "}
               <Row className="mb-3"></Row>
             </Col> */}
-          </Row>
-          {/* <Col></Col> */}
-          <br />
-          <Row className="mb-3" id="user-description"></Row>
-          <Row className="mb-3">
-            <Tabs
-              defaultActiveKey="description"
-              id="uncontrolled-tab-example"
-              className="mb-3"
-            >
-              <Tab eventKey="description" title="Description">
-                <p>{thisPet.description}</p>
-              </Tab>
-              <Tab eventKey="info" title="Additional Info">
-                <p>Name: {thisPet.name}</p>
-                <p>Owner: {thisPet.owner}</p>
-                <p>City: {thisPet.city}</p>
-                <p>State: {thisPet.state}</p>
-                <p>Zip: {thisPet.zip}</p>
-                <p>Type: {thisPet.type}</p>
-                <p>Weight: {thisPet.weight}</p>
-                <p>Age: {thisPet.age}</p>
-                <p>Sex: {thisPet.sex}</p>
-                <p>
-                  Reproductive Status:{" "}
-                  {thisPet.reproductiveStatus ? "No Kids" : "Yes Kids"}
-                </p>
+              </Row>
+              {/* <Col></Col> */}
+              <br />
+              <Row className="mb-3" id="user-description"></Row>
+              <Row className="mb-3">
+                <Tabs
+                  defaultActiveKey="description"
+                  id="uncontrolled-tab-example"
+                  className="mb-3"
+                >
+                  <Tab eventKey="description" title="Description">
+                    <p>{thisPet.description}</p>
+                  </Tab>
+                  <Tab eventKey="info" title="Additional Info">
+                    <p>Name: {thisPet.name}</p>
+                    <p>Owner: {thisPet.owner}</p>
+                    <p>City: {thisPet.city}</p>
+                    <p>State: {thisPet.state}</p>
+                    <p>Zip: {thisPet.zip}</p>
+                    <p>Type: {thisPet.type}</p>
+                    <p>Weight: {thisPet.weight}</p>
+                    <p>Age: {thisPet.age}</p>
+                    <p>Sex: {thisPet.sex}</p>
+                    <p>
+                      Reproductive Status:{" "}
+                      {thisPet.reproductiveStatus ? "No Kids" : "Yes Kids"}
+                    </p>
 
-                <p>Likes: {thisPet.favoriteCount}</p>
-                <p>Reported: {thisPet.reported ? "true" : "false"}</p>
-                <p>Adopted: {thisPet.adopted ? "true" : "false"}</p>
-              </Tab>
-              <Tab eventKey="vaccines" title="Vaccine History">
-                <VaccineList pet={thisPet} />
-              </Tab>
-              <Tab eventKey="contact" title="Contact">
-                <div className="contact-card-tab">
-                  <User owner={thisPet.owner} />
-                </div>
+                    <p>Likes: {thisPet.favoriteCount}</p>
+                    <p>Reported: {thisPet.reported ? "true" : "false"}</p>
+                    <p>Adopted: {thisPet.adopted ? "true" : "false"}</p>
+                  </Tab>
+                  <Tab eventKey="vaccines" title="Vaccine History">
+                    <VaccineList pet={thisPet} />
+                  </Tab>
+                  <Tab eventKey="contact" title="Contact">
+                    <div className="contact-card-tab">
+                      <User owner={thisPet.owner} />
+                    </div>
 
-                {/* {Object.keys(form).map((key, index) => {
+                    {/* {Object.keys(form).map((key, index) => {
                   return (
                     <p key={index}>
                       {key}: {form[key]}
                     </p>
                   );
                 })} */}
-              </Tab>
-            </Tabs>
-          </Row>
-        </Col>
+                  </Tab>
+                </Tabs>
+              </Row>
+            </Col>
 
-        <br />
-        <br />
-        {!isEdit ? null : (
-          <EditPet
-            thisPet={thisPet}
-            setIsEdit={setIsEdit}
-            setThisPet={setThisPet}
-            refetchPet={refetchPet}
-          />
-        )}
-      </Row>
+            <br />
+            <br />
+            {!isEdit ? null : (
+              <EditPet
+                thisPet={thisPet}
+                setIsEdit={setIsEdit}
+                setThisPet={setThisPet}
+                refetchPet={refetchPet}
+              />
+            )}
+          </Row>
+        </div>
+      </div>
+
+
 
       {user !== thisPet.owner ? null : (
         <>
