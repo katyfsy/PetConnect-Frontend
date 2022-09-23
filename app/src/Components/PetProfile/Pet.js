@@ -291,7 +291,12 @@ function Pet() {
                   <Button
                     variant="primary"
                     size="md"
-                    onClick={() => setIsEdit(!isEdit)}
+                    onClick={() =>
+                      navigate(`/editpet`, {
+                        replace: true,
+                        state: { thisPet: thisPet },
+                      })
+                    }
                   >
                     {!isEdit ? "Edit Details" : "Cancel Edit"}
                   </Button>
