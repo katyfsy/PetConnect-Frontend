@@ -4,6 +4,7 @@ import { Button, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import "./userProfile.css";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 import {
   getBearerToken,
@@ -58,9 +59,18 @@ const LoginCard = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Password or Username Incorrect!");
+        loginFail();
       });
   };
+
+  const loginFail= () => {
+    Swal.fire({
+      position: 'center',
+      title: 'Username or Password Incorrect!',
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

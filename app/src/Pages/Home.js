@@ -4,13 +4,9 @@ import Header from '../Components/Default/Header';
 import Footer from '../Components/Default/Footer'
 import { Container , Row } from 'react-bootstrap';
 import User from '../Components/UserProfile/User';
-import Search from '../Components/Search/Search';
-import QuickSearch from '../Components/Search/QuickSearch';
-import useStore from '../useStore';
-import './Home.css';
 
 
-function Home() {
+const Home = () => {
   const {result, setResult, searchQuery, setSearchQuery,
     zipcode, setZipcode, radius, setRadius, breed, setBreed, type, setType} = useStore();
 
@@ -50,5 +46,6 @@ function Home() {
   </div>
   )
 }
+
 
 export default Home;
