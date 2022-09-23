@@ -105,7 +105,7 @@ const DeleteBtn = () => {
 
   return (
     <>
-      <Button variant="outline-danger" onClick={handleShow}>
+      <Button variant="outline-danger" id="delete-button" size="sm" onClick={handleShow}>
         Delete Account
       </Button>
       <Modal show={show}>

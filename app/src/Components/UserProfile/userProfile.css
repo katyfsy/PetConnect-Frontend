@@ -111,5 +111,23 @@
       border: solid 1px #000000;
   }
 
+  #edit-button {
+    position: relative;
+    left: 377px;
+  }
+
+  #edit-password-button {
+    position: relative;
+    left: 240px;
+    top: 5px;
+  }
+
+  #delete-button {
+    position: relative;
+    right: 13px;
+    bottom: -6px;
+  }
+
+
 
 

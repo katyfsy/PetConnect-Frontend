@@ -133,16 +133,16 @@ const LoginCard = () => {
             </Form.Check>
           </div>
           <div className="d-grid gap-2 mt-4">
-            <Button variant="light" type="submit">
+            <Button style={{backgroundColor: "#8F9ED9"}} type="submit">
               Log In
             </Button>
           </div>
 
-          <div className="text-center mt-3">
-            Forgot password? <Link to="/user/reset">Reset</Link>
+          <div className="text-center mt-3" >
+            Forgot password? <Link style={{color: "#8F9ED9"}} to="/user/reset">Reset</Link>
           </div>
           <div className="text-center mt-3">
-            Don't have an account? <Link to="/signup">Sign Up</Link>
+            Don't have an account? <Link style={{color: "#8F9ED9"}} to="/signup">Sign Up</Link>
           </div>
         </div>
       </Form>
