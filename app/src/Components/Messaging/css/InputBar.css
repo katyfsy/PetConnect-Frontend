@@ -15,12 +15,13 @@
 
 .input-button {
   border-radius: 5px;
-  background-color: white;
-  color: #8F9ED9;
+  background-color: #FF9966;
+  color: #4D4751;
 }
 
 .input-button:hover {
-  background: #F4976C;
-  color: black;
+  background: #FF9966;
+  color: #4D4751;
   cursor: pointer;
+  font-weight: bolder;
 }
