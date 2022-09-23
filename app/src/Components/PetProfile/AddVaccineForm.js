@@ -15,6 +15,7 @@ const AddVaccineForm = (props) => {
     notes: Yup.string()
    });
 
+   console.log("Vaccine Fields: ", props.vaccine);
   return (
     // <Formik
     //   initialValues={{ vaccineName: '', vaccineDate: '', vaccineNotes: '' }}
@@ -62,7 +63,11 @@ const AddVaccineForm = (props) => {
           // validateOnChange={false}
           // validateOnBlur={true}
           // setTouched={false}
-          initialValues={{
+          initialValues={ props.edit ? {
+            name: props.vaccine.name,
+            date: props.vaccine.date,
+            notes: props.vaccine.notes
+          } : {
             name: "",
             date: "",
             notes: ""

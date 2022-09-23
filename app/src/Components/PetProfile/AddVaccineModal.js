@@ -7,8 +7,8 @@ import "./AddVaccineModal.css";
 
 
 const AddVaccineModal = (props) => {
-  const [showVaccineForm, setShowVaccineForm] = useState(false);
-  const [vaccineFields, setVaccineFields] = useState({
+  const [showVaccineForm, setShowVaccineForm] = useState(props.showEditVaccine);
+  const [vaccineFields, setVaccineFields] = useState(props.edit ? props.vaccine : {
     name: null,
     date: null,
     notes: null
@@ -16,6 +16,27 @@ const AddVaccineModal = (props) => {
 
   const handleShow = () => setShowVaccineForm(true);
   const handleHide = () => setShowVaccineForm(false);
+  
+  const handleEditVaccine = (e) => {
+    e.preventDefault();
+    console.log("Vaccine Fields: ", vaccineFields);
+    // fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/addVaccine?petId=${props.petId}&vaccineName=${vaccineFields.name}`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(vaccineFields),
+    // })
+    //   .then((response) => response.json())
+    //   .catch((err) => {
+    //     console.log(err);
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //   });
+      setShowEditVaccine(false);
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Vaccine Fields: ", vaccineFields);
@@ -34,6 +55,7 @@ const AddVaccineModal = (props) => {
         console.log(data);
       });
       setShowVaccineForm(false);
+      props.refetchPet(Math.random());
   }
 
   const handleOnChange = (e) => {
@@ -55,14 +77,14 @@ const AddVaccineModal = (props) => {
         </Modal.Header>
         <Modal.Body>
           <AddVaccineForm
-                          owner={props.owner} petName={props.petName}
-                          petId={props.petId} handleOnChange={handleOnChange}/>
+                          owner={props.owner} petName={props.petName} edit={props.edit}
+                          petId={props.petId} handleOnChange={handleOnChange} vaccine={vaccineFields}/>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleHide}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button variant="primary" onClick={props.edit ? handleEditVaccine : handleSubmit}>
             Save Vaccine Record
           </Button>
         </Modal.Footer>

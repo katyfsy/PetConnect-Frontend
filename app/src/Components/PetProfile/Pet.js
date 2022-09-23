@@ -311,7 +311,8 @@ function Pet() {
                 <Col>
                   <AddVaccineModal  owner={user}
                                     petId={thisPet.petId}
-                                    petName={thisPet.name} />
+                                    petName={thisPet.name}
+                                    refetchPet={refetchPet}/>
                 </Col>
               </>
             )}

@@ -12,6 +12,7 @@ import AddPhotosPortal from "./AddPhotosPortal";
 import PhotoPreviews from "./PhotoPreviews";
 import EditVaccinesList from "./EditVaccinesList.js";
 
+
 function EditPetForm() {
   const navigate = useNavigate();
   const navigateToPetProfile = (id) => {

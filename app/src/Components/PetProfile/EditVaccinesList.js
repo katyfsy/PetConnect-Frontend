@@ -1,6 +1,6 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState } from 'react';
-import EditVaccineModal from "./EditVaccineModal.js";
+import AddVaccineModal from "./AddVaccineModal.js";
 
 const EditVaccinesList = (props) => {
   const [showEditVaccine, setShowEditVaccine] = useState(false);
@@ -14,14 +14,18 @@ const EditVaccinesList = (props) => {
   const handleHide = () => setShowEditVaccine(false);
 
 
-  const handleVaccineClick = (e) => {
-    console.log("Clicked Vaccine: ", e.target);
+  const handleVaccineClick = (vaccine) => {
+    console.log("VACCINE: ", vaccine);
+    setVaccineFields(vaccine);
     handleShow();
   };
 
   const vaccines = props.pet.vaccines;
   const vaccineItems = vaccines.map((vaccine) =>
-    <ListGroup.Item key={vaccine.vaccineId} vaccine={vaccine} action onClick={handleVaccineClick}> {vaccine.name}
+    <ListGroup.Item key={vaccine.vaccineId}
+                    vaccine={vaccine} action
+                    onClick={() => handleVaccineClick(vaccine)}
+                    type="button"> {vaccine.name}
       <div className="edit-vaccine-date"> {vaccine.date} </div>
     </ListGroup.Item>
   )
@@ -41,7 +45,11 @@ const EditVaccinesList = (props) => {
       <ListGroup >
         {vaccineItems}
       </ListGroup>
-      <EditVaccineModal pet={props.pet}/>
+      <AddVaccineModal
+        vaccine={vaccineFields}
+        pet={props.pet}
+        edit={true}
+        showEditVaccine={showEditVaccine}/>
     </div>
   );
 }
