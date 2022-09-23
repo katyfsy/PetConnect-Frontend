@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import FavButton from '../Components/UserProfile/FavButton';
 import AddPetButton from "../Components/PetProfile/AddPetButton";
+import "./Profile.css";
 
 function UserPetList() {
   const [data, setData] = useState([]);
@@ -81,13 +82,15 @@ function UserPetList() {
         <Header />
       </Container>
       <Navigationbar />
-      <Container>
-        <Row>
-          <h1 style={{marginBottom: '2rem'}}>{username}'s Pet List</h1>
-          {renderAddPet()}
-          {PetCard}
-        </Row>
-      </Container>
+      <div className="flex-wrapper-favList">
+        <Container>
+          <Row>
+            <h1 style={{marginBottom: '2rem'}}>{username}'s Pet List</h1>
+            {renderAddPet()}
+            {PetCard}
+          </Row>
+        </Container>
+      </div>
       <Footer />
     </>
   );
