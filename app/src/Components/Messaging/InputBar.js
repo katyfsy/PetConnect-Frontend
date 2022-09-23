@@ -42,7 +42,7 @@ const InputBar = ({
             onChange={(event) => handleMessage(event)}
           />
           <BsEmojiSmileFill
-            style={{ color: '#f5b942' }}
+            style={{ color: '#f5b942', marginTop: '6px' }}
             onClick={handleEmojiPickerhideShow}
           />
           {showEmojiPicker && (

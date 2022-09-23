@@ -5,6 +5,7 @@ import MessagingApp from '../Components/Messaging/MessagingApp';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import './Messages.css';
+import Footer from '../Components/Default/Footer'
 
 function Messages() {
   return (
@@ -16,6 +17,9 @@ function Messages() {
     <Container>
       <Row className="justify-content-md-center" style={{"paddingTop": "50px"}}>
         <MessagingApp/>
+      </Row>
+      <Row>
+        <Footer />
       </Row>
     </Container>
   </div>
