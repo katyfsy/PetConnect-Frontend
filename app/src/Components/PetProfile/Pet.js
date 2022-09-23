@@ -301,13 +301,6 @@ function Pet() {
                     {!isEdit ? "Edit Details" : "Cancel Edit"}
                   </Button>
                 </Col>
-                <Col>
-                  <br />
-                  <Button variant="primary" size="md" onClick={handleOnDelete}>
-                    {" "}
-                    Delete Pet{" "}
-                  </Button>
-                </Col>
                 <Col className="vaccine-btn-ctr">
                   <AddVaccineModal
                     owner={user}
