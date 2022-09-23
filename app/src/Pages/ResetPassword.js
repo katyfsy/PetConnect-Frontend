@@ -83,8 +83,8 @@ const ResetPassword = () => {
       </Container>
       <Navigationbar />
       <Container>
-        <Row>
-          <h1 style={{paddingBottom: 50, paddingTop: 50}}>Trouble Logging In?</h1>
+        <Row style={{paddingBottom: 50}}>
+          <h1 style={{paddingBottom: 15}}>Trouble Logging In?</h1>
           <div className="Auth-form-container">
           <Form className="Auth-form" onSubmit={handleSubmit}>
             <div className="Auth-form-content">
@@ -98,17 +98,17 @@ const ResetPassword = () => {
                 />
               </div>
               <div className="d-grid gap-2 mt-4">
-                <Button variant="outline-dark" type="submit">
+                <Button style={{backgroundColor: "#8F9ED9"}}  type="submit">
                   Submit
                 </Button>
               </div>
               <div className="text-center mt-3">
-                Back to <Link to="/login">Login</Link>
+                Back to <Link style={{color: "#8F9ED9"}} to="/login">Login</Link>
               </div>
             </div>
           </Form>
           </div>
-        </Row>
+        </Row >
         <Row></Row>
         <Row>
           <Footer />

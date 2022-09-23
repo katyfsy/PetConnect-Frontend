@@ -136,7 +136,7 @@ const ChangePassword = () => {
       <Navigationbar />
       <Container className="d-flex justify-content-center">
         <Row>
-          <h1>Change PW</h1>
+          <h1>{decodedUser} Password Reset</h1>
           <Form className="Auth-form" onSubmit={handleSubmit}>
             <div className="Auth-form-content">
               <Row>
@@ -175,7 +175,7 @@ const ChangePassword = () => {
                 <Col xs={1}></Col>
                 <Col xs={3}>
                   <div className="d-grid gap-2 mt-4">
-                    <Button variant="outline-dark" type="submit">
+                    <Button style={{backgroundColor: "#8F9ED9"}} type="submit">
                       Submit
                     </Button>
                   </div>
@@ -191,14 +191,9 @@ const ChangePassword = () => {
                 </Col>
               </Row>
               <div className="text-center mt-3">
-                Back to <Link to="/login">Login</Link>
+                Back to <Link style={{color: "#8F9ED9"}} to="/login">Login</Link>
               </div>
             </div>
-            <div className="d-grid gap-2 mt-4">
-                    <Button variant="outline-dark" type="submit">
-                      Build Token
-                    </Button>
-                  </div>
           </Form>
         </Row>
         <Row></Row>
