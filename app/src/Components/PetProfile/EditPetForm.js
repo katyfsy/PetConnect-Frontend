@@ -12,7 +12,6 @@ import AddPhotosPortal from "./AddPhotosPortal";
 import PhotoPreviews from "./PhotoPreviews";
 import EditVaccinesList from "./EditVaccinesList.js";
 
-
 function EditPetForm() {
   const navigate = useNavigate();
   const navigateToPetProfile = (id) => {
@@ -680,12 +679,18 @@ function EditPetForm() {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <br/>
+              <br />
               <Form.Label> Edit Vaccines </Form.Label>
-              <FieldArray >
-                <EditVaccinesList className="edit-vaccines-list" pet={state.thisPet}/>
-              </FieldArray><br/><br/>
-
+              <FieldArray>
+                <EditVaccinesList
+                  className="edit-vaccines-list"
+                  vaccineList={state.thisPet.vaccines}
+                  pet={state.thisPet}
+                  petName={state.thisPet.name}
+                />
+              </FieldArray>
+              <br />
+              <br />
 
               <Form.Group className="mb-3 edit-photos-form-container">
                 <Form.Label>Current photos</Form.Label>

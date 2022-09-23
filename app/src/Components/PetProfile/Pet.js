@@ -309,10 +309,12 @@ function Pet() {
                   </Button>
                 </Col>
                 <Col>
-                  <AddVaccineModal  owner={user}
-                                    petId={thisPet.petId}
-                                    petName={thisPet.name}
-                                    refetchPet={refetchPet}/>
+                  <AddVaccineModal
+                    owner={user}
+                    petId={thisPet.petId}
+                    petName={thisPet.name}
+                    refetchPet={refetchPet}
+                  />
                 </Col>
               </>
             )}

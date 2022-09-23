@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FloatingLabel, Button, Form, Container } from "react-bootstrap";
-import { Formik, Field, ErrorMessage } from "formik";
+import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
 // import Modal from 'react-bootstrap/Modal';
 import Pet from "./Pet";
@@ -10,6 +10,8 @@ import Photos from "./Photos";
 import Alert from "./AlertModalPetForms";
 import axios from "axios";
 import { getUser } from "../UserProfile/psb-exports";
+import EditVaccinesList from "./EditVaccinesList";
+import AddVaccineModal from "./AddVaccineModal";
 
 function AddAPetForm() {
   const [petId, setPetId] = useState(null);
@@ -39,9 +41,8 @@ function AddAPetForm() {
     reproductiveStatus: null,
   });
 
-  let onExited = null;
   let user = getUser();
-  console.log(user);
+
   const [requiredPetFields, setrequiredPetFields] = useState({
     owner: user.toString(),
     name: null,
@@ -270,7 +271,51 @@ function AddAPetForm() {
 
   console.log("NON REQUIRED: ", nonRequiredPetFields);
   console.log("REQUIRED: ", requiredPetFields);
+  const emptyFields = {
+    name: null,
+    date: null,
+    notes: null,
+  };
+  const [vaccineFields, setVaccineFields] = useState(emptyFields);
+  const [vaccineList, setVaccineList] = useState([]);
 
+  console.log("vaccine List :", vaccineList);
+  console.log("vaccine Fields :", vaccineFields);
+  function handleAddVacineToList(vaccine) {
+    console.log(vaccine);
+    setVaccineList([...vaccineList, vaccine]);
+    console.log("adding");
+    setVaccineFields(emptyFields);
+  }
+  function addVaccinesToPet(petId, listOfVaccines) {
+    listOfVaccines.forEach((vaccine) => {
+      fetch(
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/addVaccine?petId=${petId}&vaccineName=${vaccine.name}`,
+        {
+          method: "POST",
+          // headers: {
+          //   "Content-Type": "application/json",
+          // },
+          // body: JSON.stringify(vaccineFields),
+        }
+      )
+        .then((response) => response.json())
+        .catch((err) => {
+          console.log(err);
+        })
+        .then((data) => {
+          console.log(data);
+        });
+    });
+  }
+  const handleVaccineOnChange = (e) => {
+    setVaccineFields({
+      ...vaccineFields,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const [showVaccineForm, setShowVaccineForm] = useState(false);
   return (
     <>
       <Container className="addpet-form-container">
@@ -644,7 +689,30 @@ function AddAPetForm() {
                   controlId="vaccination-history-validation"
                 >
                   <Form.Label>Vaccination history</Form.Label>
-                  <Button className="vaccination-pet-button" variant="outline-secondary">Add a vaccination record...</Button>
+                  {/* <Button
+                    className="vaccination-pet-button"
+                    variant="outline-secondary"
+                  >
+                    Add a vaccination record...
+                  </Button> */}
+                  <AddVaccineModal
+                    setShowVaccineForm={setShowVaccineForm}
+                    showVaccineForm={showVaccineForm}
+                    vaccine={vaccineFields}
+                    handleAddVacineToList={handleAddVacineToList}
+                    setVaccineFields={setVaccineFields}
+                  />
+                  <FieldArray>
+                    <EditVaccinesList
+                      className="edit-vaccines-list"
+                      handleVaccineOnChange={handleVaccineOnChange}
+                      vaccineList={vaccineList}
+                      edit={false}
+                      petName={"Your pet"}
+                    />
+                  </FieldArray>
+                  <br />
+                  <br />
                 </Form.Group>
 
                 <Form.Group
