@@ -306,7 +306,7 @@ const MessagingApp = () => {
   };
 
   return (
-    <div style={{ fontFamily: '"Nunito", "sans-serif"' }}>
+    <div className='messagingApp'>
       <Container>
         <Row>
           <Col sm={4}>
@@ -320,28 +320,28 @@ const MessagingApp = () => {
               currentContact={currentContact}
             />
             <Stack direction='row' spacing={2} alignItems='center' justifyContent='center'>
-              <Typography>Unmute</Typography>
+              <div>Unmute</div>
               <AntSwitch
                 checked={messageSound === 'true' ? false : true}
                 inputProps={{ 'aria-label': 'ant design' }}
                 onClick={() => updateMessageSound()}
               />
-              <Typography>Mute  </Typography>
+              <div>Mute&nbsp;&nbsp;&nbsp;</div>
             </Stack>
 
             <Stack direction='row' spacing={2} alignItems='center' justifyContent='center'>
-              <Typography>Stop emails</Typography>
+              <div>Stop Emails</div>
               <AntSwitch
                 checked={receiveEmails}
                 inputProps={{ 'aria-label': 'ant design' }}
                 onClick={() => updateReceiveEmails()}
               />
-              <Typography>Get Emails  </Typography>
+              <div>Get Emails</div>
             </Stack>
           </Col>
           {currentContact === '' ?
             (<Col sm={8}>
-              <Container className='chatBox'>
+              <Container className='initialChatBox'>
                 <div>Click an existing contact to the left<br/> or <br/>Message a new contact through the Pets page</div>
               </Container>
             </Col>)
