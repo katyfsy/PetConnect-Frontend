@@ -63,9 +63,9 @@ const AddVaccineForm = (props) => {
           // validateOnBlur={true}
           // setTouched={false}
           initialValues={{
-            vaccineName: "",
-            vaccineDate: "",
-            vaccineNotes: ""
+            name: "",
+            date: "",
+            notes: ""
           }}
           // validate
           // errors={{
@@ -110,9 +110,9 @@ const AddVaccineForm = (props) => {
               >
                 <Form.Label>Vaccine Name</Form.Label>
                 <Form.Control
-                  className="pet-name form-input"
+                  className="vaccine-name form-input"
                   type="text"
-                  name="vaccineName"
+                  name="name"
                   value={values.vaccineName}
                   onChange={(e) => {
                     handleChange(e);
@@ -129,11 +129,11 @@ const AddVaccineForm = (props) => {
 
               <Form.Group
                 className="add-vaccine-form-field"
-                controlId="nameValidation"
+                controlId="dateValidation"
               >
                 <Form.Label>Date Administered</Form.Label>
                 <Form.Control
-                  className="pet-name form-input"
+                  className="vaccine-date form-input"
                   type="text"
                   name="date"
                   value={values.vaccineDate}
@@ -152,11 +152,11 @@ const AddVaccineForm = (props) => {
 
               <Form.Group
                 className="add-vaccine-form-field"
-                controlId="nameValidation"
+                controlId="notesValidation"
               >
                 <Form.Label> Vaccine Notes</Form.Label>
                 <Form.Control
-                  className="pet-name form-input"
+                  className="vaccine-notes form-input"
                   as="textarea"
                   name="notes"
                   value={values.vaccineNotes}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Container } from "react-bootstrap";
-import { Formik } from "formik";
+import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
 import Pet from "./Pet";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -10,6 +10,7 @@ import axios from "axios";
 import { getUser } from "../UserProfile/psb-exports";
 import AddPhotosPortal from "./AddPhotosPortal";
 import PhotoPreviews from "./PhotoPreviews";
+import EditVaccinesList from "./EditVaccinesList.js";
 
 function EditPetForm() {
   const navigate = useNavigate();
@@ -677,6 +678,13 @@ function EditPetForm() {
                   {errors.description}
                 </Form.Control.Feedback>
               </Form.Group>
+
+              <br/>
+              <Form.Label> Edit Vaccines </Form.Label>
+              <FieldArray >
+                <EditVaccinesList className="edit-vaccines-list" pet={state.thisPet}/>
+              </FieldArray><br/><br/>
+
 
               <Form.Group className="mb-3 edit-photos-form-container">
                 <Form.Label>Current photos</Form.Label>

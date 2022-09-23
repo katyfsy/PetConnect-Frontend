@@ -308,12 +308,10 @@ function Pet() {
                     Delete Pet{" "}
                   </Button>
                 </Col>
-                <Col className="vaccine-btn-ctr">
-                  <AddVaccineModal
-                    owner={user}
-                    petId={thisPet.petId}
-                    petName={thisPet.name}
-                  />
+                <Col>
+                  <AddVaccineModal  owner={user}
+                                    petId={thisPet.petId}
+                                    petName={thisPet.name} />
                 </Col>
               </>
             )}

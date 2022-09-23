@@ -3,43 +3,45 @@ import React, { useState } from 'react';
 import EditVaccineModal from "./EditVaccineModal.js";
 
 const EditVaccinesList = (props) => {
-  console.log("THIS PET: ", props.pet);
-  // const [showEditVaccine, setShowEditVaccine] = useState(false);
-  // const [vaccineFields, setVaccineFields] = useState({
-  //   name: null,
-  //   date: null,
-  //   notes: null
-  // });
+  const [showEditVaccine, setShowEditVaccine] = useState(false);
+  const [vaccineFields, setVaccineFields] = useState({
+    name: null,
+    date: null,
+    notes: null
+  });
 
-  // const handleShow = () => setShowEditVaccine(true);
-  // const handleHide = () => setShowEditVaccine(false);
+  const handleShow = () => setShowEditVaccine(true);
+  const handleHide = () => setShowEditVaccine(false);
 
 
-  // const vaccineClicked = (vaccine) => {
-  //   handleShow();
-  // };
+  const handleVaccineClick = (e) => {
+    console.log("Clicked Vaccine: ", e.target);
+    handleShow();
+  };
 
   const vaccines = props.pet.vaccines;
   const vaccineItems = vaccines.map((vaccine) =>
-    <ListGroup.Item key={vaccine.vaccineId} action onClick={console.log("Click!")}> {vaccine.name} </ListGroup.Item>
+    <ListGroup.Item key={vaccine.vaccineId} vaccine={vaccine} action onClick={handleVaccineClick}> {vaccine.name}
+      <div className="edit-vaccine-date"> {vaccine.date} </div>
+    </ListGroup.Item>
   )
 
   if (vaccines.length < 1) {
     return (
       <div>
       <ListGroup>
-      <ListGroup.Item > {props.pet.name} has no vaccine history </ListGroup.Item>
+      <ListGroup.Item> {props.pet.name} has no vaccine history </ListGroup.Item>
       </ListGroup>
-      <EditVaccineModal pet={thisPet}/>
     </div>
     )
   }
 
   return (
     <div>
-      <ListGroup>
+      <ListGroup >
         {vaccineItems}
       </ListGroup>
+      <EditVaccineModal pet={props.pet}/>
     </div>
   );
 }
