@@ -14,8 +14,7 @@ const MockMessageChat = () => {
         senderPhoto: "https://marshallspetzone.com/blog/wp-content/uploads/2017/09/7-1.jpg",
         receiverPhoto: "https://marshallspetzone.com/blog/wp-content/uploads/2017/09/7-1.jpg",
         message: "hello",
-        timestamp: "2022-09-12T16:21:45.042",
-        status: "MESSAGE"
+        timestamp: "2022-09-12T16:21:45.042"
       }
     ]
   }
