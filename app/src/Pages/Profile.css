@@ -27,8 +27,7 @@ sup {
   border-color: #8F9ED9;
 }
 #profile-button:hover {
-  background-color: #F4976C;
-  border-color: #F4976C;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
 .page-size{
@@ -36,7 +35,7 @@ sup {
   left: 40px;
   text-align-last:center;
   width: 50px;
-  
+
 }
 
 .i-per-page{

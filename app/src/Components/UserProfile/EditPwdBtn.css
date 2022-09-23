@@ -4,6 +4,5 @@
   margin-bottom: 1em;
 }
 #edit-password-button:hover {
-  background-color: #F4976C;
-  border-color: #F4976C;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }

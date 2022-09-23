@@ -12,14 +12,29 @@
 .footerImg{
   height: 30px;
 }
-#psb-image{
-  width: 150px;
+#psb-image, #pd-image, #pp-image, #pmf-image{
+  /* width: 150px; */
+  height: 100px;
   margin-bottom: 10px;
 }
-#pd-image{
-  width: 100px;
-  margin-bottom: 10px;
-}
+
 #ascent {
   padding-top: 1em;
+}
+
+.footerTitle {
+  color: white;
+}
+
+.firstCol{
+  border-right: white solid 1px;
+}
+
+.teamMembers {
+  text-align: left;
+  font-size: 0.8em;;
+}
+
+.teamCol{
+  text-align: left;
 }
