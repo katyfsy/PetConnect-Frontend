@@ -86,14 +86,12 @@ function Header() {
     <div className="header">
       <Navbar>
         <Container>
-          <Stack>
             <a href="/">
               <Image src={require("./HeaderPics/logo_purple_blue_orange.png")} id="pet-logo" />
             </a>
             <a href="/">
               <Image src={require("./HeaderPics/Pet-connect.png")}  id="pet-connect" />
             </a>
-          </Stack>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
               <Button href='/login' variant="light">Login</Button>

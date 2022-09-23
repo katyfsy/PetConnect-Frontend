@@ -45,7 +45,7 @@ const ResetPassword = () => {
         //build the reset URL route
         if (res.status === 200) {
           // sendEmail(`http://localhost:3000/user/reset/${btoa(username + " " + process.env.REACT_APP_SECRET_KEY)}`, res.data.email);
-          sendEmail(`${PSB_API_URL}/user/reset/${btoa(username + " " + EMAIL_JS.REACT_APP_SECRET_KEY)}`, res.data.email);
+          sendEmail(`http://a05c559e9f4dd47e6a449abdb704ff66-132472868.us-west-2.elb.amazonaws.com/user/reset/${btoa(username + " " + EMAIL_JS.REACT_APP_SECRET_KEY)}`, res.data.email);
         } else if (res.status === 204) {
           resetUserNotExistAlert();
         }
