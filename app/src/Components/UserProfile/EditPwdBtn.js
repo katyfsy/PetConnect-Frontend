@@ -71,8 +71,8 @@ const EditPwdBtn = () => {
 
       <Modal show={show}>
         <Form onSubmit={handleSubmit}>
-          <Modal.Header closeButton onClick={handleClose} >
-            <Modal.Title>Change Password</Modal.Title>
+          <Modal.Header closeButton onClick={handleClose} style={{backgroundColor: "#8F9ED9"}}>
+            <Modal.Title style={{color: "white"}}>Change Password</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div></div>
@@ -137,10 +137,10 @@ const EditPwdBtn = () => {
             </Row>
           </Modal.Body>
           <Modal.Footer className="mt-1">
-            <Button style={{backgroundColor: "#8F9ED9"}} type="submit" >
+            <Button id="edit-password-confirm-button" type="submit" >
               Save New Password
             </Button>
-            <Button style={{backgroundColor: "#8F9ED9"}} onClick={handleClose}>
+            <Button id="edit-password-confirm-button" onClick={handleClose}>
               Cancel
             </Button>
           </Modal.Footer>

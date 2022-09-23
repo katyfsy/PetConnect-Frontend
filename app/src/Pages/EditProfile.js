@@ -48,7 +48,6 @@ function EditProfile() {
           },
         })
         .then((res) => {
-          console.log(res);
           let result = res.data;
           for (var key in result) {
             if (result[key] === null) {
@@ -78,7 +77,6 @@ function EditProfile() {
     } else {
       e.preventDefault();
       form.userPhoto = userPhoto;
-      console.log(form);
       axios
         .patch(`${PSB_API_URL}/api/user/${getUser()}`, form, {
           headers: {
@@ -139,35 +137,31 @@ function EditProfile() {
         </Container>
         <Navigationbar />
         <Container className="edit-form">
-          <h1>Edit your profile</h1>
-
-          <Image src={userPhoto} roundedCircle className="profile-photo" />
           <Row>
-            <Col>
-              <div className="upload-button">
-                <input
-                  ref={inputRef}
-                  onChange={handleUploadToS3}
-                  className="d-none"
-                  type="file"
-                />
-                <Button id="edit-button" size="sm" onClick={handleUploadButton}>
-                  Upload Profile Picture
-                </Button>
-              </div>
-            </Col>
-            <Col>
-            <div align="end">
+            <Col md={{ span: 2, offset: 6 }}>
+              <div align="end">
                 <EditPwdBtn />
               </div>
             </Col>
-            <Col>
-
+            <Col md={{ span: 2, offset: 2 }}>
               <div align="end">
                 <DeleteBtn />
               </div>
             </Col>
           </Row>
+          <h1>Edit your profile</h1>
+          <Image src={userPhoto} roundedCircle className="profile-photo" />
+            <div className="upload-button">
+              <input
+                ref={inputRef}
+                onChange={handleUploadToS3}
+                className="d-none"
+                type="file"
+              />
+              <Button id="upload-user-photo-button" size="sm" onClick={handleUploadButton}>
+                Upload Profile Picture
+              </Button>
+            </div>
           <Form
             className="container mt-3 mb-3"
             noValidate
@@ -362,34 +356,31 @@ function EditProfile() {
         </Container>
         <Navigationbar />
         <Container className="edit-form">
-          <h1>Edit your profile</h1>
-          <Image src={userPhoto} roundedCircle className="profile-photo" />
           <Row>
-            <Col>
-              <div className="upload-button">
-                <input
-                  ref={inputRef}
-                  onChange={handleUploadToS3}
-                  className="d-none"
-                  type="file"
-                />
-                <Button id="edit-button" size="sm" onClick={handleUploadButton}>
-                  Upload Profile Picture
-                </Button>
-              </div>
-            </Col>
-            <Col>
-            <div align="end">
+            <Col md={{ span: 2, offset: 6 }}>
+              <div align="end">
                 <EditPwdBtn />
               </div>
             </Col>
-            <Col>
-
+            <Col md={{ span: 2, offset: 2 }}>
               <div align="end">
                 <DeleteBtn />
               </div>
             </Col>
           </Row>
+          <h1>Edit your profile</h1>
+          <Image src={userPhoto} roundedCircle className="profile-photo" />
+            <div className="upload-button">
+              <input
+                ref={inputRef}
+                onChange={handleUploadToS3}
+                className="d-none"
+                type="file"
+              />
+              <Button id="upload-user-photo-button" size="sm" onClick={handleUploadButton}>
+                Upload Profile Picture
+              </Button>
+            </div>
           <Form
             className="container mt-3 mb-3"
             noValidate

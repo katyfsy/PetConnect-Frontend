@@ -13,6 +13,8 @@ import {
 import axios from "axios";
 import emailjs from '@emailjs/browser';
 import Swal from 'sweetalert2';
+import './ResetPassword.css';
+import { EMAIL_JS } from '../Components/UserProfile/DummyData';
 
 const ResetPassword = () => {
   const [username, setUserName] = useState();
@@ -42,11 +44,8 @@ const ResetPassword = () => {
     axios.get(`${PSB_API_URL}/api/public/user/${username}`).then((res) => {
         //build the reset URL route
         if (res.status === 200) {
-          console.log(process.env.REACT_APP_SECRET_KEY);
-          console.log(process.env.REACT_APP_SERVICE_ID);
-          console.log(process.env.REACT_APP_TEMPLATE_ID);
-          console.log(process.env.REACT_APP_USER_ID);
-          sendEmail(`http://localhost:3000/user/reset/${btoa(username + " " + process.env.REACT_APP_SECRET_KEY)}`, res.data.email);
+          // sendEmail(`http://localhost:3000/user/reset/${btoa(username + " " + process.env.REACT_APP_SECRET_KEY)}`, res.data.email);
+          sendEmail(`${PSB_API_URL}/user/reset/${btoa(username + " " + EMAIL_JS.REACT_APP_SECRET_KEY)}`, res.data.email);
         } else if (res.status === 204) {
           resetUserNotExistAlert();
         }
@@ -60,10 +59,14 @@ const ResetPassword = () => {
     };
     emailjs
       .send(
-        process.env.REACT_APP_SERVICE_ID,
-        process.env.REACT_APP_TEMPLATE_ID,
+        // process.env.REACT_APP_SERVICE_ID,
+        // process.env.REACT_APP_TEMPLATE_ID,
+        // templateParams,
+        // process.env.REACT_APP_USER_ID
+        EMAIL_JS.REACT_APP_SERVICE_ID,
+        EMAIL_JS.REACT_APP_TEMPLATE_ID,
         templateParams,
-        process.env.REACT_APP_USER_ID
+        EMAIL_JS.REACT_APP_USER_ID
       )
       .then(
         function (response) {
@@ -83,6 +86,7 @@ const ResetPassword = () => {
       </Container>
       <Navigationbar />
       <Container>
+      <div className="flex-wrapper-reset-page">
         <Row style={{paddingBottom: 50}}>
           <h1 style={{paddingBottom: 15}}>Trouble Logging In?</h1>
           <div className="Auth-form-container">
@@ -98,7 +102,7 @@ const ResetPassword = () => {
                 />
               </div>
               <div className="d-grid gap-2 mt-4">
-                <Button style={{backgroundColor: "#8F9ED9"}}  type="submit">
+                <Button id="reset-password-button" type="submit">
                   Submit
                 </Button>
               </div>
@@ -109,11 +113,9 @@ const ResetPassword = () => {
           </Form>
           </div>
         </Row >
-        <Row></Row>
-        <Row>
-          <Footer />
-        </Row>
+        </div>
       </Container>
+      <Footer />
     </>
   );
 };

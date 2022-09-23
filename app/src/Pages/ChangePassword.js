@@ -13,8 +13,8 @@ import {
   PSB_API_URL,
 } from "../Components/UserProfile/psb-exports";
 import axios from "axios";
-import emailjs from "@emailjs/browser";
 import { useParams } from "react-router-dom";
+import "./ResetPassword.css";
 
 const ChangePassword = () => {
   const [password, setPassword] = useState();
@@ -135,6 +135,7 @@ const ChangePassword = () => {
       </Container>
       <Navigationbar />
       <Container className="d-flex justify-content-center">
+        <div className="flex-wrapper-reset-page">
         <Row>
           <h1>{decodedUser} Password Reset</h1>
           <Form className="Auth-form" onSubmit={handleSubmit}>
@@ -156,7 +157,6 @@ const ChangePassword = () => {
               <Row className="d-flex justify-content-center">
                 <label>Enter Password</label>
               </Row>
-
               <div className="form-group mt-1">
                 <Row className="justify-content-center">
                   <Col xs={7}>
@@ -175,7 +175,7 @@ const ChangePassword = () => {
                 <Col xs={1}></Col>
                 <Col xs={3}>
                   <div className="d-grid gap-2 mt-4">
-                    <Button style={{backgroundColor: "#8F9ED9"}} type="submit">
+                    <Button id="reset-password-button" type="submit">
                       Submit
                     </Button>
                   </div>
@@ -196,11 +196,9 @@ const ChangePassword = () => {
             </div>
           </Form>
         </Row>
-        <Row></Row>
-        <Row>
-          <Footer />
-        </Row>
+        </div>
       </Container>
+      <Footer />
     </>
   );
 };
