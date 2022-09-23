@@ -338,7 +338,7 @@ function AddAPetForm() {
             >
               <Form.Group
                 className="mb-3 form-fields"
-                controlId="ownerValidation"
+                controlId="owner-validation"
               >
                 <Form.Label>Owner</Form.Label>
                 {getUser() != "" ? (
@@ -355,7 +355,7 @@ function AddAPetForm() {
 
               <Form.Group
                 className="mb-3 form-fields"
-                controlId="nameValidation"
+                controlId="name-validation"
               >
                 <Form.Label>Name</Form.Label>
                 <Form.Control
@@ -406,7 +406,7 @@ function AddAPetForm() {
               <div className="addpet-form-section">
                 <Form.Group
                   className="mb-3 form-fields-2-row"
-                  controlId="zipValidation"
+                  controlId="zip-validation"
                 >
                   <Form.Label>State</Form.Label>
                   <Form.Control
@@ -579,7 +579,7 @@ function AddAPetForm() {
 
                 <Form.Group
                   className="mb-3 form-fields-3-row"
-                  controlId="sexValidation"
+                  controlId="sex-validation"
                 >
                   <Form.Label>Sex</Form.Label>
                   <Form.Select
@@ -641,7 +641,7 @@ function AddAPetForm() {
               <div className="addpet-form-section">
                 <Form.Group
                   className="mb-3 form-fields-2-row"
-                  controlId="vaccinationHistory-validation"
+                  controlId="vaccination-history-validation"
                 >
                   <Form.Label>Vaccination history</Form.Label>
                   <Button className="vaccination-pet-button" variant="outline-secondary">Add a vaccination record...</Button>
@@ -649,11 +649,11 @@ function AddAPetForm() {
 
                 <Form.Group
                   className="mb-3 form-fields-2-row"
-                  controlId="reproductiveStatus-validation"
+                  controlId="reproductive-status-validation"
                 >
                   <Form.Label>Spayed/Neutered</Form.Label>
                   <Form.Select
-                    className="pet-reproductiveStatus form-input"
+                    className="pet-reproductive-status form-input"
                     type="text"
                     name="reproductiveStatus"
                     value={values.reproductiveStatus}
@@ -679,7 +679,7 @@ function AddAPetForm() {
 
               <Form.Group
                 className="mb-3 form-fields"
-                controlId="descriptionValidation"
+                controlId="description-validation"
               >
                 <Form.Label>Description</Form.Label>
                 <Form.Control
@@ -732,7 +732,7 @@ function AddAPetForm() {
                 <Form.Group className="mb-3">
                   {isClicked ? null : (
                     <Button bsPrefix="add-pet-button" type="submit">
-                      Add Pet
+                      Add pet
                     </Button>
                   )}
                 </Form.Group>

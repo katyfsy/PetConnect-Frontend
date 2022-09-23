@@ -3,19 +3,28 @@
   height: 100%;
   width: 100%;
   top: 0px;
-  background-color: rgb(0, 0, 0, 0.5);
+  background-color: rgb(0, 0, 0, 0.3);
   /* opacity: 0.8; */
   z-index: 2;
 }
 
 .add-photos-portal-container {
-  width: 500px;
+  max-width: 600px;
+  border-radius: 20px;
   background-color: white;
   color: white;
   position: relative;
-  top: 75px;
+  top: 200px;
   z-index: 3;
   max-height: calc(100% - 200px);
   left: calc(50% - 250px);
   padding: 20px;
+}
+
+.portal-button-container {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    justify-content: space-around;
+    max-width: 600px;
 }
