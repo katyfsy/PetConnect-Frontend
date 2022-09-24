@@ -75,3 +75,12 @@
     margin-bottom: 40px;
     color: #8F9ED9;
 }
+
+.profile-page-gallery-photo {
+    height: 100%;
+}
+
+.profile-page-gallery {
+
+    width: 90% !important;
+}

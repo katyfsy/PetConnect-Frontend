@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import EditPet from "./EditPet";
 import VaccineList from "./VaccineList.js";
 import AddVaccineModal from "./AddVaccineModal.js";
-import { Button, Row, Col, Image, Tab, Tabs } from "react-bootstrap";
+import { Button, Row, Col, Image, Tab, Tabs, Modal, Carousel } from "react-bootstrap";
 import { FaRegHeart, FaHeart, FaCat, FaFish } from "react-icons/fa";
 import { MdPets } from "react-icons/md";
 import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
@@ -37,11 +37,14 @@ function Pet() {
   const [isEdit, setIsEdit] = useState(false);
   const [fetchPet, refetchPet] = useState(false);
 
+  const [showPhotos, setShowPhotos] = useState(false);
+
   const [showAlert, setShowAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
   const [handleOnExited, setHandleOnExited] = useState(false);
+
 
   let user = getUser();
   let petId = useParams();
@@ -98,6 +101,7 @@ function Pet() {
         setPetPhotos(data.photos);
       });
   }, [isEdit, fetchPet]);
+
 
   function handleOnDelete() {
     fetch(
@@ -232,6 +236,7 @@ function Pet() {
                 className="profile-page-photo-preview"
                 key={petPhoto.photoId}
                 src={petPhoto.photo_url}
+                onClick={() => setShowPhotos(true)}
               >
                 <img src={petPhoto.photo_url} className="profile-page-photo" />
               </div>
@@ -445,6 +450,40 @@ function Pet() {
         onExited={handleOnExited ? () => navigate("/pets") : null}
         // handleOnExited('/pets')
       />
+
+{petPhotos.map((petPhoto) => (
+              <div
+                className="profile-page-photo-preview"
+                key={petPhoto.photoId}
+                src={petPhoto.photo_url}
+                onClick={() => setShowPhotos(true)}
+              >
+                <img src={petPhoto.photo_url} className="profile-page-photo" />
+              </div>
+            ))}
+
+      <Modal show={showPhotos} dialogClassName="profile-page-gallery" centered onHide={() => setShowPhotos(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>{thisPet.name}'s photos</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Carousel>
+            {petPhotos.map((petPhoto) => (
+              <Carousel.Item>
+              <img
+                className="profile-page-gallery-photo"
+                key={petPhoto.photoId}
+                src={petPhoto.photo_url}
+              />
+              <Carousel.Caption>
+
+              </Carousel.Caption>
+            </Carousel.Item>
+            ))}
+          </Carousel>
+
+        </Modal.Body>
+      </Modal>
       <br />
     </>
   );
