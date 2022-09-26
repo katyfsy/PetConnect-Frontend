@@ -20,7 +20,7 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
   const [allTypes, setAllTypes] = useState(["Any", "cat", "dog", "other"]);
 
   const handleFilterClick = (e) => {
-    var params = {search: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null, type: type!=="Any" ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
+    var params = {search: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null, type: type!=="Any" ? type : "*", breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
     // console.log(params);
     axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/advSearch", {params})
     // axios.get("http://localhost:8080/api/petSearch", {params})
