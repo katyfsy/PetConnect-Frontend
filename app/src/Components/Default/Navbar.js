@@ -47,7 +47,7 @@ function Navigationbar() {
             {isLoggedIn() ? <Nav.Link href="/myprofile" style={{color: "white"}}>MyProfile</Nav.Link> : null}
             <Nav.Link href="/pets" style={{color: "white"}}>Pets</Nav.Link>
             <Nav.Link href="/messages" style={{color: "white"}}>Messages</Nav.Link>
-            {notification ? <AiFillMessage size={30} color={'red'} /> : null}
+            {notification ? <AiFillMessage size={20} color={'FF9966'} /> : null}
             <Nav.Link href="/directory" style={{color: "white"}}>Directory</Nav.Link>
           </Nav>
         </Navbar.Collapse>

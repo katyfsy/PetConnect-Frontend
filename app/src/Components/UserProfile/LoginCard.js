@@ -4,6 +4,7 @@ import { Button, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import "./userProfile.css";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 import {
   getBearerToken,
@@ -58,9 +59,18 @@ const LoginCard = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Password or Username Incorrect!");
+        loginFail();
       });
   };
+
+  const loginFail= () => {
+    Swal.fire({
+      position: 'center',
+      title: 'Username or Password Incorrect!',
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -123,16 +133,16 @@ const LoginCard = () => {
             </Form.Check>
           </div>
           <div className="d-grid gap-2 mt-4">
-            <Button variant="light" type="submit">
+            <Button style={{backgroundColor: "#8F9ED9"}} type="submit">
               Log In
             </Button>
           </div>
 
-          <div className="text-center mt-3">
-            Forgot password? <Link to="/user/reset">Reset</Link>
+          <div className="text-center mt-3" >
+            Forgot password? <Link style={{color: "#8F9ED9"}} to="/user/reset">Reset</Link>
           </div>
           <div className="text-center mt-3">
-            Don't have an account? <Link to="/signup">Sign Up</Link>
+            Don't have an account? <Link style={{color: "#8F9ED9"}} to="/signup">Sign Up</Link>
           </div>
         </div>
       </Form>

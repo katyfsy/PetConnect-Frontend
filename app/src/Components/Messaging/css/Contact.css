@@ -17,7 +17,7 @@
 }
 
 .member:hover{
-  background: #FBE8A6;
+  background: rgba(244, 151, 108, .3);
   color:#4D4751;
   cursor: pointer;
 }
