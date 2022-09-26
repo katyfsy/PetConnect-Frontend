@@ -5,6 +5,7 @@ import * as Yup from "yup";
 
 const AddVaccineForm = (props) => {
   const handleOnChange = props.handleOnChange;
+  console.log(props.vaccine);
   const schema = Yup.object({
     name: Yup.string()
       .required("* Required")
@@ -16,7 +17,7 @@ const AddVaccineForm = (props) => {
   // console.log("Vaccine Fields: ", props.vaccine);
   return (
     // <Formik
-    //   initialValues={{ vaccineName: '', vaccineDate: '', vaccineNotes: '' }}
+    //   initialValues={{ vaccineName: '', date: '', notes: '' }}
     //   validationSchema={schema}
     // >
     //   <Form>
@@ -41,7 +42,7 @@ const AddVaccineForm = (props) => {
     //     </div>
     //     <br/>
     //     <div>
-    //       <label htmlFor="vaccineNotes">Additional Vaccine Notes</label><br/>
+    //       <label htmlFor="notes">Additional Vaccine Notes</label><br/>
     //       <textarea className="vaccine-form"
     //                 name="notes"
     //                 type="text"
@@ -135,17 +136,17 @@ const AddVaccineForm = (props) => {
               className="vaccine-date form-input"
               type="text"
               name="date"
-              value={values.vaccineDate}
+              value={values.date}
               onChange={(e) => {
                 handleChange(e);
                 handleOnChange(e);
               }}
               placeholder="e.g. 01/01/2020"
-              isInvalid={errors.vaccineDate}
+              isInvalid={errors.date}
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             <Form.Control.Feedback className="form-error" type="invalid">
-              {errors.vaccineDate}
+              {errors.date}
             </Form.Control.Feedback>
           </Form.Group>
 
@@ -158,17 +159,17 @@ const AddVaccineForm = (props) => {
               className="vaccine-notes form-input"
               as="textarea"
               name="notes"
-              value={values.vaccineNotes}
+              value={values.notes}
               onChange={(e) => {
                 handleChange(e);
                 handleOnChange(e);
               }}
               placeholder="e.g. Need to schedule next series after 3 years"
-              isInvalid={errors.vaccineNotes}
+              isInvalid={errors.notes}
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             <Form.Control.Feedback className="form-error" type="invalid">
-              {errors.vaccineNotes}
+              {errors.notes}
             </Form.Control.Feedback>
           </Form.Group>
 

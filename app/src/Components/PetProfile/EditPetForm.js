@@ -11,6 +11,7 @@ import { getUser } from "../UserProfile/psb-exports";
 import AddPhotosPortal from "./AddPhotosPortal";
 import PhotoPreviews from "./PhotoPreviews";
 import EditVaccinesList from "./EditVaccinesList.js";
+import AddVaccineModal from "./AddVaccineModal";
 
 function EditPetForm() {
   const navigate = useNavigate();
@@ -252,6 +253,52 @@ function EditPetForm() {
       .required("description is required"),
   });
 
+  //Vaccine State for Modal Showing
+  const [showVaccineForm, setShowVaccineForm] = useState(false);
+  const handleShow = () => setShowVaccineForm(true);
+
+  //Vaccine State for adding New vaccinations
+  const emptyFields = {
+    name: null,
+    date: null,
+    notes: null,
+    key: Math.random(),
+  };
+
+  const [vaccineFields, setVaccineFields] = useState(emptyFields);
+
+  const [vaccineList, setVaccineList] = useState([]);
+
+  function handleAddVaccineToList(vaccine) {
+    setVaccineList([...vaccineList, vaccine]);
+    setVaccineFields(emptyFields);
+  }
+
+  function handleEditVaccineInList(
+    editedVaccine,
+    inputedVaccineList,
+    inputedVaccineListSetter,
+    vaccineFieldSetter,
+    adding
+  ) {
+    let updatedVaccineList = inputedVaccineList.map((vaccine) => {
+      if (vaccine.key == editedVaccine.key) {
+        return editedVaccine;
+      }
+      return vaccine;
+    });
+    console.log("im being edited");
+    console.log(updatedVaccineList);
+    setVaccineList(updatedVaccineList);
+    if (adding) {
+      setVaccineFields(emptyFields);
+    }
+  }
+
+  //Vaccine State for editing pre-exisitng vaccinations
+  const [existingVaccineList, setExistingVaccineList] = useState(
+    state.thisPet.vaccines
+  );
   console.log("Pet fields: ", editedPetFields);
   if (state.thisPet === null) {
     return <div></div>;
@@ -609,12 +656,45 @@ function EditPetForm() {
                   controlId="vaccination-history-validation"
                 >
                   <Form.Label>Vaccination history</Form.Label>
+                  {/* <Button
+                    className="vaccination-pet-button"
+                    variant="outline-secondary"
+                  >
+                    Add a vaccination record...
+                  </Button> */}
                   <Button
+                    onClick={handleShow}
                     className="vaccination-pet-button"
                     variant="outline-secondary"
                   >
                     Add a vaccination record...
                   </Button>
+                  <AddVaccineModal
+                    setShowVaccineForm={setShowVaccineForm}
+                    showVaccineForm={showVaccineForm}
+                    vaccine={vaccineFields}
+                    handleAddVaccineToList={handleAddVaccineToList}
+                    setVaccineFields={setVaccineFields}
+                    edit={false}
+                  />
+                  <FieldArray>
+                    <EditVaccinesList
+                      className="Newly-added fields"
+                      // handleVaccineOnChange={handleVaccineOnChange}
+                      vaccineList={vaccineList}
+                      petName={"Your pet"}
+                      handleEditVaccineInList={handleEditVaccineInList}
+                      inputedVaccineListSetter={setVaccineList}
+                      vaccineFieldSetter={setVaccineFields}
+                    />
+                    <EditVaccinesList
+                      className="existing-vaccines-list"
+                      // handleVaccineOnChange={handleVaccineOnChange}
+                      vaccineList={existingVaccineList}
+                      petName={state.thisPet.name}
+                      handleEditVaccineInList={handleEditVaccineInList}
+                    />
+                  </FieldArray>
                 </Form.Group>
 
                 <Form.Group

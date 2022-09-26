@@ -248,12 +248,12 @@ function AddAPetForm() {
 
   // console.log("vaccine List :", vaccineList);
   // console.log("vaccine Fields :", vaccineFields);
-  function handleAddVacineToList(vaccine) {
+  function handleAddVaccineToList(vaccine) {
     setVaccineList([...vaccineList, vaccine]);
 
     setVaccineFields(emptyFields);
   }
-  function handleEditVacineInList(editedVaccine) {
+  function handleEditVaccineInList(editedVaccine) {
     let updatedVaccineList = vaccineList.map((vaccine) => {
       if (vaccine.key == editedVaccine.key) {
         return editedVaccine;
@@ -279,6 +279,10 @@ function AddAPetForm() {
           `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/addVaccine?petId=${petId}&vaccineName=${vaccine.name}`,
           {
             method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(vaccine),
           }
         )
           .then((response) => response.json())
@@ -690,17 +694,17 @@ function AddAPetForm() {
                     setShowVaccineForm={setShowVaccineForm}
                     showVaccineForm={showVaccineForm}
                     vaccine={vaccineFields}
-                    handleAddVacineToList={handleAddVacineToList}
+                    handleAddVaccineToList={handleAddVaccineToList}
                     setVaccineFields={setVaccineFields}
                     edit={false}
                   />
                   <FieldArray>
                     <EditVaccinesList
                       className="edit-vaccines-list"
-                      handleVaccineOnChange={handleVaccineOnChange}
+                      // handleVaccineOnChange={handleVaccineOnChange}
                       vaccineList={vaccineList}
                       petName={"Your pet"}
-                      handleEditVacineInList={handleEditVacineInList}
+                      handleEditVaccineInList={handleEditVaccineInList}
                     />
                   </FieldArray>
                   <br />

@@ -51,12 +51,12 @@ const EditVaccinesList = (props) => {
     <div>
       <AddVaccineModal
         vaccine={vaccineFields}
-        pet={props.pet}
+        // pet={props.pet}
         edit={true}
         showVaccineForm={showEditVaccine}
         setShowVaccineForm={setShowEditVaccine}
         vaccineList={props.vaccineList}
-        handleEditVacineInList={props.handleEditVacineInList}
+        handleEditVaccineInList={props.handleEditVaccineInList}
         setVaccineFields={setVaccineFields}
       />
       <ListGroup>{vaccineItems}</ListGroup>

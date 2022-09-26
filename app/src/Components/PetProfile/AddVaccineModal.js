@@ -53,9 +53,9 @@ const AddVaccineModal = (props) => {
     //     console.log(data);
     //   });
     if (props.edit) {
-      props.handleEditVacineInList(props.vaccine);
+      props.handleEditVaccineInList(props.vaccine, props.vaccineList);
     } else {
-      props.handleAddVacineToList(props.vaccine);
+      props.handleAddVaccineToList(props.vaccine);
     }
     handleHide();
   };
