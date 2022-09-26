@@ -13,7 +13,7 @@ const EditVaccinesList = (props) => {
 
   const handleShow = () => setShowEditVaccine(true);
   const handleHide = () => setShowEditVaccine(false);
-  console.log(vaccineFields);
+  // console.log(vaccineFields);
   const handleVaccineClick = (vaccine) => {
     console.log("VACCINE: ", vaccine);
     setVaccineFields(vaccine);

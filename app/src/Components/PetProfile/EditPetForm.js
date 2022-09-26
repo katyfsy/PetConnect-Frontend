@@ -109,7 +109,7 @@ function EditPetForm() {
     }
     photosToDelete.forEach((photo) => {
       fetch(
-        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${state.thisPet.petId}?photoId=${photo}`,
+        `http://localhost:8080/api/pets/photos/${state.thisPet.petId}?photoId=${photo}`,
         { method: "DELETE" }
       )
         .then((res) => res.json())
@@ -126,16 +126,13 @@ function EditPetForm() {
 
   // Functionality to Patch pet details in backend
   function handlePatch() {
-    fetch(
-      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${state.thisPet.petId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(editedPetFields),
-      }
-    )
+    fetch(`http://localhost:8080/api/pets/${state.thisPet.petId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(editedPetFields),
+    })
       .then((r) => r.json())
       .catch((err) => {
         console.log(err);
@@ -155,10 +152,7 @@ function EditPetForm() {
   // Functionality to upload photos
   const getPresignedUrls = (files) => {
     return axios
-      .post(
-        "http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/uploadAuth",
-        files
-      )
+      .post("http://localhost:8080/api/pets/photos/uploadAuth", files)
       .then((res) => {
         return res.data;
       });
@@ -218,7 +212,7 @@ function EditPetForm() {
       }
       await axios
         .post(
-          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${
+          `http://localhost:8080/api/pets/photos/persist?petId=${
             state.thisPet.petId
           }&coverPhoto=${findCoverPhotoName(photos)}`
         )
