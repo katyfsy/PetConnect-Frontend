@@ -63,7 +63,7 @@ function Results({matches, setResult, searchQuery, zipcode, radius, setBreed, br
                                     return(
                                         <Col  key={`${match.petId}`}>
                                             <PetCard data-testid={`t-${match.zip}${match.name}`} key={`${match.petId}${match.zip}${match.name}`}
-                                                name={match.name} type={match.type} gender={match.gender} age={match.age}
+                                                name={match.name} type={match.type} gender={match.sex} age={match.age}
                                                 breed={match.breed} petId={match.petId} coverPhoto={match.coverPhoto} owner={match.owner} isFavor={favoritePets.includes(match.petId)}/>
                                         </Col>
                                     )
