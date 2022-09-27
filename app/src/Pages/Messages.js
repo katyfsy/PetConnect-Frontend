@@ -5,25 +5,26 @@ import MessagingApp from '../Components/Messaging/MessagingApp';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import './Messages.css';
-import Footer from '../Components/Default/Footer'
+import Footer from '../Components/Default/Footer';
 
 function Messages() {
   return (
     <div className='messagingPage'>
-    <Container>
-      <Header/>
-    </Container>
-    <Navigationbar/>
-    <Container>
-      <Row className="justify-content-md-center" style={{"paddingTop": "50px"}}>
-        <MessagingApp/>
-      </Row>
-      <Row>
-        <Footer />
-      </Row>
-    </Container>
-  </div>
-  )
+      <Container>
+        <Header />
+      </Container>
+      <Navigationbar />
+      <Container>
+        <Row
+          className='justify-content-md-center'
+          style={{ paddingTop: '50px' }}
+        >
+          <MessagingApp />
+        </Row>
+      </Container>
+      <Footer />
+    </div>
+  );
 }
 
 export default Messages;

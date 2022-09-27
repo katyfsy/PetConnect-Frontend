@@ -22,7 +22,6 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import AntSwitch from './mui/AntSwitch';
 
@@ -66,7 +65,6 @@ const MessagingApp = () => {
   useEffect(() => {
     if (!privateChats.get(userData.receiverName)) {
       privateChatsRef.current.set(userData.receiverName, []);
-      // setPrivateChats(new Map(privateChatsRef.current));
     }
   }, [state]);
 
@@ -149,12 +147,10 @@ const MessagingApp = () => {
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
-    // if (stompClient.status === 'CONNECTED') {
     stompClient.subscribe(
       '/user/' + userData.username + '/private',
       onPrivateMessageReceived
     );
-    // }
   };
 
   const getAllChats = (username) => {
@@ -241,20 +237,16 @@ const MessagingApp = () => {
       }
       playAudio();
       messageIdRef.current = payloadData.id;
-    } else {
-      console.log('CAUGHT DUPLICATE BUG D:<');
     }
   };
 
   const sendPrivateMessage = () => {
     if (stompClient) {
-      console.log('email from message', emailRef.current);
       let chatMessage = {
         senderName: userData.username,
         receiverName: currentContact ? currentContact : userData.receiverName,
         message: userData.message,
         timestamp: Date().toString(),
-        status: 'MESSAGE',
         senderPhoto: senderPhotoRef.current,
         receiverPhoto: receiverPhotoRef.current,
         email: emailRef.current,
@@ -331,7 +323,12 @@ const MessagingApp = () => {
               setNotificationList={setNotificationList}
               currentContact={currentContact}
             />
-            <Stack direction='row' spacing={2} alignItems='center' justifyContent='center'>
+            <Stack
+              direction='row'
+              spacing={2}
+              alignItems='center'
+              justifyContent='center'
+            >
               <div>Unmute</div>
               <AntSwitch
                 checked={messageSound === 'true' ? false : true}
@@ -341,7 +338,12 @@ const MessagingApp = () => {
               <div>Mute&nbsp;&nbsp;&nbsp;</div>
             </Stack>
 
-            <Stack direction='row' spacing={2} alignItems='center' justifyContent='center'>
+            <Stack
+              direction='row'
+              spacing={2}
+              alignItems='center'
+              justifyContent='center'
+            >
               <div>Stop Emails</div>
               <AntSwitch
                 checked={receiveEmails}
@@ -351,10 +353,14 @@ const MessagingApp = () => {
               <div>Get Emails</div>
             </Stack>
           </Col>
-          {currentContact === '' ?
-            (<Col sm={8}>
+          {currentContact === '' ? (
+            <Col sm={8}>
               <Container className='initialChatBox'>
-                <div>Click an existing contact to the left<br/> or <br/>Message a new contact through the Pets page</div>
+                <div>
+                  Click an existing contact to the left
+                  <br /> or <br />
+                  Message a new contact through the Pets page
+                </div>
               </Container>
             </Col>
           ) : (
