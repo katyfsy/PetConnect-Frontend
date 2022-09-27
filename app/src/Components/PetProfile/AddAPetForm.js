@@ -714,7 +714,7 @@ function AddAPetForm() {
                     bsPrefix="cancel-pet-button"
                     variant="secondary"
                     type="submit"
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate(`/pets`, { replace: true })}
                   >
                     Cancel
                   </Button>
