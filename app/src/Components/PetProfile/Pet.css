@@ -76,7 +76,7 @@
     width: 200px;
     aspect-ratio: 1;
     object-fit: cover;
-    /* justify-content: center; */
+    justify-content: center;
     align-items: center;
     border: solid 5px;
     border-color: #8F9ED9;
@@ -321,7 +321,8 @@
     max-height: 800px;
 }
 
-/* .profile-page-gallery {
+.profile-page-gallery {
 
     width: 1000px !important;
-} */
+}
+
