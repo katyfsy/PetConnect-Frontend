@@ -10,7 +10,7 @@ function Slides() {
         {/* carousel */}
         <div id="petcarousel" className="carousel slide" data-bs-ride="carousel">
 
-          <div className="carousel-inner">
+          <div className="carousel-inner" id="carousel-inner-slides">
 
             <div className="carousel-item active">
               <img className="d-block w-100 petSlide" src="/Pics/slide2.jpg"  alt="slide"/>

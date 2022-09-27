@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, setBreed, setType}){
 
   const [dropdownDisplay, setDropdownDisplay] = useState(false);
-  const [defaultSearches, setDefaultSearches] = useState(["All Cats", "All Dogs"]);
+  const [defaultSearches, setDefaultSearches] = useState(["All Cats", "All Dogs", "Other Pets"]);
 
   const navigate = useNavigate();
   const [autocompleteDisplay, setAutocompleteDisplay] = useState(false);
@@ -48,20 +48,25 @@ function Search({setResult, setSearchQuery, setZipcode, searchQuery, zipcode, se
 
   const handleDefaultSearchClick = value => {
     setDropdownDisplay(false);
-    setSearchQuery(value);
     if (value === "All Cats") {
       var param = "?search=cat&type=cat";
+      var url = "http://vmware-elastic.galvanizelabs.net:8080/api/petSearch" + param;
       setType("cat");
       setSearchQuery("cat");
     } else if (value === "All Dogs"){
       var param = "?search=dog&type=dog";
       setType("dog");
       setSearchQuery("dog");
+      var url = "http://vmware-elastic.galvanizelabs.net:8080/api/petSearch" + param;
+    } else {
+      var param = "?type=other"
+      setType("other")
+      var url = "http://vmware-elastic.galvanizelabs.net:8080/api/advSearch" + param;
     }
 
     // http://a4216306eee804e2ba2b7801880b54a0-1918769273.us-west-2.elb.amazonaws.com:8080/api/petSearch
     // http://vmware-elastic.galvanizelabs.net:8080/api/petSearch
-    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/petSearch" + param)
+    axios.get(url)
     // axios.get("http://locahost:8080/api/petSearch" + param)
     .then((result)=>{
         setResult(result.data.pets);
