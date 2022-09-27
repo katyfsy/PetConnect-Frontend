@@ -1,0 +1,8 @@
+#searchFavBtn {
+  position: relative;
+  left: 50%;
+  top: 1rem;
+  font-size: 30px;
+  color: #8F9ED9;
+  cursor: pointer;
+}
