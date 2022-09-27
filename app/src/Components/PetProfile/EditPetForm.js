@@ -721,7 +721,7 @@ function EditPetForm() {
                     bsPrefix="cancel-pet-button"
                     variant="secondary"
                     type="submit"
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate(`/pet/${state.thisPet.petId}`, { replace: true })}
                   >
                     Cancel
                   </Button>
