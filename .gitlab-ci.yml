@@ -11,7 +11,7 @@ build:
   script:
     - cd app/
     - npm install --legacy-peer-deps
-    - npm build
+    - npm run build
   artifacts:
       paths:
         - build/
