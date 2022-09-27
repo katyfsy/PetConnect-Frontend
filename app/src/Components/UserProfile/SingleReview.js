@@ -4,6 +4,7 @@ import Rating from 'react-rating';
 import moment from 'moment';
 import axios from 'axios';
 import { getBearerToken, PSB_API_URL } from "./psb-exports";
+import "./SingleReview.css";
 
 function SingleReview({ review, votedOnReviews }) {
 
@@ -95,12 +96,13 @@ function SingleReview({ review, votedOnReviews }) {
       <Modal.Header closeButton style={{backgroundColor: "#8F9ED9"}}>
         <Modal.Title style={{color: "white"}}>Review photos</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body  id="review-modal">
         <Carousel activeIndex={index} onSelect={handleSelect}>
           {review.reviewImages.map((reviewImage) => {
             return (
-              <Carousel.Item key={reviewImage}>
-                <Image width="800" src={reviewImage} key={reviewImage} alt="review photo" style={{objectFit: "cover", maxHeight: "100%"}}/>
+              <Carousel.Item id="review-carousel" key={reviewImage}>
+                {/* <Image width="800" src={reviewImage} key={reviewImage} alt="review photo" style={{objectFit: "cover", maxHeight: "100%"}}/> */}
+                <Image id="review-image" src={reviewImage} key={reviewImage} alt="review photo"/>
               </Carousel.Item>
             )})}
         </Carousel>
