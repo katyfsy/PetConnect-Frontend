@@ -159,7 +159,7 @@ const ChangePassword = () => {
               </Row>
               <div className="form-group mt-1">
                 <Row className="justify-content-center">
-                  <Col xs={7}>
+                  <Col xs={4}>
                     <input
                       type={passwordShown ? "text" : "password"}
                       className="form-control"

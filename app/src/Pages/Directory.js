@@ -26,7 +26,7 @@ function Directory() {
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const getData = async () => {
     const { data } = await axios.get(`${PSB_API_URL}/api/public/users/orgs`);
@@ -34,7 +34,7 @@ function Directory() {
   };
   useEffect(() => {
     getData();
-    const endOffset = itemOffset + itemsPerPage;
+    const endOffset = parseInt(itemOffset) + parseInt(itemsPerPage);
     setCurrentItems(data.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(data.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, data]);
@@ -43,6 +43,7 @@ function Directory() {
     const newOffset = (event.selected * itemsPerPage) % data.length;
     setItemOffset(newOffset);
   };
+  
 
   const rowItem = currentItems.map((element) => {
     let blankCityState = "";
@@ -123,7 +124,7 @@ function Directory() {
                         setItemsPerPage(e.target.value);
                       }}
                     >
-                      <option value="5" style={{ "text-align-last": "center"}}>5</option>
+                      <option  value="5" >5</option>
                       <option value="10">10</option>
                       <option value="20">20</option>
                     </Form.Control>

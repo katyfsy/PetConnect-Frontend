@@ -6,8 +6,9 @@ import {
   getUser,
   PSB_API_URL,
 } from "../UserProfile/psb-exports.js";
+import './SearchFavButton.css';
 
-function FavButton ({ petId, isFavor, deleteFavor, setResultPageIsFav }) {
+function SearchFavButton ({ petId, isFavor, deleteFavor, setResultPageIsFav }) {
 
   const [favor, setFavor] = useState(false);
 
@@ -29,10 +30,6 @@ function FavButton ({ petId, isFavor, deleteFavor, setResultPageIsFav }) {
         setFavor(true);
         setResultPageIsFav(true);
       })
-      .catch((err) => console.log(err));
-
-      axios.patch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/addFavorite/${petId}`)
-      .then(() => console.log("saved fav to pet profile"))
       .catch((err) => console.log(err));
     }
   }
@@ -60,21 +57,17 @@ function FavButton ({ petId, isFavor, deleteFavor, setResultPageIsFav }) {
           deleteFavor(petId);
         })
         .catch((err) => console.log(err));
-
-        axios.patch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/removeFavorite/${petId}`)
-          .then(() => console.log("deleted fav to pet profile"))
-          .catch((err) => console.log(err));
   }
 
   if(favor === false) {
     return (
-      <i onClick={handleAddFavorites} className="bi bi-heart i-heart"></i>
+      <i onClick={handleAddFavorites} id="searchFavBtn" className="bi bi-heart i-heart"></i>
     );
   } else {
     return (
-      <i onClick={handleDeleteFavorites} className="bi bi-heart-fill i-heart"></i>
+      <i onClick={handleDeleteFavorites} id="searchFavBtn" className="bi bi-heart-fill i-heart"></i>
     );
   }
 }
 
-export default FavButton;
+export default SearchFavButton;
