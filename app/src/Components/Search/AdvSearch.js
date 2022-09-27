@@ -78,8 +78,9 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
 
   useEffect(() => {
     if (searchQuery === "" && zipcode === "") return;
-    var params = {search: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null, type: type!=="Any" ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
-    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/advSearch", {params})
+    var params = {search: searchQuery ? searchQuery : null, zip: zipcode ? zipcode : null, type: type!==("Any" || []) ? type : null, breed: breed ? breed : null, age: age ? age : null, sex: gender ? gender : null, radius: zipcode ? radius : null};
+    console.log("changed radius to: ", radius);
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/petSearch", {params})
     // axios.get("http://localhost:8080/api/petSearch", {params})
     .then((result) =>{
       setResult(result.data.pets)
