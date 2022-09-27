@@ -63,7 +63,6 @@ const InputBar = ({
           </button>
         </form>
       </div>
-      {/* } */}
     </div>
   );
 };
