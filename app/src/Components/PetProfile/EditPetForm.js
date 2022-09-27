@@ -42,17 +42,10 @@ function EditPetForm() {
   });
 
   const handlePetFieldsChange = (e, form, setform) => {
-    if (e.target.name === "reproductiveStatus" && e.target.value === "") {
-      setform({
-        ...form,
-        [e.target.name]: null,
-      });
-    } else {
       setform({
         ...form,
         [e.target.name]: e.target.value,
       });
-    }
   };
 
   // Functionalities for Photo selection & deletion
@@ -598,8 +591,8 @@ function EditPetForm() {
                     isInvalid={errors.age}
                   >
                     <option value="">Select lifestage</option>
-                    <option value="early">Early</option>
-                    <option value="mid">Mid</option>
+                    <option value="young">Young</option>
+                    <option value="adult">Adult</option>
                     <option value="senior">Senior</option>
                   </Form.Select>
                   <Form.Control.Feedback className="form-error" type="invalid">
@@ -642,9 +635,10 @@ function EditPetForm() {
                     }}
                     isInvalid={errors.reproductiveStatus}
                   >
-                    <option value="">Unknown</option>
-                    <option value={true}>Yes</option>
-                    <option value={false}>No </option>
+                    <option value="">Select status</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="unknown">Unknown</option>
                   </Form.Select>
                   <Form.Control.Feedback className="form-error" type="invalid">
                     {errors.reproductiveStatus}
@@ -727,7 +721,7 @@ function EditPetForm() {
                     bsPrefix="cancel-pet-button"
                     variant="secondary"
                     type="submit"
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate(`/pet/${state.thisPet.petId}`, { replace: true })}
                   >
                     Cancel
                   </Button>

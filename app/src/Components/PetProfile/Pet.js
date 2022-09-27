@@ -3,11 +3,11 @@ import { useParams } from "react-router-dom";
 import EditPet from "./EditPet";
 import VaccineList from "./VaccineList.js";
 import AddVaccineModal from "./AddVaccineModal.js";
-import { Button, Row, Col, Image, Tab, Tabs } from "react-bootstrap";
+import { Button, Row, Col, Image, Tab, Tabs, Modal, Carousel } from "react-bootstrap";
 import { FaRegHeart, FaHeart, FaCat, FaFish } from "react-icons/fa";
-import { MdPets } from "react-icons/md";
-import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
-import { RiGenderlessFill } from "react-icons/ri";
+import { BsFillFlagFill } from "react-icons/bs"
+import { MdPets, MdLocationCity } from "react-icons/md";
+import { BsGenderFemale, BsGenderMale, BsQuestionCircleFill } from "react-icons/bs";
 import { ImPlus } from "react-icons/im";
 import { GrFlag, GrLocation } from "react-icons/gr";
 import Alert from "./AlertModalPetForms";
@@ -37,11 +37,18 @@ function Pet() {
   const [isEdit, setIsEdit] = useState(false);
   const [fetchPet, refetchPet] = useState(false);
 
+  const [showPhotos, setShowPhotos] = useState(false);
+
   const [showAlert, setShowAlert] = useState(false);
   const [alertText, setAlertText] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
   const [handleOnExited, setHandleOnExited] = useState(false);
+
+  const hexColor = {
+    reported: "#4562d3"
+  }
+
 
   let user = getUser();
   let petId = useParams();
@@ -98,6 +105,7 @@ function Pet() {
         setPetPhotos(data.photos);
       });
   }, [isEdit, fetchPet]);
+
 
   function handleOnDelete() {
     fetch(
@@ -181,28 +189,28 @@ function Pet() {
 
   function getPetIcon(petType) {
     if (petType === "dog") {
-      return <MdPets size={28} />;
+      return <MdPets size={16} />;
     }
     if (petType === "cat") {
-      return <FaCat size={28} />;
+      return <FaCat size={16} />;
     }
     if (petType === "bird") {
-      return <GiHummingbird size={28} />;
+      return <GiHummingbird size={16} />;
     }
     if (petType === "horse") {
-      return <GiHorseHead size={28} />;
+      return <GiHorseHead size={16} />;
     }
     if (petType === "fish") {
-      return <FaFish size={28} />;
+      return <FaFish size={16} />;
     }
     if (petType === "farmAnimal") {
-      return <GiGoat size={28} />;
+      return <GiGoat size={16} />;
     }
     if (petType === "smallPet") {
-      return <GiRabbitHead size={28} />;
+      return <GiRabbitHead size={16} />;
     }
     if (petType === "reptile") {
-      return <GiReptileTail size={28} />;
+      return <GiReptileTail size={16} />;
     }
   }
 
@@ -211,188 +219,324 @@ function Pet() {
   }
   return (
     <>
-      <br />
+      <div className="profile-page-container">
 
-      <Row className="mb-3">
-        <Col>
-          <Image
-            src={thisPet.coverPhoto}
-            roundedCircle
-            className="profile-photo rounded-circle"
-          />
+        <div className="profile-page-section">
 
-          <br />
-          {petPhotos.map((petPhoto) => (
-            <LightgalleryItem
-              key={petPhoto.photoId}
-              src={petPhoto.photo_url}
-              group={"any"}
-            >
-              <img src={petPhoto.photo_url} width={"200"} height={"200"} />
-            </LightgalleryItem>
-          ))}
-        </Col>
-        <Col>
-          <Row className="mb-3" id="pet-info-header">
-            <Col>
-              <Row>
-                <h1 className="pet-name">{thisPet.name}</h1>
-                <p className="pet-location">
-                  <GrLocation size={28} /> {thisPet.zip}
-                </p>
-              </Row>
-            </Col>
-            {user !== thisPet.owner ? (
-              <>
-                <Col>
-                  <Button
-                    variant="primary"
-                    size="md"
-                    onClick={() =>
-                      navigate("/messages", {
-                        state: { receiverName: thisPet.owner },
-                      })
-                    }
-                  >
-                    Contact Owner
-                  </Button>
-                </Col>
+          <div className="profile-page-left-container">
+            <div className="profile-page-column-section">
+              <div className="profile-page-cover-photo-container">
+                <img
+                  className="profile-page-cover-photo"
+                  src={thisPet.coverPhoto}
+                />
+              </div>
 
-                {!liked ? (
-                  <Col>
-                    <FaRegHeart size={42} onClick={() => handleLike()} />
-                    <p>{calculateLike}</p>
-                  </Col>
-                ) : (
-                  <Col>
+              {user !== thisPet.owner ? <div className="profile-page-likes-container">
+                  {!liked ? <FaHeart
+                    color="white"
+                    size="20"
+                    onClick={() => handleLike()}
+                  /> :
                     <FaHeart
                       color="red"
-                      size={42}
+                      size="20"
                       onClick={() => handleRemoveLike()}
-                    />
-                    <p>{calculateLike}</p>
-                  </Col>
-                )}
+                    />}
+                  {calculateLike > 0 ? <div className="profile-page-likes-count-container">
+                    {calculateLike}
+                  </div> : <></>}
+                </div> : <></>}
 
-                <Col>
-                  <Button
-                    variant="primary"
-                    size="md"
-                    onClick={() => handleReporting()}
-                  >
-                    <GrFlag /> Report Pet
-                  </Button>
-                </Col>
-                {reportedHere}
-              </>
-            ) : (
-              <>
-                <Col>
-                  <Button
-                    variant="primary"
-                    size="md"
-                    onClick={() =>
-                      navigate(`/editpet`, {
-                        replace: true,
-                        state: { thisPet: thisPet },
-                      })
-                    }
-                  >
-                    {!isEdit ? "Edit Details" : "Cancel Edit"}
-                  </Button>
-                </Col>
-                <Col>
-                  <br />
-                  <Button variant="primary" size="md" onClick={handleOnDelete}>
-                    {" "}
-                    Delete Pet{" "}
-                  </Button>
-                </Col>
-                <Col className="vaccine-btn-ctr">
-                  <AddVaccineModal
-                    owner={user}
-                    petId={thisPet.petId}
-                    petName={thisPet.name}
-                  />
-                </Col>
-              </>
-            )}
-          </Row>
-          <Row className="mb-3" id="user-name">
-            <Col>
-              {getPetIcon(thisPet.type)} {thisPet.type}{" "}
-              {thisPet.sex == "male" ? (
-                <>
-                  <BsGenderMale size={28} /> {thisPet.sex}
-                </>
-              ) : thisPet.sex == "female" ? (
-                <>
-                  <BsGenderFemale size={28} /> {thisPet.sex}
-                </>
-              ) : (
-                <>
-                  <RiGenderlessFill size={28} /> Gender Unknown
-                </>
-              )}
-            </Col>
-            {/* <Col>
-              {" "}
-              <Row className="mb-3"></Row>
-            </Col> */}
-          </Row>
-          {/* <Col></Col> */}
-          <br />
-          <Row className="mb-3" id="user-description"></Row>
-          <Row className="mb-3">
-            <Tabs
-              defaultActiveKey="description"
-              id="uncontrolled-tab-example"
-              className="mb-3"
-            >
-              <Tab eventKey="description" title="Description">
-                <p>{thisPet.description}</p>
-              </Tab>
-              <Tab eventKey="info" title="Additional Info">
-                <p>Name: {thisPet.name}</p>
-                <p>Owner: {thisPet.owner}</p>
-                <p>City: {thisPet.city}</p>
-                <p>State: {thisPet.state}</p>
-                <p>Zip: {thisPet.zip}</p>
-                <p>Type: {thisPet.type}</p>
-                <p>Weight: {thisPet.weight}</p>
-                <p>Age: {thisPet.age}</p>
-                <p>Sex: {thisPet.sex}</p>
-                <p>
-                  Reproductive Status:{" "}
-                  {thisPet.reproductiveStatus ? "No Kids" : "Yes Kids"}
-                </p>
-
-                <p>Likes: {thisPet.favoriteCount}</p>
-                <p>Reported: {thisPet.reported ? "true" : "false"}</p>
-                <p>Adopted: {thisPet.adopted ? "true" : "false"}</p>
-              </Tab>
-              <Tab eventKey="vaccines" title="Vaccine History">
-                <VaccineList pet={thisPet} />
-              </Tab>
-              <Tab eventKey="contact" title="Contact">
-                <div className="contact-card-tab">
-                  <User owner={thisPet.owner} />
+              {user !== thisPet.owner ? <div className="profile-page-report-container">
+                <div className="profile-page-report-tag">
+                  {!reportedHere ? "Report" : "Reported"}
                 </div>
+                {!reportedHere ? <BsFillFlagFill
+                  color="white"
+                  size="20"
+                  onClick={() => handleReporting()}
+                />
+                :
+                <BsFillFlagFill
+                color={hexColor['reported']}
+                  size="20"
+                  onClick={() => handleReporting()}
+                />
+                }
+              </div> : <></>}
+            </div>
 
-                {/* {Object.keys(form).map((key, index) => {
-                  return (
-                    <p key={index}>
-                      {key}: {form[key]}
-                    </p>
-                  );
-                })} */}
-              </Tab>
-            </Tabs>
-          </Row>
-        </Col>
+            <div className="profile-page-column-section">
+              <div className="profile-page-photo-container">
+                {petPhotos.map((petPhoto) => (
+                  <div
+                    className="profile-page-photo-preview"
+                    key={petPhoto.photoId}
+                    src={petPhoto.photo_url}
+                    onClick={() => setShowPhotos(true)}
+                  >
+                    <img src={petPhoto.photo_url} className="profile-page-photo" />
+                  </div>
+                ))}
 
-        <br />
-        <br />
+              </div>
+            </div>
+          </div>
+
+
+          <div className="profile-page-right-container">
+            <div className="profile-page-edit">
+              {user === thisPet.owner ?
+                <Button
+                  className="profile-page-owner-button"
+                  variant="outline-secondary"
+                  size="md"
+                  onClick={() => navigate(`/editpet`, {
+                    replace: true,
+                    state: { thisPet: thisPet }
+                  })}
+                >
+                  {!isEdit ? "Edit profile" : "Cancel"}
+                </Button>
+                :
+                <Button
+                  className="profile-page-owner-button"
+                  variant="outline-secondary"
+                  size="md"
+                  onClick={() =>
+                    navigate("/messages", {
+                    state: { receiverName: thisPet.owner },
+                  })}
+                >
+                  Message owner
+                </Button>
+              }
+            </div>
+
+            <div className="profile-page-column-section">
+              <div className="profile-page-general-info-container">
+                <h1 className="pet-name">{thisPet.name}</h1>
+                <div className="profile-page-icons">
+                  <div className="profile-page-pet-icon-text-pair">
+                    <MdLocationCity
+                      size={16} />
+                    {thisPet.zip}
+                  </div>
+                  <div className="profile-page-pet-icon-text-pair">
+                    {getPetIcon(thisPet.type)}
+                    {thisPet.type}
+                  </div>
+                  <div className="profile-page-pet-icon-text-pair">
+                    {thisPet.sex !== "male" && thisPet.sex !== "female" ?
+                      <BsQuestionCircleFill size={16} /> : thisPet.sex === "male" ?
+                        <BsGenderMale size={16} /> : <BsGenderFemale size={16} />}
+                    {thisPet.sex !== "male" && thisPet.sex !== "female" ?
+                      "sex is unknown" : thisPet.sex}
+                  </div>
+                </div>
+                {user === thisPet.owner ? <div className="profile-page-dashboard">
+                  <div>Likes: {thisPet.favoriteCount}</div>
+                  <div>Reported: {thisPet.reported ? "Yes" : "No"}</div>
+                  <div>Adopted: {thisPet.Adopted ? "Yes" : "No"}</div>
+                </div> : <div className="profile-page-dashboard-empty"></div>}
+              </div>
+            </div>
+
+            <div className="profile-page-tab-section">
+              <Tabs
+                justify
+                defaultActiveKey="description"
+              >
+                <Tab
+                  tabClassName="profile-page-tab"
+                  bsPrefix="profile-page-tab-pane"
+                  eventKey="description"
+                  title="Description">
+                  {thisPet.description}
+                </Tab>
+                <Tab
+                  tabClassName="profile-page-tab"
+                  bsPrefix="profile-page-tab-pane"
+                  eventKey="info"
+                  title="Details">
+                  <div className="profile-page-pet-details-container">
+                    <div className="profile-page-pet-details-column">
+
+                      {thisPet.name ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            Pet's name:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.name}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                      {thisPet.type ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            Type:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.type}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                      {thisPet.species ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            Species:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.species}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                      {thisPet.breed ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            Breed:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.breed}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                      {thisPet.size ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            Size:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.size}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                      {thisPet.age ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            Age:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.age}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                      {thisPet.sex ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            Sex:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.sex}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                      {thisPet.reproductiveStatus ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            Spayed/Neutered:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.reproductiveStatus}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                    </div>
+
+
+                    <div className="profile-page-pet-details-column">
+                      {thisPet.owner ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            Owner:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.owner}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                      {thisPet.city ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            City:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.city}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                      {thisPet.state ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            State:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.state}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                      {thisPet.zip ?
+                        <div className="profile-page-pet-property">
+                          <div className="profile-page-pet-property-key">
+                            Zipcode:
+                          </div>
+                          <div className="profile-page-pet-property-value">
+                            {thisPet.zip}
+                          </div>
+                        </div>
+                        : <></>
+                      }
+                    </div>
+                  </div>
+                </Tab>
+                <Tab
+                  tabClassName="profile-page-tab"
+                  eventKey="vaccines"
+                  title="Vaccines">
+                  <VaccineList pet={thisPet} />
+                </Tab>
+
+                <Tab
+                  tabClassName="profile-page-tab"
+                  eventKey="contact"
+                  title="Contact">
+                  <div className="contact-card-tab">
+                    <User owner={thisPet.owner} />
+                  </div>
+                </Tab>
+              </Tabs>
+            </div>
+          </div>
+        </div>
+        <div className="profile-page-section">
+
+          {
+            user !== thisPet.owner ? null : (
+              <>
+                <br />
+                <Button variant="danger" size="md" onClick={handleOnDelete}>
+                  Delete Pet
+                </Button>
+              </>
+            )
+          }
+        </div>
+
+      </div>
+
         {!isEdit ? null : (
           <EditPet
             thisPet={thisPet}
@@ -401,16 +545,6 @@ function Pet() {
             refetchPet={refetchPet}
           />
         )}
-      </Row>
-
-      {user !== thisPet.owner ? null : (
-        <>
-          <br />
-          <Button variant="danger" size="md" onClick={handleOnDelete}>
-            Delete Pet
-          </Button>
-        </>
-      )}
 
       <Alert
         show={showAlert}
@@ -419,8 +553,31 @@ function Pet() {
         type={alertType}
         onHide={() => setShowAlert(false)}
         onExited={handleOnExited ? () => navigate("/pets") : null}
-        // handleOnExited('/pets')
+      // handleOnExited('/pets')
       />
+
+      <Modal show={showPhotos} dialogClassName="profile-page-gallery" centered onHide={() => setShowPhotos(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>{thisPet.name}'s photos</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Carousel>
+            {petPhotos.map((petPhoto) => (
+              <Carousel.Item>
+                <img
+                  className="profile-page-gallery-photo"
+                  key={petPhoto.photoId}
+                  src={petPhoto.photo_url}
+                />
+                <Carousel.Caption>
+
+                </Carousel.Caption>
+              </Carousel.Item>
+            ))}
+          </Carousel>
+
+        </Modal.Body>
+      </Modal>
       <br />
     </>
   );

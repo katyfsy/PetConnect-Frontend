@@ -54,8 +54,12 @@ const ResetPassword = () => {
         // process.env.REACT_APP_USER_ID
         EMAIL_JS.REACT_APP_SERVICE_ID,
         EMAIL_JS.REACT_APP_TEMPLATE_ID,
+        // 'template_cuioiov',
+        // 'service_r0k2eyh',
         templateParams,
         EMAIL_JS.REACT_APP_USER_ID
+        // 'KowJ5SR4XG510Yyyk'
+
       )
   };
 
