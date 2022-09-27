@@ -56,6 +56,7 @@
 .profile-page-tab-section {
     display: flex;
     flex-direction: column;
+    position: relative;
     width: 100%;
 }
 
@@ -231,6 +232,20 @@
     justify-content: space-around;
 }
 
+.profile-page-tab-pane {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 300;
+    background-color: white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 10px;
+    padding-top: 20px;
+    text-align: left;
+}
+
 .profile-page-tab {
     background-color: #8F9ED9 !important;
     border: solid 0.2px !important;
@@ -266,8 +281,7 @@
 .profile-page-pet-details-column {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    flex-basis: 0;
+    width: 50%;
 }
 
 .profile-page-pet-property {
@@ -279,37 +293,19 @@
 .profile-page-pet-property-key {
     display: flex;
     flex-direction: row;
+    font-size: 10px;
     width: 130px;
     color: #4562d3
 }
 
-.react_lightgallery_item {
-    display: inline-block;
-}
-
-/* .contact-card-tab {
+.profile-page-pet-property-value {
     display: flex;
-    justify-content: center;
-    background-color: white !important;
-
-} */
-
-.profile-page-tab-pane {
-    font-size: 14px;
-    font-weight: 300;
-    background-color: white;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    padding: 10px;
-    padding-top: 20px;
-    text-align: left;
+    flex-direction: row;
+    font-size: 12px;
+    text-transform: capitalize;
+    width: 130px;
+    color: black;
 }
-
-
-
-
-
-
 
 
 .profile-page-buttons {

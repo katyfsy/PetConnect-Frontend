@@ -352,7 +352,6 @@ function Pet() {
                   tabClassName="profile-page-tab"
                   bsPrefix="profile-page-tab-pane"
                   eventKey="description"
-                  unmountOnExit="true"
                   title="Description">
                   {thisPet.description}
                 </Tab>
@@ -360,7 +359,6 @@ function Pet() {
                   tabClassName="profile-page-tab"
                   bsPrefix="profile-page-tab-pane"
                   eventKey="info"
-                  unmountOnExit="true"
                   title="Details">
                   <div className="profile-page-pet-details-container">
                     <div className="profile-page-pet-details-column">
@@ -448,29 +446,15 @@ function Pet() {
                             Spayed/Neutered:
                           </div>
                           <div className="profile-page-pet-property-value">
-                            unknown
-                          </div>
-                        </div>
-                        :
-                        <div className="profile-page-pet-property">
-                          <div className="profile-page-pet-property-key">
-                            Spayed/Neutered:
-                          </div>
-                          <div className="profile-page-pet-property-value">
                             {thisPet.reproductiveStatus}
                           </div>
                         </div>
+                        : <></>
                       }
-
-
-
-
                     </div>
 
 
-
                     <div className="profile-page-pet-details-column">
-
                       {thisPet.owner ?
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
@@ -521,24 +505,13 @@ function Pet() {
                 <Tab
                   tabClassName="profile-page-tab"
                   eventKey="vaccines"
-                  unmountOnExit="true"
                   title="Vaccines">
                   <VaccineList pet={thisPet} />
-
-                  {user === thisPet.owner ? <Button className="profile-page-owner-button"
-                    variant="outline-secondary">
-                    <AddVaccineModal
-                      owner={user}
-                      petId={thisPet.petId}
-                      petName={thisPet.name}
-                    />
-                  </Button> : <></>}
                 </Tab>
 
                 <Tab
                   tabClassName="profile-page-tab"
                   eventKey="contact"
-                  unmountOnExit="true"
                   title="Contact">
                   <div className="contact-card-tab">
                     <User owner={thisPet.owner} />

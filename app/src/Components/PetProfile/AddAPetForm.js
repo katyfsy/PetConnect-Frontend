@@ -25,7 +25,6 @@ function AddAPetForm() {
   const [alertType, setAlertType] = useState("");
   const [handleOnExited, setHandleOnExited] = useState(false);
 
-  // const [isSuccess, setIsSuccess] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentUpload, setCurrentUpload] = useState(0);
 
@@ -55,18 +54,10 @@ function AddAPetForm() {
   const MAX_NUMBER_OF_PHOTOS = 5;
 
   const handleOnChange = (e, form, setform) => {
-    console.log(form);
-    if (e.target.name === "reproductiveStatus" && e.target.value === "") {
-      setform({
-        ...form,
-        [e.target.name]: null,
-      });
-    } else {
       setform({
         ...form,
         [e.target.name]: e.target.value,
       });
-    }
   };
 
   const handleAddPhotos = (newPhotos) => {

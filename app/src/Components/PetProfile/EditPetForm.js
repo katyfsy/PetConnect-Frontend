@@ -42,17 +42,10 @@ function EditPetForm() {
   });
 
   const handlePetFieldsChange = (e, form, setform) => {
-    if (e.target.name === "reproductiveStatus" && e.target.value === "") {
-      setform({
-        ...form,
-        [e.target.name]: null,
-      });
-    } else {
       setform({
         ...form,
         [e.target.name]: e.target.value,
       });
-    }
   };
 
   // Functionalities for Photo selection & deletion
@@ -642,9 +635,10 @@ function EditPetForm() {
                     }}
                     isInvalid={errors.reproductiveStatus}
                   >
-                    <option value="">Unknown</option>
-                    <option value={true}>Yes</option>
-                    <option value={false}>No </option>
+                    <option value="">Select status</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="unknown">Unknown</option>
                   </Form.Select>
                   <Form.Control.Feedback className="form-error" type="invalid">
                     {errors.reproductiveStatus}
