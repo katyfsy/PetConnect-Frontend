@@ -30,6 +30,10 @@ function FavButton ({ petId, isFavor, deleteFavor, setResultPageIsFav }) {
         setResultPageIsFav(true);
       })
       .catch((err) => console.log(err));
+
+      axios.patch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/addFavorite/${petId}`)
+      .then(() => console.log("saved fav to pet profile"))
+      .catch((err) => console.log(err));
     }
   }
 
@@ -56,6 +60,10 @@ function FavButton ({ petId, isFavor, deleteFavor, setResultPageIsFav }) {
           deleteFavor(petId);
         })
         .catch((err) => console.log(err));
+
+        axios.patch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/removeFavorite/${petId}`)
+          .then(() => console.log("deleted fav to pet profile"))
+          .catch((err) => console.log(err));
   }
 
   if(favor === false) {

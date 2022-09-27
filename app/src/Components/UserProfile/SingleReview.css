@@ -1,0 +1,5 @@
+#review-image {
+  width: 800px;
+  object-fit: cover;
+  height: auto;
+}
