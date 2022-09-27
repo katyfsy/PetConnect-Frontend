@@ -10,7 +10,7 @@ build:
   stage: build
   script:
     - cd app/
-    - npm install
+    - npm install --legacy-peer-deps
     - npm build
   artifacts:
       paths:
