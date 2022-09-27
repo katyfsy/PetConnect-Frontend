@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: psb-fe
-        image: leqvin/psb-fe:amd64
+        image: justinchen87/psb-fe:amd64
         imagePullPolicy: Always
         ports:
         - containerPort: 80

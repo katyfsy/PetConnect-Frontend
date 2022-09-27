@@ -78,11 +78,10 @@ function UserFavorites() {
     return (
       <Card style={{ width: "18rem", marginLeft: '2rem', marginBottom: '2rem' }}>
         <FavButton petId={element.petId} isFavor={isFavor} deleteFavor={(e) => deleteFavor(e)}/>
-        <a href={`/pet/${element.petId}`}><Card.Img variant="top" src={element.coverPhoto} style={{height: 200}} onClick={() => handleClick()}/></a>
-
+        <a href={`/pet/${element.petId}`}><Card.Img variant="top" src={element.coverPhoto} style={{height: 200}} onClick={() => handleClick()}/>
+        </a>
         <Card.Body>
           <Card.Title>{element.name}</Card.Title>
-          <Card.Text>{element.description}</Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroup.Item>Adopted: {adopted}</ListGroup.Item>
