@@ -318,10 +318,10 @@
 
 
 .profile-page-gallery-photo {
-    height: 100%;
+    max-height: 800px;
 }
 
-.profile-page-gallery {
+/* .profile-page-gallery {
 
-    width: 90% !important;
-}
+    width: 1000px !important;
+} */

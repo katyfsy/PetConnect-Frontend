@@ -45,7 +45,7 @@ const ResetPassword = () => {
         //build the reset URL route
         if (res.status === 200) {
           // sendEmail(`http://localhost:3000/user/reset/${btoa(username + " " + process.env.REACT_APP_SECRET_KEY)}`, res.data.email);
-          sendEmail(`http://a05c559e9f4dd47e6a449abdb704ff66-132472868.us-west-2.elb.amazonaws.com/user/reset/${btoa(username + " " + 'supersecretpsb123')}`, res.data.email);
+          sendEmail(`http://a05c559e9f4dd47e6a449abdb704ff66-132472868.us-west-2.elb.amazonaws.com/user/reset/${btoa(username + " " + EMAIL_JS.REACT_APP_SECRET_KEY)}`, res.data.email);
         } else if (res.status === 204) {
           resetUserNotExistAlert();
         }
@@ -63,13 +63,13 @@ const ResetPassword = () => {
         // process.env.REACT_APP_TEMPLATE_ID,
         // templateParams,
         // process.env.REACT_APP_USER_ID
-        // EMAIL_JS.REACT_APP_SERVICE_ID,
-        // EMAIL_JS.REACT_APP_TEMPLATE_ID,
-        'template_cuioiov',
-        'service_r0k2eyh',
+        EMAIL_JS.REACT_APP_SERVICE_ID,
+        EMAIL_JS.REACT_APP_TEMPLATE_ID,
+        // 'template_cuioiov',
+        // 'service_r0k2eyh',
         templateParams,
-        // EMAIL_JS.REACT_APP_USER_ID
-        'KowJ5SR4XG510Yyyk'
+        EMAIL_JS.REACT_APP_USER_ID
+        // 'KowJ5SR4XG510Yyyk'
 
       )
       .then(
