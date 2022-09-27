@@ -25,7 +25,6 @@ function AddAPetForm() {
   const [alertType, setAlertType] = useState("");
   const [handleOnExited, setHandleOnExited] = useState(false);
 
-  // const [isSuccess, setIsSuccess] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentUpload, setCurrentUpload] = useState(0);
 
@@ -55,18 +54,10 @@ function AddAPetForm() {
   const MAX_NUMBER_OF_PHOTOS = 5;
 
   const handleOnChange = (e, form, setform) => {
-    console.log(form);
-    if (e.target.name === "reproductiveStatus" && e.target.value === "") {
-      setform({
-        ...form,
-        [e.target.name]: null,
-      });
-    } else {
       setform({
         ...form,
         [e.target.name]: e.target.value,
       });
-    }
   };
 
   const handleAddPhotos = (newPhotos) => {
@@ -290,12 +281,12 @@ function AddAPetForm() {
             state: "",
             zip: "",
             type: "",
-            breed: "",
-            species: "",
-            size: "",
-            age: "",
+            breed: "not specified",
+            species: "not specified",
+            size: "not specified",
+            age: "not specified",
             sex: "",
-            reproductiveStatus: "",
+            reproductiveStatus: "unknown",
             description: "",
             // photos: "",
           }}
@@ -628,8 +619,8 @@ function AddAPetForm() {
                     isInvalid={errors.age}
                   >
                     <option value="">Select lifestage</option>
-                    <option value="early">Early</option>
-                    <option value="mid">Mid</option>
+                    <option value="young">Young</option>
+                    <option value="adult">Adult</option>
                     <option value="senior">Senior</option>
                   </Form.Select>
                   <Form.Control.Feedback className="form-error" type="invalid">
@@ -723,7 +714,7 @@ function AddAPetForm() {
                     bsPrefix="cancel-pet-button"
                     variant="secondary"
                     type="submit"
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate(`/pets`, { replace: true })}
                   >
                     Cancel
                   </Button>

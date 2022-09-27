@@ -4,6 +4,8 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { getUser, getUserType } from "../UserProfile/psb-exports";
+import "./AddPetButton.css";
+
 function AddPetButton() {
   let navigate = useNavigate();
 
@@ -19,7 +21,7 @@ function AddPetButton() {
     } else if (getUserType() !== "ORGANIZATION") {
       Swal.fire({
         icon: "error",
-        title: "Must Be Orhanization",
+        title: "Must Be Organization",
         showConfirmButton: false,
         timer: 1000,
       });
@@ -28,11 +30,11 @@ function AddPetButton() {
     }
   }
   return (
-    <>
-      <Button onClick={handleOnClick} size="lg">
+    <div>
+      <Button id="add-pet-button" onClick={handleOnClick} size="lg">
         Add a Pet
       </Button>
-    </>
+    </div>
   );
 }
 
