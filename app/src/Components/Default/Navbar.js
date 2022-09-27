@@ -44,21 +44,6 @@ function Navigationbar() {
     stompClient = over(Sock);
     stompClient.debug = () => {};
     stompClient.connect({}, onConnected, (error) => {console.log(error)});
-    // useEffect(() => {
-    //   const id = setInterval(() =>
-    //     axios
-    //       .get(
-    //         `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`, {
-    //           headers: { Authorization: getBearerToken() }
-    //         })
-    //       .then((response) => {
-    //         setNotification(response.data.length ? true : false);
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //       }), 5000);
-    //   return () => clearInterval(id);
-    // }, []);
   }
 
   return (
