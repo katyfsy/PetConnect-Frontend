@@ -52,13 +52,12 @@ function UserPetList() {
       isFavor = false;
     }
     return (
-      <Card style={{ width: '18rem' }}>
+      <Card style={{ width: '18rem', marginLeft: '2rem', marginBottom: '2rem' }}>
         <FavButton petId={element.petId} isFavor={isFavor}/>
       <a href={`/pet/${element.petId}`}><Card.Img variant="top" src={element.coverPhoto} style={{height: 200}} onClick={() => handleClick()}/></a>
 
       <Card.Body>
         <Card.Title>{element.name}</Card.Title>
-        <Card.Text>{element.description}</Card.Text>
       </Card.Body>
       <ListGroup className="list-group-flush">
         <ListGroup.Item>Adopted: {adopted}</ListGroup.Item>
@@ -77,7 +76,7 @@ function UserPetList() {
       <Navigationbar />
       <Container>
         <Row>
-          <h1>{username}'s Pet List</h1>
+          <h1 style={{marginBottom: '2rem'}}>{username}'s Pet List</h1>
           {PetCard}
         </Row>
       </Container>

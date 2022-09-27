@@ -22,7 +22,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 import AntSwitch from './mui/AntSwitch';
 
 var stompClient = null;
@@ -65,7 +65,6 @@ const MessagingApp = () => {
   useEffect(() => {
     if (!privateChats.get(userData.receiverName)) {
       privateChatsRef.current.set(userData.receiverName, []);
-      // setPrivateChats(new Map(privateChatsRef.current));
     }
   }, [state]);
 
@@ -137,32 +136,32 @@ const MessagingApp = () => {
     }
     if (userData.username) {
       let Sock = new SockJS(
-          'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
-          // 'http://localhost:8080/ws'
-        )
-        stompClient = over(Sock);
-        stompClient.debug = () => {};
-        stompClient.connect({}, onConnected, onError);
+        'http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/ws'
+        // 'http://localhost:8080/ws'
+      );
+      stompClient = over(Sock);
+      stompClient.debug = () => {};
+      stompClient.connect({}, onConnected, onError);
     }
   }, []);
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
-    // if (stompClient.status === 'CONNECTED') {
-      stompClient.subscribe(
-        '/user/' + userData.username + '/private',
-        onPrivateMessageReceived
-      );
-    // }
+    stompClient.subscribe(
+      '/user/' + userData.username + '/private',
+      onPrivateMessageReceived
+    );
   };
 
   const getAllChats = (username) => {
     axios
       .get(
-        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`, {
-        // `http://localhost:8080/messages/${username}`, {
-          headers: { Authorization: getBearerToken() }
-        })
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/${username}`,
+        {
+          // `http://localhost:8080/messages/${username}`, {
+          headers: { Authorization: getBearerToken() },
+        }
+      )
       .then((response) => {
         setPrivateChats(new Map(Object.entries(response.data)));
         privateChatsRef.current = new Map(Object.entries(response.data));
@@ -175,10 +174,12 @@ const MessagingApp = () => {
   const getAllNotifications = (username) => {
     axios
       .get(
-        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`, {
-        // `http://localhost:8080/messages/notifications/${username}`, {
-          headers: { Authorization: getBearerToken() }
-        })
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/notifications/${username}`,
+        {
+          // `http://localhost:8080/messages/notifications/${username}`, {
+          headers: { Authorization: getBearerToken() },
+        }
+      )
       .then((response) => {
         setNotificationList(response.data);
       })
@@ -190,17 +191,19 @@ const MessagingApp = () => {
   const getEmailNotificationsStatus = (username) => {
     axios
       .get(
-        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${username}`, {
-        // `http://localhost:8080/messages/emailnotifications/${userData.username}`, {
-          headers: { Authorization: getBearerToken() }
-        })
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${username}`,
+        {
+          // `http://localhost:8080/messages/emailnotifications/${userData.username}`, {
+          headers: { Authorization: getBearerToken() },
+        }
+      )
       .then((response) => {
         setReceiveEmails(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   const handleName = (event) => {
     event.preventDefault();
@@ -234,23 +237,19 @@ const MessagingApp = () => {
       }
       playAudio();
       messageIdRef.current = payloadData.id;
-    } else {
-      console.log('CAUGHT DUPLICATE BUG D:<');
     }
   };
 
   const sendPrivateMessage = () => {
     if (stompClient) {
-      console.log('email from message', emailRef.current)
       let chatMessage = {
         senderName: userData.username,
         receiverName: currentContact ? currentContact : userData.receiverName,
         message: userData.message,
         timestamp: Date().toString(),
-        status: 'MESSAGE',
         senderPhoto: senderPhotoRef.current,
         receiverPhoto: receiverPhotoRef.current,
-        email: emailRef.current
+        email: emailRef.current,
       };
       if (!privateChatsRef.current.get(chatMessage.receiverName)) {
         privateChatsRef.current.set(chatMessage.receiverName, []);
@@ -284,21 +283,26 @@ const MessagingApp = () => {
 
   const updateReceiveEmails = () => {
     axios
-    .patch(
-      `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${userData.username}/${!receiveEmails}`, {}, {
-      // `http://localhost:8080/messages/emailnotifications/${userData.username}/${!receiveEmails}`, {}, {
-        headers: { Authorization: getBearerToken() }
+      .patch(
+        `http://afea8400d7ecf47fcb153e7c3e44841d-1281436172.us-west-2.elb.amazonaws.com/messages/emailnotifications/${
+          userData.username
+        }/${!receiveEmails}`,
+        {},
+        {
+          // `http://localhost:8080/messages/emailnotifications/${userData.username}/${!receiveEmails}`, {}, {
+          headers: { Authorization: getBearerToken() },
+        }
+      )
+      .then((response) => {
+        if (receiveEmails) {
+          setReceiveEmails(false);
+        } else {
+          setReceiveEmails(true);
+        }
       })
-    .then((response) => {
-      if (receiveEmails) {
-        setReceiveEmails(false)
-      } else {
-        setReceiveEmails(true)
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const onError = (err) => {
@@ -306,7 +310,7 @@ const MessagingApp = () => {
   };
 
   return (
-    <div style={{ fontFamily: '"Nunito", "sans-serif"' }}>
+    <div className='messagingApp'>
       <Container>
         <Row>
           <Col sm={4}>
@@ -319,33 +323,48 @@ const MessagingApp = () => {
               setNotificationList={setNotificationList}
               currentContact={currentContact}
             />
-            <Stack direction='row' spacing={2} alignItems='center' justifyContent='center'>
-              <Typography>Unmute</Typography>
+            <Stack
+              direction='row'
+              spacing={2}
+              alignItems='center'
+              justifyContent='center'
+            >
+              <div>Unmute</div>
               <AntSwitch
                 checked={messageSound === 'true' ? false : true}
                 inputProps={{ 'aria-label': 'ant design' }}
                 onClick={() => updateMessageSound()}
               />
-              <Typography>Mute  </Typography>
+              <div>Mute&nbsp;&nbsp;&nbsp;</div>
             </Stack>
 
-            <Stack direction='row' spacing={2} alignItems='center' justifyContent='center'>
-              <Typography>Stop emails</Typography>
+            <Stack
+              direction='row'
+              spacing={2}
+              alignItems='center'
+              justifyContent='center'
+            >
+              <div>Stop Emails</div>
               <AntSwitch
                 checked={receiveEmails}
                 inputProps={{ 'aria-label': 'ant design' }}
                 onClick={() => updateReceiveEmails()}
               />
-              <Typography>Get Emails  </Typography>
+              <div>Get Emails</div>
             </Stack>
           </Col>
-          {currentContact === '' ?
-            (<Col sm={8}>
-              <Container className='chatBox'>
-                <div>Click an existing contact to the left<br/> or <br/>Message a new contact through the Pets page</div>
+          {currentContact === '' ? (
+            <Col sm={8}>
+              <Container className='initialChatBox'>
+                <div>
+                  Click an existing contact to the left
+                  <br /> or <br />
+                  Message a new contact through the Pets page
+                </div>
               </Container>
-            </Col>)
-            : (<Col sm={8}>
+            </Col>
+          ) : (
+            <Col sm={8}>
               <Container className='chatBox'>
                 <MessageChat
                   privateChats={privateChats}
@@ -378,7 +397,7 @@ const MessagingApp = () => {
                 )}
               </Container>
             </Col>
-            )}
+          )}
         </Row>
       </Container>
     </div>

@@ -332,12 +332,12 @@ const SignUpCard = () => {
             )}
           </div>
           <div className="d-grid mt-2">
-            <Button variant="outline-dark" type="submit">
+            <Button style={{backgroundColor: "#8F9ED9"}} type="submit">
               Sign Up
             </Button>
           </div>
           <div className="text-center mt-3">
-            Already registered? <Link to="/login">Log In</Link>
+            Already registered? <Link style={{color: "#8F9ED9"}} to="/login">Log In</Link>
           </div>
         </div>
       </Form>

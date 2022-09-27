@@ -12,7 +12,6 @@ import {
   Form,
 } from "react-bootstrap";
 import User from "../Components/UserProfile/User";
-import DirectoryItem from "../Components/UserProfile/DirectoryItem";
 import ReactPaginate from "react-paginate";
 import {
   getBearerToken,
@@ -55,7 +54,7 @@ function Directory() {
     return (
       <tr>
         <td>
-          <a href={`/profile/${element.username}`}>{element.businessName} </a>
+          <a href={`/profile/${element.username}`} style={{"color":"black"}}>{element.businessName} </a>
         </td>
         <td>
           <a href={`/petlist/${element.username}`}>

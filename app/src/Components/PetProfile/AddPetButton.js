@@ -19,7 +19,7 @@ function AddPetButton() {
     } else if (getUserType() !== "ORGANIZATION") {
       Swal.fire({
         icon: "error",
-        title: "Must Be Orhanization",
+        title: "Must Be Organization",
         showConfirmButton: false,
         timer: 1000,
       });

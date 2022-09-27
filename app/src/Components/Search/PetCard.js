@@ -7,6 +7,7 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 import { Link } from 'react-router-dom';
 import {getUser} from '../UserProfile/psb-exports';
 import FavButton from '../UserProfile/FavButton';
+import './PetCard.css';
 
 
 function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFavor}) {
@@ -41,28 +42,31 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFa
 
   return(
     <>
-      <Card style={{ width: '18rem' }}>
-        <div onClick={handleShow} style={{height: '0px'}}>
-          <FavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/>
-        </div>
-        <Link to={`/pet/${petId}`} style={{ textDecoration: 'none', color: 'black' }}>
-          <Card.Img src={coverPhoto} style={{height: '15rem'}}/>
-        </Link>
-        <Card.Body>
-          <Card.Title>{name}</Card.Title>
-          <Card.Text>
-            {gender}
-          </Card.Text>
-          <Card.Text>
-            {age} * {breed}
-          </Card.Text>
-          <Card.Text>
-            Rescued by {owner}
-          </Card.Text>
-          {/* <Button variant="primary" onClick={handleShow}>Favorite</Button> */}
 
-        </Card.Body>
+      <Card  >
+          <div className="favBtn" onClick={handleShow} >
+            <FavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/>
+          </div>
+          <div className="imgRow">
+            <Link to={`/pet/${petId}`} >
+              <Card.Img  className="petImg"src={coverPhoto} />
+            </Link>
+          </div>
+          <Card.Body className="petCardCustom">
+              <Card.Title className="petName">{name}</Card.Title>
+              <Card.Text>
+                {gender}
+              </Card.Text>
+              <Card.Text>
+                {age} * {breed}
+              </Card.Text>
+              <Card.Text>
+                Rescued by {owner}
+              </Card.Text>
+          </Card.Body>
       </Card>
+
+{/* modals */}
       <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header closeButton>
         <Modal.Title>Join Pet Connect to favorite pets</Modal.Title>
