@@ -29,13 +29,13 @@ function AddAPetForm() {
   const [currentUpload, setCurrentUpload] = useState(0);
 
   const [nonRequiredPetFields, setNonRequiredPetFields] = useState({
-    state: null,
-    city: null,
-    breed: null,
-    species: null,
-    size: null,
-    age: null,
-    reproductiveStatus: null,
+    state: "",
+    city: "",
+    breed: "",
+    species: "",
+    size: "",
+    age: "",
+    reproductiveStatus: "",
   });
 
   let onExited = null;
@@ -281,12 +281,12 @@ function AddAPetForm() {
             state: "",
             zip: "",
             type: "",
-            breed: "not specified",
-            species: "not specified",
-            size: "not specified",
-            age: "not specified",
+            breed: "",
+            species: "",
+            size: "",
+            age: "",
             sex: "",
-            reproductiveStatus: "unknown",
+            reproductiveStatus: "",
             description: "",
             // photos: "",
           }}
@@ -619,6 +619,7 @@ function AddAPetForm() {
                     isInvalid={errors.age}
                   >
                     <option value="">Select lifestage</option>
+                    <option value="baby">Newborn</option>
                     <option value="young">Young</option>
                     <option value="adult">Adult</option>
                     <option value="senior">Senior</option>
@@ -658,9 +659,10 @@ function AddAPetForm() {
                     }}
                     isInvalid={errors.reproductiveStatus}
                   >
-                    <option value="">Unknown</option>
-                    <option value={true}>Yes</option>
-                    <option value={false}>No </option>
+                    <option value="">Select status</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="unknown">Unknown</option>
                   </Form.Select>
                   <Form.Control.Feedback className="form-error" type="invalid">
                     {errors.reproductiveStatus}
