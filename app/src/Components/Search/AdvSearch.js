@@ -24,8 +24,8 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
 
     console.log('clicked apply Filter params: >>>', params);
 
-    // axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/petSearch", {params})
-    axios.get("http://localhost:8080/api/petSearch", {params})
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/petSearch", {params})
+    // axios.get("http://localhost:8080/api/petSearch", {params})
     .then((result) =>{
       setResult(result.data.pets)
     })
@@ -68,8 +68,8 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
       params = "?type=" + type;
       console.log('type changed', type)
     }
-    axios.get("http://localhost:8080/api/breeds" + params)
-    // axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/breeds" + params)
+    // axios.get("http://localhost:8080/api/breeds" + params)
+    axios.get("http://vmware-elastic.galvanizelabs.net:8080/api/breeds" + params)
     .then(result => {
       console.log('breeds *******', result.data)
       setAllBreeds(["Any", ...result.data])})
