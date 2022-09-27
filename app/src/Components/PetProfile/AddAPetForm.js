@@ -266,6 +266,14 @@ function AddAPetForm() {
 
     setVaccineFields(emptyFields);
   }
+  function handleDeleteNewVaccinations(deletedVaccine) {
+    const vaccinesWithOutDeleted = vaccineList.filter(
+      (vaccine) => vaccine.key !== deletedVaccine.key
+    );
+    setVaccineList(vaccinesWithOutDeleted);
+
+    setVaccineFields(emptyFields);
+  }
 
   const handleShow = () => setShowVaccineForm(true);
   function addVaccinesToPet(petId, listOfVaccines) {
@@ -705,6 +713,8 @@ function AddAPetForm() {
                       vaccineList={vaccineList}
                       petName={"Your pet"}
                       handleEditVaccineInList={handleEditVaccineInList}
+                      handleDeleteVaccineInModal={handleDeleteNewVaccinations}
+                      add={true}
                     />
                   </FieldArray>
                   <br />

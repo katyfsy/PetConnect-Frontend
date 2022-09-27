@@ -53,13 +53,18 @@ const AddVaccineModal = (props) => {
     //     console.log(data);
     //   });
     if (props.edit) {
-      props.handleEditVaccineInList(props.vaccine, props.vaccineList);
+      props.handleEditVaccineInList(props.vaccine);
     } else {
       props.handleAddVaccineToList(props.vaccine);
     }
     handleHide();
   };
 
+  function handleDelete(e) {
+    e.preventDefault();
+    props.handleDeleteVaccineInModal(props.vaccine);
+    handleHide();
+  }
   const handleOnChange = (e) => {
     props.setVaccineFields({
       ...props.vaccine,
@@ -107,6 +112,11 @@ const AddVaccineModal = (props) => {
           <Button variant="primary" onClick={(e) => handleSubmit(e)}>
             Save Vaccine Record
           </Button>
+          {props.edit ? (
+            <Button variant="danger" onClick={(e) => handleDelete(e)}>
+              Delete Vaccine Record
+            </Button>
+          ) : null}
         </Modal.Footer>
       </Modal>
     </>

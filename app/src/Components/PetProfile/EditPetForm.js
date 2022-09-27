@@ -110,7 +110,7 @@ function EditPetForm() {
     }
     photosToDelete.forEach((photo) => {
       fetch(
-        `http://localhost:8080/api/pets/photos/${state.thisPet.petId}?photoId=${photo}`,
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/${state.thisPet.petId}?photoId=${photo}`,
         { method: "DELETE" }
       )
         .then((res) => res.json())
@@ -127,13 +127,16 @@ function EditPetForm() {
 
   // Functionality to Patch pet details in backend
   function handlePatch() {
-    fetch(`http://localhost:8080/api/pets/${state.thisPet.petId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(editedPetFields),
-    })
+    fetch(
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${state.thisPet.petId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editedPetFields),
+      }
+    )
       .then((r) => r.json())
       .catch((err) => {
         console.log(err);
@@ -146,6 +149,9 @@ function EditPetForm() {
     await handlePatch();
     let successDeleting = await deletePhotosFromDB(deletePhotos);
     if (successDeleting) {
+      await handleDeleteVaccineFromBackend();
+      await addVaccinesToPet();
+      await editVaccinesInPet();
       await handleUpload(addPhotos, state.thisPet.petId);
     }
   };
@@ -153,7 +159,10 @@ function EditPetForm() {
   // Functionality to upload photos
   const getPresignedUrls = (files) => {
     return axios
-      .post("http://localhost:8080/api/pets/photos/uploadAuth", files)
+      .post(
+        "http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/uploadAuth",
+        files
+      )
       .then((res) => {
         return res.data;
       });
@@ -213,7 +222,7 @@ function EditPetForm() {
       }
       await axios
         .post(
-          `http://localhost:8080/api/pets/photos/persist?petId=${
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${
             state.thisPet.petId
           }&coverPhoto=${findCoverPhotoName(photos)}`
         )
@@ -274,32 +283,166 @@ function EditPetForm() {
     setVaccineFields(emptyFields);
   }
 
-  function handleEditVaccineInList(
-    editedVaccine,
-    inputedVaccineList,
-    inputedVaccineListSetter,
-    vaccineFieldSetter,
-    adding
-  ) {
-    let updatedVaccineList = inputedVaccineList.map((vaccine) => {
+  function handleEditVaccineInList(editedVaccine) {
+    let updatedVaccineList = vaccineList.map((vaccine) => {
       if (vaccine.key == editedVaccine.key) {
         return editedVaccine;
       }
       return vaccine;
     });
-    console.log("im being edited");
-    console.log(updatedVaccineList);
+    // console.log("im being edited");
+    // console.log(updatedVaccineList);
     setVaccineList(updatedVaccineList);
-    if (adding) {
-      setVaccineFields(emptyFields);
-    }
+
+    setVaccineFields(emptyFields);
   }
 
   //Vaccine State for editing pre-exisitng vaccinations
   const [existingVaccineList, setExistingVaccineList] = useState(
     state.thisPet.vaccines
   );
+  const [toBeEdited, setToBeEdited] = useState([]);
+
+  function handleDuplicateEdits(editedVaccine) {
+    if (toBeEdited.length === 0) {
+      setToBeEdited([editedVaccine]);
+    } else {
+      let updatedVaccineList = toBeEdited.map((vaccine) => {
+        if (vaccine.vaccineId == editedVaccine.vaccineId) {
+          return editedVaccine;
+        }
+        return vaccine;
+      });
+      setToBeEdited(updatedVaccineList);
+    }
+  }
+
+  function handleEditVaccineInExistingList(editedVaccine) {
+    let updatedVaccineList = existingVaccineList.map((vaccine) => {
+      if (vaccine.vaccineId == editedVaccine.vaccineId) {
+        handleDuplicateEdits(editedVaccine);
+        return editedVaccine;
+      }
+      return vaccine;
+    });
+    console.log("im being edited");
+    console.log(updatedVaccineList);
+    setExistingVaccineList(updatedVaccineList);
+  }
+
+  //Vaccine State for deleting newly added vaccinations
+  function handleDeleteNewVaccinations(deletedVaccine) {
+    const vaccinesWithOutDeleted = vaccineList.filter(
+      (vaccine) => vaccine.key !== deletedVaccine.key
+    );
+    setVaccineList(vaccinesWithOutDeleted);
+
+    setVaccineFields(emptyFields);
+  }
+  //Vaccine State for deleting existing vaccinations
+  const [tobeDeleted, setToBeDeleted] = useState([]);
+
+  function handleDeleteExistingVaccinations(deletedVaccine) {
+    setToBeDeleted([...tobeDeleted, deletedVaccine]);
+
+    const vaccinesWithOutDeleted = existingVaccineList.filter(
+      (vaccine) => vaccine.vaccineId !== deletedVaccine.vaccineId
+    );
+    setExistingVaccineList(vaccinesWithOutDeleted);
+
+    setVaccineFields(emptyFields);
+  }
+
+  // Vaccine Deletion & Adding functionality
+  const handleDeleteVaccineFromBackend = () => {
+    tobeDeleted.forEach((vaccine) => {
+      fetch(
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/deleteVaccine/${vaccine.vaccineId}?petId=${state.thisPet.petId}`,
+        {
+          method: "DELETE",
+        }
+      )
+        .then((response) => response.json())
+        .catch((err) => {
+          console.log("ERROR DELETING VACCINE RECORD: ", err);
+        })
+        .then((data) => {
+          console.log("REQUEST DATA: ", data);
+        });
+    });
+  };
+
+  function handleDeleteVaccineInModal(deletedVaccine) {
+    if ("vaccineId" in deletedVaccine) {
+      handleDeleteExistingVaccinations(deletedVaccine);
+    } else {
+      handleDeleteNewVaccinations(deletedVaccine);
+    }
+  }
+
+  function addVaccinesToPet() {
+    if (vaccineList.length === 0) {
+      return true;
+    } else {
+      console.log(vaccineList);
+
+      vaccineList.forEach((vaccine) => {
+        fetch(
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/addVaccine?petId=${state.thisPet.petId}&vaccineName=${vaccine.name}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(vaccine),
+          }
+        )
+          .then((response) => response.json())
+          .catch((err) => {
+            console.log(err);
+          })
+          .then((data) => {
+            console.log(data);
+            return true;
+          });
+      });
+    }
+  }
+  function editVaccinesInPet() {
+    if (toBeEdited.length === 0) {
+      return true;
+    } else {
+      console.log(toBeEdited);
+
+      toBeEdited.forEach((vaccine) => {
+        fetch(
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/updateVaccine/${vaccine.vaccineId}?petId=${state.thisPet.petId}`,
+          {
+            method: "Patch",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(vaccine),
+          }
+        )
+          .then((response) => response.json())
+          .catch((err) => {
+            console.log(err);
+          })
+          .then((data) => {
+            console.log(data);
+            return true;
+          });
+      });
+    }
+  }
+
   console.log("Pet fields: ", editedPetFields);
+  console.log("Exisitng vaccines from db in list: ", existingVaccineList);
+  console.log("New vaccines in list: ", vaccineList);
+  console.log("newly added vaccine fields: ", vaccineFields);
+  console.log("Exisitng vaccines that need to be patched: ", toBeEdited);
+  console.log("Exisitng vaccines that need to be deleted: ", tobeDeleted);
   if (state.thisPet === null) {
     return <div></div>;
   }
@@ -684,15 +827,21 @@ function EditPetForm() {
                       vaccineList={vaccineList}
                       petName={"Your pet"}
                       handleEditVaccineInList={handleEditVaccineInList}
-                      inputedVaccineListSetter={setVaccineList}
-                      vaccineFieldSetter={setVaccineFields}
+                      // inputedVaccineListSetter={setVaccineList}
+                      handleDeleteVaccineInModal={handleDeleteVaccineInModal}
+                      // vaccineFieldSetter={setVaccineFields}
+                      add={false}
                     />
+                  </FieldArray>
+                  <FieldArray>
                     <EditVaccinesList
                       className="existing-vaccines-list"
                       // handleVaccineOnChange={handleVaccineOnChange}
                       vaccineList={existingVaccineList}
                       petName={state.thisPet.name}
-                      handleEditVaccineInList={handleEditVaccineInList}
+                      handleEditVaccineInList={handleEditVaccineInExistingList}
+                      handleDeleteVaccineInModal={handleDeleteVaccineInModal}
+                      add={false}
                     />
                   </FieldArray>
                 </Form.Group>
@@ -754,7 +903,7 @@ function EditPetForm() {
               </Form.Group>
 
               <br />
-              <Form.Label> Edit Vaccines </Form.Label>
+              {/* <Form.Label> Edit Vaccines </Form.Label>
               <FieldArray>
                 <EditVaccinesList
                   className="edit-vaccines-list"
@@ -764,7 +913,7 @@ function EditPetForm() {
                 />
               </FieldArray>
               <br />
-              <br />
+              <br /> */}
 
               <Form.Group className="mb-3 edit-photos-form-container">
                 <Form.Label>Current photos</Form.Label>

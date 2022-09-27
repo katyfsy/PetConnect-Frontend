@@ -34,7 +34,7 @@ const EditVaccinesList = (props) => {
     </ListGroup.Item>
   ));
 
-  if (props.vaccineList.length < 1) {
+  if (props.vaccineList.length < 1 && props.add) {
     return (
       <div>
         <ListGroup>
@@ -58,6 +58,7 @@ const EditVaccinesList = (props) => {
         vaccineList={props.vaccineList}
         handleEditVaccineInList={props.handleEditVaccineInList}
         setVaccineFields={setVaccineFields}
+        handleDeleteVaccineInModal={props.handleDeleteVaccineInModal}
       />
       <ListGroup>{vaccineItems}</ListGroup>
     </div>
