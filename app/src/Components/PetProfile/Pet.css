@@ -308,6 +308,12 @@
     color: black;
 }
 
+.profile-page-contact-card {
+    display: flex;
+    direction: column;
+    justify-content: center;
+}
+
 
 .profile-page-buttons {
     display: flex;

@@ -513,7 +513,7 @@ function Pet() {
                   tabClassName="profile-page-tab"
                   eventKey="contact"
                   title="Contact">
-                  <div className="contact-card-tab">
+                  <div className="profile-page-contact-card">
                     <User owner={thisPet.owner} />
                   </div>
                 </Tab>
