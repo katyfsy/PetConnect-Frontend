@@ -26,29 +26,18 @@ const ResetPassword = () => {
     doGetUser();
   };
 
-  const resetUserNotExistAlert = () => {
+  const resetAlert = () => {
     Swal.fire({
-      title: 'ERROR',
-      text: 'User does not exist.',
-    })
-  }
-
-  const sentEmailAlert = () => {
-    Swal.fire({
-      title: 'Successful',
-      text: 'You will receive a Email soon.',
+      text: 'If username exist, you will receive a Email soon.',
     })
   }
 
   const doGetUser = () => {
     axios.get(`${PSB_API_URL}/api/public/user/${username}`).then((res) => {
         //build the reset URL route
-        if (res.status === 200) {
           // sendEmail(`http://localhost:3000/user/reset/${btoa(username + " " + process.env.REACT_APP_SECRET_KEY)}`, res.data.email);
           sendEmail(`http://a05c559e9f4dd47e6a449abdb704ff66-132472868.us-west-2.elb.amazonaws.com/user/reset/${btoa(username + " " + EMAIL_JS.REACT_APP_SECRET_KEY)}`, res.data.email);
-        } else if (res.status === 204) {
-          resetUserNotExistAlert();
-        }
+          resetAlert();
     }).catch((error) => console.log(error))
   };
 
@@ -72,15 +61,6 @@ const ResetPassword = () => {
         // 'KowJ5SR4XG510Yyyk'
 
       )
-      .then(
-        function (response) {
-          console.log('SUCCESS!', response.status, response.text);
-          sentEmailAlert();
-        },
-        function (error) {
-          console.log('FAILED...', error);
-        }
-      );
   };
 
   return (

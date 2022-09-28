@@ -7,6 +7,7 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 import { Link } from 'react-router-dom';
 import {getUser} from '../UserProfile/psb-exports';
 import FavButton from '../UserProfile/FavButton';
+import SearchFavButton from './SearchFavButton';
 import './PetCard.css';
 
 
@@ -43,9 +44,10 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFa
   return(
     <>
 
-      <Card  >
+      <Card  className="ParentCard">
           <div className="favBtn" onClick={handleShow} >
-            <FavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/>
+            {/* <FavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/> */}
+            <SearchFavButton petId={petId} isFavor={isFavor} setResultPageIsFav={setResultPageIsFav}/>
           </div>
           <div className="imgRow">
             <Link to={`/pet/${petId}`} >
