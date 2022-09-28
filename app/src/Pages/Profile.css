@@ -48,3 +48,7 @@ sup {
   flex-direction: column;
   justify-content: flex-start;
 }
+
+.card{
+  margin-top: 0px;
+}
