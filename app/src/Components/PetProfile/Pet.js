@@ -43,8 +43,12 @@ function Pet() {
   const [alertText, setAlertText] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
+  const [buttonClose, setButtonClose] = useState(false);
+  const [buttonCancel, setButtonCancel] = useState(false);
+  const [buttonConfirm, setButtonConfirm] = useState(false);
+  const [buttonDelete, setButtonDelete] = useState(false);
+  const [buttonAction, setButtonAction] = useState("")
   const [handleOnExited, setHandleOnExited] = useState(false);
-
   const hexColor = {
     reported: "#4562d3"
   }
@@ -122,6 +126,11 @@ function Pet() {
         setAlertTitle("Congratulations");
         setAlertText("Pet Profile successfully Deleted");
         setAlertType("success");
+        setButtonCancel(false)
+        setButtonDelete(false)
+        setButtonClose(true)
+        setButtonConfirm(false)
+        setButtonAction("back")
         setHandleOnExited(true);
       });
   }
@@ -527,6 +536,27 @@ function Pet() {
             user !== thisPet.owner ? null : (
               <>
                 <br />
+
+                  <Button
+                    // bsPrefix="delete-pet-button"
+                    variant="outline-danger"
+                    type="button"
+                    onClick={() => {
+                      setShowAlert(true);
+                      setAlertTitle("Are you sure?");
+                      setAlertText("This action cannot be reverted");
+                      setAlertType("error");
+                      setButtonCancel(true)
+                      setButtonDelete(true)
+                      setButtonClose(false)
+                      setButtonConfirm(false)
+                      setButtonAction("back")
+                      setHandleOnExited(false);
+                    }}
+                  >
+                    Delete pet
+                  </Button>
+
                 <Button variant="danger" size="md" onClick={handleOnDelete}>
                   Delete Pet
                 </Button>
@@ -551,8 +581,14 @@ function Pet() {
         text={alertText}
         title={alertTitle}
         type={alertType}
+        buttonCancel={buttonCancel}
+        buttonConfirm={buttonConfirm}
+        buttonDelete={buttonDelete}
+        buttonClose={buttonClose}
+        buttonAction={buttonAction}
+        deleteCallback={handleOnDelete}
         onHide={() => setShowAlert(false)}
-        onExited={handleOnExited ? () => navigate("/pets") : null}
+        onExited={handleOnExited ? () => navigate(`/petlist/${getUser()}`, { replace: true }) : null}
       // handleOnExited('/pets')
       />
 

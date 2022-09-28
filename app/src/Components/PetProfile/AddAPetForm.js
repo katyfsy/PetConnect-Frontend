@@ -23,6 +23,11 @@ function AddAPetForm() {
   const [alertText, setAlertText] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
+  const [buttonClose, setButtonClose] = useState(false);
+  const [buttonCancel, setButtonCancel] = useState(false);
+  const [buttonConfirm, setButtonConfirm] = useState(false);
+  const [buttonDelete, setButtonDelete] = useState(false);
+  const [buttonAction, setButtonAction] = useState("")
   const [handleOnExited, setHandleOnExited] = useState(false);
 
   const [progress, setProgress] = useState(0);
@@ -156,6 +161,10 @@ function AddAPetForm() {
           setAlertTitle("Congratulations");
           setAlertText("Pet profile created successfully");
           setAlertType("success");
+          setButtonCancel(false)
+          setButtonDelete(false)
+          setButtonConfirm(false)
+          setButtonClose(true)
           setHandleOnExited(true);
         })
         .catch((err) => console.log(err));
@@ -164,6 +173,10 @@ function AddAPetForm() {
       setAlertTitle("Photo requirements not met");
       setAlertText("Pet profiles require at least one photo");
       setAlertType("error");
+      setButtonCancel(false)
+      setButtonDelete(false)
+      setButtonConfirm(false)
+      setButtonClose(true)
       setHandleOnExited(false);
     }
   };
@@ -321,6 +334,10 @@ function AddAPetForm() {
                   setAlertTitle("Incomplete form");
                   setAlertText("Fill out required fields");
                   setAlertType("error");
+                  setButtonCancel(false)
+                  setButtonDelete(false)
+                  setButtonConfirm(false)
+                  setButtonClose(true)
                   setHandleOnExited(false);
                 } else {
                   handleSubmit(e);
@@ -715,8 +732,19 @@ function AddAPetForm() {
                   <Button
                     bsPrefix="cancel-pet-button"
                     variant="secondary"
-                    type="submit"
-                    onClick={() => navigate(`/pets`, { replace: true })}
+                    type="button"
+                    onClick={() => {
+                      setShowAlert(true);
+                      setAlertTitle("Are you sure?");
+                      setAlertText("Progress will not be saved");
+                      setAlertType("error");
+                      setButtonCancel(true)
+                      setButtonDelete(false)
+                      setButtonClose(false)
+                      setButtonConfirm(true)
+                      setButtonAction("backToPetlist")
+                      setHandleOnExited(false);
+                    }}
                   >
                     Cancel
                   </Button>
@@ -741,6 +769,11 @@ function AddAPetForm() {
           text={alertText}
           title={alertTitle}
           type={alertType}
+          buttonCancel={buttonCancel}
+          buttonConfirm={buttonConfirm}
+          buttonDelete={buttonDelete}
+          buttonClose={buttonClose}
+          buttonAction={buttonAction}
           onHide={() => setShowAlert(false)}
           onExited={handleOnExited ? () => navigateToPetProfile(petId) : null}
         />

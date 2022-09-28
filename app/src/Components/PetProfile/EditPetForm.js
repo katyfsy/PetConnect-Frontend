@@ -26,6 +26,11 @@ function EditPetForm() {
   const [alertText, setAlertText] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
+  const [buttonClose, setButtonClose] = useState(false);
+  const [buttonCancel, setButtonCancel] = useState(false);
+  const [buttonConfirm, setButtonConfirm] = useState(false);
+  const [buttonDelete, setButtonDelete] = useState(false);
+  const [buttonAction, setButtonAction] = useState("");
   const [handleOnExited, setHandleOnExited] = useState(false);
 
   // Portal and Photo states
@@ -187,6 +192,10 @@ function EditPetForm() {
       setAlertTitle("Congratulations");
       setAlertText("Pet profile edited successfully");
       setAlertType("success");
+      setButtonCancel(false)
+      setButtonDelete(false)
+      setButtonConfirm(false)
+      setButtonClose(true)
       setHandleOnExited(true);
     }
     let files = extractFileData(photos, petId);
@@ -220,6 +229,10 @@ function EditPetForm() {
           setAlertTitle("Congratulations");
           setAlertText("Pet profile edited successfully");
           setAlertType("success");
+          setButtonCancel(false)
+          setButtonDelete(false)
+          setButtonConfirm(false)
+          setButtonClose(true)
           setHandleOnExited(true);
         })
         .catch((err) => {
@@ -288,6 +301,10 @@ function EditPetForm() {
                   setAlertTitle("Incomplete form");
                   setAlertText("Fill out required fields");
                   setAlertType("error");
+                  setButtonCancel(false)
+                  setButtonDelete(false)
+                  setButtonClose(true)
+                  setButtonConfirm(false)
                   setHandleOnExited(false);
                 } else {
                   handleSubmit(e);
@@ -717,12 +734,24 @@ function EditPetForm() {
               </Form.Group>
 
               <div className="mb-3 buttons-form-container">
+
                 <Form.Group className="mb-3">
                   <Button
                     bsPrefix="cancel-pet-button"
                     variant="secondary"
-                    type="submit"
-                    onClick={() => navigate(`/pet/${state.thisPet.petId}`, { replace: true })}
+                    type="button"
+                    onClick={() => {
+                      setShowAlert(true);
+                      setAlertTitle("Are you sure?");
+                      setAlertText("Changes will not be saved");
+                      setAlertType("error");
+                      setButtonCancel(true)
+                      setButtonDelete(false)
+                      setButtonClose(false)
+                      setButtonConfirm(true)
+                      setButtonAction("back")
+                      setHandleOnExited(false);
+                    }}
                   >
                     Cancel
                   </Button>
@@ -753,10 +782,16 @@ function EditPetForm() {
 
         <Alert
           show={showAlert}
+          petId={state.thisPet.petId}
           text={alertText}
           title={alertTitle}
           type={alertType}
+          buttonCancel={buttonCancel}
+          buttonConfirm={buttonConfirm}
+          buttonDelete={buttonDelete}
+          buttonClose={buttonClose}
           onHide={() => setShowAlert(false)}
+          buttonAction={buttonAction}
           onExited={
             handleOnExited
               ? () => navigateToPetProfile(state.thisPet.petId)
