@@ -1,12 +1,13 @@
-.petCardCustom{
-  height:300px;
+.favBtn{
+  height:0px;
+  width:90%;
 }
 
-.imgRow{
-  height: 200px;
+.ParentCard{
+  margin-bottom:15px;
 }
 
-.petName {
-  /* background-color: blueviolet; */
+.petImg {
+  object-fit: cover;
+  height: 230px;
 }
-

@@ -11,3 +11,8 @@
   width: 150px;
   float: left;
 }
+#user-image-icon {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+}

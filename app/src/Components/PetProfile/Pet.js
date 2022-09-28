@@ -496,7 +496,7 @@ function Pet() {
                   tabClassName="profile-page-tab"
                   eventKey="contact"
                   title="Contact">
-                  <div className="contact-card-tab">
+                  <div className="profile-page-contact-card">
                     <User owner={thisPet.owner} />
                   </div>
                 </Tab>
@@ -539,7 +539,7 @@ function Pet() {
       // handleOnExited('/pets')
       />
 
-      <Modal show={showPhotos} dialogClassName="profile-page-gallery" centered onHide={() => setShowPhotos(false)}>
+      <Modal show={showPhotos} contentClassName="profile-page-gallery" centered onHide={() => setShowPhotos(false)}>
         <Modal.Header closeButton>
           <Modal.Title>{thisPet.name}'s photos</Modal.Title>
         </Modal.Header>
@@ -548,7 +548,7 @@ function Pet() {
             {petPhotos.map((petPhoto) => (
               <Carousel.Item>
                 <img
-                  className="profile-page-gallery-photo"
+                  className="img-fluid"
                   key={petPhoto.photoId}
                   src={petPhoto.photo_url}
                 />

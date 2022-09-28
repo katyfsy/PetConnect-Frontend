@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import "./userProfile.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Swal from 'sweetalert2';
 
 import {
@@ -23,6 +23,7 @@ const LoginCard = () => {
   const [passwordShown, setPasswordShown] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
@@ -55,7 +56,11 @@ const LoginCard = () => {
       .then(() => {
         console.log("token: ", getBearerToken());
         console.log("user: ", getUser());
-        navigate("/", { replace: true });
+        if (location.pathname === '/messages') {
+          navigate("/messages", { replace: true });
+        } else {
+          navigate("/", { replace: true });
+        }
       })
       .catch((error) => {
         console.log(error);

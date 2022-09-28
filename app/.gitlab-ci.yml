@@ -1,13 +1,35 @@
-image: node:16
+# image: node:16
 
-stages:
-  - build
+# stages:
+#   - build
+#   - docker
+#   # - deploy
 
-build:
-  stage: build
-  script:
-    - npm install
-    - npm build
-  artifacts:
-      paths:
-        - build/
+# build:
+#   image: node:16
+#   stage: build
+#   script:
+#     - cd app/
+#     - npm install --legacy-peer-deps
+#     - npm run build
+#   artifacts:
+#       paths:
+#         - build/
+
+# docker:
+#   image: docker:20
+#   needs:
+#     - build
+# #    - test
+#   stage: docker
+#   services:
+#     - docker:dind
+#   before_script:
+#     - echo "$MY_NAME"
+#     - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+#   script:
+#     - docker build --pull -t "$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID" .
+#     - docker push "$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID"
+#     - docker tag "$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID" "$CI_REGISTRY_IMAGE":"latest"
+#     - docker push "$CI_REGISTRY_IMAGE":"latest"
+

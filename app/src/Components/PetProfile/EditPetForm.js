@@ -612,6 +612,7 @@ function EditPetForm() {
                     isInvalid={errors.age}
                   >
                     <option value="">Select lifestage</option>
+                    <option value="baby">Newborn</option>
                     <option value="young">Young</option>
                     <option value="adult">Adult</option>
                     <option value="senior">Senior</option>
