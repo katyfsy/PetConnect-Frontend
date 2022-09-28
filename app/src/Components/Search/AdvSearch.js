@@ -123,7 +123,12 @@ function AdvSearch({results, setResult, searchQuery, zipcode, radius, breed, set
         </div>
         <div className="age filter">
           <h6 className="filterType">Age</h6>
-          <select onChange={e=>setAge(e.target.value)}>
+          <select onChange={e=> {
+            if (e.target.value === "kitten" || e.target.value === "puppy") {
+              setAge('baby')
+            } else {
+              setAge(e.target.value)}
+            }}>
             {allAges.map(ageOption => {
               if(age === ageOption) {
                 return <option value={ageOption} selected>{ageOption}</option>

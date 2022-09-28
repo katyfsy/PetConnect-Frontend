@@ -6,9 +6,13 @@ function Slides() {
 
     return(
       <>
-      <div className="container slides">
+      <div className="container slides" id="banner-image">
+        <div className="banner-image">
+              <img className="petSlide" src="/Pics/pets_frontpage_transp.png"  alt="slide"/>
+          </div>
+
         {/* carousel */}
-        <div id="petcarousel" className="carousel slide" data-bs-ride="carousel">
+        {/* <div id="petcarousel" className="carousel slide" data-bs-ride="carousel">
 
           <div className="carousel-inner" id="carousel-inner-slides">
 
@@ -35,10 +39,10 @@ function Slides() {
 
             <div className="carousel-item">
               <img className="d-block w-100 petSlide" src="/Pics/slide9.jpg" alt="slide"/>
-            </div>
+            </div> */}
 
-          </div>
-        </div>
+          {/* </div> */}
+        {/* </div> */}
       </div>
       </>
   )
