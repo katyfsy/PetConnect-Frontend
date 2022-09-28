@@ -41,10 +41,11 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFa
     }
   }
 
-  var babyType;
-  if (type === "cat" && age === "baby") babyType = "kitten"
-  else if (type === "cat" && age === "baby") babyType = "puppy"
-  else babyType = "newborn"
+  var customAge;
+  if (type === "cat" && age === "baby") customAge = "kitten";
+  else if (type === "cat" && age === "baby") customAge = "puppy";
+  else if(age === "baby") customAge = "newborn";
+  else customAge = age;
 
   return(
     <>
@@ -65,7 +66,7 @@ function PetCard({name, type, gender, age, breed, coverPhoto, petId, owner, isFa
                 {gender}
               </Card.Text>
               <Card.Text>
-                {babyType} * {breed}
+                {customAge} * {breed}
               </Card.Text>
               <Card.Text>
                 Rescued by {owner}
