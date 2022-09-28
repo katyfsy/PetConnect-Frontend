@@ -3,9 +3,18 @@ import { useParams } from "react-router-dom";
 import EditPet from "./EditPet";
 import VaccineList from "./VaccineList.js";
 import AddVaccineModal from "./AddVaccineModal.js";
-import { Button, Row, Col, Image, Tab, Tabs, Modal, Carousel } from "react-bootstrap";
-import {  FaHeart, FaCat, FaFish } from "react-icons/fa";
-import { BsFillFlagFill } from "react-icons/bs"
+import {
+  Button,
+  Row,
+  Col,
+  Image,
+  Tab,
+  Tabs,
+  Modal,
+  Carousel,
+} from "react-bootstrap";
+import { FaHeart, FaCat, FaFish } from "react-icons/fa";
+import { BsFillFlagFill } from "react-icons/bs";
 import { MdPets, MdLocationCity } from "react-icons/md";
 import {
   BsGenderFemale,
@@ -109,11 +118,6 @@ function Pet() {
       });
   }, [isEdit, fetchPet]);
 
-<<<<<<< HEAD
-=======
-
-  
->>>>>>> petprofile/main
   function handleLike() {
     fetch(
       `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/addFavorite/${petId.id}`,
@@ -537,7 +541,8 @@ function Pet() {
                 <Tab
                   tabClassName="profile-page-tab"
                   eventKey="contact"
-                  title="Contact">
+                  title="Contact"
+                >
                   <div className="profile-page-contact-card">
                     <User owner={thisPet.owner} />
                   </div>
@@ -547,7 +552,6 @@ function Pet() {
           </div>
         </div>
         <div className="profile-page-section">
-
           {/* {
             user !== thisPet.owner ? null : (
               <>
@@ -580,7 +584,12 @@ function Pet() {
         // handleOnExited('/pets')
       />
 
-      <Modal show={showPhotos} contentClassName="profile-page-gallery" centered onHide={() => setShowPhotos(false)}>
+      <Modal
+        show={showPhotos}
+        contentClassName="profile-page-gallery"
+        centered
+        onHide={() => setShowPhotos(false)}
+      >
         <Modal.Header closeButton>
           <Modal.Title>{thisPet.name}'s photos</Modal.Title>
         </Modal.Header>
