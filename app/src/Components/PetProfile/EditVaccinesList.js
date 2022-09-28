@@ -1,47 +1,68 @@
-import ListGroup from 'react-bootstrap/ListGroup';
-import React, { useState } from 'react';
-import EditVaccineModal from "./EditVaccineModal.js";
+import ListGroup from "react-bootstrap/ListGroup";
+import React, { useState } from "react";
+import AddVaccineModal from "./AddVaccineModal.js";
 
 const EditVaccinesList = (props) => {
-  console.log("THIS PET: ", props.pet);
-  // const [showEditVaccine, setShowEditVaccine] = useState(false);
-  // const [vaccineFields, setVaccineFields] = useState({
-  //   name: null,
-  //   date: null,
-  //   notes: null
-  // });
+  const [showEditVaccine, setShowEditVaccine] = useState(false);
+  const [vaccineFields, setVaccineFields] = useState({
+    name: null,
+    date: null,
+    notes: null,
+    key: Math.random(),
+  });
 
-  // const handleShow = () => setShowEditVaccine(true);
-  // const handleHide = () => setShowEditVaccine(false);
+  const handleShow = () => setShowEditVaccine(true);
+  const handleHide = () => setShowEditVaccine(false);
+  // console.log(vaccineFields);
+  const handleVaccineClick = (vaccine) => {
+    console.log("VACCINE: ", vaccine);
+    setVaccineFields(vaccine);
+    handleShow();
+  };
 
+  const vaccineItems = props.vaccineList.map((vaccine) => (
+    <ListGroup.Item
+      key={vaccine.vaccineId}
+      vaccine={vaccine}
+      action
+      onClick={() => handleVaccineClick(vaccine)}
+      type="button"
+    >
+      {" "}
+      {vaccine.name}
+      <div className="edit-vaccine-date"> {vaccine.date} </div>
+    </ListGroup.Item>
+  ));
 
-  // const vaccineClicked = (vaccine) => {
-  //   handleShow();
-  // };
-
-  const vaccines = props.pet.vaccines;
-  const vaccineItems = vaccines.map((vaccine) =>
-    <ListGroup.Item key={vaccine.vaccineId} action onClick={console.log("Click!")}> {vaccine.name} </ListGroup.Item>
-  )
-
-  if (vaccines.length < 1) {
+  if (props.vaccineList.length < 1 && props.add) {
     return (
       <div>
-      <ListGroup>
-      <ListGroup.Item > {props.pet.name} has no vaccine history </ListGroup.Item>
-      </ListGroup>
-      <EditVaccineModal pet={thisPet}/>
-    </div>
-    )
+        <ListGroup>
+          <ListGroup.Item>
+            {" "}
+            {props.petName} has no vaccine history{" "}
+          </ListGroup.Item>
+        </ListGroup>
+      </div>
+    );
   }
 
   return (
     <div>
-      <ListGroup>
-        {vaccineItems}
-      </ListGroup>
+      <AddVaccineModal
+        vaccine={vaccineFields}
+        // pet={props.pet}
+        edit={true}
+        showVaccineForm={showEditVaccine}
+        setShowVaccineForm={setShowEditVaccine}
+        vaccineList={props.vaccineList}
+        handleEditVaccineInList={props.handleEditVaccineInList}
+        setVaccineFields={setVaccineFields}
+        handleDeleteVaccineInModal={props.handleDeleteVaccineInModal}
+      />
+      <ListGroup>{vaccineItems}</ListGroup>
     </div>
   );
-}
+};
 
 export default EditVaccinesList;
