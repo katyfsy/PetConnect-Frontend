@@ -2,21 +2,28 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from "react-bootstrap/Form";
-import AddVaccineForm from "./AddVaccineForm.js";
-import "./AddVaccineModal.css";
 
 
-const AddVaccineModal = (props) => {
-  const [showEditVaccineForm, setShowVaccineForm] = useState(false);
+const EditVaccineModal = (props) => {
+  console.log("PROPS: ", props);
+  const [showEditVaccine, setShowEditVaccine] = useState(false);
   const [vaccineFields, setVaccineFields] = useState({
     name: null,
     date: null,
     notes: null
   });
 
-  const handleShow = () => setShowVaccineForm(true);
-  const handleHide = () => setShowVaccineForm(false);
-  const handleSubmit = (e) => {
+  const handleShow = () => setShowEditVaccine(true);
+  const handleHide = () => setShowEditVaccine(false);
+
+
+  const handleDeleteVaccine = (e) => {
+    e.preventDefault();
+    console.log("Vaccine to DELETE: ", e.target);
+  }
+
+
+  const handleEditVaccine = (e) => {
     e.preventDefault();
     console.log("Vaccine Fields: ", vaccineFields);
     fetch(`http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/addVaccine?petId=${props.petId}&vaccineName=${vaccineFields.name}`, {
@@ -33,7 +40,7 @@ const AddVaccineModal = (props) => {
       .then((data) => {
         console.log(data);
       });
-      setShowVaccineForm(false);
+      setShowEditVaccine(false);
   }
 
   const handleOnChange = (e) => {
@@ -45,24 +52,24 @@ const AddVaccineModal = (props) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Add Vaccine Record
+      <Button variant="primary" onClick={handleDeleteVaccine}>
+        Delete Vaccine Record
       </Button>
 
-      <Modal show={showVaccineForm} onHide={handleHide} backdrop="static" keyboard={false}>
+      <Modal show={showEditVaccine} onHide={handleHide} backdrop="static" keyboard={false}>
         <Modal.Header closeButton>
           <Modal.Title className="vaccine-form-title">Add A Vaccine Record For {props.petName} </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddVaccineForm
+          {/* <EditVaccineForm
                           owner={props.owner} petName={props.petName}
-                          petId={props.petId} handleOnChange={handleOnChange}/>
+                          petId={props.petId} handleOnChange={handleOnChange}/> */}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleHide}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button variant="primary" onClick={handleEditVaccine}>
             Save Vaccine Record
           </Button>
         </Modal.Footer>
@@ -71,4 +78,4 @@ const AddVaccineModal = (props) => {
   );
 }
 
-export default AddVaccineModal;
+export default EditVaccineModal;

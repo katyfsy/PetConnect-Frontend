@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Container } from "react-bootstrap";
-import { Formik } from "formik";
+import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
 import Pet from "./Pet";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -10,6 +10,8 @@ import axios from "axios";
 import { getUser } from "../UserProfile/psb-exports";
 import AddPhotosPortal from "./AddPhotosPortal";
 import PhotoPreviews from "./PhotoPreviews";
+import EditVaccinesList from "./EditVaccinesList.js";
+import AddVaccineModal from "./AddVaccineModal";
 
 function EditPetForm() {
   const navigate = useNavigate();
@@ -100,6 +102,27 @@ function EditPetForm() {
     }
   }
 
+  function handleOnDelete() {
+    fetch(
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${state.thisPet.petId}`,
+      { method: "DELETE" }
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        console.error(err);
+      })
+      .then((data) => {
+        console.log("deleteddd");
+        setShowAlert(true);
+        setAlertTitle("Congratulations");
+        setAlertText("Pet Profile successfully Deleted");
+        setAlertType("success");
+        setHandleOnExited(true);
+        navigate(`/petlist/${getUser()}`, { replace: true });
+      });
+
+  }
+
   function deletePhotosFromDB(photosToDelete) {
     if (photosToDelete.length === 0) {
       return true;
@@ -145,6 +168,9 @@ function EditPetForm() {
     await handlePatch();
     let successDeleting = await deletePhotosFromDB(deletePhotos);
     if (successDeleting) {
+      await handleDeleteVaccineFromBackend();
+      await addVaccinesToPet();
+      await editVaccinesInPet();
       await handleUpload(addPhotos, state.thisPet.petId);
     }
   };
@@ -263,7 +289,187 @@ function EditPetForm() {
       .required("description is required"),
   });
 
+  //Vaccine State for Modal Showing
+  const [showVaccineForm, setShowVaccineForm] = useState(false);
+  const handleShow = () => setShowVaccineForm(true);
+
+  //Vaccine State for adding New vaccinations
+  const emptyFields = {
+    name: null,
+    date: null,
+    notes: null,
+    key: Math.random(),
+  };
+
+  const [vaccineFields, setVaccineFields] = useState(emptyFields);
+
+  const [vaccineList, setVaccineList] = useState([]);
+
+  function handleAddVaccineToList(vaccine) {
+    setVaccineList([...vaccineList, vaccine]);
+    setVaccineFields(emptyFields);
+  }
+
+  function handleEditVaccineInList(editedVaccine) {
+    let updatedVaccineList = vaccineList.map((vaccine) => {
+      if (vaccine.key == editedVaccine.key) {
+        return editedVaccine;
+      }
+      return vaccine;
+    });
+    // console.log("im being edited");
+    // console.log(updatedVaccineList);
+    setVaccineList(updatedVaccineList);
+
+    setVaccineFields(emptyFields);
+  }
+
+  //Vaccine State for editing pre-exisitng vaccinations
+  const [existingVaccineList, setExistingVaccineList] = useState(
+    state.thisPet.vaccines
+  );
+  const [toBeEdited, setToBeEdited] = useState([]);
+
+  function handleDuplicateEdits(editedVaccine) {
+    if (toBeEdited.length === 0) {
+      setToBeEdited([editedVaccine]);
+    } else {
+      let updatedVaccineList = toBeEdited.map((vaccine) => {
+        if (vaccine.vaccineId == editedVaccine.vaccineId) {
+          return editedVaccine;
+        }
+        return vaccine;
+      });
+      setToBeEdited(updatedVaccineList);
+    }
+  }
+
+  function handleEditVaccineInExistingList(editedVaccine) {
+    let updatedVaccineList = existingVaccineList.map((vaccine) => {
+      if (vaccine.vaccineId == editedVaccine.vaccineId) {
+        handleDuplicateEdits(editedVaccine);
+        return editedVaccine;
+      }
+      return vaccine;
+    });
+    console.log("im being edited");
+    console.log(updatedVaccineList);
+    setExistingVaccineList(updatedVaccineList);
+  }
+
+  //Vaccine State for deleting newly added vaccinations
+  function handleDeleteNewVaccinations(deletedVaccine) {
+    const vaccinesWithOutDeleted = vaccineList.filter(
+      (vaccine) => vaccine.key !== deletedVaccine.key
+    );
+    setVaccineList(vaccinesWithOutDeleted);
+
+    setVaccineFields(emptyFields);
+  }
+  //Vaccine State for deleting existing vaccinations
+  const [tobeDeleted, setToBeDeleted] = useState([]);
+
+  function handleDeleteExistingVaccinations(deletedVaccine) {
+    setToBeDeleted([...tobeDeleted, deletedVaccine]);
+
+    const vaccinesWithOutDeleted = existingVaccineList.filter(
+      (vaccine) => vaccine.vaccineId !== deletedVaccine.vaccineId
+    );
+    setExistingVaccineList(vaccinesWithOutDeleted);
+
+    setVaccineFields(emptyFields);
+  }
+
+  // Vaccine Deletion & Adding functionality
+  const handleDeleteVaccineFromBackend = () => {
+    tobeDeleted.forEach((vaccine) => {
+      fetch(
+        `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/deleteVaccine/${vaccine.vaccineId}?petId=${state.thisPet.petId}`,
+        {
+          method: "DELETE",
+        }
+      )
+        .then((response) => response.json())
+        .catch((err) => {
+          console.log("ERROR DELETING VACCINE RECORD: ", err);
+        })
+        .then((data) => {
+          console.log("REQUEST DATA: ", data);
+        });
+    });
+  };
+
+  function handleDeleteVaccineInModal(deletedVaccine) {
+    if ("vaccineId" in deletedVaccine) {
+      handleDeleteExistingVaccinations(deletedVaccine);
+    } else {
+      handleDeleteNewVaccinations(deletedVaccine);
+    }
+  }
+
+  function addVaccinesToPet() {
+    if (vaccineList.length === 0) {
+      return true;
+    } else {
+      console.log(vaccineList);
+
+      vaccineList.forEach((vaccine) => {
+        fetch(
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/addVaccine?petId=${state.thisPet.petId}&vaccineName=${vaccine.name}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(vaccine),
+          }
+        )
+          .then((response) => response.json())
+          .catch((err) => {
+            console.log(err);
+          })
+          .then((data) => {
+            console.log(data);
+            return true;
+          });
+      });
+    }
+  }
+  function editVaccinesInPet() {
+    if (toBeEdited.length === 0) {
+      return true;
+    } else {
+      console.log(toBeEdited);
+
+      toBeEdited.forEach((vaccine) => {
+        fetch(
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/updateVaccine/${vaccine.vaccineId}?petId=${state.thisPet.petId}`,
+          {
+            method: "Patch",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(vaccine),
+          }
+        )
+          .then((response) => response.json())
+          .catch((err) => {
+            console.log(err);
+          })
+          .then((data) => {
+            console.log(data);
+            return true;
+          });
+      });
+    }
+  }
+
   console.log("Pet fields: ", editedPetFields);
+  console.log("Exisitng vaccines from db in list: ", existingVaccineList);
+  console.log("New vaccines in list: ", vaccineList);
+  console.log("newly added vaccine fields: ", vaccineFields);
+  console.log("Exisitng vaccines that need to be patched: ", toBeEdited);
+  console.log("Exisitng vaccines that need to be deleted: ", tobeDeleted);
   if (state.thisPet === null) {
     return <div></div>;
   }
@@ -625,12 +831,51 @@ function EditPetForm() {
                   controlId="vaccination-history-validation"
                 >
                   <Form.Label>Vaccination history</Form.Label>
+                  {/* <Button
+                    className="vaccination-pet-button"
+                    variant="outline-secondary"
+                  >
+                    Add a vaccination record...
+                  </Button> */}
                   <Button
+                    onClick={handleShow}
                     className="vaccination-pet-button"
                     variant="outline-secondary"
                   >
                     Add a vaccination record...
                   </Button>
+                  <AddVaccineModal
+                    setShowVaccineForm={setShowVaccineForm}
+                    showVaccineForm={showVaccineForm}
+                    vaccine={vaccineFields}
+                    handleAddVaccineToList={handleAddVaccineToList}
+                    setVaccineFields={setVaccineFields}
+                    edit={false}
+                  />
+                  <FieldArray>
+                    <EditVaccinesList
+                      className="Newly-added fields"
+                      // handleVaccineOnChange={handleVaccineOnChange}
+                      vaccineList={vaccineList}
+                      petName={"Your pet"}
+                      handleEditVaccineInList={handleEditVaccineInList}
+                      // inputedVaccineListSetter={setVaccineList}
+                      handleDeleteVaccineInModal={handleDeleteVaccineInModal}
+                      // vaccineFieldSetter={setVaccineFields}
+                      add={false}
+                    />
+                  </FieldArray>
+                  <FieldArray>
+                    <EditVaccinesList
+                      className="existing-vaccines-list"
+                      // handleVaccineOnChange={handleVaccineOnChange}
+                      vaccineList={existingVaccineList}
+                      petName={state.thisPet.name}
+                      handleEditVaccineInList={handleEditVaccineInExistingList}
+                      handleDeleteVaccineInModal={handleDeleteVaccineInModal}
+                      add={false}
+                    />
+                  </FieldArray>
                 </Form.Group>
 
                 <Form.Group
@@ -689,6 +934,19 @@ function EditPetForm() {
                   {errors.description}
                 </Form.Control.Feedback>
               </Form.Group>
+
+              <br />
+              {/* <Form.Label> Edit Vaccines </Form.Label>
+              <FieldArray>
+                <EditVaccinesList
+                  className="edit-vaccines-list"
+                  vaccineList={state.thisPet.vaccines}
+                  pet={state.thisPet}
+                  petName={state.thisPet.name}
+                />
+              </FieldArray>
+              <br />
+              <br /> */}
 
               <Form.Group className="mb-3 edit-photos-form-container">
                 <Form.Label>Current photos</Form.Label>
@@ -756,7 +1014,7 @@ function EditPetForm() {
                     Cancel
                   </Button>
                 </Form.Group>
-
+              
                 <Form.Group className="mb-3">
                   <Button bsPrefix="edit-pet-button" type="submit">
                     Save Changes

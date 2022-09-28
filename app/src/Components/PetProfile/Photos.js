@@ -248,7 +248,7 @@ const Photos = ({
   //     ) : null}
   //   </div>
   // ));
-  console.log(photos.length);
+  // console.log(photos.length);
   return (
     <>
       {photos.length > 0 ? (

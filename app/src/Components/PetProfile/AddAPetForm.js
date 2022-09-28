@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FloatingLabel, Button, Form, Container } from "react-bootstrap";
-import { Formik, Field, ErrorMessage } from "formik";
+import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
 // import Modal from 'react-bootstrap/Modal';
 import Pet from "./Pet";
@@ -10,6 +10,8 @@ import Photos from "./Photos";
 import Alert from "./AlertModalPetForms";
 import axios from "axios";
 import { getUser } from "../UserProfile/psb-exports";
+import EditVaccinesList from "./EditVaccinesList";
+import AddVaccineModal from "./AddVaccineModal";
 
 function AddAPetForm() {
   const [petId, setPetId] = useState(null);
@@ -43,9 +45,8 @@ function AddAPetForm() {
     reproductiveStatus: "",
   });
 
-  let onExited = null;
   let user = getUser();
-  console.log(user);
+
   const [requiredPetFields, setrequiredPetFields] = useState({
     owner: user.toString(),
     name: null,
@@ -55,7 +56,7 @@ function AddAPetForm() {
 
     description: null,
   });
-  console.log(photos);
+  // console.log(photos);
   const MAX_NUMBER_OF_PHOTOS = 5;
 
   const handleOnChange = (e, form, setform) => {
@@ -122,11 +123,6 @@ function AddAPetForm() {
     let files = extractFileData(petId);
     console.log(files);
     let urls = await getPresignedUrls(files);
-    // let filesProgress = [];
-    // filesProgress.push(progress)
-    // setFilesProgress(filesProgress)
-    // setProgress(0)
-
     if (photos.length > 0) {
       for (let i = 0; i < photos.length; i++) {
         setCurrentUpload(i);
@@ -138,11 +134,6 @@ function AddAPetForm() {
             const progress = (progressEvent.loaded / progressEvent.total) * 100;
             setProgress(progress);
           },
-          // onDownloadProgress: (progressEvent) => {
-          //   const progress = 50 + (progresssEvent.loaded / progressEvent.total) * 100;
-          //   console.log("THIS IS THE PROGRESSS: ", progress);
-          //   setProgress(progress);
-          // }
         };
 
         await axios
@@ -150,7 +141,6 @@ function AddAPetForm() {
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
       }
-      // alert("Photos uploaded successfully");
       await axios
         .post(
           `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/photos/persist?petId=${petId}&coverPhoto=${photos[coverPhoto].name}`
@@ -181,6 +171,21 @@ function AddAPetForm() {
     }
   };
   function handlePatch(petId) {
+    if (nonRequiredPetFields.reproductiveStatus === "true") {
+      setNonRequiredPetFields({
+        ...nonRequiredPetFields,
+        reproductiveStatus: "true" === "true",
+      });
+      console.log(nonRequiredPetFields);
+    }
+
+    if (nonRequiredPetFields.reproductiveStatus === "false") {
+      setNonRequiredPetFields({
+        ...nonRequiredPetFields,
+        reproductiveStatus: false,
+      });
+    }
+
     fetch(
       `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${petId}`,
       {
@@ -200,49 +205,13 @@ function AddAPetForm() {
       });
   }
   const handleOnSubmit = async () => {
-    // const form = e.currentTarget;
-
-    // if (isValid === false ) {
-    //   console.log('isvalid exists')
-    // }
-
-    // if (form.checkValidity() === true) {
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    //   setShowAlert(true)
-    //   setAlertTitle("Incomplete form")
-    //   setAlertText("Fill out required fields")
-    //   setAlertType("error")
-    //   setHandleOnExited(false)
-    // } else {
-
-    // e.preventDefault();
-
     let petId = await createPet();
     if (petId != null) {
       setPetId(petId);
+      await addVaccinesToPet(petId, vaccineList);
       await handlePatch(petId);
       await handleUpload(petId);
     }
-
-    // setValidated(true);
-
-    // if (photos.length == 0) {
-    //   setShowAlert(true)
-    //   setAlertTitle("")
-    //   setAlertText("Pet profiles require at least one photo")
-    //   setAlertType("error")
-    //   setValidated(false)
-    //   // alert("At least one photo is required to upload");
-    // } else {
-    //   let petId = await createPet();
-    //   if (petId != null) {
-    //     setPetId(petId)
-    //     await handleUpload(petId);
-    //   }
-    //   // setValidated(true);
-    // }
-    // setValidated(true);
   };
 
   const navigateToPetProfile = (id) => {
@@ -272,9 +241,81 @@ function AddAPetForm() {
       .required("description is required"),
   });
 
-  console.log("NON REQUIRED: ", nonRequiredPetFields);
-  console.log("REQUIRED: ", requiredPetFields);
+  const emptyFields = {
+    name: null,
+    date: null,
+    notes: null,
+    key: Math.random(),
+  };
+  const [vaccineFields, setVaccineFields] = useState(emptyFields);
+  const [vaccineList, setVaccineList] = useState([]);
 
+  // console.log("vaccine List :", vaccineList);
+  // console.log("vaccine Fields :", vaccineFields);
+  function handleAddVaccineToList(vaccine) {
+    setVaccineList([...vaccineList, vaccine]);
+
+    setVaccineFields(emptyFields);
+  }
+  function handleEditVaccineInList(editedVaccine) {
+    let updatedVaccineList = vaccineList.map((vaccine) => {
+      if (vaccine.key == editedVaccine.key) {
+        return editedVaccine;
+      }
+      return vaccine;
+    });
+    console.log("im being edited");
+    console.log(updatedVaccineList);
+    setVaccineList(updatedVaccineList);
+
+    setVaccineFields(emptyFields);
+  }
+  function handleDeleteNewVaccinations(deletedVaccine) {
+    const vaccinesWithOutDeleted = vaccineList.filter(
+      (vaccine) => vaccine.key !== deletedVaccine.key
+    );
+    setVaccineList(vaccinesWithOutDeleted);
+
+    setVaccineFields(emptyFields);
+  }
+
+  const handleShow = () => setShowVaccineForm(true);
+  function addVaccinesToPet(petId, listOfVaccines) {
+    if (listOfVaccines.length === 0) {
+      return true;
+    } else {
+      console.log(listOfVaccines);
+
+      listOfVaccines.forEach((vaccine) => {
+        fetch(
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/addVaccine?petId=${petId}&vaccineName=${vaccine.name}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(vaccine),
+          }
+        )
+          .then((response) => response.json())
+          .catch((err) => {
+            console.log(err);
+          })
+          .then((data) => {
+            console.log(data);
+            return true;
+          });
+      });
+    }
+  }
+  const handleVaccineOnChange = (e) => {
+    setVaccineFields({
+      ...vaccineFields,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const [showVaccineForm, setShowVaccineForm] = useState(false);
   return (
     <>
       <Container className="addpet-form-container">
@@ -653,7 +694,40 @@ function AddAPetForm() {
                   controlId="vaccination-history-validation"
                 >
                   <Form.Label>Vaccination history</Form.Label>
-                  <Button className="vaccination-pet-button" variant="outline-secondary">Add a vaccination record...</Button>
+                  {/* <Button
+                    className="vaccination-pet-button"
+                    variant="outline-secondary"
+                  >
+                    Add a vaccination record...
+                  </Button> */}
+                  <Button
+                    onClick={handleShow}
+                    className="vaccination-pet-button"
+                    variant="outline-secondary"
+                  >
+                    Add a vaccination record...
+                  </Button>
+                  <AddVaccineModal
+                    setShowVaccineForm={setShowVaccineForm}
+                    showVaccineForm={showVaccineForm}
+                    vaccine={vaccineFields}
+                    handleAddVaccineToList={handleAddVaccineToList}
+                    setVaccineFields={setVaccineFields}
+                    edit={false}
+                  />
+                  <FieldArray>
+                    <EditVaccinesList
+                      className="edit-vaccines-list"
+                      // handleVaccineOnChange={handleVaccineOnChange}
+                      vaccineList={vaccineList}
+                      petName={"Your pet"}
+                      handleEditVaccineInList={handleEditVaccineInList}
+                      handleDeleteVaccineInModal={handleDeleteNewVaccinations}
+                      add={true}
+                    />
+                  </FieldArray>
+                  <br />
+                  <br />
                 </Form.Group>
 
                 <Form.Group
