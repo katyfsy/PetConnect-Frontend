@@ -67,9 +67,10 @@
     top: 60px;
     font-size: 40px;
     color: white;
-    
+    margin-top: -50px;
     /* color: white; */
   }
+
   .i-changepw {
     position: relative;
     left: -30px;

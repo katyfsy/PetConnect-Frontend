@@ -62,7 +62,7 @@ function UserPetList() {
     return (
       <Card style={{ width: '18rem', marginLeft: '2rem', marginBottom: '2rem' }}>
         <FavButton petId={element.petId} isFavor={isFavor}/>
-      <a href={`/pet/${element.petId}`}><Card.Img variant="top" src={element.coverPhoto} style={{height: 200}} onClick={() => handleClick()}/></a>
+      <a href={`/pet/${element.petId}`}><Card.Img variant="top" src={element.coverPhoto} style={{height: 200, borderRadius: 8}} onClick={() => handleClick()}/></a>
 
       <Card.Body>
         <Card.Title>{element.name}</Card.Title>
