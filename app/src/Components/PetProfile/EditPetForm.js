@@ -44,10 +44,10 @@ function EditPetForm() {
   });
 
   const handlePetFieldsChange = (e, form, setform) => {
-      setform({
-        ...form,
-        [e.target.name]: e.target.value,
-      });
+    setform({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
   // Functionalities for Photo selection & deletion
@@ -115,7 +115,6 @@ function EditPetForm() {
         setHandleOnExited(true);
         navigate(`/petlist/${getUser()}`, { replace: true });
       });
-      
   }
 
   function deletePhotosFromDB(photosToDelete) {
@@ -429,10 +428,12 @@ function EditPetForm() {
       console.log(toBeEdited);
 
       toBeEdited.forEach((vaccine) => {
+        const id = vaccine.vaccineId;
+        delete vaccine.vaccineId;
         fetch(
-          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/updateVaccine/${vaccine.vaccineId}?petId=${state.thisPet.petId}`,
+          `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/vaccines/updateVaccine/${id}?petId=${state.thisPet.petId}`,
           {
-            method: "Patch",
+            method: "PATCH",
             headers: {
               "Content-Type": "application/json",
             },
@@ -980,12 +981,18 @@ function EditPetForm() {
                     bsPrefix="cancel-pet-button"
                     variant="secondary"
                     type="submit"
-                    onClick={() => navigate(`/pet/${state.thisPet.petId}`, { replace: true })}
+                    onClick={() =>
+                      navigate(`/pet/${state.thisPet.petId}`, { replace: true })
+                    }
                   >
                     Cancel
                   </Button>
                 </Form.Group>
-                <Button variant="danger" className="mb-3" onClick={handleOnDelete}>
+                <Button
+                  variant="danger"
+                  className="mb-3"
+                  onClick={handleOnDelete}
+                >
                   Delete Pet
                 </Button>
                 <Form.Group className="mb-3">
