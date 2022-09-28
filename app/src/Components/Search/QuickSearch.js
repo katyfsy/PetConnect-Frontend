@@ -38,7 +38,7 @@ function QuickSearch({setSearchQuery, setType, setResult}) {
 <div>
     <div className="container quickSearchBtns">
       <div className="row">
-        {/* <div className="col"> </div> */}
+        <div className="col"> </div>
         <div className="col-md">
           <button id="allDogsBtn"
           className=" quickBtn btn"
