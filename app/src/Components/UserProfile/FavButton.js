@@ -68,11 +68,11 @@ function FavButton ({ petId, isFavor, deleteFavor, setResultPageIsFav }) {
 
   if(favor === false) {
     return (
-      <i onClick={handleAddFavorites} className="bi bi-heart i-heart"></i>
+      <i onClick={handleAddFavorites} className="bi bi-bookmark-heart i-heart"></i>
     );
   } else {
     return (
-      <i onClick={handleDeleteFavorites} className="bi bi-heart-fill i-heart"></i>
+      <i onClick={handleDeleteFavorites} className="bi bi-bookmark-heart-fill i-heart"></i>
     );
   }
 }
