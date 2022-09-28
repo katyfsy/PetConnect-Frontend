@@ -4,7 +4,7 @@ import EditPet from "./EditPet";
 import VaccineList from "./VaccineList.js";
 import AddVaccineModal from "./AddVaccineModal.js";
 import { Button, Row, Col, Image, Tab, Tabs, Modal, Carousel } from "react-bootstrap";
-import { FaRegHeart, FaHeart, FaCat, FaFish } from "react-icons/fa";
+import {  FaHeart, FaCat, FaFish } from "react-icons/fa";
 import { BsFillFlagFill } from "react-icons/bs"
 import { MdPets, MdLocationCity } from "react-icons/md";
 import { BsGenderFemale, BsGenderMale, BsQuestionCircleFill } from "react-icons/bs";
@@ -107,24 +107,7 @@ function Pet() {
   }, [isEdit, fetchPet]);
 
 
-  function handleOnDelete() {
-    fetch(
-      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${petId.id}`,
-      { method: "DELETE" }
-    )
-      .then((res) => res.json())
-      .catch((err) => {
-        console.error(err);
-      })
-      .then((data) => {
-        console.log("deleteddd");
-        setShowAlert(true);
-        setAlertTitle("Congratulations");
-        setAlertText("Pet Profile successfully Deleted");
-        setAlertType("success");
-        setHandleOnExited(true);
-      });
-  }
+  
   function handleLike() {
     fetch(
       `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/addFavorite/${petId.id}`,
@@ -523,7 +506,7 @@ function Pet() {
         </div>
         <div className="profile-page-section">
 
-          {
+          {/* {
             user !== thisPet.owner ? null : (
               <>
                 <br />
@@ -532,7 +515,7 @@ function Pet() {
                 </Button>
               </>
             )
-          }
+          } */}
         </div>
 
       </div>

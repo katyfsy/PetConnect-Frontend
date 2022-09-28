@@ -95,6 +95,27 @@ function EditPetForm() {
     }
   }
 
+  function handleOnDelete() {
+    fetch(
+      `http://a920770adff35431fabb492dfb7a6d1c-1427688145.us-west-2.elb.amazonaws.com:8080/api/pets/${state.thisPet.petId}`,
+      { method: "DELETE" }
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        console.error(err);
+      })
+      .then((data) => {
+        console.log("deleteddd");
+        setShowAlert(true);
+        setAlertTitle("Congratulations");
+        setAlertText("Pet Profile successfully Deleted");
+        setAlertType("success");
+        setHandleOnExited(true);
+        navigate(`/petlist/${getUser()}`, { replace: true });
+      });
+      
+  }
+
   function deletePhotosFromDB(photosToDelete) {
     if (photosToDelete.length === 0) {
       return true;
@@ -727,7 +748,9 @@ function EditPetForm() {
                     Cancel
                   </Button>
                 </Form.Group>
-
+                <Button variant="danger" className="mb-3" onClick={handleOnDelete}>
+                  Delete Pet
+                </Button>
                 <Form.Group className="mb-3">
                   <Button bsPrefix="edit-pet-button" type="submit">
                     Save Changes

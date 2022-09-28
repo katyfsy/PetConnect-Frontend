@@ -717,6 +717,7 @@ function AddAPetForm() {
                     variant="secondary"
                     type="submit"
                     onClick={() => navigate(`/pets`, { replace: true })}
+                    // onClick={() => navigate(`/petlist/${getUser()}`, { replace: true })}
                   >
                     Cancel
                   </Button>
