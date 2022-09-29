@@ -28,11 +28,6 @@ function MyProfile() {
   });
 
   useEffect(() => {
-    // local data fetch for development
-    // const doGetUser = async () => {
-    //   const result = await getUser();
-    //   setForm(result);
-    // }
     const doGetUser = () => {
       axios.get(`${PSB_API_URL}/api/user/${getUser()}`,
       {headers: {
@@ -146,9 +141,6 @@ function MyProfile() {
                 <p className="text-start">{form.description}</p>
               </Row>
             </Col>
-          </Row>
-          <Row>
-              <Reviews />
           </Row>
         </Container>
         <Footer />
