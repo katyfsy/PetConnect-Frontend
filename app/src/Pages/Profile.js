@@ -150,7 +150,7 @@ function Profile() {
                 </Col>
               </Row>
               <Row className="mb-3" id="user-link">
-                <h4 className="user-link"><a href="https://www.w3schools.com/">Visit Our Website!</a></h4>
+                <h4 className="user-link"><a href={form.website}>Visit Our Website!</a></h4>
               </Row>
               <Row className="mb-3" id="user-description">
                 <h4 className="user-description">Description:</h4>

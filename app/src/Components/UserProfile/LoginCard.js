@@ -21,6 +21,7 @@ const LoginCard = () => {
   const [password, setPassword] = useState();
   const [rememberMe, setRememberMe] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
+  const [checkMarkColor, setCheckMarkColor] = useState("white");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -86,8 +87,10 @@ const LoginCard = () => {
   const handleRememberMe = (e) => {
     if (e.target.checked) {
       setRememberMe(true);
+      setCheckMarkColor("#8F9ED9");
     } else {
       setRememberMe(false);
+      setCheckMarkColor("white");
     }
   };
 
@@ -131,6 +134,7 @@ const LoginCard = () => {
           <div className="d-grid gap-2 mt-4 justify-content-center">
             <Form.Check aria-label="option 1" type="checkbox" name="group1">
               <Form.Check.Input
+                style={{backgroundColor: `${checkMarkColor}`}}
                 type="checkbox"
                 onChange={(e) => handleRememberMe(e)}
               />

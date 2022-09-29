@@ -102,7 +102,7 @@ function UserFavorites() {
       <div className="flex-wrapper-favList">
         <Container>
           <Row>
-            <h1 style={{marginBottom: '2rem'}}>{getUser()} Favorite Pets</h1>
+            <h1 style={{marginBottom: '2rem'}}>{getUser()}'s Favorite Pets</h1>
           </Row>
           <Row>{PetCard}</Row>
         </Container>
