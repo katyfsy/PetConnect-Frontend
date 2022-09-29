@@ -28,16 +28,14 @@ const ResetPassword = () => {
 
   const resetAlert = () => {
     Swal.fire({
-      text: 'If username exist, you will receive a Email soon.',
+      text: 'If username exists, you will receive an Email soon.',
     })
   }
 
   const doGetUser = () => {
     axios.get(`${PSB_API_URL}/api/public/user/${username}`).then((res) => {
-        //build the reset URL route
-          // sendEmail(`http://localhost:3000/user/reset/${btoa(username + " " + process.env.REACT_APP_SECRET_KEY)}`, res.data.email);
-          sendEmail(`http://a05c559e9f4dd47e6a449abdb704ff66-132472868.us-west-2.elb.amazonaws.com/user/reset/${btoa(username + " " + EMAIL_JS.REACT_APP_SECRET_KEY)}`, res.data.email);
-          resetAlert();
+      sendEmail(`http://petconnect.galvanizelabs.net/user/reset/${btoa(username + " " + EMAIL_JS.REACT_APP_SECRET_KEY)}`, res.data.email);
+      resetAlert();
     }).catch((error) => console.log(error))
   };
 
@@ -76,7 +74,7 @@ const ResetPassword = () => {
           <div className="Auth-form-container">
           <Form className="Auth-form" onSubmit={handleSubmit}>
             <div className="Auth-form-content">
-            <div className="text-center">Enter your username and we'll send you a link to get back into your account.</div>
+            <div className="text-center">Enter your username and we'll send you a link to reset your password.</div>
               <div className="form-group mt-3">
                 <input
                   type="text"
