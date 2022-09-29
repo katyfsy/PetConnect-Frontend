@@ -396,9 +396,6 @@ function EditPet({ thisPet, setIsEdit, refetchPet }) {
         currentUpload={currentUpload}
       />
 
-      <h1> Vaccine Records </h1>
-      <EditVaccinesList pet={thisPet}/><br/><br/>
-
       <h1>Additional Details</h1>
 
       <Form.Group className="mb-3" controlId="formBasicEmail">

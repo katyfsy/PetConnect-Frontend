@@ -3,11 +3,24 @@ import { useParams } from "react-router-dom";
 import EditPet from "./EditPet";
 import VaccineList from "./VaccineList.js";
 import AddVaccineModal from "./AddVaccineModal.js";
-import { Button, Row, Col, Image, Tab, Tabs, Modal, Carousel } from "react-bootstrap";
-import { FaRegHeart, FaHeart, FaCat, FaFish } from "react-icons/fa";
-import { BsFillFlagFill } from "react-icons/bs"
+import {
+  Button,
+  Row,
+  Col,
+  Image,
+  Tab,
+  Tabs,
+  Modal,
+  Carousel,
+} from "react-bootstrap";
+import { FaHeart, FaCat, FaFish } from "react-icons/fa";
+import { BsFillFlagFill } from "react-icons/bs";
 import { MdPets, MdLocationCity } from "react-icons/md";
-import { BsGenderFemale, BsGenderMale, BsQuestionCircleFill } from "react-icons/bs";
+import {
+  BsGenderFemale,
+  BsGenderMale,
+  BsQuestionCircleFill,
+} from "react-icons/bs";
 import { ImPlus } from "react-icons/im";
 import { GrFlag, GrLocation } from "react-icons/gr";
 import Alert from "./AlertModalPetForms";
@@ -43,12 +56,15 @@ function Pet() {
   const [alertText, setAlertText] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
+  const [buttonClose, setButtonClose] = useState(false);
+  const [buttonCancel, setButtonCancel] = useState(false);
+  const [buttonConfirm, setButtonConfirm] = useState(false);
+  const [buttonDelete, setButtonDelete] = useState(false);
+  const [buttonAction, setButtonAction] = useState("")
   const [handleOnExited, setHandleOnExited] = useState(false);
-
   const hexColor = {
-    reported: "#4562d3"
-  }
-
+    reported: "#4562d3",
+  };
 
   let user = getUser();
   let petId = useParams();
@@ -122,6 +138,11 @@ function Pet() {
         setAlertTitle("Congratulations");
         setAlertText("Pet Profile successfully Deleted");
         setAlertType("success");
+        setButtonCancel(false)
+        setButtonDelete(false)
+        setButtonClose(true)
+        setButtonConfirm(false)
+        setButtonAction("back")
         setHandleOnExited(true);
       });
   }
@@ -220,9 +241,7 @@ function Pet() {
   return (
     <>
       <div className="profile-page-container">
-
         <div className="profile-page-section">
-
           <div className="profile-page-left-container">
             <div className="profile-page-column-section">
               <div className="profile-page-cover-photo-container">
@@ -232,39 +251,55 @@ function Pet() {
                 />
               </div>
 
-              {user !== thisPet.owner ? <div className="profile-page-likes-container">
-                  {!liked ? <FaHeart
-                    color="white"
-                    size="20"
-                    onClick={() => handleLike()}
-                  /> :
+              {user !== thisPet.owner ? (
+                <div className="profile-page-likes-container">
+                  {!liked ? (
+                    <FaHeart
+                      color="white"
+                      size="20"
+                      onClick={() => handleLike()}
+                    />
+                  ) : (
                     <FaHeart
                       color="red"
                       size="20"
                       onClick={() => handleRemoveLike()}
-                    />}
-                  {calculateLike > 0 ? <div className="profile-page-likes-count-container">
-                    {calculateLike}
-                  </div> : <></>}
-                </div> : <></>}
-
-              {user !== thisPet.owner ? <div className="profile-page-report-container">
-                <div className="profile-page-report-tag">
-                  {!reportedHere ? "Report" : "Reported"}
+                    />
+                  )}
+                  {calculateLike > 0 ? (
+                    <div className="profile-page-likes-count-container">
+                      {calculateLike}
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
-                {!reportedHere ? <BsFillFlagFill
-                  color="white"
-                  size="20"
-                  onClick={() => handleReporting()}
-                />
-                :
-                <BsFillFlagFill
-                color={hexColor['reported']}
-                  size="20"
-                  onClick={() => handleReporting()}
-                />
-                }
-              </div> : <></>}
+              ) : (
+                <></>
+              )}
+
+              {user !== thisPet.owner ? (
+                <div className="profile-page-report-container">
+                  <div className="profile-page-report-tag">
+                    {!reportedHere ? "Report" : "Reported"}
+                  </div>
+                  {!reportedHere ? (
+                    <BsFillFlagFill
+                      color="white"
+                      size="20"
+                      onClick={() => handleReporting()}
+                    />
+                  ) : (
+                    <BsFillFlagFill
+                      color={hexColor["reported"]}
+                      size="20"
+                      onClick={() => handleReporting()}
+                    />
+                  )}
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
 
             <div className="profile-page-column-section">
@@ -276,42 +311,46 @@ function Pet() {
                     src={petPhoto.photo_url}
                     onClick={() => setShowPhotos(true)}
                   >
-                    <img src={petPhoto.photo_url} className="profile-page-photo" />
+                    <img
+                      src={petPhoto.photo_url}
+                      className="profile-page-photo"
+                    />
                   </div>
                 ))}
-
               </div>
             </div>
           </div>
 
-
           <div className="profile-page-right-container">
             <div className="profile-page-edit">
-              {user === thisPet.owner ?
+              {user === thisPet.owner ? (
                 <Button
                   className="profile-page-owner-button"
                   variant="outline-secondary"
                   size="md"
-                  onClick={() => navigate(`/editpet`, {
-                    replace: true,
-                    state: { thisPet: thisPet }
-                  })}
+                  onClick={() =>
+                    navigate(`/editpet`, {
+                      replace: true,
+                      state: { thisPet: thisPet },
+                    })
+                  }
                 >
                   {!isEdit ? "Edit profile" : "Cancel"}
                 </Button>
-                :
+              ) : (
                 <Button
                   className="profile-page-owner-button"
                   variant="outline-secondary"
                   size="md"
                   onClick={() =>
                     navigate("/messages", {
-                    state: { receiverName: thisPet.owner },
-                  })}
+                      state: { receiverName: thisPet.owner },
+                    })
+                  }
                 >
                   Message owner
                 </Button>
-              }
+              )}
             </div>
 
             <div className="profile-page-column-section">
@@ -319,8 +358,7 @@ function Pet() {
                 <h1 className="pet-name">{thisPet.name}</h1>
                 <div className="profile-page-icons">
                   <div className="profile-page-pet-icon-text-pair">
-                    <MdLocationCity
-                      size={16} />
+                    <MdLocationCity size={16} />
                     {thisPet.zip}
                   </div>
                   <div className="profile-page-pet-icon-text-pair">
@@ -328,42 +366,49 @@ function Pet() {
                     {thisPet.type}
                   </div>
                   <div className="profile-page-pet-icon-text-pair">
-                    {thisPet.sex !== "male" && thisPet.sex !== "female" ?
-                      <BsQuestionCircleFill size={16} /> : thisPet.sex === "male" ?
-                        <BsGenderMale size={16} /> : <BsGenderFemale size={16} />}
-                    {thisPet.sex !== "male" && thisPet.sex !== "female" ?
-                      "sex is unknown" : thisPet.sex}
+                    {thisPet.sex !== "male" && thisPet.sex !== "female" ? (
+                      <BsQuestionCircleFill size={16} />
+                    ) : thisPet.sex === "male" ? (
+                      <BsGenderMale size={16} />
+                    ) : (
+                      <BsGenderFemale size={16} />
+                    )}
+                    {thisPet.sex !== "male" && thisPet.sex !== "female"
+                      ? "sex is unknown"
+                      : thisPet.sex}
                   </div>
                 </div>
-                {user === thisPet.owner ? <div className="profile-page-dashboard">
-                  <div>Likes: {thisPet.favoriteCount}</div>
-                  <div>Reported: {thisPet.reported ? "Yes" : "No"}</div>
-                  <div>Adopted: {thisPet.Adopted ? "Yes" : "No"}</div>
-                </div> : <div className="profile-page-dashboard-empty"></div>}
+                {user === thisPet.owner ? (
+                  <div className="profile-page-dashboard">
+                    <div>Likes: {thisPet.favoriteCount}</div>
+                    <div>Reported: {thisPet.reported ? "Yes" : "No"}</div>
+                    <div>Adopted: {thisPet.Adopted ? "Yes" : "No"}</div>
+                  </div>
+                ) : (
+                  <div className="profile-page-dashboard-empty"></div>
+                )}
               </div>
             </div>
 
             <div className="profile-page-tab-section">
-              <Tabs
-                justify
-                defaultActiveKey="description"
-              >
+              <Tabs justify defaultActiveKey="description">
                 <Tab
                   tabClassName="profile-page-tab"
                   bsPrefix="profile-page-tab-pane"
                   eventKey="description"
-                  title="Description">
+                  title="Description"
+                >
                   {thisPet.description}
                 </Tab>
                 <Tab
                   tabClassName="profile-page-tab"
                   bsPrefix="profile-page-tab-pane"
                   eventKey="info"
-                  title="Details">
+                  title="Details"
+                >
                   <div className="profile-page-pet-details-container">
                     <div className="profile-page-pet-details-column">
-
-                      {thisPet.name ?
+                      {thisPet.name ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             Pet's name:
@@ -372,9 +417,10 @@ function Pet() {
                             {thisPet.name}
                           </div>
                         </div>
-                        : <></>
-                      }
-                      {thisPet.type ?
+                      ) : (
+                        <></>
+                      )}
+                      {thisPet.type ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             Type:
@@ -383,9 +429,10 @@ function Pet() {
                             {thisPet.type}
                           </div>
                         </div>
-                        : <></>
-                      }
-                      {thisPet.species ?
+                      ) : (
+                        <></>
+                      )}
+                      {thisPet.species ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             Species:
@@ -394,9 +441,10 @@ function Pet() {
                             {thisPet.species}
                           </div>
                         </div>
-                        : <></>
-                      }
-                      {thisPet.breed ?
+                      ) : (
+                        <></>
+                      )}
+                      {thisPet.breed ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             Breed:
@@ -405,9 +453,10 @@ function Pet() {
                             {thisPet.breed}
                           </div>
                         </div>
-                        : <></>
-                      }
-                      {thisPet.size ?
+                      ) : (
+                        <></>
+                      )}
+                      {thisPet.size ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             Size:
@@ -416,9 +465,10 @@ function Pet() {
                             {thisPet.size}
                           </div>
                         </div>
-                        : <></>
-                      }
-                      {thisPet.age ?
+                      ) : (
+                        <></>
+                      )}
+                      {thisPet.age ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             Age:
@@ -427,9 +477,10 @@ function Pet() {
                             {thisPet.age}
                           </div>
                         </div>
-                        : <></>
-                      }
-                      {thisPet.sex ?
+                      ) : (
+                        <></>
+                      )}
+                      {thisPet.sex ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             Sex:
@@ -438,9 +489,10 @@ function Pet() {
                             {thisPet.sex}
                           </div>
                         </div>
-                        : <></>
-                      }
-                      {thisPet.reproductiveStatus ?
+                      ) : (
+                        <></>
+                      )}
+                      {thisPet.reproductiveStatus ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             Spayed/Neutered:
@@ -449,13 +501,13 @@ function Pet() {
                             {thisPet.reproductiveStatus}
                           </div>
                         </div>
-                        : <></>
-                      }
+                      ) : (
+                        <></>
+                      )}
                     </div>
 
-
                     <div className="profile-page-pet-details-column">
-                      {thisPet.owner ?
+                      {thisPet.owner ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             Owner:
@@ -464,9 +516,10 @@ function Pet() {
                             {thisPet.owner}
                           </div>
                         </div>
-                        : <></>
-                      }
-                      {thisPet.city ?
+                      ) : (
+                        <></>
+                      )}
+                      {thisPet.city ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             City:
@@ -475,9 +528,10 @@ function Pet() {
                             {thisPet.city}
                           </div>
                         </div>
-                        : <></>
-                      }
-                      {thisPet.state ?
+                      ) : (
+                        <></>
+                      )}
+                      {thisPet.state ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             State:
@@ -486,9 +540,10 @@ function Pet() {
                             {thisPet.state}
                           </div>
                         </div>
-                        : <></>
-                      }
-                      {thisPet.zip ?
+                      ) : (
+                        <></>
+                      )}
+                      {thisPet.zip ? (
                         <div className="profile-page-pet-property">
                           <div className="profile-page-pet-property-key">
                             Zipcode:
@@ -497,23 +552,26 @@ function Pet() {
                             {thisPet.zip}
                           </div>
                         </div>
-                        : <></>
-                      }
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </div>
                 </Tab>
                 <Tab
                   tabClassName="profile-page-tab"
                   eventKey="vaccines"
-                  title="Vaccines">
+                  title="Vaccines"
+                >
                   <VaccineList pet={thisPet} />
                 </Tab>
 
                 <Tab
                   tabClassName="profile-page-tab"
                   eventKey="contact"
-                  title="Contact">
-                  <div className="contact-card-tab">
+                  title="Contact"
+                >
+                  <div className="profile-page-contact-card">
                     <User owner={thisPet.owner} />
                   </div>
                 </Tab>
@@ -522,41 +580,67 @@ function Pet() {
           </div>
         </div>
         <div className="profile-page-section">
-
           {
             user !== thisPet.owner ? null : (
               <>
                 <br />
-                <Button variant="danger" size="md" onClick={handleOnDelete}>
-                  Delete Pet
-                </Button>
+
+                  <Button
+                    // bsPrefix="delete-pet-button"
+                    variant="outline-danger"
+                    type="button"
+                    onClick={() => {
+                      setShowAlert(true);
+                      setAlertTitle("Are you sure?");
+                      setAlertText("This action cannot be reverted");
+                      setAlertType("error");
+                      setButtonCancel(true)
+                      setButtonDelete(true)
+                      setButtonClose(false)
+                      setButtonConfirm(false)
+                      setButtonAction("back")
+                      setHandleOnExited(false);
+                    }}
+                  >
+                    Delete pet
+                  </Button>
               </>
             )
           }
         </div>
-
       </div>
 
-        {!isEdit ? null : (
-          <EditPet
-            thisPet={thisPet}
-            setIsEdit={setIsEdit}
-            setThisPet={setThisPet}
-            refetchPet={refetchPet}
-          />
-        )}
+      {!isEdit ? null : (
+        <EditPet
+          thisPet={thisPet}
+          setIsEdit={setIsEdit}
+          setThisPet={setThisPet}
+          refetchPet={refetchPet}
+        />
+      )}
 
       <Alert
         show={showAlert}
         text={alertText}
         title={alertTitle}
         type={alertType}
+        buttonCancel={buttonCancel}
+        buttonConfirm={buttonConfirm}
+        buttonDelete={buttonDelete}
+        buttonClose={buttonClose}
+        buttonAction={buttonAction}
+        deleteCallback={handleOnDelete}
         onHide={() => setShowAlert(false)}
-        onExited={handleOnExited ? () => navigate("/pets") : null}
+        onExited={handleOnExited ? () => navigate(`/petlist/${getUser()}`, { replace: true }) : null}
       // handleOnExited('/pets')
       />
 
-      <Modal show={showPhotos} contentClassName="profile-page-gallery" centered onHide={() => setShowPhotos(false)}>
+      <Modal
+        show={showPhotos}
+        contentClassName="profile-page-gallery"
+        centered
+        onHide={() => setShowPhotos(false)}
+      >
         <Modal.Header closeButton>
           <Modal.Title>{thisPet.name}'s photos</Modal.Title>
         </Modal.Header>
@@ -569,13 +653,10 @@ function Pet() {
                   key={petPhoto.photoId}
                   src={petPhoto.photo_url}
                 />
-                <Carousel.Caption>
-
-                </Carousel.Caption>
+                <Carousel.Caption></Carousel.Caption>
               </Carousel.Item>
             ))}
           </Carousel>
-
         </Modal.Body>
       </Modal>
       <br />

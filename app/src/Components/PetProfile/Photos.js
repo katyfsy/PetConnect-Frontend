@@ -35,6 +35,10 @@ const Photos = ({
   const [alertText, setAlertText] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
+  const [buttonClose, setButtonClose] = useState(false);
+  const [buttonCancel, setButtonCancel] = useState(false);
+  const [buttonConfirm, setButtonConfirm] = useState(false);
+  const [buttonDelete, setButtonDelete] = useState(false);
 
   const customValidation = useCallback(
     (file) => {
@@ -81,22 +85,38 @@ const Photos = ({
         setAlertTitle("Maximum number of photos exceeded");
         setAlertText(`Photo allowance per profile is ${maxPhotos}`);
         setAlertType("error");
+        setButtonCancel(false)
+        setButtonDelete(false)
+        setButtonConfirm(false)
+        setButtonClose(true)
       } else if (error === "file-invalid-type") {
         console.log(e);
         setShowAlert(true);
         setAlertTitle("File type not allowed");
         setAlertText("Attempted to upload a file that is not an image");
         setAlertType("error");
+        setButtonCancel(false)
+        setButtonDelete(false)
+        setButtonConfirm(false)
+        setButtonClose(true)
       } else if (error === "same-file-name") {
         setShowAlert(true);
         setAlertTitle("One or more photos were not staged");
         setAlertText("Photos with the same name are ignored");
         setAlertType("error");
+        setButtonCancel(false)
+        setButtonDelete(false)
+        setButtonConfirm(false)
+        setButtonClose(true)
       } else {
         setShowAlert(true);
         setAlertTitle("Unable to process this request");
         setAlertText("Unknown error");
         setAlertType("error");
+        setButtonCancel(false)
+        setButtonDelete(false)
+        setButtonConfirm(false)
+        setButtonClose(true)
       }
     },
     [photos]
@@ -228,7 +248,7 @@ const Photos = ({
   //     ) : null}
   //   </div>
   // ));
-  console.log(photos.length);
+  // console.log(photos.length);
   return (
     <>
       {photos.length > 0 ? (
@@ -282,6 +302,10 @@ const Photos = ({
           text={alertText}
           title={alertTitle}
           type={alertType}
+          buttonCancel={buttonCancel}
+          buttonConfirm={buttonConfirm}
+          buttonDelete={buttonDelete}
+          buttonClose={buttonClose}
           onHide={() => setShowAlert(false)}
         />
       </div>

@@ -13,10 +13,17 @@
   font-size: small;
 }
 
-.vaccine-form {
-  width: 100%;
-}
+
 
 .vaccine-form-title {
   align-self: center;
+}
+
+.add-vaccine-form {
+  width: 100%;
+}
+
+.add-vaccine-form-field {
+  width: 100%;
+  margin-bottom: 2em;
 }

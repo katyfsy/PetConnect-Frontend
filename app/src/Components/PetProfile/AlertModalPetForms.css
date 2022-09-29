@@ -8,10 +8,12 @@
 
 .alert-error {
   color: rgb(214, 61, 14);
+  background-color: white;
 }
 
 .alert-success {
   color: rgb(28, 144, 47);
+  background-color: white;
 }
 
 .alert-icon {
@@ -34,8 +36,10 @@
 
 .alert-button-container {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: flex-end;
+  margin-top: 10px;
   /* justify-items: center; */
 }
 
