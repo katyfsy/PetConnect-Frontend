@@ -1,6 +1,7 @@
 import Navigationbar from "../Components/Default/Navbar";
 import Header from "../Components/Default/Header";
 import AddAPetForm from "../Components/PetProfile/AddAPetForm";
+import Footer from "../Components/Default/Footer";
 import Container from "react-bootstrap/Container";
 
 
@@ -12,6 +13,7 @@ function AddAPet() {
       </Container>
       <Navigationbar />
         <AddAPetForm />
+        <Footer />
     </>
   );
 }

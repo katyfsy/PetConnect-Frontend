@@ -1,6 +1,7 @@
 import React from "react";
 import Navigationbar from "../Components/Default/Navbar";
 import Header from "../Components/Default/Header";
+import Footer from "../Components/Default/Footer";
 import Pet from "../Components/PetProfile/Pet";
 import Container from "react-bootstrap/Container";
 
@@ -14,6 +15,8 @@ function AddAPet() {
       <Container>
         <Pet />
       </Container>
+      <Footer />
+
     </>
   );
 }
